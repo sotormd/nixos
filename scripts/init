@@ -57,17 +57,17 @@ if [ "$1" == "hardware" ]; then
     sudo nixos-generate-config --dir /tmp/nixos
 
     if [ -f "/tmp/nixos/hardware-configuration.nix" ]; then
-        if cp "/tmp/nixos/hardware-configuration.nix" "$DIR/$ROLE/modules/hardware-configuration.nix"; then
-            echo "generated hardware-configuration.nix was moved to $DIR/$ROLE/modules/hardware-configuration.nix"
+        if cp "/tmp/nixos/hardware-configuration.nix" "$DIR/modules/$ROLE/hardware-configuration.nix"; then
+            echo "generated hardware-configuration.nix was moved to $DIR/modules/$ROLE/hardware-configuration.nix"
         else
             echo "failed to copy hardware-configuration.nix" >&2
             exit 1
         fi
     fi
 
-    shred /tmp/nixos/configuration.nix
-    shred /tmp/nixos/hardware-configuration.nix
-    rm -rf /tmp/nixos
+    sudo shred /tmp/nixos/configuration.nix
+    sudo shred /tmp/nixos/hardware-configuration.nix
+    sudo rm -rf /tmp/nixos
 
 ############
 # VARS INIT
@@ -349,7 +349,7 @@ EOF
   # your username
   user.name = "$VARS_USER_NAME";
 
-  # your email
+  # your git email
   user.git.email = "$VARS_USER_GIT_EMAIL";
 
   #################
