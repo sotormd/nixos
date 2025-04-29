@@ -1,0 +1,3 @@
+{
+  powerManagement.powertop.enable = true;
+}

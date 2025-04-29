@@ -1,0 +1,50 @@
+#! /usr/bin/env bash
+
+# ensure there is only one instance running
+LOCKFILE="/tmp/nixos-script.lock"
+if [ -e "$LOCKFILE" ]; then
+    echo "Error: Another instance of the script is running." >&2
+    exit 1
+fi
+
+# create lockfile
+touch "$LOCKFILE"
+
+# ensure deletion of lockfile on exit
+trap 'rm -f "$LOCKFILE"' EXIT
+
+if [ -z "$NIXOS_DIR" ]; then
+    echo "Error: NIXOS_DIR is not set." >&2
+    exit 1
+fi
+
+if [ -z "$NIXOS_ROLE" ]; then
+    echo "Error: NIXOS_ROLE is not set." >&2
+    exit 1
+fi
+
+set -e
+
+(
+    cd $NIXOS_DIR
+    find . -type f -name '*.nix' -exec nix fmt {} +
+    git add .
+    GIT_PAGER=cat git diff HEAD -- ':!vars/vars.nix' ':!vars/secrets.yaml' ':!.sops.yaml' ":!modules/$NIXOS_ROLE/hardware-configuration.nix"
+
+    echo
+    echo vars: $(sha256sum "$NIXOS_DIR/vars/vars.nix" | awk '{print $1}') $(stat -c %y "$NIXOS_DIR/vars/vars.nix")
+    echo sops: $(sha256sum "$NIXOS_DIR/vars/secrets.yaml" | awk '{print $1}') $(stat -c %y "$NIXOS_DIR/vars/secrets.yaml")
+    read -p "switch? [Y/n]: " confirm
+
+    confirm=${confirm:-Y}
+
+    if [[ $confirm =~ ^[Yy]$ ]]; then
+
+        sudo nixos-rebuild switch --flake .#$NIXOS_ROLE
+
+        git reset -- vars/vars.nix vars/secrets.yaml .sops.yaml modules/$NIXOS_ROLE/hardware-configuration.nix
+
+	else
+            echo "cancelled"
+	fi
+)

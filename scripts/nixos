@@ -1,0 +1,29 @@
+#! /usr/bin/env bash
+
+if [ -z "$NIXOS_DIR" ]; then
+    echo "Error: NIXOS_DIR is not set." >&2
+    exit 1
+fi
+
+if [ -z "$NIXOS_ROLE" ]; then
+    echo "Error: NIXOS_ROLE is not set." >&2
+    exit 1
+fi
+
+DIR=$NIXOS_DIR
+ROLE=$NIXOS_ROLE
+
+if [ $# -eq 0 ]; then
+        cmd=("tree" "$DIR" "-I" ".git" "-I" ".local" "--filesfirst")
+
+elif [ -f "$DIR/scripts/$1" ]; then
+	cmd=("$DIR/scripts/$1" "${@:2}")
+
+else
+	cmd=("$@")
+fi
+
+(
+	cd $DIR || exit 1
+	"${cmd[@]}"
+)
