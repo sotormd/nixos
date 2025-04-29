@@ -1,0 +1,590 @@
+#! /usr/bin/env nix
+#! nix shell nixpkgs#yq nixpkgs#gnupg nixpkgs#sops nixpkgs#sbctl --command bash
+
+# ensure there is only one instance running
+LOCKFILE="/tmp/nixos-script.lock"
+if [ -e "$LOCKFILE" ]; then
+    echo "Error: Another instance of the script is running." >&2
+    exit 1
+fi
+
+# create lockfile
+touch "$LOCKFILE"
+
+# ensure deletion of lockfile on exit
+trap 'rm -f "$LOCKFILE"' EXIT
+
+if [ -z "$NIXOS_DIR" ]; then
+    echo "Error: NIXOS_DIR is not set." >&2
+    exit 1
+fi
+
+if [ -z "$NIXOS_ROLE" ]; then
+    echo "Error: NIXOS_ROLE is not set." >&2
+    exit 1
+fi
+
+DIR=$NIXOS_DIR
+ROLE=$NIXOS_ROLE
+
+VARS_DIR="$DIR/vars"
+VARS="$VARS_DIR/vars.nix"
+
+if [ "$ROLE" == "laptop" ]; then
+    SOPS_DIR="/persist/sops-nix"
+elif [ "$ROLE" == "server" ]; then
+    SOPS_DIR="/var/lib/sops-nix"
+fi
+SOPS_YAML="$DIR/.sops.yaml"
+SECRETS="$VARS_DIR/secrets.yaml"
+TEMP_SECRETS="/tmp/sops-nix-init.yaml"
+
+PERSIST_DIR="/persist"
+PERSIST_DIR_ROOT="$PERSIST_DIR/root"
+PERSIST_DIR_HOME="$PERSIST_DIR_ROOT/home/$USER"
+
+#################
+# HWARDWARE INIT
+#################
+
+if [ "$1" == "hardware" ]; then
+
+    if [ -f "modules/$ROLE/hardware-configuration.nix" ] && [[ "$2" != "replace" ]]; then
+        echo "hardware-configuration.nix already exists"
+        exit 1
+    fi
+
+    sudo nixos-generate-config --dir /tmp/nixos
+
+    if [ -f "/tmp/nixos/hardware-configuration.nix" ]; then
+        if cp "/tmp/nixos/hardware-configuration.nix" "$DIR/$ROLE/modules/hardware-configuration.nix"; then
+            echo "generated hardware-configuration.nix was moved to $DIR/$ROLE/modules/hardware-configuration.nix"
+        else
+            echo "failed to copy hardware-configuration.nix" >&2
+            exit 1
+        fi
+    fi
+
+    shred /tmp/nixos/configuration.nix
+    shred /tmp/nixos/hardware-configuration.nix
+    rm -rf /tmp/nixos
+
+############
+# VARS INIT
+############
+
+elif [ "$1" == "vars" ]; then
+
+    if [ -f "$VARS" ] && [[ "$2" != "replace" ]]; then
+        echo "Error: vars.nix already exists"
+        exit 1
+    else
+        rm $VARS
+    fi
+
+    if [ "$ROLE" == "laptop" ]; then
+
+        # check environment variables for vars
+        if [ -z "$VARS_DEVICE_HOSTNAME" ]; then
+            VARS_DEVICE_HOSTNAME=$(uname -n)
+        fi
+
+        if [ -z "$VARS_DEVICE_MACHINEID" ]; then
+            VARS_DEVICE_MACHINEID=$(cat /etc/machine-id)
+        fi
+
+        if [ -z "$VARS_DEVICE_HOSTID" ]; then
+            VARS_DEVICE_HOSTID=$(head -c 8 /etc/machine-id)
+        fi
+
+        if [ -z "$VARS_USER_NAME" ]; then
+            VARS_USER_NAME=$USER
+        fi
+
+        if [ -z "$VARS_USER_GIT_EMAIL" ]; then
+            VARS_USER_EMAIL=""
+        fi
+
+        if [ -z "$VARS_USER_GITHUB_KEYFILE" ]; then
+            VARS_USER_GITHUB_KEYFILE="id_ed25519_github"
+        fi
+
+        if [ -z "$VARS_I18N_TIMEZONE" ]; then
+            VARS_I18N_TIMEZONE=$(timedatectl show --property=Timezone --value)
+        fi
+
+        if [ -z "$VARS_I18N_KEYBOARD" ]; then
+            VARS_I18N_KEYBOARD="us"
+        fi
+
+        if [ -z "$VARS_I18N_LOCALE" ]; then
+            VARS_I18N_LOCALE="en_US.UTF-8"
+        fi
+
+        if [ -z "$VARS_NETWORK_INTERFACE" ]; then
+            VARS_NETWORK_INTERFACE="wlp1s0"
+        fi
+
+        if [ -z "$VARS_NETWORK_SSID" ]; then
+            VARS_NETWORK_SSID=""
+        fi
+
+        if [ -z "$VARS_NETWORK_GATEWAY" ]; then
+                VARS_NETWORK_GATEWAY=""
+        fi
+
+        if [ -z "$VARS_NETWORK_IP" ]; then
+                VARS_NETWORK_IP=""
+        fi
+
+        if [ -z "$VARS_NETWORK_SERVER_IP" ]; then
+                VARS_NETWORK_SERVER_IP=""
+        fi
+
+        if [ -z "$VARS_NETWORK_SERVER_SSH_PORT" ]; then
+                VARS_NETWORK_SERVER_SSH_PORT="22"
+        fi
+
+        if [ -z "$VARS_NETWORK_SERVER_SSH_KEYFILE" ]; then
+                VARS_NETWORK_SERVER_SSH_KEYFILE="id_ed25519_server"
+        fi
+
+        if [ -z "$VARS_OUTPUTS_LAPTOP" ]; then
+                VARS_OUTPUTS_LAPTOP="eDP-1"
+        fi
+
+        if [ -z "$VARS_OUTPUTS_MONITOR" ]; then
+                VARS_OUTPUTS_MONITOR="HDMI-A-1"
+        fi
+
+        # create vars file
+        cat > $VARS <<EOF
+{
+  # use this file to declare variables
+  # this file will be stored in the world-readable /nix/store
+  # for any sensitive data, use sops-nix instead
+  # this file and ./secrets.yaml are not tracked by git
+
+  ######################################
+  # NIXOS CONFIGURATION FLAKE VARIABLES
+  ######################################
+
+  # directory where nixos configuration is stored
+  nixosDirectory = "$NIXOS_DIR";
+
+  # configuration role
+  nixosRole = "laptop";
+
+  ###################
+  # DEVICE VARIABLES
+  ###################
+
+  # /etc/hostname
+  device.hostName = "$VARS_DEVICE_HOSTNAME";
+
+  # /etc/machine-id
+  # passed as a boot parameter
+  # do not change for consistent journald logs
+  device.machineId = "$VARS_DEVICE_MACHINEID";
+
+  # required for zfs
+  device.hostId = "$VARS_DEVICE_HOSTID";
+
+  #########################
+  # USER ACCOUNT VARIABLES
+  #########################
+
+  # your username
+  user.name = "$VARS_USER_NAME";
+
+  # your git email
+  user.git.email = "$VARS_USER_GIT_EMAIL";
+
+  # github ssh keyfile
+  user.github.keyfile = "$VARS_USER_GITHUB_KEYFILE";
+
+  #################
+  # I18N VARIABLES
+  #################
+
+  # continent/city format timezone
+  i18n.timeZone = "$VARS_I18N_TIMEZONE";
+
+  # keyboard layout
+  i18n.keyboard = "$VARS_I18N_KEYBOARD";
+
+  # locale
+  i18n.locale = "$VARS_I18N_LOCALE";
+
+  #######################
+  # NETWORKING VARIABLES
+  #######################
+
+  # wireless interface
+  network.interface = "$VARS_NETWORK_INTERFACE";
+
+  # wireless network ssid
+  network.ssid = "$VARS_NETWORK_SSID";
+
+  # network gateway
+  network.gateway = "$VARS_NETWORK_GATEWAY";
+
+  # static local device ip
+  network.ip = "$VARS_NETWORK_IP";
+
+  # static local home server ip address
+  network.server.ip = "$VARS_NETWORK_SERVER_IP";
+
+  # server ssh port
+  network.server.ssh.port = $VARS_NETWORK_SERVER_SSH_PORT;
+
+  # server ssh keyfile
+  network.server.ssh.keyfile = "$VARS_NETWORK_SERVER_SSH_KEYFILE";
+
+  #############################
+  # OUTPUT (DISPLAY) VARIABLES
+  #############################
+
+  # builtin laptop screen identifier (usually eDP-1)
+  outputs.laptop = "$VARS_OUTPUTS_LAPTOP";
+
+  # external monitor screen identifier (usually HDMI-A-1)
+  outputs.monitor = "$VARS_OUTPUTS_MONITOR";
+}
+EOF
+
+    elif [ "$ROLE" == "server" ]; then
+
+        # check environment variables for vars
+        if [ -z "$VARS_DEVICE_HOSTNAME" ]; then
+            VARS_DEVICE_HOSTNAME=$(uname -n)
+        fi
+
+        if [ -z "$VARS_DEVICE_MACHINEID" ]; then
+            VARS_DEVICE_MACHINEID=$(cat /etc/machine-id)
+        fi
+
+        if [ -z "$VARS_USER_NAME" ]; then
+            VARS_USER_NAME=$USER
+        fi
+
+        if [ -z "$VARS_USER_GIT_EMAIL" ]; then
+            VARS_USER_EMAIL=""
+        fi
+
+        if [ -z "$VARS_I18N_TIMEZONE" ]; then
+            VARS_I18N_TIMEZONE=$(timedatectl show --property=Timezone --value)
+        fi
+
+        if [ -z "$VARS_I18N_KEYBOARD" ]; then
+            VARS_I18N_KEYBOARD="us"
+        fi
+
+        if [ -z "$VARS_I18N_LOCALE" ]; then
+            VARS_I18N_LOCALE="en_US.UTF-8"
+        fi
+
+        if [ -z "$VARS_NETWORK_INTERFACE" ]; then
+            VARS_NETWORK_INTERFACE="wlan0"
+        fi
+
+        if [ -z "$VARS_NETWORK_SSID" ]; then
+            VARS_NETWORK_SSID=""
+        fi
+
+        if [ -z "$VARS_NETWORK_GATEWAY" ]; then
+                VARS_NETWORK_GATEWAY=""
+        fi
+
+        if [ -z "$VARS_NETWORK_RANGE" ]; then
+                VARS_NETWORK_RANGE=""
+        fi
+
+        if [ -z "$VARS_NETWORK_IP" ]; then
+                VARS_NETWORK_IP=""
+        fi
+
+        if [ -z "$VARS_NETWORK_SSH_PORT" ]; then
+                VARS_NETWORK_SSH_PORT="22"
+        fi
+
+        if [ -z "$VARS_NETWORK_SSH_KEY" ]; then
+                VARS_NETWORK_SSH_KEY=""
+        fi
+
+        # create vars file
+        cat > $VARS <<EOF
+{
+  # use this file to declare variables
+  # this file will be stored in the world-readable /nix/store
+  # for any sensitive data, use sops-nix instead
+  # this file and ./secrets.yaml are not tracked by git
+
+  ######################################
+  # NIXOS CONFIGURATION FLAKE VARIABLES
+  ######################################
+
+  # directory where nixos configuration is stored
+  nixosDirectory = "$NIXOS_DIR";
+
+  # configuration role
+  nixosRole = "server";
+
+  ###################
+  # DEVICE VARIABLES
+  ###################
+
+  # /etc/hostname
+  device.hostName = "$VARS_DEVICE_HOSTNAME";
+
+  # /etc/machine-id
+  # passed as a boot parameter
+  # do not change for consistent journald logs
+  device.machineId = "$VARS_DEVICE_MACHINEID";
+
+  #########################
+  # USER ACCOUNT VARIABLES
+  #########################
+
+  # your username
+  user.name = "$VARS_USER_NAME";
+
+  # your email
+  user.git.email = "$VARS_USER_GIT_EMAIL";
+
+  #################
+  # I18N VARIABLES
+  #################
+
+  # continent/city format timezone
+  i18n.timeZone = "$VARS_I18N_TIMEZONE";
+
+  # keyboard layout
+  i18n.keyboard = "$VARS_I18N_KEYBOARD";
+
+  # locale
+  i18n.locale = "$VARS_I18N_LOCALE";
+
+  #######################
+  # NETWORKING VARIABLES
+  #######################
+
+  # wireless interface
+  network.interface = "$VARS_NETWORK_INTERFACE";
+
+  # wireless network ssid
+  network.ssid = "$VARS_NETWORK_SSID";
+
+  # network gateway
+  network.gateway = "$VARS_NETWORK_GATEWAY";
+
+  # local ip range
+  network.range = "$VARS_NETWORK_RANGE";
+
+  # static local device ip
+  network.ip = "$VARS_NETWORK_IP";
+
+  # ssh port
+  network.ssh.port = $VARS_NETWORK_SSH_PORT;
+
+  # ssh keys
+  network.ssh.keys = [ "$VARS_NETWORK_SSH_KEY" ];
+}
+EOF
+
+    fi    
+
+    # set permissions for vars file
+    sudo chmod 600 $VARS
+
+#############
+# SOPS INIT
+#############
+
+elif [ "$1" == "sops" ]; then
+
+    if [ -f "$SECRETS" ] && [[ "$2" != "replace" ]]; then
+        echo "Error: secrets.yaml already exists"
+        exit 1
+    else
+        rm $SECRETS
+    fi
+
+    # check environment variables
+    if [ -z "$SECRETS_HASHEDPASSWORD" ]; then
+        SECRETS_HASHEDPASSWORD=$(mkpasswd -m yescrypt)
+    fi
+
+    if [ -z "$SECRETS_PSK" ]; then
+            SECRETS_PSK=""
+    fi
+
+    # delete existing sops keys from gpg
+    if [ -f "$SOPS_YAML" ]; then
+        FINGERPRINT=$(yq '.keys[0]' $SOPS_YAML)
+        FINGERPRINT="${FINGERPRINT#\"}"
+        FINGERPRINT="${FINGERPRINT%\"}"
+        gpg --delete-secret-keys $FINGERPRINT
+        gpg --delete-key $FINGERPRINT
+    fi
+
+    # delete old sops-nix directory if exists
+    if [ -d $SOPS_DIR ]; then
+        sudo rm -rf $SOPS_DIR
+    fi
+    sudo mkdir $SOPS_DIR
+
+    # change ownership of sops-nix directory
+    sudo chown $USER $SOPS_DIR
+    sudo chmod 700 $SOPS_DIR
+
+    # create new gpg key for sops-nix
+    # save key fingerprint
+    FINGERPRINT=$(yes n | nix run github:Mic92/sops-nix#sops-init-gpg-key -- --gpghome "/tmp/sops-nix" --keytype Curve25519 2>&1 | grep -oP '(?<=fingerprint:\s)\S+')
+
+    # ensure non-empty key
+    if [ -z "$FINGERPRINT" ]; then
+        echo "Error: Failed to generate a GPG key for sops-nix" >&2
+        exit 1
+    fi
+
+    # move key to the sops-nix directory
+    cp -r /tmp/sops-nix/** $SOPS_DIR
+
+    # export the gpg key from sops-nix directory
+    export GNUPGHOME=$SOPS_DIR
+    gpg --export --armor > /tmp/sops-nix-pub.asc
+    gpg --export-secret-keys --armor > /tmp/sops-nix-priv.asc
+    unset GNUPGHOME
+
+    # import exported key to gnupg
+    gpg --import /tmp/sops-nix-pub.asc
+    gpg --import /tmp/sops-nix-priv.asc
+
+    # reset permissions of sops-nix directory
+    sudo chown root: $SOPS_DIR
+
+    # securely purge keys
+    shred /tmp/sops-nix-pub.asc -u
+    shred /tmp/sops-nix-priv.asc -u
+    find /tmp/sops-nix -type f -exec shred -u {} +
+    rm -rf /tmp/sops-nix
+
+    # create .sops.yaml configuration file
+    cat > $SOPS_YAML <<EOF
+keys:
+  - &personal $FINGERPRINT
+creation_rules:
+  - path_regex: $(echo $SECRETS | sed "s|^$DIR/||")
+    key_groups:
+    - pgp:
+      - *personal
+  - path_regex: $TEMP_SECRETS
+    key_groups:
+    - pgp:
+      - *personal
+EOF
+
+    #create the secrets file
+    cat > $TEMP_SECRETS <<EOF
+hashedPassword: $SECRETS_HASHEDPASSWORD
+network: |
+  psk=$SECRETS_PSK
+EOF
+
+    # open secrets file
+    (
+        cd $DIR || exit
+        sops -e $TEMP_SECRETS > $SECRETS
+        shred $TEMP_SECRETS -u
+    )
+
+    # set permissions for secrets file
+    sudo chmod 600 $SECRETS
+
+
+#############
+# LANZABOOTE
+#############
+
+elif [ "$1" == "lanzaboote" ]; then
+
+    if [ "$ROLE" == "server" ]; then
+        echo "Error: unexpected role"
+        exit 1
+    fi
+
+    if [ "$2" == "create" ]; then
+        sudo sbctl create-keys
+    fi
+
+    if [ "$1" == "enroll" ]; then
+        sudo sbctl enroll-keys --microsoft
+    fi
+
+###############
+# IMPERMANENCE
+###############
+
+elif [ "$1" == "impermanence" ]; then
+
+    if [ "$ROLE" == "server" ]; then
+        echo "Error: unexpected role"
+        exit 1
+    fi
+
+    if [ ! -d "$PERSIST_DIR" ]; then
+        echo "Error: $PERSIST_DIR doesn't exist"
+        exit 1
+    fi
+
+    if [ -d "$PERSIST_DIR_ROOT" ]; then
+        echo "$PERSIST_DIR_ROOT already exists"
+        exit 0
+    fi
+
+    if [ "$2" == "root" ]; then
+        sudo mkdir $PERSIST_DIR_ROOT
+
+        # zpool.cache
+        sudo mkdir -p $PERSIST_DIR_ROOT/etc/zfs
+        sudo cp --preserve=mode,ownership,timestamps /etc/zfs/zpool.cache $PERSIST_DIR_ROOT/etc/zfs/zpool.cache
+
+        # /var/lib/nixos
+        sudo mkdir -p $PERSIST_DIR_ROOT/var/lib
+        sudo cp -r --preserve=mode,ownership,timestamps /var/lib/nixos $PERSIST_DIR_ROOT/var/lib/nixos
+
+        # /var/lib/systemd
+        sudo mkdir -p $PERSIST_DIR_ROOT/var/lib
+        sudo cp -r --preserve=mode,ownership,timestamps /var/lib/systemd $PERSIST_DIR_ROOT/var/lib/systemd
+
+        # /var/lib/sbctl
+        sudo mkdir -p $PERSIST_DIR_ROOT/var/lib
+        sudo cp -r --preserve=mode,ownership,timestamps /var/lib/sbctl $PERSIST_DIR_ROOT/var/lib/sbctl
+
+        # /var/log
+        sudo mkdir -p $PERSIST_DIR_ROOT/var
+        sudo cp -r --preserve=mode,ownership,timestamps /var/log $PERSIST_DIR_ROOT/var/log
+
+        sudo chown -R root:root $PERSIST_DIR_ROOT
+    fi
+
+    if [ "$2" == "home" ]; then
+        sudo mkdir -p $PERSIST_DIR_HOME
+        sudo mkdir $PERSIST_DIR_HOME/Desktop
+        sudo mkdir $PERSIST_DIR_HOME/Documents
+        sudo mkdir $PERSIST_DIR_HOME/Downloads
+        sudo mkdir $PERSIST_DIR_HOME/Pictures
+        sudo mkdir $PERSIST_DIR_HOME/Projects
+        sudo mkdir $PERSIST_DIR_HOME/.mozilla
+        sudo mkdir $PERSIST_DIR_HOME/.ssh
+        sudo mkdir $PERSIST_DIR_HOME/.gnupg
+
+
+        sudo chown -R $USER:users $PERSIST_DIR_ROOT/home
+
+        sudo chmod 700 $PERSIST_DIR_HOME/.ssh
+        sudo chmod 700 $PERSIST_DIR_HOME/.gnupg
+    fi
+
+fi
