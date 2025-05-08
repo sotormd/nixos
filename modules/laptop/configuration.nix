@@ -3,9 +3,6 @@
     # include results of the hardware scan
     ./hardware-configuration.nix
 
-    # home manager
-    ./home.nix
-
     # MODULES - sorted alphabetically
 
     # audio with pipewire

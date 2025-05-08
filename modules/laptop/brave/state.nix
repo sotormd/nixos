@@ -7,6 +7,12 @@ let
     brave.p3a.enabled = false;
     brave.stats.reporting_enabled = false;
     user_experience_metrics.reporting_enabled = false;
+
+    # disable shields highlight
+    brave.onboarding.last_shields_icon_highlighted_time = "1";
+
+    # enable widevine cdm
+    brave.widevine_opted_in = true;
   };
 in
 {
