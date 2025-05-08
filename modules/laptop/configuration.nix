@@ -17,6 +17,9 @@
     # secureboot, plymouth, sysctl options, etc
     ./boot
 
+    # brave web browser
+    ./brave
+
     # btop system resources monitor
     ./btop
 
@@ -34,9 +37,6 @@
 
     # wm-agnostic widgets
     ./eww
-
-    # firefox web browser
-    ./firefox
 
     # gtk widget toolkit and other theming options
     ./gtk

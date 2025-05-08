@@ -13,12 +13,29 @@ fi
 DIR=$NIXOS_DIR
 ROLE=$NIXOS_ROLE
 
+# print directory tree when run with no arguments
 if [ $# -eq 0 ]; then
         cmd=("tree" "$DIR" "-I" ".git" "-I" ".local" "--filesfirst")
 
+# run scripts
 elif [ -f "$DIR/scripts/$1" ]; then
+
+    # ensure there is only one instance running
+    LOCKFILE="/tmp/nixos-script.lock"
+    if [ -e "$LOCKFILE" ]; then
+        echo "Error: Another instance of the script is running." >&2
+        exit 1
+    fi
+
+    # create lockfile
+    touch "$LOCKFILE"
+
+    # ensure deletion of lockfile on exit
+    trap 'rm -f "$LOCKFILE"' EXIT
+
 	cmd=("$DIR/scripts/$1" "${@:2}")
 
+# run commands
 else
 	cmd=("$@")
 fi

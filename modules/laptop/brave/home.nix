@@ -31,22 +31,23 @@
                   grid-template-columns: repeat(5, 1fr);
                   gap: 10px;
                   font-size: 18px;
-          padding-bottom: 20px;
-          margin-top: 20px;
+                  padding-bottom: 20px;
+                  margin-top: 20px;
               }
 
-        #selfHostContainer {
-          border-bottom: 3px solid #${colors.blue2};
-        }
+              #selfHostContainer {
+                  border-bottom: 3px solid #${colors.blue2};
+              }
 
               .link {
                   text-align: center;
-                  padding: 20px 22px;
+                  padding: 20px 17px;
                   color: #${colors.fg0};
                   text-decoration: none;
                   border-radius: 5px;
                   background-color: #${colors.bg3};
                   transition: background-color 0.3s ease;
+                  min-width: 110px;
               }
 
               .link:hover {
@@ -61,18 +62,27 @@
       </head>
       <body>
           <div id="selfHostContainer">
+              <a href="https://${vars.network.server.domain}/searxng" class="link">searxng</a>
+              <a href="https://${vars.network.server.domain}/vaultwarden/" class="link">vaultwarden</a>
           </div>
           <div id="linksContainer">
               <a href="https://open.spotify.com" class="link">spotify</a>
-              <a href="https://last.fm" class="link">lastfm</a>
               <a href="https://youtube.com" class="link">yt</a>
               <a href="https://instagram.com" class="link">ig</a>
               <a href="https://discord.com/channels/@me" class="link">dc</a>
               <a href="https://lichess.org" class="link">chess</a>
+
+              <a href="https://last.fm" class="link">lastfm</a>
+              <a href="https://github.com" class="link">github</a>
               <a href="https://monkeytype.com" class="link">monkeytype</a>
-              <a href="https://en.wikipedia.org" class="link">wikipedia</a>
-              <a href="https://wiki.archlinux.org/title/Main_page" class="link">archwiki</a>
+              <a href="https://en.wikipedia.org/wiki/Main_Page" class="link">wikipedia</a>
               <a href="https://chatgpt.com" class="link">chatgpt</a>
+
+              <a href="https://search.nixos.org/packages?channel=unstable&from=0&size=50&sort=relevance&type=packages" class="link">nix packages</a>
+              <a href="https://search.nixos.org/options?channel=unstable&from=0&size=50&sort=relevance&type=packages" class="link">nix options</a>
+              <a href="https://home-manager-options.extranix.com/release=master?query=&release=master" class="link">hm options</a>
+              <a href="https://wiki.nixos.org/wiki/NixOS_Wiki" class="link">nixos wiki</a>
+              <a href="https://wiki.archlinux.org/title/Main_page" class="link">arch wiki</a>
           </div>
 
           <script>

@@ -2,7 +2,7 @@
 
 {
   imports = [
-    ./config.nix
+    ./settings.nix
 
     ./start.nix
 
