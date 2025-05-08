@@ -108,9 +108,9 @@
     ];
   };
 
-  # Firefox directory
-  fileSystems."/home/${vars.user.name}/.mozilla" = {
-    device = "/persist/root/home/${vars.user.name}/.mozilla";
+  # Brave directories
+  fileSystems."/home/${vars.user.name}/.config/BraveSoftware/Brave-Browser" = {
+    device = "/persist/root/home/${vars.user.name}/.config/BraveSoftware/Brave-Browser";
     options = [
       "bind"
       "x-gvfs-hide"

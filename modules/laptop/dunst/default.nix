@@ -2,9 +2,9 @@
 
 {
   imports = [
-    ./config.nix
-
     ./start.nix
+
+    ./settings.nix
   ];
 
   home-manager.users."${vars.user.name}" = {

@@ -1,26 +1,3 @@
 #! /usr/bin/env bash
 
-# ensure there is only one instance running
-LOCKFILE="/tmp/nixos-script.lock"
-if [ -e "$LOCKFILE" ]; then
-    echo "Error: Another instance of the script is running." >&2
-    exit 1
-fi
-
-# create lockfile
-touch "$LOCKFILE"
-
-# ensure deletion of lockfile on exit
-trap 'rm -f "$LOCKFILE"' EXIT
-
-if [ -z "$NIXOS_DIR" ]; then
-    echo "Error: NIXOS_DIR is not set." >&2
-    exit 1
-fi
-
-if [ -z "$NIXOS_ROLE" ]; then
-    echo "Error: NIXOS_ROLE is not set." >&2
-    exit 1
-fi
-
 sudo nix-collect-garbage --delete-old

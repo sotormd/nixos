@@ -20,7 +20,7 @@
     home.packages = [
       pkgs.ibm-plex
       pkgs.nerd-fonts.im-writing
-      pkgs.noto-fonts
+      pkgs.noto-fonts-color-emoji
     ];
   };
 }

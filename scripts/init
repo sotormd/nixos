@@ -1,19 +1,6 @@
 #! /usr/bin/env nix
 #! nix shell nixpkgs#yq nixpkgs#gnupg nixpkgs#sops nixpkgs#sbctl --command bash
 
-# ensure there is only one instance running
-LOCKFILE="/tmp/nixos-script.lock"
-if [ -e "$LOCKFILE" ]; then
-    echo "Error: Another instance of the script is running." >&2
-    exit 1
-fi
-
-# create lockfile
-touch "$LOCKFILE"
-
-# ensure deletion of lockfile on exit
-trap 'rm -f "$LOCKFILE"' EXIT
-
 if [ -z "$NIXOS_DIR" ]; then
     echo "Error: NIXOS_DIR is not set." >&2
     exit 1
@@ -34,6 +21,9 @@ if [ "$ROLE" == "laptop" ]; then
     SOPS_DIR="/persist/sops-nix"
 elif [ "$ROLE" == "server" ]; then
     SOPS_DIR="/var/lib/sops-nix"
+else
+    echo "Error: unexpected role $NIXOS_ROLE"
+    exit 1
 fi
 SOPS_YAML="$DIR/.sops.yaml"
 SECRETS="$VARS_DIR/secrets.yaml"
@@ -101,7 +91,7 @@ elif [ "$1" == "vars" ]; then
             VARS_USER_NAME=$USER
         fi
 
-        if [ -z "$VARS_USER_GIT_EMAIL" ]; then
+        if [ -z "$VARS_USER_EMAIL" ]; then
             VARS_USER_EMAIL=""
         fi
 
@@ -139,6 +129,10 @@ elif [ "$1" == "vars" ]; then
 
         if [ -z "$VARS_NETWORK_SERVER_IP" ]; then
                 VARS_NETWORK_SERVER_IP=""
+        fi
+
+        if [ -z "$VARS_NETWORK_SERVER_DOMAIN" ]; then
+                VARS_NETWORK_SERVER_DOMAIN=""
         fi
 
         if [ -z "$VARS_NETWORK_SERVER_SSH_PORT" ]; then
@@ -197,8 +191,8 @@ elif [ "$1" == "vars" ]; then
   # your username
   user.name = "$VARS_USER_NAME";
 
-  # your git email
-  user.git.email = "$VARS_USER_GIT_EMAIL";
+  # your email
+  user.email = "$VARS_USER_EMAIL";
 
   # github ssh keyfile
   user.github.keyfile = "$VARS_USER_GITHUB_KEYFILE";
@@ -235,6 +229,9 @@ elif [ "$1" == "vars" ]; then
   # static local home server ip address
   network.server.ip = "$VARS_NETWORK_SERVER_IP";
 
+  # server domain
+  network.server.domain = "$VARS_NETWORK_SERVER_DOMAIN";
+
   # server ssh port
   network.server.ssh.port = $VARS_NETWORK_SERVER_SSH_PORT;
 
@@ -268,7 +265,7 @@ EOF
             VARS_USER_NAME=$USER
         fi
 
-        if [ -z "$VARS_USER_GIT_EMAIL" ]; then
+        if [ -z "$VARS_USER_EMAIL" ]; then
             VARS_USER_EMAIL=""
         fi
 
@@ -304,12 +301,24 @@ EOF
                 VARS_NETWORK_IP=""
         fi
 
+        if [ -z "$VARS_NETWORK_DUCKDNS_DOMAIN" ]; then
+                VARS_NETWORK_DUCKDNS_DOMAIN="$(uname -n)-server.duckdns.org"
+        fi
+
         if [ -z "$VARS_NETWORK_SSH_PORT" ]; then
                 VARS_NETWORK_SSH_PORT="22"
         fi
 
         if [ -z "$VARS_NETWORK_SSH_KEY" ]; then
                 VARS_NETWORK_SSH_KEY=""
+        fi
+
+        if [ -z "$VARS_NETWORK_VAULTWARDEN_DATA" ]; then
+                VARS_NETWORK_VAULTWARDEN_DATA="/var/lib/vw-data"
+        fi
+
+        if [ -z "$VARS_NETWORK_VAULTWARDEN_PORT" ]; then
+                VARS_NETWORK_VAULTWARDEN_PORT="8888"
         fi
 
         # create vars file
@@ -349,8 +358,8 @@ EOF
   # your username
   user.name = "$VARS_USER_NAME";
 
-  # your git email
-  user.git.email = "$VARS_USER_GIT_EMAIL";
+  # your email
+  user.email = "$VARS_USER_EMAIL";
 
   #################
   # I18N VARIABLES
@@ -384,11 +393,20 @@ EOF
   # static local device ip
   network.ip = "$VARS_NETWORK_IP";
 
+  # duckdns domain
+  network.duckdns.domain = "$VARS_NETWORK_DUCKDNS_DOMAIN";
+
   # ssh port
   network.ssh.port = $VARS_NETWORK_SSH_PORT;
 
   # ssh keys
   network.ssh.keys = [ "$VARS_NETWORK_SSH_KEY" ];
+
+  # vaultwarden data directory
+  network.vaultwarden.data = "$VARS_NETWORK_VAULTWARDEN_DATA";
+
+  # vaultwarden (loopback) port
+  network.vaultwarden.port = $VARS_NETWORK_VAULTWARDEN_PORT;
 }
 EOF
 
@@ -411,12 +429,24 @@ elif [ "$1" == "sops" ]; then
     fi
 
     # check environment variables
-    if [ -z "$SECRETS_HASHEDPASSWORD" ]; then
-        SECRETS_HASHEDPASSWORD=$(mkpasswd -m yescrypt)
+    if [ -z "$SECRETS_HASHED_PASSWORD" ]; then
+        SECRETS_HASHED_PASSWORD=$(mkpasswd -m yescrypt)
     fi
 
     if [ -z "$SECRETS_PSK" ]; then
-            SECRETS_PSK=""
+        SECRETS_PSK=""
+    fi
+
+    if [ "$ROLE" == "server" ]; then
+
+        if [ -z "$SECRETS_DUCKDNS_TOKEN" ]; then
+            SECRETS_DUCKDNS_TOKEN=""
+        fi
+
+        if [ -z "$SECRETS_SEARXNG_KEY" ]; then
+            SECRETS_SEARXNG_KEY=$(head -c 64 /dev/urandom | sha256sum | cut -d ' ' -f1)
+        fi
+
     fi
 
     # delete existing sops keys from gpg
@@ -486,11 +516,27 @@ creation_rules:
 EOF
 
     #create the secrets file
-    cat > $TEMP_SECRETS <<EOF
-hashedPassword: $SECRETS_HASHEDPASSWORD
+    if [ "$ROLE" == "laptop" ]; then
+
+        cat > $TEMP_SECRETS <<EOF
+hashedPassword: $SECRETS_HASHED_PASSWORD
 network: |
   psk=$SECRETS_PSK
 EOF
+
+    elif [ "$ROLE" == "server" ]; then
+
+        cat > $TEMP_SECRETS <<EOF
+hashedPassword: $SECRETS_HASHED_PASSWORD
+network: |
+  psk=$SECRETS_PSK
+duckdns: |
+  DUCKDNS_TOKEN=$SECRETS_DUCKDNS_TOKEN
+searxng: |
+  SEARXNG_SECRET=$SECRETS_SEARXNG_KEY
+EOF
+
+    fi
 
     # open secrets file
     (
@@ -510,7 +556,7 @@ EOF
 elif [ "$1" == "lanzaboote" ]; then
 
     if [ "$ROLE" == "server" ]; then
-        echo "Error: unexpected role"
+        echo "Error: unexpected role $NIXOS_ROLE"
         exit 1
     fi
 
@@ -529,7 +575,7 @@ elif [ "$1" == "lanzaboote" ]; then
 elif [ "$1" == "impermanence" ]; then
 
     if [ "$ROLE" == "server" ]; then
-        echo "Error: unexpected role"
+        echo "Error: unexpected role $NIXOS_ROLE"
         exit 1
     fi
 
@@ -576,7 +622,7 @@ elif [ "$1" == "impermanence" ]; then
         sudo mkdir $PERSIST_DIR_HOME/Downloads
         sudo mkdir $PERSIST_DIR_HOME/Pictures
         sudo mkdir $PERSIST_DIR_HOME/Projects
-        sudo mkdir $PERSIST_DIR_HOME/.mozilla
+        sudo mkdir -p $PERSIST_DIR_HOME/.config/BraveSoftware/Brave-Browser
         sudo mkdir $PERSIST_DIR_HOME/.ssh
         sudo mkdir $PERSIST_DIR_HOME/.gnupg
 

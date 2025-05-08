@@ -143,9 +143,9 @@
     home.file.".config/eww/scripts/dock-clients.json".text = ''
       {
         "known_clients": {
-            "firefox": {
-                "exec": "firefox",
-                "symbol": "󰈹"
+            "brave-browser": {
+                "exec": "brave",
+                "symbol": ""
             },
             "foot": {
                 "exec": "foot -D ~",
@@ -182,10 +182,13 @@
             },
             "Tor Browser": {
                 "symbol": ""
+            },
+            "org.gnome.FileRoller": {
+                "symbol": "󰗄"
             }
         },
         "pinned_clients": [
-            "firefox",
+            "brave-browser",
             "foot",
             "Thunar",
             "codium"

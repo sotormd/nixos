@@ -14,13 +14,25 @@
     # networking
     ./network
 
+    # nginx web server
+    ./nginx
+
     # packages
     ./packages
+
+    # metasearch engine
+    ./searxng
 
     # sops-nix secrets management
     ./sops
 
     # secure shell
     ./ssh
+
+    # vaultwarden password manager
+    ./vaultwarden
+
+    # unbound validating recursive dns server
+    ./unbound
   ];
 }

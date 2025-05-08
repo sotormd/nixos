@@ -1,7 +1,7 @@
 {
   imports = [
-    ./firewall.nix
+    ./dns.nix
 
-    ./start.nix
+    ./firewall.nix
   ];
 }
