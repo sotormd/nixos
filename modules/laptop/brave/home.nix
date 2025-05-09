@@ -5,6 +5,16 @@
   ...
 }:
 
+let
+  linksText =
+    if (vars.network.server.enabled == true) then
+      ''
+        <a href="https://${vars.network.server.domain}/searxng" class="link">searxng</a>
+        <a href="https://${vars.network.server.domain}/vaultwarden/" class="link">vaultwarden</a>
+      ''
+    else
+      '''';
+in
 {
   home-manager.users."${vars.user.name}" = {
     home.file.".local/share/home.html".text = ''
@@ -62,8 +72,7 @@
       </head>
       <body>
           <div id="selfHostContainer">
-              <a href="https://${vars.network.server.domain}/searxng" class="link">searxng</a>
-              <a href="https://${vars.network.server.domain}/vaultwarden/" class="link">vaultwarden</a>
+              ${linksText}
           </div>
           <div id="linksContainer">
               <a href="https://open.spotify.com" class="link">spotify</a>
