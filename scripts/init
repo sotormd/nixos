@@ -127,6 +127,10 @@ elif [ "$1" == "vars" ]; then
                 VARS_NETWORK_IP=""
         fi
 
+        if [ -z "$VARS_NETWORK_SERVER_ENABLED" ]; then
+                VARS_NETWORK_SERVER_ENABLED="true"
+        fi
+
         if [ -z "$VARS_NETWORK_SERVER_IP" ]; then
                 VARS_NETWORK_SERVER_IP=""
         fi
@@ -225,6 +229,9 @@ elif [ "$1" == "vars" ]; then
 
   # static local device ip
   network.ip = "$VARS_NETWORK_IP";
+
+  # whether to use server features or not
+  network.server.enabled = $VARS_NETWORK_SERVER_ENABLED;
 
   # static local home server ip address
   network.server.ip = "$VARS_NETWORK_SERVER_IP";
