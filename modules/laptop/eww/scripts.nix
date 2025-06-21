@@ -180,6 +180,9 @@
             "mpv": {
                 "symbol": ""
             },
+            "firefox": {
+                "symbol": "󰈹"
+            },
             "Tor Browser": {
                 "symbol": ""
             },

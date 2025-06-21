@@ -61,8 +61,8 @@
   };
 
   # Logs
-  fileSystems."/var/log/journal" = {
-    device = "/persist/root/var/log/journal";
+  fileSystems."/var/log" = {
+    device = "/persist/root/var/log";
     options = [
       "bind"
       "x-gvfs-hide"

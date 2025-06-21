@@ -1,19 +1,14 @@
 {
-  pkgs,
-  home-manager,
-  vars,
-  ...
-}:
-
-{
   imports = [
     ./extensions.nix
+
+    ./firejail.nix
 
     ./home.nix
 
     ./policies.nix
 
-    ./preferences.nix
+    ./sandbox.nix
 
     ./state.nix
   ];

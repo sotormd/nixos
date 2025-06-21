@@ -16,10 +16,6 @@
         # kill focused window
         "Mod4+shift+q" = "kill";
 
-        # launcher
-        "Mod4+d" =
-          "exec ${pkgs.wmenu}/bin/wmenu-run -p run: -N 4c566a -n d8dee9 -M 4c566a -S 81a1c1 -s 2e3440 -f 'IBM Plex Sans 12' -i -b";
-
         # move focus
         "Mod4+h" = "focus left";
         "Mod4+j" = "focus down";
@@ -83,6 +79,10 @@
           ''exec ${pkgs.swayfx}/bin/swaymsg move container to workspace $(${pkgs.swayfx}/bin/swaymsg -t get_outputs | ${pkgs.jq}/bin/jq -r '.[] | select(.focused) | .name | if . == "${vars.outputs.monitor}" then "1" elif . == "${vars.outputs.laptop}" then "0" else "unknown" end')9'';
         "Mod4+shift+0" =
           ''exec ${pkgs.swayfx}/bin/swaymsg move container to workspace $(${pkgs.swayfx}/bin/swaymsg -t get_outputs | ${pkgs.jq}/bin/jq -r '.[] | select(.focused) | .name | if . == "${vars.outputs.monitor}" then "1" elif . == "${vars.outputs.laptop}" then "0" else "unknown" end')10'';
+
+        # next/previous workspace
+        "Mod4+ctrl+Right" = "workspace next";
+        "Mod4+ctrl+Left" = "workspace prev";
 
         # split
         "Mod4+b" = "splith";

@@ -1,0 +1,8 @@
+#! /usr/bin/env bash
+
+set -e
+
+(
+    cd $NIXOS_DIR
+    find . -type f -name '*.nix' -exec nix fmt {} +
+)

@@ -1,3 +1,5 @@
+{ pkgs, ... }:
+
 {
   # blacklist certain kernel modules
   boot.blacklistedKernelModules = [
@@ -30,6 +32,9 @@
     # amateur radio communication
     # can blacklist unless a radio operator
     "ax25"
+
+    # network layer protocol used in AX.25
+    "netrom"
 
     # X.25 protocol
     # packet-switched network protocol
@@ -98,6 +103,23 @@
     "squashfs"
     "udf"
     "overlay"
+    "adfs"
+    "affs"
+    "bfs"
+    "befs"
+    "efs"
+    "erofs"
+    "exofs"
+    "f2fs"
+    "hpfs"
+    "jfs"
+    "minix"
+    "nilfs2"
+    "omfs"
+    "qnx4"
+    "qnx6"
+    "sysv"
+    "ufs"
 
     # network filesystems
     # can blacklist if not using
@@ -130,10 +152,17 @@
 
     # usb video class devices
     # can blacklist unless using webcam
-    #    "uvcvideo"
+    "uvcvideo"
 
     # annoying PC speaker module
     # can blacklist unless deaf
     "pcspkr"
   ];
+
+  boot.extraModprobeConfig = ''
+    install dccp ${pkgs.coreutils}/bin/false
+    install sctp ${pkgs.coreutils}/bin/false
+    install rds ${pkgs.coreutils}/bin/false
+    install tipc ${pkgs.coreutils}/bin/false
+  '';
 }

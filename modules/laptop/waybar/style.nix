@@ -33,6 +33,7 @@
       #workspaces,
       .playerctl-paused, .playerctl-playing,
       #idle_inhibitor,
+      .userns-enabled, .userns-disabled,
       #network,
       #pulseaudio,
       #battery,
@@ -42,10 +43,23 @@
         padding: 0px 9px;
       }
 
+      #idle_inhibitor {
+        border-radius: 7px 0px 0px 7px;
+        margin-right: 0;
+        padding-right: 5px;
+      }
+
+      .userns-enabled, .userns-disabled {
+        border-radius: 0px 7px 7px 0px;
+        margin-left: 0;
+        padding-left: 5px;
+      }
+
       .playerctl-paused, .playerctl-playing,
       #mode,
       #window,
       #idle_inhibitor,
+      .userns-enabled, .userns-disabled,
       #network,
       #pulseaudio,
       #battery,
@@ -107,6 +121,7 @@
 
       .playerctl-paused, .playerctl-playing,
       #idle_inhibitor,
+      .userns-enabled, .userns-disabled,
       #network,
       #pulseaudio,
       #battery,
@@ -114,7 +129,8 @@
         color: #${colors.bg1};
       }
 
-      #idle_inhibitor {
+      #idle_inhibitor,
+      .userns-enabled, .userns-disabled {
         background-color: #${colors.red};
       }
 

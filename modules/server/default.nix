@@ -1,15 +1,20 @@
+{ home-manager, vars, ... }:
+
 {
   imports = [
     # include results of the hardware scan
     ./hardware-configuration.nix
 
-    # home manager
-    ./home.nix
-
     # MODULES - sorted alphabetically
 
     # bootloader, kernel parameters, sysctl options
     ./boot
+
+    # invisible internet protocol daemon
+    ./i2pd
+
+    # jellyfin media server
+    ./jellyfin
 
     # networking
     ./network
@@ -19,6 +24,9 @@
 
     # packages
     ./packages
+
+    # qbittorrent
+    ./qbt
 
     # metasearch engine
     ./searxng
@@ -35,4 +43,14 @@
     # unbound validating recursive dns server
     ./unbound
   ];
+
+  home-manager.users."${vars.user.name}" = {
+    # set user dirs
+    xdg.userDirs = {
+      enable = true;
+      documents = null;
+      download = null;
+      pictures = null;
+    };
+  };
 }

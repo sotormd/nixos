@@ -15,7 +15,7 @@
 
   services.nginx.virtualHosts."${vars.network.duckdns.domain}" = {
     useACMEHost = vars.network.duckdns.domain;
-    forceSSL = true;
+    onlySSL = true;
   };
 
   users.users.nginx.extraGroups = [ "acme" ];

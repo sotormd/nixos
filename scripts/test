@@ -1,20 +1,9 @@
 #! /usr/bin/env bash
 
-if [ -z "$NIXOS_DIR" ]; then
-    echo "Error: NIXOS_DIR is not set." >&2
-    exit 1
-fi
-
-if [ -z "$NIXOS_ROLE" ]; then
-    echo "Error: NIXOS_ROLE is not set." >&2
-    exit 1
-fi
-
 set -e
 
 (
     cd $NIXOS_DIR
-    find . -type f -name '*.nix' -exec nix fmt {} +
     git add .
     GIT_PAGER=cat git diff HEAD -- ':!vars/vars.nix' ':!vars/secrets.yaml' ':!.sops.yaml' ":!modules/$NIXOS_ROLE/hardware-configuration.nix"
 

@@ -1,12 +1,18 @@
-{ lib, pkgs, ... }:
+{
+  lib,
+  pkgs,
+  home-manager,
+  vars,
+  ...
+}:
 
 {
-  environment.systemPackages = [ pkgs.sbctl ];
+  home-manager.users."${vars.user.name}".home.packages = [ pkgs.sbctl ];
 
   boot.loader.systemd-boot.enable = lib.mkForce false;
 
   boot.lanzaboote = {
     enable = true;
-    pkiBundle = "/persist/root/var/lib/sbctl";
+    pkiBundle = "/var/lib/sbctl";
   };
 }

@@ -1,10 +1,12 @@
 {
   imports = [
+    ./disable-ipv6.nix
+
     ./firewall.nix
 
     ./host.nix
 
-    ./disable-ipv6.nix
+    ./issue.nix
 
     ./static.nix
 

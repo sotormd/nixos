@@ -9,8 +9,11 @@ let
   linksText =
     if (vars.network.server.enabled == true) then
       ''
-        <a href="https://${vars.network.server.domain}/searxng" class="link">searxng</a>
+        <a href="https://${vars.network.server.domain}/searxng/" class="link">searxng</a>
         <a href="https://${vars.network.server.domain}/vaultwarden/" class="link">vaultwarden</a>
+        <a href="https://${vars.network.server.domain}/i2pd/" class="link">i2pd</a>
+        <a href="https://${vars.network.server.domain}/qbt/" class="link">qbt</a>
+        <a href="https://${vars.network.server.domain}/jellyfin/" class="link">jellyfin</a>
       ''
     else
       '''';

@@ -44,5 +44,12 @@
       "application/x-yaml" = "codium.desktop";
       "application/xml" = "codium.desktop";
     };
+
+    xdg.desktopEntries."brave-browser".settings = {
+      Name = "Brave Web Browser";
+      Exec = "/run/current-system/sw/bin/brave %U";
+      Icon = "brave-browser";
+      Type = "Application";
+    };
   };
 }

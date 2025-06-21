@@ -7,13 +7,13 @@
 
 {
   home-manager.users."${vars.user.name}" = {
-    gtk.cursorTheme.package = pkgs.whitesur-cursors;
-    gtk.cursorTheme.name = "WhiteSur-cursors";
-    gtk.cursorTheme.size = 24;
-    home.pointerCursor.package = pkgs.whitesur-cursors;
-    home.pointerCursor.name = "WhiteSur-cursors";
-    home.pointerCursor.size = 24;
+    gtk.cursorTheme.package = pkgs.simp1e-cursors;
+    gtk.cursorTheme.name = "Simp1e-Nord-Dark";
+    gtk.cursorTheme.size = 1;
+    home.pointerCursor.package = pkgs.simp1e-cursors;
+    home.pointerCursor.name = "Simp1e-Nord-Dark";
+    home.pointerCursor.size = 1;
     home.pointerCursor.x11.enable = true;
-    home.pointerCursor.x11.defaultCursor = "WhiteSur-cursors";
+    home.pointerCursor.x11.defaultCursor = "Simp1e-Nord-Dark";
   };
 }

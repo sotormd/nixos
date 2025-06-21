@@ -48,10 +48,10 @@
         };
         modules = [
           # common configuration
-          ./modules/common/configuration.nix
+          ./modules/common
 
           # entry point to configuration
-          ./modules/laptop/configuration.nix
+          ./modules/laptop
 
           # home manager - to declaratively manager home directory
           home-manager.nixosModules.home-manager
@@ -69,13 +69,14 @@
         specialArgs = {
           inherit inputs;
           inherit vars;
+          inherit colors;
         };
         modules = [
           # common configuration
-          ./modules/common/configuration.nix
+          ./modules/common
 
           # entry point to configuration
-          ./modules/server/configuration.nix
+          ./modules/server
 
           # home manager - to declaratively manager home directory
           home-manager.nixosModules.home-manager

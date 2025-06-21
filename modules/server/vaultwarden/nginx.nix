@@ -2,7 +2,7 @@
 
 {
   services.nginx.virtualHosts."${vars.network.duckdns.domain}" = {
-    locations."/vaultwarden" = {
+    locations."/vaultwarden/" = {
       proxyPass = "http://127.0.0.1:${toString vars.network.vaultwarden.port}";
       extraConfig = ''
         proxy_set_header Host $host;

@@ -1,4 +1,4 @@
-{ config, vars, ... }:
+{ vars, ... }:
 
 {
   # use WPA3 on the default connection

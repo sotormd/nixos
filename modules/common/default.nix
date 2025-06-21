@@ -2,8 +2,14 @@
   imports = [
     # MODULES - sorted alphabetically
 
+    # linux audit subsystem
+    ./audit
+
     # bootloader, kernel parameters, sysctl options
     ./boot
+
+    # clam av
+    ./clamav
 
     # home-manager
     ./home
@@ -19,6 +25,9 @@
 
     # packages
     ./packages
+
+    # sandboxing with firejail, apparmor
+    ./sandbox
 
     # sops-nix secrets management
     ./sops

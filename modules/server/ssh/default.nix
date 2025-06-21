@@ -2,9 +2,7 @@
   imports = [
     ./address.nix
 
-    ./auth.nix
-
-    ./users.nix
+    ./settings.nix
   ];
 
   services.openssh.enable = true;
