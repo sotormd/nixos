@@ -3,5 +3,6 @@
     "cjpalhdlnbpafiamejdnhcphjbkeiagm" # ublock origin
     "eimadpbcbfnmbkopoojfekhnkhdbieeh" # dark reader
     "nngceckbapebfimnlniiiahkandclblb" # bitwarden
+    "dbepggeogbaibhgnhhndojpepiihcmeb" # vimium
   ];
 }

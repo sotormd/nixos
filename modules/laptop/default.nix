@@ -38,17 +38,26 @@
     # gtk widget toolkit and other theming options
     ./gtk
 
+    # i2p browser
+    ./i2p-browser
+
     # ephemerality
     ./impermanence
 
     # mousepad text editor
     ./mousepad
 
+    # mpv media player
+    ./mpv
+
     # networking
     ./network
 
     # packages
     ./packages
+
+    # launcher
+    ./rofi
 
     # sops-nix secrets management
     ./sops
@@ -61,6 +70,9 @@
 
     # thunar file manager
     ./thunar
+
+    # the onion router
+    ./tor
 
     # virtualisation with qemu, distrobox, etc
     ./virtualization

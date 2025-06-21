@@ -15,5 +15,9 @@
         icon-theme = "Nordzy-dark";
       };
     };
+
+    # symlink icons over to ensure they work inside firejail
+    home.file.".local/share/icons/Nordzy-dark".source =
+      "${pkgs.nordzy-icon-theme}/share/icons/Nordzy-dark";
   };
 }

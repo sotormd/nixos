@@ -40,20 +40,11 @@
     serviceConfig.Type = "oneshot";
     script = ''
       mkdir -p /home/${vars.user.name}/.config
-      chown ${vars.user.name}:users -R /home/${vars.user.name}
+      chown ${vars.user.name}: -R /home/${vars.user.name}
     '';
   };
 
   # Persist files on /home
-  # Desktop directory
-  fileSystems."/home/${vars.user.name}/Desktop" = {
-    device = "/persist/root/home/${vars.user.name}/Desktop";
-    options = [
-      "bind"
-      "x-gvfs-hide"
-    ];
-  };
-
   # Documents directory
   fileSystems."/home/${vars.user.name}/Documents" = {
     device = "/persist/root/home/${vars.user.name}/Documents";
@@ -84,15 +75,6 @@
   # Projects directory
   fileSystems."/home/${vars.user.name}/Projects" = {
     device = "/persist/root/home/${vars.user.name}/Projects";
-    options = [
-      "bind"
-      "x-gvfs-hide"
-    ];
-  };
-
-  # GPG directory
-  fileSystems."/home/${vars.user.name}/.gnupg" = {
-    device = "/persist/root/home/${vars.user.name}/.gnupg";
     options = [
       "bind"
       "x-gvfs-hide"

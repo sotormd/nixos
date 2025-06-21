@@ -19,6 +19,7 @@
         modules-center = [ "sway/window" ];
         modules-right = [
           "idle_inhibitor"
+          "custom/namespaces"
           "network"
           "pulseaudio"
           "battery"
@@ -54,11 +55,40 @@
           "tooltip" = false;
         };
         idle_inhibitor = {
-          format = "<span size='11500'>{icon}</span>";
+          format = "<span size='12000'>{icon}</span>";
           format-icons = {
             activated = "󱙱";
             deactivated = "󰌾";
           };
+          tooltip = false;
+        };
+        "custom/namespaces" = {
+          "exec" = ''
+            STATUS=$(sysctl -n kernel.unprivileged_userns_clone)
+
+            if [ "$STATUS" = "1" ]; then
+              echo "{\"text\": \"<span size='12000'>󰆦</span>\", \"class\": \"userns-enabled\"}"
+            else
+              echo "{\"text\": \"<span size='12000'>󱐜</span>\", \"class\": \"userns-disabled\"}"
+            fi
+          '';
+          "interval" = 1;
+          "return-type" = "json";
+          on-click = ''
+            KEY="kernel.unprivileged_userns_clone"
+            current_value=$(sysctl -n "$KEY" 2>/dev/null)
+
+            if [[ $? -ne 0 ]]; then
+                notify-send -u critical "Namespaces" "Error: $KEY not supported"
+                exit 1
+            fi
+
+            if [[ "$current_value" == "1" ]]; then
+                pkexec sysctl -w "$KEY=0" >/dev/null
+            else
+                pkexec sysctl -w "$KEY=1" >/dev/null
+            fi
+          '';
           tooltip = false;
         };
         "sway/window" = {

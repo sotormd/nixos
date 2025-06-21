@@ -19,5 +19,8 @@
         button-layout = ":";
       };
     };
+
+    # symlink themes over to ensure they work inside firejail
+    home.file.".local/share/themes/Nordic-darker".source = "${pkgs.nordic}/share/themes/Nordic-darker";
   };
 }

@@ -9,5 +9,9 @@
     ./garbage.nix
 
     ./integrity.nix
+
+    ./ld.nix
+
+    ./lix.nix
   ];
 }

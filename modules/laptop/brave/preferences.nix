@@ -1,12 +1,6 @@
-{
-  pkgs,
-  home-manager,
-  vars,
-  ...
-}:
+{ pkgs, ... }:
 
 let
-  # initial preferences at /opt/brave.com/brave/initial_preferences
   initialPreferences = {
     ##################
     # FEATURES
@@ -135,16 +129,7 @@ let
       global = false;
     };
   };
-
-  preferencesFile = pkgs.writeText "intial_preferences" (builtins.toJSON initialPreferences);
 in
 {
-  home-manager.users."${vars.user.name}" = {
-    home.packages = [
-      (pkgs.brave.overrideAttrs (oldAttrs: {
-        installPhase =
-          oldAttrs.installPhase + ''cp ${preferencesFile} $out/opt/brave.com/brave/initial_preferences'';
-      }))
-    ];
-  };
+  preferencesFile = pkgs.writeText "intial_preferences" (builtins.toJSON initialPreferences);
 }

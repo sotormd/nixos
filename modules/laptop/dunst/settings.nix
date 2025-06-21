@@ -15,7 +15,7 @@
         frame_color = "#${colors.blue2}";
         gap_size = 5;
         offset = "5x5";
-        origin = "top-left";
+        origin = "top-right";
         monitor = vars.outputs.monitor;
       };
       urgency_critical = {

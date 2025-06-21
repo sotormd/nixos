@@ -42,7 +42,8 @@
           {
             command = ''
               ${pkgs.swayidle}/bin/swayidle \
-              timeout 30 'systemctl suspend' \
+              timeout 10 '${pkgs.swaylock}/bin/swaylock' \
+              timeout 180 'systemctl suspend' \
               before-sleep '${pkgs.swaylock}/bin/swaylock'
             '';
           }

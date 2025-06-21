@@ -5,4 +5,6 @@
   # disable emergency mode
   boot.initrd.systemd.emergencyAccess = false;
   systemd.enableEmergencyMode = false;
+  systemd.targets.rescue.enable = false;
+  systemd.services.rescue.enable = false;
 }

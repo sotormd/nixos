@@ -27,9 +27,9 @@
     # disable safe browsing extended reporting which sends data to google
     SafeBrowsingExtendedReportingEnabled = false;
 
-    # enable tor
-    # do not expect anonymity, use tor browser instead
-    TorDisabled = false;
+    # disable tor
+    # use the tor browser instead
+    TorDisabled = true;
 
     # disable annoying brave anti-features
     BraveRewardsDisabled = true;

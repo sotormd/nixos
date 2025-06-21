@@ -1,15 +1,4 @@
-#! /usr/bin/env nix
-#! nix shell nixpkgs#yq nixpkgs#gnupg nixpkgs#sops nixpkgs#sbctl --command bash
-
-if [ -z "$NIXOS_DIR" ]; then
-    echo "Error: NIXOS_DIR is not set." >&2
-    exit 1
-fi
-
-if [ -z "$NIXOS_ROLE" ]; then
-    echo "Error: NIXOS_ROLE is not set." >&2
-    exit 1
-fi
+#! /usr/bin/env bash
 
 DIR=$NIXOS_DIR
 ROLE=$NIXOS_ROLE
@@ -40,7 +29,7 @@ PERSIST_DIR_HOME="$PERSIST_DIR_ROOT/home/$USER"
 if [ "$1" == "hardware" ]; then
 
     if [ -f "modules/$ROLE/hardware-configuration.nix" ] && [[ "$2" != "replace" ]]; then
-        echo "hardware-configuration.nix already exists"
+        echo "Error: hardware-configuration.nix already exists"
         exit 1
     fi
 
@@ -50,7 +39,7 @@ if [ "$1" == "hardware" ]; then
         if cp "/tmp/nixos/hardware-configuration.nix" "$DIR/modules/$ROLE/hardware-configuration.nix"; then
             echo "generated hardware-configuration.nix was moved to $DIR/modules/$ROLE/hardware-configuration.nix"
         else
-            echo "failed to copy hardware-configuration.nix" >&2
+            echo "Error: failed to copy hardware-configuration.nix" >&2
             exit 1
         fi
     fi
@@ -120,7 +109,7 @@ elif [ "$1" == "vars" ]; then
         fi
 
         if [ -z "$VARS_NETWORK_GATEWAY" ]; then
-                VARS_NETWORK_GATEWAY=""
+                VARS_NETWORK_GATEWAY="192.168.0.1"
         fi
 
         if [ -z "$VARS_NETWORK_IP" ]; then
@@ -145,6 +134,10 @@ elif [ "$1" == "vars" ]; then
 
         if [ -z "$VARS_NETWORK_SERVER_SSH_KEYFILE" ]; then
                 VARS_NETWORK_SERVER_SSH_KEYFILE="id_ed25519_server"
+        fi
+
+        if [ -z "$VARS_NETWORK_SERVER_I2P_PORT" ]; then
+                VARS_NETWORK_SERVER_I2P_PORT="4444"
         fi
 
         if [ -z "$VARS_OUTPUTS_LAPTOP" ]; then
@@ -245,6 +238,9 @@ elif [ "$1" == "vars" ]; then
   # server ssh keyfile
   network.server.ssh.keyfile = "$VARS_NETWORK_SERVER_SSH_KEYFILE";
 
+  # server i2p HTTP proxy port
+  network.server.i2p.port = $VARS_NETWORK_SERVER_I2P_PORT;
+
   #############################
   # OUTPUT (DISPLAY) VARIABLES
   #############################
@@ -297,11 +293,11 @@ EOF
         fi
 
         if [ -z "$VARS_NETWORK_GATEWAY" ]; then
-                VARS_NETWORK_GATEWAY=""
+                VARS_NETWORK_GATEWAY="192.168.0.1"
         fi
 
         if [ -z "$VARS_NETWORK_RANGE" ]; then
-                VARS_NETWORK_RANGE=""
+                VARS_NETWORK_RANGE="192.168.0.0/24"
         fi
 
         if [ -z "$VARS_NETWORK_IP" ]; then
@@ -321,11 +317,39 @@ EOF
         fi
 
         if [ -z "$VARS_NETWORK_VAULTWARDEN_DATA" ]; then
-                VARS_NETWORK_VAULTWARDEN_DATA="/var/lib/vw-data"
+                VARS_NETWORK_VAULTWARDEN_DATA="/var/lib/bitwarden_rs"
         fi
 
         if [ -z "$VARS_NETWORK_VAULTWARDEN_PORT" ]; then
-                VARS_NETWORK_VAULTWARDEN_PORT="8888"
+                VARS_NETWORK_VAULTWARDEN_PORT="8222"
+        fi
+
+        if [ -z "$VARS_NETWORK_I2PD_SAM_PORT" ]; then
+                VARS_NETWORK_I2PD_SAM_PORT="7656"
+        fi
+
+        if [ -z "$VARS_NETWORK_I2PD_HTTP_PROXY_PORT" ]; then
+                VARS_NETWORK_I2PD_HTTP_PROXY_PORT="4444"
+        fi
+
+        if [ -z "$VARS_NETWORK_I2PD_SOCKS_PROXY_PORT" ]; then
+                VARS_NETWORK_I2PD_SOCKS_PROXY_PORT="4447"
+        fi
+
+        if [ -z "$VARS_NETWORK_I2PD_WEBCONSOLE_PORT" ]; then
+                VARS_NETWORK_I2PD_WEBCONSOLE_PORT="7070"
+        fi
+
+        if [ -z "$VARS_NETWORK_QBT_DATA" ]; then
+                VARS_NETWORK_QBT_DATA="/var/lib/qbt/data"
+        fi
+
+        if [ -z "$VARS_NETWORK_QBT_PORT" ]; then
+                VARS_NETWORK_QBT_PORT="8080"
+        fi
+
+        if [ -z "$VARS_NETWORK_JELLYFIN_PORT" ]; then
+                VARS_NETWORK_JELLYFIN_PORT="8096"
         fi
 
         # create vars file
@@ -403,7 +427,7 @@ EOF
   # duckdns domain
   network.duckdns.domain = "$VARS_NETWORK_DUCKDNS_DOMAIN";
 
-  # ssh port
+  # ssh (LAN) port
   network.ssh.port = $VARS_NETWORK_SSH_PORT;
 
   # ssh keys
@@ -414,10 +438,31 @@ EOF
 
   # vaultwarden (loopback) port
   network.vaultwarden.port = $VARS_NETWORK_VAULTWARDEN_PORT;
+
+  # i2pd SAM (loopback) port
+  network.i2pd.sam.port = $VARS_NETWORK_I2PD_SAM_PORT;
+
+  # i2pd HTTP proxy (LAN) port
+  network.i2pd.httpProxy.port = $VARS_NETWORK_I2PD_HTTP_PROXY_PORT;
+
+  # i2pd SOCKS proxy (loopback) port
+  network.i2pd.socksProxy.port = $VARS_NETWORK_I2PD_SOCKS_PROXY_PORT;
+
+  # i2pd webconsole (loopback) port
+  network.i2pd.webconsole.port = $VARS_NETWORK_I2PD_WEBCONSOLE_PORT;
+
+  # qbittorrent data directory
+  network.qbt.data = "$VARS_NETWORK_QBT_DATA";
+
+  # qbittorrent (loopback) port
+  network.qbt.port = $VARS_NETWORK_QBT_PORT;
+
+  # jellyfin (loopback) port
+  network.jellyfin.port = $VARS_NETWORK_JELLYFIN_PORT;
 }
 EOF
 
-    fi    
+    fi
 
     # set permissions for vars file
     sudo chmod 600 $VARS
@@ -437,11 +482,39 @@ elif [ "$1" == "sops" ]; then
 
     # check environment variables
     if [ -z "$SECRETS_HASHED_PASSWORD" ]; then
-        SECRETS_HASHED_PASSWORD=$(mkpasswd -m yescrypt)
+        echo "Set user account password"
+
+        while true; do
+            read -sp "Enter password: " PASSWORD1
+            echo
+            read -sp "Confirm password: " PASSWORD2
+            echo
+
+            if [ "$PASSWORD1" == "$PASSWORD2" ]; then
+                SECRETS_HASHED_PASSWORD=$(mkpasswd "$PASSWORD1" -m yescrypt)
+                break
+            else
+                echo "Passwords do not match, try again"
+            fi
+        done
     fi
 
     if [ -z "$SECRETS_PSK" ]; then
-        SECRETS_PSK=""
+        echo "Set wireless network password"
+
+        while true; do
+            read -sp "Enter password: " PASSWORD1
+            echo
+            read -sp "Confirm password: " PASSWORD2
+            echo
+
+            if [ "$PASSWORD1" == "$PASSWORD2" ]; then
+                SECRETS_PSK="$PASSWORD1"
+                break
+            else
+                echo "Passwords do not match, try again"
+            fi
+        done
     fi
 
     if [ "$ROLE" == "server" ]; then
@@ -458,11 +531,11 @@ elif [ "$1" == "sops" ]; then
 
     # delete existing sops keys from gpg
     if [ -f "$SOPS_YAML" ]; then
-        FINGERPRINT=$(yq '.keys[0]' $SOPS_YAML)
+        FINGERPRINT=$(nix shell nixpkgs#yq --command yq '.keys[0]' $SOPS_YAML)
         FINGERPRINT="${FINGERPRINT#\"}"
         FINGERPRINT="${FINGERPRINT%\"}"
-        gpg --delete-secret-keys $FINGERPRINT
-        gpg --delete-key $FINGERPRINT
+        nix shell nixpkgs#gnupg --command sudo GNUPGHOME=$SOPS_DIR gpg --batch --yes --delete-secret-keys $FINGERPRINT
+        nix shell nixpkgs#gnupg --command sudo GNUPGHOME=$SOPS_DIR gpg --batch --yes --delete-key $FINGERPRINT
     fi
 
     # delete old sops-nix directory if exists
@@ -472,7 +545,7 @@ elif [ "$1" == "sops" ]; then
     sudo mkdir $SOPS_DIR
 
     # change ownership of sops-nix directory
-    sudo chown $USER $SOPS_DIR
+    sudo chown root: $SOPS_DIR
     sudo chmod 700 $SOPS_DIR
 
     # create new gpg key for sops-nix
@@ -486,20 +559,11 @@ elif [ "$1" == "sops" ]; then
     fi
 
     # move key to the sops-nix directory
-    cp -r /tmp/sops-nix/** $SOPS_DIR
+    sudo cp -r /tmp/sops-nix/** $SOPS_DIR
 
     # export the gpg key from sops-nix directory
-    export GNUPGHOME=$SOPS_DIR
-    gpg --export --armor > /tmp/sops-nix-pub.asc
-    gpg --export-secret-keys --armor > /tmp/sops-nix-priv.asc
-    unset GNUPGHOME
-
-    # import exported key to gnupg
-    gpg --import /tmp/sops-nix-pub.asc
-    gpg --import /tmp/sops-nix-priv.asc
-
-    # reset permissions of sops-nix directory
-    sudo chown root: $SOPS_DIR
+    nix shell nixpkgs#gnupg --command sudo GNUPGHOME=$SOPS_DIR gpg --export --armor > /tmp/sops-nix-pub.asc
+    nix shell nixpkgs#gnupg --command sudo GNUPGHOME=$SOPS_DIR gpg --export-secret-keys --armor > /tmp/sops-nix-priv.asc
 
     # securely purge keys
     shred /tmp/sops-nix-pub.asc -u
@@ -548,7 +612,7 @@ EOF
     # open secrets file
     (
         cd $DIR || exit
-        sops -e $TEMP_SECRETS > $SECRETS
+        nix shell nixpkgs#sops --command sudo GNUPGHOME=$SOPS_DIR sops -e $TEMP_SECRETS > $SECRETS
         shred $TEMP_SECRETS -u
     )
 
@@ -562,17 +626,17 @@ EOF
 
 elif [ "$1" == "lanzaboote" ]; then
 
-    if [ "$ROLE" == "server" ]; then
+    if ! [ "$ROLE" == "laptop" ]; then
         echo "Error: unexpected role $NIXOS_ROLE"
         exit 1
     fi
 
     if [ "$2" == "create" ]; then
-        sudo sbctl create-keys
+        nix shell nixpkgs#sbctl --command sudo sbctl create-keys
     fi
 
     if [ "$1" == "enroll" ]; then
-        sudo sbctl enroll-keys --microsoft
+        nix shell nixpkgs#sbctl --command sudo sbctl enroll-keys --microsoft
     fi
 
 ###############
@@ -581,7 +645,7 @@ elif [ "$1" == "lanzaboote" ]; then
 
 elif [ "$1" == "impermanence" ]; then
 
-    if [ "$ROLE" == "server" ]; then
+    if ! [ "$ROLE" == "laptop" ]; then
         echo "Error: unexpected role $NIXOS_ROLE"
         exit 1
     fi
@@ -591,12 +655,19 @@ elif [ "$1" == "impermanence" ]; then
         exit 1
     fi
 
-    if [ -d "$PERSIST_DIR_ROOT" ]; then
-        echo "$PERSIST_DIR_ROOT already exists"
-        exit 0
-    fi
+    if [ "$ROLE" == "laptop" ]; then
 
-    if [ "$2" == "root" ]; then
+        if [ -d "$PERSIST_DIR_ROOT" ]; then
+            echo "$PERSIST_DIR_ROOT already exists"
+            exit 0
+        fi
+
+        if [ -d "$PERSIST_DIR_HOME" ]; then
+            echo "$PERSIST_DIR_HOME already exists"
+            exit 0
+        fi
+
+        # ROOT
         sudo mkdir $PERSIST_DIR_ROOT
 
         # zpool.cache
@@ -619,25 +690,45 @@ elif [ "$1" == "impermanence" ]; then
         sudo mkdir -p $PERSIST_DIR_ROOT/var
         sudo cp -r --preserve=mode,ownership,timestamps /var/log $PERSIST_DIR_ROOT/var/log
 
-        sudo chown -R root:root $PERSIST_DIR_ROOT
-    fi
+        sudo chown -R root: $PERSIST_DIR_ROOT
 
-    if [ "$2" == "home" ]; then
+        # HOME
         sudo mkdir -p $PERSIST_DIR_HOME
-        sudo mkdir $PERSIST_DIR_HOME/Desktop
+
+        # Documents
         sudo mkdir $PERSIST_DIR_HOME/Documents
+        sudo cp -r --preserve=mode,ownership,timestamps $HOME/Documents $PERSIST_DIR_HOME/Documents
+
+        # Downloads
         sudo mkdir $PERSIST_DIR_HOME/Downloads
+        sudo cp -r --preserve=mode,ownership,timestamps $HOME/Downloads $PERSIST_DIR_HOME/Downloads
+
+        # Pictures
         sudo mkdir $PERSIST_DIR_HOME/Pictures
+        sudo cp -r --preserve=mode,ownership,timestamps $HOME/Pictures $PERSIST_DIR_HOME/Pictures
+
+        # Projects
         sudo mkdir $PERSIST_DIR_HOME/Projects
+        sudo cp -r --preserve=mode,ownership,timestamps $HOME/Projects $PERSIST_DIR_HOME/Projects
+
+        # Brave Browser
         sudo mkdir -p $PERSIST_DIR_HOME/.config/BraveSoftware/Brave-Browser
+        sudo cp -r --preserve=mode,ownership,timestamps $HOME/.config/BraveSoftware/Brave-Browser $PERSIST_DIR_HOME/.config/BraveSoftware/Brave-Browser
+
+        # vscodium
+        sudo mkdir $PERSIST_DIR_HOME/.vscode-oss
+        sudo cp -r --preserve=mode,ownership,timestamps $HOME/.vscode-oss $PERSIST_DIR_HOME/.vscode-oss
+
+        sudo mkdir -p $PERSIST_DIR_HOME/.config/VSCodium
+        sudo cp -r --preserve=mode,ownership,timestamps $HOME/.config/VSCodium $PERSIST_DIR_HOME/.config/VSCodium
+
+        # SSH
         sudo mkdir $PERSIST_DIR_HOME/.ssh
-        sudo mkdir $PERSIST_DIR_HOME/.gnupg
+        sudo cp -r --preserve=mode,ownership,timestamps $HOME/.ssh $PERSIST_DIR_HOME/.ssh
 
-
-        sudo chown -R $USER:users $PERSIST_DIR_ROOT/home
+        sudo chown -R $USER: $PERSIST_DIR_ROOT/home
 
         sudo chmod 700 $PERSIST_DIR_HOME/.ssh
-        sudo chmod 700 $PERSIST_DIR_HOME/.gnupg
     fi
 
 fi

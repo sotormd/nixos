@@ -18,6 +18,9 @@
       # resource monitor
       htop
 
+      # security auditing
+      lynis
+
       # fast incremental file transfer utility
       rsync
 

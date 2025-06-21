@@ -1,4 +1,4 @@
-{ vars, ... }:
+{ vars, colors, ... }:
 
 {
   services.nginx = {
@@ -14,7 +14,7 @@
 
   services.nginx.virtualHosts."${vars.network.duckdns.domain}" = {
     locations."/" = {
-      return = "200 '<html><body>nixos server ${vars.device.hostName}</body></html>'";
+      return = "200 '<html style=\"background:#${colors.bg0};color:#${colors.fg0};\"><body>nixos server ${vars.device.hostName}</body></html>'";
       extraConfig = ''
         default_type text/html;
       '';

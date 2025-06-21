@@ -13,8 +13,6 @@
     imports = [
       ./git.nix
 
-      ./gpg.nix
-
       ./nixos.nix
 
       ./xdg.nix

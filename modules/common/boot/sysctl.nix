@@ -17,7 +17,7 @@
     "kernel.dmesg_restrict" = lib.mkForce "1";
 
     # disable unprivileged calls to berkeley packet filter
-    "kernel.unprivileged_bpf_disabled" = lib.mkForce "2";
+    "kernel.unprivileged_bpf_disabled" = lib.mkForce "1";
 
     # disable ability to load a new kernel while system is running
     "kernel.kexec_load_disabled" = lib.mkForce "1";
@@ -34,6 +34,12 @@
 
     # disable ptrace with yama LSM
     "kernel.yama.ptrace_scope" = lib.mkForce "3";
+
+    # disable unprivileged user namespaces
+    "kernel.unprivileged_userns_clone" = lib.mkForce "0";
+
+    # disable function tracing
+    "kernel.ftrace_enabled" = lib.mkForce "0";
 
     # prevent auto loading line disciplines for tty
     "dev.tty.ldisc_autoload" = lib.mkForce "0";
@@ -53,6 +59,9 @@
 
     # restrict access to regular files by non-root users if the file is owned by another user
     "fs.protected_regular" = lib.mkForce "2";
+
+    # disable the berkely packet filter JIT
+    "net.core.bpf_jit_enable" = lib.mkForce "0";
 
     # enable JIT hardening techniques like constant blinding
     "net.core.bpf_jit_harden" = lib.mkForce "2";
@@ -82,6 +91,7 @@
     # ignore all ICMP requests
     # prevent smurf attacks and clock fingerprinting
     "net.ipv4.icmp_echo_ignore_all" = lib.mkForce "1";
+    "net.ipv4.icmp_echo_ignore_broadcasts" = lib.mkForce "1";
 
     # disable source routing
     # prevent MITM attacks
@@ -116,4 +126,7 @@
     # increase bits of entropy used for mmap ASLR
     "vm.mmap_rnd_compat_bits" = lib.mkForce "16";
   };
+
+  # disabling unprivileged userns clone can break logrotate if config is checked
+  services.logrotate.checkConfig = false;
 }

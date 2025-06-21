@@ -24,9 +24,6 @@
       # notifications
       libnotify
 
-      # media player
-      mpv
-
       # text editor
       nano
 

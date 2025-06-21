@@ -1,5 +1,7 @@
 #! /usr/bin/env bash
 
+start_time=$(date +%s)
+
 if [ -z "$NIXOS_DIR" ]; then
     echo "Error: NIXOS_DIR is not set." >&2
     exit 1
@@ -10,6 +12,13 @@ if [ -z "$NIXOS_ROLE" ]; then
     exit 1
 fi
 
+if ! [[ "$NIXOS_ROLE" =~ ^(server|laptop)$ ]]; then
+  echo "Error: unexpected role $NIXOS_ROLE"
+  exit 1
+fi
+
+set -e
+
 DIR=$NIXOS_DIR
 ROLE=$NIXOS_ROLE
 
@@ -19,6 +28,14 @@ if [ $# -eq 0 ]; then
 
 # run scripts
 elif [ -f "$DIR/scripts/$1" ]; then
+	cmd=("$DIR/scripts/$1" "${@:2}")
+
+# run commands
+else
+	cmd=("$@")
+fi
+
+if [[ "$1" =~ ^(commit|format|init|perms|purge|switch|test|update)$ ]]; then
 
     # ensure there is only one instance running
     LOCKFILE="/tmp/nixos-script.lock"
@@ -32,15 +49,15 @@ elif [ -f "$DIR/scripts/$1" ]; then
 
     # ensure deletion of lockfile on exit
     trap 'rm -f "$LOCKFILE"' EXIT
-
-	cmd=("$DIR/scripts/$1" "${@:2}")
-
-# run commands
-else
-	cmd=("$@")
 fi
 
 (
 	cd $DIR || exit 1
 	"${cmd[@]}"
 )
+
+end_time=$(date +%s)
+end_date=$(date "+%Y-%m-%d %H:%M:%S")
+duration=$((end_time - start_time))
+echo
+echo "[nixos] finshed in ${duration}s"
