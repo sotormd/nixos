@@ -88,15 +88,16 @@
     $ ping archlinux.org
     ```
 
-7. Rebuild the configuration.
+7. Rebuild the configuration and reboot.
 
     ```
     $ sudo nixos-rebuild switch
+    $ sudo reboot
     ```
 
 ## 3. Applying configuration.
 
-1. Once booted into the new installation, set up basic environment variables.
+1. Once booted into the new installation, log in as the new user and set up basic environment variables.
 
     ```
     $ export NIXOS_DIR=/nixos

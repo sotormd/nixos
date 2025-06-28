@@ -98,21 +98,4 @@
       "x-gvfs-hide"
     ];
   };
-
-  # Codium directories
-  fileSystems."/home/${vars.user.name}/.vscode-oss" = {
-    device = "/persist/root/home/${vars.user.name}/.vscode-oss";
-    options = [
-      "bind"
-      "x-gvfs-hide"
-    ];
-  };
-
-  fileSystems."/home/${vars.user.name}/.config/VSCodium" = {
-    device = "/persist/root/home/${vars.user.name}/.config/VSCodium";
-    options = [
-      "bind"
-      "x-gvfs-hide"
-    ];
-  };
 }

@@ -715,13 +715,6 @@ elif [ "$1" == "impermanence" ]; then
         sudo mkdir -p $PERSIST_DIR_HOME/.config/BraveSoftware/Brave-Browser
         sudo cp -r --preserve=mode,ownership,timestamps $HOME/.config/BraveSoftware/Brave-Browser $PERSIST_DIR_HOME/.config/BraveSoftware/Brave-Browser
 
-        # vscodium
-        sudo mkdir $PERSIST_DIR_HOME/.vscode-oss
-        sudo cp -r --preserve=mode,ownership,timestamps $HOME/.vscode-oss $PERSIST_DIR_HOME/.vscode-oss
-
-        sudo mkdir -p $PERSIST_DIR_HOME/.config/VSCodium
-        sudo cp -r --preserve=mode,ownership,timestamps $HOME/.config/VSCodium $PERSIST_DIR_HOME/.config/VSCodium
-
         # SSH
         sudo mkdir $PERSIST_DIR_HOME/.ssh
         sudo cp -r --preserve=mode,ownership,timestamps $HOME/.ssh $PERSIST_DIR_HOME/.ssh
