@@ -419,7 +419,7 @@ Ensure all variables are defined in the `$NIXOS_DIR/vars/vars.nix` and secrets i
 
 2. Enable impermanence in configuration.
 
-    Edit `$NIXOS_DIR/modules/laptop/default.nix` to and uncomment `./impermanence`.
+    Edit `$NIXOS_DIR/modules/laptop/default.nix` and uncomment `./impermanence`.
 
     ```
     $ nixos nano modules/laptop/default.nix

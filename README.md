@@ -4,48 +4,48 @@ NixOS configuration flake for multiple hosts.
 
 # Features
 
-|                   |                                 |
-|-------------------|---------------------------------|
-| distro            | `NixOS`                         |
-| packages          | `nixos-unstable`                |
-| package manager   | `lix`                           |
-| secrets           | `sops-nix` `sops`               |
-| bootloader        | `systemd-boot` `uboot`          |
-| secureboot        | `lanzaboote`                    |
-| kernel            | `linux-hardened`                |
-| filesystem        | `zfs`                           |
-| networking        | `wpa_supplicant`                |
-| dns               | `unbound`                       |
-| display server    | `wayland`                       |
-| compositor        | `swayfx`                        |
-| bar               | `waybar`                        |
-| widgets           | `eww`                           |
-| launcher          | `rofi-wayland`                  |
-| notifications     | `dunst`                         |
-| file manager      | `thunar`                        |
-| pdf reader        | `zathura`                       |
-| image viewer      | `swayimg`                       |
-| media player      | `mpv`                           |
-| browser           | `brave`                         |
-| search engine     | `searxng`                       |
-| anonymity         | `i2pd` `oniux` `tor-browser`    |
-| passwords         | `vaultwarden`                   |
-| text editor       | `vscodium` `nano` `mousepad`    |
-| gtk theme         | `Nordic-darker`                 |
-| gtk icons         | `Nordzy-dark`                   |
-| gtk cursor        | `Simp1e-Nord-Dark`              |
-| font              | `IBM Plex`                      |
-| sandboxing        | `firejail`                      |
-| virtualization    | `qemu` `virt-manager`           |
-| optimizations     | `auto-cpufreq` `tlp` `powertop` |
-| web server        | `nginx`                         |
-| media server      | `jellyfin`                      |
+|                   |                                   |
+|-------------------|-----------------------------------|
+| distro            | `NixOS`                           |
+| packages          | `nixos-unstable`                  |
+| package manager   | `lix`                             |
+| secrets           | `sops-nix` `sops`                 |
+| bootloader        | `systemd-boot` `uboot`            |
+| secureboot        | `lanzaboote`                      |
+| kernel            | `linux-hardened`                  |
+| filesystem        | `zfs`                             |
+| networking        | `wpa_supplicant`                  |
+| dns               | `unbound`                         |
+| display server    | `wayland`                         |
+| compositor        | `swayfx`                          |
+| bar               | `waybar`                          |
+| widgets           | `eww`                             |
+| launcher          | `rofi-wayland`                    |
+| notifications     | `dunst`                           |
+| file manager      | `thunar`                          |
+| pdf reader        | `zathura`                         |
+| image viewer      | `swayimg`                         |
+| media player      | `mpv`                             |
+| browser           | `brave`                           |
+| search engine     | `searxng`                         |
+| anonymity         | `i2pd` `oniux` `tor-browser`      |
+| passwords         | `vaultwarden`                     |
+| text editor       | `vscodium` `nano` `mousepad`      |
+| gtk theme         | `Nordic-darker`                   |
+| gtk icons         | `Nordzy-dark`                     |
+| gtk cursor        | `Simp1e-Nord-Dark`                |
+| font              | `IBM Plex`                        |
+| sandboxing        | `firejail`                        |
+| virtualization    | `qemu` `virt-manager` `distrobox` |
+| optimizations     | `auto-cpufreq` `tlp` `powertop`   |
+| web server        | `nginx`                           |
+| media server      | `jellyfin`                        |
 
 # Setup
 
-[laptop setup](./laptop-setup.md)
+[laptop setup](./docs/laptop-setup.md)
 
-[server setup](./server-setup.md)
+[server setup](./docs/server-setup.md)
 
 # Maintenance
 

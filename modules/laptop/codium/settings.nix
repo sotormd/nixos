@@ -7,7 +7,7 @@
       "editor.fontFamily" = "IBM Plex Mono";
       "editor.fontSize" = 12;
       "terminal.integrated.fontSize" = 12;
-      "window.menuBarVisibility" = "hidden";
+      "window.menuBarVisibility" = "toggle";
       "window.customMenuBarAltFocus" = false;
       "window.enableMenuBarMnemonics" = false;
       "workbench.welcomePage.walkthroughs.openOnInstall" = false;

@@ -9,6 +9,9 @@
   home-manager.users."${vars.user.name}" = {
     # set of packages to appear in user environment
     home.packages = with pkgs; [
+      # dns lookup utility
+      dig
+
       # system information tool
       fastfetch
 

@@ -9,6 +9,8 @@
     SHA_CRYPT_MIN_ROUNDS 100000
     SHA_CRYPT_MAX_ROUNDS 100000
     UMASK 027
+    UID_MIN 1000
+    GID_MIN 1000
   '';
 
   security.pam.services.passwd.text = (
