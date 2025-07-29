@@ -17,7 +17,6 @@
       };
 
       cursor = {
-        color = "${colors.bg0} ${colors.fg0}";
         style = "beam";
       };
 
@@ -42,6 +41,8 @@
         bright5 = colors.purple;
         bright6 = colors.blue0;
         bright7 = colors.fg2;
+
+        cursor = "${colors.bg0} ${colors.fg0}";
       };
     };
   };

@@ -81,8 +81,8 @@
           ''exec ${pkgs.swayfx}/bin/swaymsg move container to workspace $(${pkgs.swayfx}/bin/swaymsg -t get_outputs | ${pkgs.jq}/bin/jq -r '.[] | select(.focused) | .name | if . == "${vars.outputs.monitor}" then "1" elif . == "${vars.outputs.laptop}" then "0" else "unknown" end')10'';
 
         # next/previous workspace
-        "Mod4+ctrl+Right" = "workspace next";
-        "Mod4+ctrl+Left" = "workspace prev";
+        "Mod4+Page_Down" = "workspace next";
+        "Mod4+Page_Up" = "workspace prev";
 
         # split
         "Mod4+b" = "splith";

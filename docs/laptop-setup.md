@@ -2,6 +2,8 @@
 
 To skip installation and directly apply configuration on a system with experimental features `flakes` and `nix-command` enabled, skip to [this](#5-applying-configuration) section.
 
+The configuration expects a particular disk setup.
+
 ## 1. Obtaining a live NixOS image.
 
 1. Get a NixOS image from [here](https://nixos.org/download/).
@@ -26,7 +28,7 @@ To skip installation and directly apply configuration on a system with experimen
 
     If creating a new partition table, use the `gpt` format.
 
-    | Partition | Size            |
+    | Partition | Example Size    |
     |-----------|-----------------|
     | BOOT      | ~4G             |
     | SWAP      | ~8G             |
@@ -44,9 +46,9 @@ To skip installation and directly apply configuration on a system with experimen
     ```
 
     ```
-    $ BOOT=/dev/disk/by-partuuid/aaa...
-    $ SWAP=/dev/disk/by-partuuid/bbb...
-    $ ROOT=/dev/disk/by-partuuid/ccc...
+    $ export BOOT=/dev/disk/by-partuuid/aaa...
+    $ export SWAP=/dev/disk/by-partuuid/bbb...
+    $ export ROOT=/dev/disk/by-partuuid/ccc...
     ```
 
 3. Format boot partition.
@@ -226,15 +228,12 @@ To skip installation and directly apply configuration on a system with experimen
     $ nix shell nixpkgs#git --command git clone https://github.com/sotormd/nixos $NIXOS_DIR
     ```
 
-3. Copy existing `hardware-configuration.nix` to the flake.
+3. Initialize variables.
 
     ```
-    $ $NIXOS_DIR/scripts/nixos init hardware
-    ```
-
-4. Initialize variables.
-
-    ```
+    $ export VARS_DEVICE_BOOT=$BOOT
+    $ export VARS_DEVICE_SWAP=$SWAP
+    $ export VARS_DEVICE_ROOT=$ROOT
     $ export VARS_USER_EMAIL=Bar@domain.com
     $ export VARS_NETWORK_SSID=BarsNetwork
     $ export VARS_NETWORK_GATEWAY=10.0.0.1
@@ -244,7 +243,7 @@ To skip installation and directly apply configuration on a system with experimen
 
     See [this](#environment-variables) section for all variables.
 
-5. Initialize secrets.
+4. Initialize secrets.
 
     ```
     $ $NIXOS_DIR/scripts/nixos init sops
@@ -254,7 +253,7 @@ To skip installation and directly apply configuration on a system with experimen
 
     See [this](#environment-variables) section for all variables.
 
-6. Edit variables/secrets.
+5. Edit variables/secrets.
 
     To ensure all variables are set, edit the variables file.
 
@@ -268,19 +267,19 @@ To skip installation and directly apply configuration on a system with experimen
     $ cd $NIXOS_DIR && nix shell nixpkgs#sops nixpkgs#gnupg --command sudo GNUPGHOME=/persist/sops-nix sops vars/secrets.yaml
     ```
 
-7. Before switching to the new configuration, disable some modules that need further setup.
+6. Before switching to the new configuration, disable some modules that need further setup.
 
     1. Secure boot is not set up, so comment out `./lanzaboote.nix` from `$NIXOS_DIR/modules/laptop/boot/default.nix`.
 
     2. Impermanence is not set up, so comment out `./impermanence` from `$NIXOS_DIR/modules/laptop/default.nix`.
 
-8. Switch to the new configuration for the first time.
+7. Switch to the new configuration for the first time.
 
     ```
     $ nix shell nixpkgs#git --command $NIXOS_DIR/scripts/nixos switch
     ```
 
-9. Reboot the system.
+8. Reboot the system.
 
     ```
     $ sudo reboot
@@ -289,7 +288,7 @@ To skip installation and directly apply configuration on a system with experimen
     If everything goes well, you should be able to log in to `sway` from `tty1`.
 
 
-10. Check that the `$NIXOS_DIR` and `$NIXOS_ROLE` environment variables are set.
+9. Check that the `$NIXOS_DIR` and `$NIXOS_ROLE` environment variables are set.
 
     ```
     $ nixos
@@ -308,6 +307,9 @@ Full list of possible environment variables:
 | `VARS_DEVICE_HOSTNAME`            | No        | Hostname of the device.                             | `$(uname -n)`                                     | `"Foo"`                              |
 | `VARS_DEVICE_MACHINEID`           | No        | `systemd` machine-id.                               | `$(cat /etc/machine-id)`                          | `"51934ba93b754bf28caf413f7e6c65bd"` |
 | `VARS_DEVICE_HOSTID`              | No        | Host ID, required for `ZFS`.                        | `$(head -c 8 /etc/machine-id)`                    | `"51934b"`                           |
+| `VARS_DEVICE_BOOT`                | **Yes**   | Boot partition partuuid.                            | -                                                 | -                                    |
+| `VARS_DEVICE_SWAP`                | **Yes**   | Swap partition partuuid.                            | -                                                 | -                                    |
+| `VARS_DEVICE_ROOT`                | **Yes**   | Root partition partuuid.                            | -                                                 | -                                    |
 | `VARS_USER_NAME`                  | No        | Username.                                           | `$USER`                                           | `"Bar"`                              |
 | `VARS_USER_EMAIL`                 | **Yes**   | Email used for git commits.                         | -                                                 | `"Bar@domain.com"`                   |
 | `VARS_USER_GITHUB_KEYFILE`        | No        | Github SSH identity key.                            | `"id_ed25519_github"`                             | `"id_rsa_github"`                    |
@@ -431,3 +433,37 @@ Ensure all variables are defined in the `$NIXOS_DIR/vars/vars.nix` and secrets i
     $ nixos switch
     ```
 
+## 8. Adding LUKS encrypted devices
+
+Keyfile encrypted LUKS devices can be set up via `vars.nix`
+
+Modify the `device.luks` variable under `DEVICE VARIABLES` in `vars.nix`
+
+```
+$ nixos nano vars/vars.nix
+```
+
+For example, to set up two devices `ht02` and `ht03`:
+
+```
+  device.luks = [
+    {
+        name = "ht02";
+        uuid = "3f74d2e3-5a67-4b86-b2c3-842f39e45b7a";
+        id = "usb-Hitachi_192939485710293857281029-0:0";
+        keyfile = "/root/keys/ht02";
+        mount = "/mnt/ht02";
+        fs = "xfs";
+        hdparm = false;
+    }
+    {
+        name = "ht03";
+        uuid = "5a67d2e3-842f-3f74-b2c3-4b8639e45b7a";
+        id = "usb-Samsung_110011002933881992003918-0:0";
+        keyfile = "/root/keys/ht03";
+        mount = "/mnt/ht03";
+        fs = "ext4";
+        hdparm = false;
+    }
+  ];
+```

@@ -1,8 +1,6 @@
 { config, vars, ... }:
 
 {
-  services.searx.redisCreateLocally = false;
-
   services.searx.settings = {
     general = {
       debug = false;
@@ -41,8 +39,8 @@
     };
 
     outgoing = {
-      request_timeout = 2;
-      max_request_timeout = 2;
+      request_timeout = 60;
+      max_request_timeout = 60;
     };
 
     enabled_plugins = [

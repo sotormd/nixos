@@ -6,6 +6,8 @@
 
     ./kernel.nix
 
+    ./luks.nix
+
     ./params.nix
 
     ./sysctl.nix

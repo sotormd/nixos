@@ -42,9 +42,9 @@
           {
             command = ''
               ${pkgs.swayidle}/bin/swayidle \
-              timeout 10 '${pkgs.swaylock}/bin/swaylock' \
+              timeout 10 '${pkgs.swaylock}/bin/swaylock && sudo systemctl start restore-default-route' \
               timeout 180 'systemctl suspend' \
-              before-sleep '${pkgs.swaylock}/bin/swaylock'
+              before-sleep '${pkgs.swaylock}/bin/swaylock && sudo systemctl start restore-default-route'
             '';
           }
 

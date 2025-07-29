@@ -4,6 +4,4 @@
 
     ./root.nix
   ];
-
-  fileSystems."/persist".neededForBoot = true;
 }

@@ -23,7 +23,7 @@ done
     scripts/format
     scripts/perms
     git add .
-    GIT_PAGER=cat git diff HEAD -- ':!vars/vars.nix' ':!vars/secrets.yaml' ':!.sops.yaml' ":!modules/$NIXOS_ROLE/hardware-configuration.nix"
+    GIT_PAGER=cat git diff HEAD -- ':!vars/vars.nix' ':!vars/secrets.yaml' ':!.sops.yaml'
 
     echo
     vars_hash=$(sha256sum "$NIXOS_DIR/vars/vars.nix" | awk '{print $1}')
@@ -45,7 +45,7 @@ done
 
         sudo nixos-rebuild switch --flake .#$NIXOS_ROLE
 
-        git reset -- vars/vars.nix vars/secrets.yaml .sops.yaml modules/$NIXOS_ROLE/hardware-configuration.nix
+        git reset -- vars/vars.nix vars/secrets.yaml .sops.yaml
 
         if [[ -n "$message" ]]; then
             git commit -m "$message" --allow-empty-message

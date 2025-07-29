@@ -5,10 +5,20 @@
   ...
 }:
 
+let
+  COVER_TEXT = "\${COVER}";
+in
 {
   home-manager.users."${vars.user.name}" = {
     home.file.".config/eww/eww.yuck".text = ''
       (defvar dock-items-json "[]")
+      (defpoll SONG :interval "1s" `/home/${vars.user.name}/.config/eww/scripts/music.sh --song`)
+      (defpoll ARTIST :interval "1s" `/home/${vars.user.name}/.config/eww/scripts/music.sh --artist`)
+      (defpoll STATUS :interval "0.5s" `/home/${vars.user.name}/.config/eww/scripts/music.sh --status`)
+      (defpoll CURRENT :interval "1s" `/home/${vars.user.name}/.config/eww/scripts/music.sh --time`)
+      (defpoll COVER :interval "1s" `/home/${vars.user.name}/.config/eww/scripts/music.sh --cover`)
+      (defpoll CTIME :interval "1s" `/home/${vars.user.name}/.config/eww/scripts/music.sh --ctime`)
+      (defpoll TTIME :interval "1s" `/home/${vars.user.name}/.config/eww/scripts/music.sh --ttime`)
       (defvar calendar-json "[]")
       (defvar calendar-selected-month "")
       (defvar calendar-selected-month-pretty "")
@@ -55,7 +65,7 @@
           }' /proc/meminfo")
       (defpoll zfs-perc :interval "1s" "zpool iostat | awk '/rpool/ {print 100 * \$2 / (\$2 + \$3)}'")
       (defpoll zfs-gib :interval "1s" "zpool iostat | awk '/rpool/ {print \$2}'")
-      (defpoll fortune :interval "600s" "${pkgs.fortune}/bin/fortune -n 30 -s")
+      (defpoll fortune :interval "600s" "${pkgs.fortune}/bin/fortune -n 35 -s")
 
       (defwidget calendar-custom []
         (box :class "calendar"
@@ -175,24 +185,6 @@
           :class "dock-box"
           :orientation "horizontal"
           (box
-            :class "left-dock"
-            :halign "start"
-            :valign "end"
-            :hexpand false
-            :vexpand false
-            :space-evenly false
-            (eventbox
-              :cursor "hand2"
-              :onclick "${pkgs.eww}/bin/eww open start --toggle --screen \$(${pkgs.swayfx}/bin/swaymsg -t get_outputs | ${pkgs.jq}/bin/jq -r '.[] | select(.focused) | .name')"
-              (box
-              :class "left-dock-item"
-              :orientation "vertical"
-              :valign "end"
-              :vexpand false
-              :space-evenly false
-              :spacing 6
-              "")))
-          (box
             :class "center-dock"
             :halign "center"
             :valign "end"
@@ -205,6 +197,7 @@
                 :onclick "''${dock-item.left} &"
                 :onmiddleclick "''${dock-item.middle} &"
                 :onrightclick "''${dock-item.right} &"
+                :onscroll "''${dock-item.scroll} &"
                 (box
                   :class "dock-item ''${dock-item.state}"
                   (box
@@ -214,23 +207,7 @@
                     :vexpand false
                     :space-evenly false
                     :spacing 6
-                    "''${dock-item.symbol}")))))
-          (box
-            :class "right-dock"
-            :halign "end"
-            :valign "end"
-            :hexpand false
-            :vexpand false
-            :space-evenly false
-            (eventbox
-              (box
-              :class "dock-item unfocused"
-              :orientation "vertical"
-              :valign "end"
-              :vexpand false
-              :space-evenly false
-              :spacing 6
-              " ")))))
+                    "''${dock-item.symbol}")))))))
 
       (defwidget start []
         (box
@@ -265,6 +242,17 @@
                 (circular-progress :class "system-circle-zfs" :value zfs-perc :thickness 5
                   (label :class "system-circle-text" :text zfs-gib)))
               (label :class "system-text" :valign "end" :halign "center" :text "ZFS")))
+          (box :class "start-inner-box" :orientation "h" :space-evenly "false" :vexpand "false" :hexpand "false"
+            (box :class "album_art" :vexpand "false" :hexpand "false" :style "background-image: url('${COVER_TEXT}');")
+            (box :orientation "v" :spacing 5 :space-evenly "false" :vexpand "false" :hexpand "false"
+              (label :halign "center" :class "song" :wrap "true" :text SONG)
+              (label :halign "center" :class "artist" :wrap "true" :text ARTIST)
+              (box :orientation "h" :spacing 10 :halign "center" :space-evenly "true" :vexpand "false" :hexpand "false"
+                (button :class "btn_prev" :onclick "/home/${vars.user.name}/.config/eww/scripts/music.sh --prev" "󰒮")
+                (button :class "btn_play" :onclick "/home/${vars.user.name}/.config/eww/scripts/music.sh --toggle" STATUS)
+                (button :class "btn_next" :onclick "/home/${vars.user.name}/.config/eww/scripts/music.sh --next" "󰒭"))
+              (box :class "music_bar" :halign "center" :vexpand "false" :hexpand "false"
+                (scale :active "false" :min 0 :max 100 :value CURRENT))))
           (box
             :class "start-inner-box"
             :orientation "horizontal"
@@ -312,7 +300,7 @@
         :geometry (geometry
                     :anchor "bottom center"
                     :width "100%")
-        :stacking "bottom"
+        :stacking "fg"
         :exclusive true
         (dock))
 
@@ -321,17 +309,17 @@
         :geometry (geometry
                     :anchor "bottom center"
                     :width "100%")
-        :stacking "bottom"
+        :stacking "fg"
         :exclusive true
         (dock))
 
       (defwindow start
         :monitor 0
         :geometry (geometry
-                    :anchor "bottom left"
+                    :anchor "bottom center"
                     :width 500)
         :stacking "fg"
-        :exclusive true
+        :exclusive false
         (start))
 
       (defwindow calendar
