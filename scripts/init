@@ -35,6 +35,9 @@ if [ "$1" == "hardware" ]; then
 
     sudo nixos-generate-config --dir /tmp/nixos
 
+    echo "Warning: hardware configuration is now managed within the flake"
+    exit 1
+
     if [ -f "/tmp/nixos/hardware-configuration.nix" ]; then
         if cp "/tmp/nixos/hardware-configuration.nix" "$DIR/modules/$ROLE/hardware-configuration.nix"; then
             echo "generated hardware-configuration.nix was moved to $DIR/modules/$ROLE/hardware-configuration.nix"
@@ -76,11 +79,27 @@ elif [ "$1" == "vars" ]; then
             VARS_DEVICE_HOSTID=$(head -c 8 /etc/machine-id)
         fi
 
+        if [ -z "$VARS_DEVICE_BOOT" ]; then
+            echo "Warning: VARS_DEVICE_BOOT is unset"
+            VARS_DEVICE_BOOT=""
+        fi
+
+        if [ -z "$VARS_DEVICE_SWAP" ]; then
+            echo "Warning: VARS_DEVICE_SWAP is unset"
+            VARS_DEVICE_SWAP=""
+        fi
+
+        if [ -z "$VARS_DEVICE_ROOT" ]; then
+            echo "Warning: VARS_DEVICE_ROOT is unset"
+            VARS_DEVICE_ROOT=""
+        fi
+
         if [ -z "$VARS_USER_NAME" ]; then
             VARS_USER_NAME=$USER
         fi
 
         if [ -z "$VARS_USER_EMAIL" ]; then
+            echo "Warning: VARS_USER_EMAIL is unset"
             VARS_USER_EMAIL=""
         fi
 
@@ -105,47 +124,49 @@ elif [ "$1" == "vars" ]; then
         fi
 
         if [ -z "$VARS_NETWORK_SSID" ]; then
+            echo "Warning: VARS_NETWORK_SSID is unset"
             VARS_NETWORK_SSID=""
         fi
 
         if [ -z "$VARS_NETWORK_GATEWAY" ]; then
-                VARS_NETWORK_GATEWAY="192.168.0.1"
+            VARS_NETWORK_GATEWAY="192.168.0.1"
         fi
 
         if [ -z "$VARS_NETWORK_IP" ]; then
-                VARS_NETWORK_IP=""
+            echo "Warning: VARS_NETWORK_IP is unset"
+            VARS_NETWORK_IP=""
         fi
 
         if [ -z "$VARS_NETWORK_SERVER_ENABLED" ]; then
-                VARS_NETWORK_SERVER_ENABLED="true"
+            VARS_NETWORK_SERVER_ENABLED="true"
         fi
 
         if [ -z "$VARS_NETWORK_SERVER_IP" ]; then
-                VARS_NETWORK_SERVER_IP=""
+            VARS_NETWORK_SERVER_IP=""
         fi
 
         if [ -z "$VARS_NETWORK_SERVER_DOMAIN" ]; then
-                VARS_NETWORK_SERVER_DOMAIN=""
+            VARS_NETWORK_SERVER_DOMAIN=""
         fi
 
         if [ -z "$VARS_NETWORK_SERVER_SSH_PORT" ]; then
-                VARS_NETWORK_SERVER_SSH_PORT="22"
+            VARS_NETWORK_SERVER_SSH_PORT="22"
         fi
 
         if [ -z "$VARS_NETWORK_SERVER_SSH_KEYFILE" ]; then
-                VARS_NETWORK_SERVER_SSH_KEYFILE="id_ed25519_server"
+            VARS_NETWORK_SERVER_SSH_KEYFILE="id_ed25519_server"
         fi
 
         if [ -z "$VARS_NETWORK_SERVER_I2P_PORT" ]; then
-                VARS_NETWORK_SERVER_I2P_PORT="4444"
+            VARS_NETWORK_SERVER_I2P_PORT="4444"
         fi
 
         if [ -z "$VARS_OUTPUTS_LAPTOP" ]; then
-                VARS_OUTPUTS_LAPTOP="eDP-1"
+            VARS_OUTPUTS_LAPTOP="eDP-1"
         fi
 
         if [ -z "$VARS_OUTPUTS_MONITOR" ]; then
-                VARS_OUTPUTS_MONITOR="HDMI-A-1"
+            VARS_OUTPUTS_MONITOR="HDMI-A-1"
         fi
 
         # create vars file
@@ -180,6 +201,29 @@ elif [ "$1" == "vars" ]; then
 
   # required for zfs
   device.hostId = "$VARS_DEVICE_HOSTID";
+
+  # partition partuuids
+  # find them from /dev/disk/by-partuuid/...
+  # assumes a specific configuration
+  # see ../docs/laptop-setup.md
+  device.boot = "$VARS_DEVICE_BOOT";
+  device.swap = "$VARS_DEVICE_SWAP";
+  device.root = "$VARS_DEVICE_ROOT";
+
+  # luks: encrypted luks devices
+  # example usage:
+  # device.luks = [
+  #   {
+  #       name = "ht02";
+  #       uuid = "3f74d2e3-5a67-4b86-b2c3-842f39e45b7a";
+  #       id = "usb-Samsung_192939485710293857281029-0:0";
+  #       keyfile = "/root/keys/ht02";
+  #       mount = "/mnt/ht02";
+  #       fs = "xfs";
+  #       hdparm = false;
+  #   }
+  # ];
+  device.luks = [ ];
 
   #########################
   # USER ACCOUNT VARIABLES
@@ -264,11 +308,17 @@ EOF
             VARS_DEVICE_MACHINEID=$(cat /etc/machine-id)
         fi
 
+        if [ -z "$VARS_DEVICE_ROOT" ]; then
+            echo "Warning: VARS_DEVICE_ROOT is unset"
+            VARS_DEVICE_ROOT=""
+        fi
+
         if [ -z "$VARS_USER_NAME" ]; then
             VARS_USER_NAME=$USER
         fi
 
         if [ -z "$VARS_USER_EMAIL" ]; then
+            echo "Warning: VARS_USER_EMAIL is unset"
             VARS_USER_EMAIL=""
         fi
 
@@ -289,67 +339,70 @@ EOF
         fi
 
         if [ -z "$VARS_NETWORK_SSID" ]; then
+            echo "Warning: VARS_NETWORK_SSID is unset"
             VARS_NETWORK_SSID=""
         fi
 
         if [ -z "$VARS_NETWORK_GATEWAY" ]; then
-                VARS_NETWORK_GATEWAY="192.168.0.1"
+            VARS_NETWORK_GATEWAY="192.168.0.1"
         fi
 
         if [ -z "$VARS_NETWORK_RANGE" ]; then
-                VARS_NETWORK_RANGE="192.168.0.0/24"
+            VARS_NETWORK_RANGE="192.168.0.0/24"
         fi
 
         if [ -z "$VARS_NETWORK_IP" ]; then
-                VARS_NETWORK_IP=""
+            echo "Warning: VARS_NETWORK_IP is unset"
+            VARS_NETWORK_IP=""
         fi
 
         if [ -z "$VARS_NETWORK_DUCKDNS_DOMAIN" ]; then
-                VARS_NETWORK_DUCKDNS_DOMAIN="$(uname -n)-server.duckdns.org"
+            VARS_NETWORK_DUCKDNS_DOMAIN="$(uname -n)-server.duckdns.org"
         fi
 
         if [ -z "$VARS_NETWORK_SSH_PORT" ]; then
-                VARS_NETWORK_SSH_PORT="22"
+            VARS_NETWORK_SSH_PORT="22"
         fi
 
         if [ -z "$VARS_NETWORK_SSH_KEY" ]; then
-                VARS_NETWORK_SSH_KEY=""
+            echo "Warning: VARS_NETWORK_SSH_KEY is unset"
+            VARS_NETWORK_SSH_KEY=""
         fi
 
         if [ -z "$VARS_NETWORK_VAULTWARDEN_DATA" ]; then
-                VARS_NETWORK_VAULTWARDEN_DATA="/var/lib/bitwarden_rs"
+            VARS_NETWORK_VAULTWARDEN_DATA="/var/lib/bitwarden_rs"
         fi
 
         if [ -z "$VARS_NETWORK_VAULTWARDEN_PORT" ]; then
-                VARS_NETWORK_VAULTWARDEN_PORT="8222"
+            VARS_NETWORK_VAULTWARDEN_PORT="8222"
         fi
 
         if [ -z "$VARS_NETWORK_I2PD_SAM_PORT" ]; then
-                VARS_NETWORK_I2PD_SAM_PORT="7656"
+            VARS_NETWORK_I2PD_SAM_PORT="7656"
         fi
 
         if [ -z "$VARS_NETWORK_I2PD_HTTP_PROXY_PORT" ]; then
-                VARS_NETWORK_I2PD_HTTP_PROXY_PORT="4444"
+            VARS_NETWORK_I2PD_HTTP_PROXY_PORT="4444"
         fi
 
         if [ -z "$VARS_NETWORK_I2PD_SOCKS_PROXY_PORT" ]; then
-                VARS_NETWORK_I2PD_SOCKS_PROXY_PORT="4447"
+            VARS_NETWORK_I2PD_SOCKS_PROXY_PORT="4447"
         fi
 
         if [ -z "$VARS_NETWORK_I2PD_WEBCONSOLE_PORT" ]; then
-                VARS_NETWORK_I2PD_WEBCONSOLE_PORT="7070"
+            VARS_NETWORK_I2PD_WEBCONSOLE_PORT="7070"
         fi
 
         if [ -z "$VARS_NETWORK_QBT_DATA" ]; then
-                VARS_NETWORK_QBT_DATA="/var/lib/qbt/data"
+            VARS_NETWORK_QBT_DATA="/var/lib/qbt/data"
         fi
 
         if [ -z "$VARS_NETWORK_QBT_PORT" ]; then
-                VARS_NETWORK_QBT_PORT="8080"
+            VARS_NETWORK_QBT_PORT="8080"
         fi
 
         if [ -z "$VARS_NETWORK_JELLYFIN_PORT" ]; then
-                VARS_NETWORK_JELLYFIN_PORT="8096"
+            VARS_NETWORK_JELLYFIN_PORT="8096"
         fi
 
         # create vars file
@@ -381,6 +434,27 @@ EOF
   # passed as a boot parameter
   # do not change for consistent journald logs
   device.machineId = "$VARS_DEVICE_MACHINEID";
+
+  # partition partuuids
+  # find them from /dev/disk/by-partuuid/...
+  # assumes a specific configuration
+  # see ../docs/server-setup.md
+  device.root = "$VARS_DEVICE_ROOT";
+
+  # luks: encrypted luks devices
+  # example usage:
+  # device.luks = [
+  #   {
+  #       name = "ht02";
+  #       uuid = "3f74d2e3-5a67-4b86-b2c3-842f39e45b7a";
+  #       id = "usb-Samsung_192939485710293857281029-0:0";
+  #       keyfile = "/root/keys/ht02";
+  #       mount = "/mnt/ht02";
+  #       fs = "xfs";
+  #       hdparm = false;
+  #   }
+  # ];
+  device.luks = [ ];
 
   #########################
   # USER ACCOUNT VARIABLES
@@ -520,6 +594,7 @@ elif [ "$1" == "sops" ]; then
     if [ "$ROLE" == "server" ]; then
 
         if [ -z "$SECRETS_DUCKDNS_TOKEN" ]; then
+            echo "Warning: SECRETS_DUCKDNS_TOKEN is unset"
             SECRETS_DUCKDNS_TOKEN=""
         fi
 
@@ -612,7 +687,7 @@ EOF
     # open secrets file
     (
         cd $DIR || exit
-        nix shell nixpkgs#sops --command sudo GNUPGHOME=$SOPS_DIR sops -e $TEMP_SECRETS > $SECRETS
+        nix shell nixpkgs#sops nixpkgs#gnupg --command sudo GNUPGHOME=$SOPS_DIR sops -e $TEMP_SECRETS > $SECRETS
         shred $TEMP_SECRETS -u
     )
 
@@ -635,7 +710,7 @@ elif [ "$1" == "lanzaboote" ]; then
         nix shell nixpkgs#sbctl --command sudo sbctl create-keys
     fi
 
-    if [ "$1" == "enroll" ]; then
+    if [ "$2" == "enroll" ]; then
         nix shell nixpkgs#sbctl --command sudo sbctl enroll-keys --microsoft
     fi
 

@@ -41,9 +41,8 @@
         # enable flakes
         nix.settings.experimental-features = [ "nix-command" "flakes" ];
 
-        # allow using wpa_cli
-        networking.wireless.enable = true;
-        networking.wireless.userControlled.enable = true;
+        # allow using nmtui
+        networking.networkmanager.enable = true;
 
         # easier to set these up now
         networking.hostName = "Foo";
@@ -68,18 +67,7 @@
 5. Connect to the internet.
 
     ```
-    $ sudo ip link set wlan0 up
-    $ sudo systemctl start wpa_supplicant
-    $ wpa_cli
-    > add_network
-    0
-    > set_network 0 ssid "BarsNetwork"
-    OK
-    > set_network 0 psk "supersecretpsk"
-    OK
-    > enable_network 0
-    OK
-    > scan
+    $ nmtui
     ```
 
 6. Ensure internet connection.
@@ -114,15 +102,12 @@
     $ nix shell nixpkgs#git --command git clone https://github.com/sotormd/nixos $NIXOS_DIR
     ```
 
-3. Copy existing `hardware-configuration.nix` to the flake.
+3. Initialize variables.
+
+    First, check `sudo blkid` output to find the root partition partuuid.
 
     ```
-    $ $NIXOS_DIR/scripts/nixos init hardware
-    ```
-
-4. Initialize variables.
-
-    ```
+    $ export VARS_DEVICE_ROOT=2178694e-02
     $ export VARS_USER_EMAIL=Bar@domain.com
     $ export VARS_NETWORK_SSID=BarsNetwork
     $ export VARS_NETWORK_GATEWAY=10.0.0.1
@@ -134,7 +119,7 @@
 
     See [this](#environment-variables) section for all variables.
 
-5. Initialize secrets.
+4. Initialize secrets.
 
     ```
     $ export SECRETS_DUCKDNS_TOKEN=aaa...
@@ -145,7 +130,7 @@
 
     See [this](#environment-variables) section for all variables.
 
-6. Edit variables/secrets.
+5. Edit variables/secrets.
 
     To ensure all variables are set, edit the variables file.
 
@@ -159,13 +144,13 @@
     $ cd $NIXOS_DIR && nix shell nixpkgs#sops nixpkgs#gnupg --command sudo GNUPGHOME=/var/lib/sops-nix sops vars/secrets.yaml
     ```
 
-7. Switch to the new configuration for the first time.
+6. Switch to the new configuration for the first time.
 
     ```
     $ nix shell nixpkgs#git --command $NIXOS_DIR/scripts/nixos switch
     ```
 
-8. Reboot the system.
+7. Reboot the system.
 
     ```
     $ sudo reboot
@@ -174,7 +159,7 @@
     If everything goes well, you should be able to log in with your new username and password.
 
 
-9. Check that the `$NIXOS_DIR` and `$NIXOS_ROLE` environment variables are set.
+8. Check that the `$NIXOS_DIR` and `$NIXOS_ROLE` environment variables are set.
 
     ```
     $ nixos
@@ -188,10 +173,11 @@ Full list of possible environment variables:
 
 | Name                                      | Required? | Explanation                                         | Default                                                     | Example                              |
 |-------------------------------------------|-----------|-----------------------------------------------------|-------------------------------------------------------------|--------------------------------------|
-| `NIXOS_DIR`                               | **Yes**   | Directory where the NixOS configuration is stored.  | -                                                           | `"/nixos"`                   |
+| `NIXOS_DIR`                               | **Yes**   | Directory where the NixOS configuration is stored.  | -                                                           | `"/nixos"`                           |
 | `NIXOS_ROLE`                              | **Yes**   | `laptop` or `server` role                           | -                                                           | `"server"`                           |
 | `VARS_DEVICE_HOSTNAME`                    | No        | Hostname of the device.                             | `$(uname -n)`                                               | `"Foo"`                              |
 | `VARS_DEVICE_MACHINEID`                   | No        | `systemd` machine-id.                               | `$(cat /etc/machine-id)`                                    | `"51934ba93b754bf28caf413f7e6c65bd"` |
+| `VARS_DEVICE_ROOT`                        | **Yes**   | Root partition partuuid.                            | -                                                           | -                                    |
 | `VARS_USER_NAME`                          | No        | Username.                                           | `$USER`                                                     | `"Bar"`                              |
 | `VARS_USER_EMAIL`                         | **Yes**   | Email used for git commits.                         | -                                                           | `"Bar@domain.com"`                   |
 | `VARS_I18N_TIMEZONE`                      | No        | Timezone.                                           | `$(timedatectl show --property=Timezone --value)`           | `"Europe/Berlin"`                    |
@@ -259,3 +245,37 @@ If using only the `Download` and/or `Copy Stream URL` options, you can disable m
 
 Access the web interface at `https://<your-duckdns-domain>/jellyfin`, uncheck `Allow media playback` under `Dashboard > Users > <your-user> > Profile > Media Playback` and click `Save` at the end of the page.
 
+## 5. Adding LUKS encrypted devices
+
+Keyfile encrypted LUKS devices can be set up via `vars.nix`
+
+Modify the `device.luks` variable under `DEVICE VARIABLES` in `vars.nix`
+
+```
+$ nixos nano vars/vars.nix
+```
+
+For example, to set up two devices `ht02` and `ht03`:
+
+```
+  device.luks = [
+    {
+        name = "ht02";
+        uuid = "3f74d2e3-5a67-4b86-b2c3-842f39e45b7a";
+        id = "usb-Hitachi_192939485710293857281029-0:0";
+        keyfile = "/root/keys/ht02";
+        mount = "/mnt/ht02";
+        fs = "xfs";
+        hdparm = false;
+    }
+    {
+        name = "ht03";
+        uuid = "5a67d2e3-842f-3f74-b2c3-4b8639e45b7a";
+        id = "usb-Samsung_110011002933881992003918-0:0";
+        keyfile = "/root/keys/ht03";
+        mount = "/mnt/ht03";
+        fs = "ext4";
+        hdparm = false;
+    }
+  ];
+```

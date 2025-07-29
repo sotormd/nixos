@@ -7,6 +7,109 @@
 
 {
   home-manager.users."${vars.user.name}" = {
+    home.file.".config/eww/scripts/music.sh" = {
+      executable = true;
+      text = ''
+        #! /usr/bin/env bash
+
+        COVER="/tmp/.music_cover.jpg"
+        DEFAULT_COVER="images/music.png"
+
+        STATUS=$(${pkgs.playerctl}/bin/playerctl status)
+        TITLE=$(${pkgs.playerctl}/bin/playerctl metadata title | sed -E 's/ -.*//; s/\(.*\)//g; s/\[.*\]//g; s/^[[:space:]]*//; s/[[:space:]]*$//; s/&/\&amp;/g; s/</\&lt;/g; s/>/\&gt;/g; s/"/\\"/g')
+        ARTISTS=$(${pkgs.playerctl}/bin/playerctl metadata artist | awk -F',' '{print $1 ", " $2}' | sed -E 's/^[[:space:]]*//; s/[[:space:]]*$//; s/, *$//; s/&/\&amp;/g; s/</\&lt;/g; s/>/\&gt;/g; s/"/\\"/g')
+
+        ## Get status
+        get_status() {
+            if ${pkgs.playerctl}/bin/playerctl status 2>/dev/null | grep -qi "playing"; then
+                echo "󰏥"
+            else
+                echo "󰐌"
+            fi
+        }
+
+        ## Get song title
+        get_song() {
+            if [[ -z "$TITLE" ]]; then
+                echo "-"
+            else
+                echo "$TITLE"
+            fi
+        }
+
+        ## Get artist
+        get_artist() {
+            if [[ -z "$ARTISTS" ]]; then
+                echo "-"
+            else
+                echo "$ARTISTS"
+            fi
+        }
+
+        ## Get progress percentage
+        get_time() {
+            pos=$(${pkgs.playerctl}/bin/playerctl position 2>/dev/null)
+            len=$(${pkgs.playerctl}/bin/playerctl metadata mpris:length 2>/dev/null)
+
+            if [[ -z "$pos" || -z "$len" ]]; then
+                echo "0"
+            else
+                # Convert microseconds to seconds
+                pos_sec=$(printf "%.0f" "$pos")
+                len_sec=$(printf "%.0f" "$(echo "$len / 1000000" | ${pkgs.bc}/bin/bc)")
+                [[ "$len_sec" -eq 0 ]] && echo "0" && return
+                percent=$(( 100 * pos_sec / len_sec ))
+                echo "$percent"
+            fi
+        }
+
+        ## Get current time (e.g. 1:45)
+        get_ctime() {
+            pos=$(${pkgs.playerctl}/bin/playerctl position 2>/dev/null)
+            if [[ -z "$pos" ]]; then
+                echo "0:00"
+            else
+                date -u -d @"''${pos%.*}" +%M:%S
+            fi
+        }
+
+        ## Get total time (e.g. 3:56)
+        get_ttime() {
+            len=$(${pkgs.playerctl}/bin/playerctl metadata mpris:length 2>/dev/null)
+            if [[ -z "$len" ]]; then
+                echo "0:00"
+            else
+                len_sec=$(echo "$len / 1000000" | ${pkgs.bc}/bin/bc)
+                date -u -d @"$len_sec" +%M:%S
+            fi
+        }
+
+        ## Get cover
+        get_cover() {
+            arturl=$(${pkgs.playerctl}/bin/playerctl metadata mpris:artUrl 2>/dev/null)
+            if [[ -n "$arturl" && "$arturl" =~ ^file:// ]]; then
+                cover_path="''${arturl#file://}"
+                cp "$cover_path" "$COVER" 2>/dev/null && echo "$COVER" && return
+            fi
+            echo "$DEFAULT_COVER"
+        }
+
+        ## Execute accordingly
+        case "$1" in
+            --song) get_song ;;
+            --artist) get_artist ;;
+            --status) get_status ;;
+            --time) get_time ;;
+            --ctime) get_ctime ;;
+            --ttime) get_ttime ;;
+            --cover) get_cover ;;
+            --toggle) ${pkgs.playerctl}/bin/playerctl play-pause ;;
+            --next) ${pkgs.playerctl}/bin/playerctl next && get_cover ;;
+            --prev) ${pkgs.playerctl}/bin/playerctl previous && get_cover ;;
+        esac
+      '';
+    };
+
     home.file.".config/eww/scripts/cal.sh" = {
       executable = true;
       text = ''
@@ -254,19 +357,20 @@
                     else:
                         state = "unfocused"
 
-                    # left click action
+                    # actions
                     if self.ids.get(client) and state == "unfocused":
                         left = f"swaymsg [con_id={self.ids.get(client)[-1]}] focus"
-                        middle = right = None
+                        middle = right = scroll = None
                     elif self.ids.get(client) and state == "focused":
                         left = f"swaymsg [con_id={self.ids.get(client)[-1]}] floating toggle"
                         middle = f"swaymsg [con_id={self.ids.get(client)[-1]}] kill"
                         right = f"swaymsg [con_id={self.ids.get(client)[-1]}] move scratchpad"
+                        scroll = f"swaymsg [con_id={self.ids.get(client)[0]}] focus"
                     elif state == "empty":
                         left = client_details.get("exec")
-                        middle = right = None
+                        middle = right = scroll = None
                     else:
-                        left = middle = right = None
+                        left = middle = right = scroll = None
 
                     dock_representation.append({
 
@@ -287,6 +391,9 @@
 
                         # right click action:
                         "right": right,
+
+                        # scroll action:
+                        "scroll": scroll,
 
                         # symbol to display in the dock
                         "symbol": client_details.get("symbol")
@@ -310,13 +417,14 @@
                     # left click action
                     if self.ids.get(client) and state == "unfocused":
                         left = f"swaymsg [con_id={self.ids.get(client)[-1]}] focus"
-                        middle = right = None
+                        middle = right = scroll = None
                     elif self.ids.get(client) and state == "focused":
                         left = f"swaymsg [con_id={self.ids.get(client)[-1]}] floating toggle"
                         middle = f"swaymsg [con_id={self.ids.get(client)[-1]}] kill"
                         right = f"swaymsg [con_id={self.ids.get(client)[-1]}] move scratchpad"
+                        scroll = f"swaymsg [con_id={self.ids.get(client)[0]}] focus"
                     else:
-                        left = middle = right = None
+                        left = middle = right = scroll = None
 
                     dock_representation.append({
 
@@ -337,6 +445,9 @@
 
                         # right click action:
                         "right": right,
+
+                        # scroll action:
+                        "scroll": scroll,
 
                         # symbol to display in the dock
                         "symbol": client_details.get("symbol")

@@ -6,7 +6,7 @@ set -e
     cd $NIXOS_DIR
     scripts/format
     git add .
-    GIT_PAGER=cat git diff HEAD -- ':!vars/vars.nix' ':!vars/secrets.yaml' ':!.sops.yaml' ":!modules/$NIXOS_ROLE/hardware-configuration.nix"
+    GIT_PAGER=cat git diff HEAD -- ':!vars/vars.nix' ':!vars/secrets.yaml' ':!.sops.yaml'
 
     echo
     vars_hash=$(sha256sum "$NIXOS_DIR/vars/vars.nix" | awk '{print $1}')
@@ -28,7 +28,7 @@ set -e
 
         sudo nixos-rebuild switch --flake .#$NIXOS_ROLE
 
-        git reset -- vars/vars.nix vars/secrets.yaml .sops.yaml modules/$NIXOS_ROLE/hardware-configuration.nix
+        git reset -- vars/vars.nix vars/secrets.yaml .sops.yaml
 
 	else
             echo "cancelled"

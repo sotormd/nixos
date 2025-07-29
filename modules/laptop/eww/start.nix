@@ -27,6 +27,8 @@
     wayland.windowManager.sway.config.keybindings = {
       "Mod4+Tab" =
         "exec ${pkgs.eww}/bin/eww open dock0 --toggle && ${pkgs.eww}/bin/eww open dock1 --toggle";
+      "Mod4+grave" =
+        "exec ${pkgs.eww}/bin/eww open start --toggle --screen \$(${pkgs.swayfx}/bin/swaymsg -t get_outputs | ${pkgs.jq}/bin/jq -r '.[] | select(.focused) | .name')";
     };
     programs.waybar.settings.mainBar.clock.on-click =
       ''${pkgs.eww}/bin/eww open --toggle calendar --screen $(${pkgs.swayfx}/bin/swaymsg -t get_outputs | ${pkgs.jq}/bin/jq -r '.[] | select(.focused) | .name')'';

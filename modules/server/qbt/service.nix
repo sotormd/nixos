@@ -36,6 +36,9 @@
             {
                 "Movies": {
                     "save_path": "${vars.network.qbt.data}/movies"
+                },
+                "TV": {
+                    "save_path": "${vars.network.qbt.data}/tv"
                 }
             }
             EOF

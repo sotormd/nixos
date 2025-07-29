@@ -310,6 +310,73 @@
         margin: 0px;
         padding-right: 2px;
       }
+
+      .album_art {
+        background-size: 150px;
+        min-height: 150px;
+        min-width: 150px;
+        margin: 7px;
+        border-radius: 14px;
+      }
+
+      .song {
+        color: #${colors.blue0};
+        font-size : 16px;
+        font-weight : bold;
+        margin-top: 10px;
+      }
+
+      .artist {
+        color: #${colors.blue2};
+        font-size : 12px;
+        font-weight : 600;
+      }
+
+      .btn_prev, .btn_play, .btn_next {
+        all: unset;
+        padding-top: 0px;
+        padding-bottom: 0px;
+        padding-left: 7px;
+        padding-right: 7px;
+        border-radius: 40px;
+      }
+      .btn_prev:hover, .btn_play:hover, .btn_next:hover {
+        background-color: #${colors.bg1};
+      }
+      .btn_prev:active, .btn_play:active, .btn_next:active {
+        background-color: #${colors.bg2};
+      }
+      .btn_prev {
+        color: #${colors.yellow};
+        font-size : 32px;
+        font-weight : normal;
+      }
+      .btn_play {
+        color: #${colors.green};
+        font-size : 48px;
+        font-weight : bold;
+      }
+      .btn_next {
+        color: #${colors.yellow};
+        font-size : 32px;
+        font-weight : normal;
+      }
+
+      .music_bar scale trough highlight {
+        all: unset;
+        border-radius: 2px;
+        background-color: #${colors.purple};
+      }
+      .music_bar scale trough {
+        all: unset;
+        border-radius: 2px;
+        background-color: #${colors.bg3};
+        min-height: 10px;
+        min-width: 310px;
+      }
+      .music_bar scale slider {
+        all: unset;
+      }
     '';
   };
 }

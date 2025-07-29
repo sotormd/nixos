@@ -1,8 +1,5 @@
 {
   imports = [
-    # include results of the hardware scan
-    ./hardware-configuration.nix
-
     # MODULES - sorted alphabetically
 
     # audio with pipewire
