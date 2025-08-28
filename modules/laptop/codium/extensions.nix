@@ -17,6 +17,7 @@
       jnoortheen.nix-ide
       arcticicestudio.nord-visual-studio-code
       pkief.material-icon-theme
+      # vscodevim.vim
     ];
   };
 }
