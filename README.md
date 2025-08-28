@@ -2,6 +2,8 @@
 
 NixOS configuration flake for multiple hosts.
 
+![Screenshot](docs/screenshot.png)
+
 # Features
 
 |                   |                                   |
