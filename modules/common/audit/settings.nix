@@ -1,10 +1,6 @@
 {
-  system.activationScripts.writeAudtidConf = {
-    deps = [ "etc" ];
+  environment.etc."audit/auditd.conf" = {
     text = ''
-            mkdir -p /etc/audit
-
-            cat > "/etc/audit/auditd.conf" <<EOF
       log_file = /var/log/audit/audit.log
       max_log_file = 500
       num_logs = 5
@@ -13,7 +9,6 @@
       space_left_action = SYSLOG
       admin_space_left = 100
       admin_space_left_action = SUSPEND
-      EOF
     '';
   };
 }

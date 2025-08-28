@@ -5,7 +5,9 @@ set -e
 (
     cd $NIXOS_DIR
     git add .
-    GIT_PAGER=cat git diff HEAD -- ':!vars/vars.nix' ':!vars/secrets.yaml' ':!.sops.yaml'
+    if [ "$NIXOS_ROLE" == "laptop" ]; then
+        GIT_PAGER=cat git diff HEAD -- ':!vars/vars.nix' ':!vars/secrets.yaml' ':!.sops.yaml'
+    fi
 
     echo
     vars_hash=$(sha256sum "$NIXOS_DIR/vars/vars.nix" | awk '{print $1}')
