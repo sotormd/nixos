@@ -396,8 +396,8 @@
             print(parsed_lyrics[lyric_times[idx+1]][:75])
         else:
             print()
-        # if idx+2 < len(lyric_times):
-            # print(parsed_lyrics[lyric_times[idx+2]])
+        if idx+2 < len(lyric_times):
+            print(parsed_lyrics[lyric_times[idx+2]])
       '';
     };
 
