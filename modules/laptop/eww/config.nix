@@ -264,7 +264,7 @@ in
                     :halign "start"
                     :hexpand false
                     :vexpand false
-                    :height 65
+                    :height 83
                     :spacing 0
                     (button :class "lyrics-line"
                             :hexpand false
