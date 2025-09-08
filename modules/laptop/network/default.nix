@@ -6,6 +6,8 @@
 
     ./resume.nix
 
+    ./timesyncd.nix
+
     ./wpa3.nix
   ];
 }

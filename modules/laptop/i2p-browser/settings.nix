@@ -32,6 +32,7 @@
       "keyword.enabled" = false;
       "javascript.enabled" = false;
       "media.navigator.enabled" = false;
+      "browser.urlbar.scotchBonnet.enableOverride" = false;
     };
   };
 }

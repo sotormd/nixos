@@ -17,6 +17,9 @@
     # btop system resources monitor
     ./btop
 
+    # clipboard manager
+    ./cliphist
+
     # vscodium code editor
     ./codium
 

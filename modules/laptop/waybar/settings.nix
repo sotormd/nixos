@@ -115,6 +115,7 @@
           on-scroll-up = "${pkgs.playerctl}/bin/playerctl next";
           on-scroll-down = "${pkgs.playerctl}/bin/playerctl previous";
           on-click-right = "${pkgs.playerctl}/bin/playerctl stop";
+          max-length = 70;
         };
         clock = {
           format = "<span size='12000' rise='-1000'>󰥔</span> <span rise='-1000'>{:%I:%M %p}</span>";

@@ -69,6 +69,13 @@ eg.
 $ nixos nano modules/common/network/firewall.nix
 ```
 
+#### Edit variables and secrets
+
+```
+$ nixos edit vars
+$ nixos edit sops
+```
+
 #### Test a new configuration
 
 ```
