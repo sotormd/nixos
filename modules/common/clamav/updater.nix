@@ -1,3 +1,3 @@
 {
-  services.clamav.updater.enable = true;
+  services.clamav.updater.enable = false;
 }

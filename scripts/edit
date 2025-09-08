@@ -1,0 +1,26 @@
+#! /usr/bin/env bash
+
+DIR=$NIXOS_DIR
+ROLE=$NIXOS_ROLE
+
+VARS_DIR="$DIR/vars"
+VARS="$VARS_DIR/vars.nix"
+
+if [ "$ROLE" == "laptop" ]; then
+    SOPS_DIR="/persist/sops-nix"
+elif [ "$ROLE" == "server" ]; then
+    SOPS_DIR="/var/lib/sops-nix"
+else
+    echo "Error: unexpected role $NIXOS_ROLE"
+    exit 1
+fi
+SECRETS="$VARS_DIR/secrets.yaml"
+
+if [ "$1" == "vars" ]; then
+    nano vars/vars.nix
+elif [ "$1" == "sops" ]; then
+    sudo GNUPGHOME="$SOPS_DIR" sops vars/secrets.yaml
+else
+    echo "Error: expected argument 'vars' or 'sops'"
+    exit 1
+fi

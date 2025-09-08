@@ -258,13 +258,13 @@ The configuration expects a particular disk setup.
     To ensure all variables are set, edit the variables file.
 
     ```
-    $ nano $NIXOS_DIR/vars/vars.nix
+    $ $NIXOS_DIR/scripts/nixos edit vars
     ```
 
     To ensure all secrets are set, edit the secrets file.
 
     ```
-    $ cd $NIXOS_DIR && nix shell nixpkgs#sops nixpkgs#gnupg --command sudo GNUPGHOME=/persist/sops-nix sops vars/secrets.yaml
+    $ nix shell nixpkgs#sops nixpkgs#gnupg --command $NIXOS_DIR/scripts/nixos edit sops
     ```
 
 6. Before switching to the new configuration, disable some modules that need further setup.
