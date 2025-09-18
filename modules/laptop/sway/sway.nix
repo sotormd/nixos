@@ -1,6 +1,5 @@
 {
   pkgs,
-  home-manager,
   vars,
   colors,
   ...

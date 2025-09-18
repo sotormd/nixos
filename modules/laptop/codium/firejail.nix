@@ -1,7 +1,6 @@
 {
   pkgs,
   config,
-  home-manager,
   vars,
   ...
 }:

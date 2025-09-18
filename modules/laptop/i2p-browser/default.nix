@@ -1,9 +1,4 @@
-{
-  lib,
-  home-manager,
-  vars,
-  ...
-}:
+{ vars, ... }:
 
 {
   imports =

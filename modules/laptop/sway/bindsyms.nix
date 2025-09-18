@@ -1,9 +1,4 @@
-{
-  pkgs,
-  home-manager,
-  vars,
-  ...
-}:
+{ pkgs, vars, ... }:
 
 {
   home-manager.users."${vars.user.name}" = {
@@ -83,6 +78,8 @@
         # next/previous workspace
         "Mod4+Page_Down" = "workspace next";
         "Mod4+Page_Up" = "workspace prev";
+        "Mod4+shift+Page_Down" = "move workspace next";
+        "Mod4+shift+Page_Up" = "move workspace prev";
 
         # split
         "Mod4+b" = "splith";

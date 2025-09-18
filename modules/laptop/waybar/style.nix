@@ -1,9 +1,4 @@
-{
-  home-manager,
-  vars,
-  colors,
-  ...
-}:
+{ vars, colors, ... }:
 
 {
   home-manager.users."${vars.user.name}" = {
@@ -31,7 +26,7 @@
       }
 
       #workspaces,
-      .playerctl-paused, .playerctl-playing,
+      .playerctl-paused, .playerctl-playing, .playerctl-playing-noanimation,
       #idle_inhibitor,
       .userns-enabled, .userns-disabled,
       #network,
@@ -55,7 +50,7 @@
         padding-left: 5px;
       }
 
-      .playerctl-paused, .playerctl-playing,
+      .playerctl-paused, .playerctl-playing, .playerctl-playing-noanimation,
       #mode,
       #window,
       #idle_inhibitor,
@@ -72,7 +67,7 @@
         margin-left: 5px;
       }
 
-      .playerctl-paused, .playerctl-playing,
+      .playerctl-paused, .playerctl-playing, .playerctl-playing-noanimation,
       #mode,
       #clock {
         margin-right: 5px;
@@ -114,12 +109,17 @@
         animation: background-switch 6s linear infinite;
       }
 
+      .playerctl-playing-noanimation {
+        animation: background-switch 6s linear infinite;
+        animation-play-state: paused;
+      }
+
       .playerctl-paused {
         animation: background-switch 6s linear infinite;
         animation-play-state: paused;
       }
 
-      .playerctl-paused, .playerctl-playing,
+      .playerctl-paused, .playerctl-playing, .playerctl-playing-noanimation,
       #idle_inhibitor,
       .userns-enabled, .userns-disabled,
       #network,

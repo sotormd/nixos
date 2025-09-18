@@ -1,6 +1,5 @@
 {
   pkgs,
-  home-manager,
   vars,
   ...
 }:
@@ -397,7 +396,7 @@
         else:
             print()
         if idx+2 < len(lyric_times):
-            print(parsed_lyrics[lyric_times[idx+2]])
+            print(parsed_lyrics[lyric_times[idx+2]][:75])
       '';
     };
 

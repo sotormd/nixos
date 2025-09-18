@@ -1,9 +1,4 @@
-{
-  home-manager,
-  vars,
-  colors,
-  ...
-}:
+{ vars, colors, ... }:
 
 let
   linksText =

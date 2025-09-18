@@ -1,7 +1,7 @@
-{ pkgs, vars, ... }:
+{ pkgs, ... }:
 
 let
-  policies = import ./policies.nix { inherit vars; };
+  policies = import ./policies.nix;
 in
 {
   policiesFirefox = pkgs.wrapFirefox pkgs.firefox-unwrapped {

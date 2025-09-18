@@ -1,10 +1,4 @@
-{
-  lib,
-  pkgs,
-  home-manager,
-  vars,
-  ...
-}:
+{ vars, ... }:
 
 {
   # start waybar in sway

@@ -1,4 +1,4 @@
-{ home-manager, vars, ... }:
+{ vars, ... }:
 
 {
   programs.xfconf.enable = true;

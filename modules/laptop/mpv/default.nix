@@ -1,9 +1,4 @@
-{
-  pkgs,
-  home-manager,
-  vars,
-  ...
-}:
+{ pkgs, vars, ... }:
 
 {
   imports = [ ./settings.nix ];
