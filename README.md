@@ -32,7 +32,7 @@ NixOS configuration flake for multiple hosts.
 | search engine     | `searxng`                             |
 | anonymity         | `i2pd` `oniux` `tor-browser`          |
 | passwords         | `vaultwarden`                         |
-| text editor       | `vscodium` `nano` `mousepad`          |
+| text editor       | `neovim` `vscodium` `nano` `mousepad` |
 | gtk theme         | `Nordic-darker`                       |
 | gtk icons         | `Nordzy-dark`                         |
 | gtk cursor        | `Simp1e-Nord-Dark`                    |
