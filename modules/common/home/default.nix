@@ -1,4 +1,4 @@
-{ home-manager, vars, ... }:
+{ vars, ... }:
 
 {
   home-manager.extraSpecialArgs = {

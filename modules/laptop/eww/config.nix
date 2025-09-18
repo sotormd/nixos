@@ -1,9 +1,4 @@
-{
-  pkgs,
-  home-manager,
-  vars,
-  ...
-}:
+{ pkgs, vars, ... }:
 
 let
   COVER_TEXT = "\${COVER}";

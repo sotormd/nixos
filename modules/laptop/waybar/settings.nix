@@ -1,9 +1,4 @@
-{
-  pkgs,
-  home-manager,
-  vars,
-  ...
-}:
+{ pkgs, vars, ... }:
 
 {
   home-manager.users."${vars.user.name}" = {
@@ -101,10 +96,16 @@
             TITLE=$(${pkgs.playerctl}/bin/playerctl metadata title | sed -E 's/ -.*//; s/\(.*\)//g; s/\[.*\]//g; s/^[[:space:]]*//; s/[[:space:]]*$//; s/&/\&amp;/g; s/</\&lt;/g; s/>/\&gt;/g; s/"/\\"/g')
             ARTISTS=$(${pkgs.playerctl}/bin/playerctl metadata artist | awk -F',' '{print $1 ", " $2}' | sed -E 's/^[[:space:]]*//; s/[[:space:]]*$//; s/, *$//; s/&/\&amp;/g; s/</\&lt;/g; s/>/\&gt;/g; s/"/\\"/g')
 
+            if [[ -e /tmp/waybar-noanimation ]]; then
+              PLAYING_CLASS="playerctl-playing-noanimation"
+            else
+              PLAYING_CLASS="playerctl-playing"
+            fi
+
             if [ -z "$TITLE" ] || [[ "$TITLE" == "Advertisement" ]]; then
               echo "{\"text\": \"\", \"class\": \"playerctl-stopped\"}"
             elif [[ "$STATUS" == "Playing" ]]; then
-              echo "{\"text\": \"<span size='10000'></span> $TITLE - $ARTISTS\", \"class\": \"playerctl-playing\"}"
+              echo "{\"text\": \"<span size='10000'></span> $TITLE - $ARTISTS\", \"class\": \"$PLAYING_CLASS\"}"
             else
               echo "{\"text\": \"<span size='10000'></span> $TITLE - $ARTISTS\", \"class\": \"playerctl-paused\"}"
             fi
@@ -115,6 +116,15 @@
           on-scroll-up = "${pkgs.playerctl}/bin/playerctl next";
           on-scroll-down = "${pkgs.playerctl}/bin/playerctl previous";
           on-click-right = "${pkgs.playerctl}/bin/playerctl stop";
+          on-click-middle = ''
+            FILE="/tmp/waybar-noanimation"
+
+            if [ -e "$FILE" ]; then
+              rm "$FILE"
+            else
+              touch "$FILE"
+            fi
+          '';
           max-length = 70;
         };
         clock = {

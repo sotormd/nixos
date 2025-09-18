@@ -1,9 +1,4 @@
-{
-  home-manager,
-  vars,
-  colors,
-  ...
-}:
+{ vars, colors, ... }:
 
 {
   # to unlock sessions with swaylock

@@ -1,4 +1,4 @@
-{ home-manager, vars, ... }:
+{ vars, ... }:
 
 {
   imports = [
@@ -9,5 +9,6 @@
 
   home-manager.users."${vars.user.name}" = {
     programs.ssh.enable = true;
+    programs.ssh.enableDefaultConfig = false;
   };
 }

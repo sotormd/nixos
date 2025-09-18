@@ -1,4 +1,4 @@
-{ home-manager, vars, ... }:
+{ vars, ... }:
 
 {
   # enable the virt-manager gui

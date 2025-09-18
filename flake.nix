@@ -18,6 +18,10 @@
       url = "github:nix-community/lanzaboote";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+
+    nixvim = {
+      url = "github:nix-community/nixvim";
+    };
   };
 
   outputs =
@@ -27,6 +31,7 @@
       home-manager,
       sops-nix,
       lanzaboote,
+      nixvim,
       ...
     }@inputs:
 
@@ -61,6 +66,9 @@
 
           # lanzaboote - secure boot
           lanzaboote.nixosModules.lanzaboote
+
+          # nixvim - nix flavoured neovim
+          nixvim.nixosModules.nixvim
         ];
       };
 
