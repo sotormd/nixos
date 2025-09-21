@@ -1,7 +1,13 @@
-{
-  imports = [
-    ./home.nix
+{ vars, ... }:
 
-    ./root.nix
-  ];
+{
+  imports =
+    if (vars.features.impermanence.enabled == true) then
+      [
+        ./home.nix
+
+        ./root.nix
+      ]
+    else
+      [ ];
 }
