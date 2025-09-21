@@ -15,17 +15,19 @@
   };
 
   programs.nixvim.extraConfigLua = ''
-    vim.opt.fillchars = {
-      horiz = " ",       -- horizontal split
-      horizup = " ",     -- horizontal split top junction
-      horizdown = " ",   -- horizontal split bottom junction
-      vert = " ",        -- vertical split
-      vertleft = " ",    -- vertical split left junction
-      vertright = " ",   -- vertical split right junction
-      verthoriz = " ",   -- junction between horiz + vert
-      eob = " ",         -- end of buffer
-    }
+    --    vim.opt.fillchars = {
+    --      horiz = " ",       -- horizontal split
+    --      horizup = " ",     -- horizontal split top junction
+    --      horizdown = " ",   -- horizontal split bottom junction
+    --      vert = " ",        -- vertical split
+    --      vertleft = " ",    -- vertical split left junction
+    --      vertright = " ",   -- vertical split right junction
+    --      verthoriz = " ",   -- junction between horiz + vert
+    --      eob = " ",         -- end of buffer
+    --    }
 
-    vim.api.nvim_set_hl(0, "NormalFloat", { bg = "#${colors.bg1}" })   -- set float background
+        vim.api.nvim_set_hl(0, "WinSeparator", { fg = "#${colors.bg2}", bold = true })
+
+        vim.api.nvim_set_hl(0, "NormalFloat", { bg = "#${colors.bg2}" })   -- set float background
   '';
 }
