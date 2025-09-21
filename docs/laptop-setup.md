@@ -269,9 +269,13 @@ The configuration expects a particular disk setup.
 
 6. Before switching to the new configuration, disable some modules that need further setup.
 
-    1. Secure boot is not set up, so comment out `./lanzaboote.nix` from `$NIXOS_DIR/modules/laptop/boot/default.nix`.
+    1. Secure boot is not set up, so ensure `features.secureboot.enabled` is set to `false` in the variables.
 
-    2. Impermanence is not set up, so comment out `./impermanence` from `$NIXOS_DIR/modules/laptop/default.nix`.
+    2. Impermanence is not set up, so ensure `features.impermanence.enabled` is set to `false` in the variables.
+
+    ```
+    $ nixos edit vars
+    ```
 
 7. Switch to the new configuration for the first time.
 
@@ -363,9 +367,9 @@ Ensure all variables are defined in the `$NIXOS_DIR/vars/vars.nix` and secrets i
     $ nixos init lanzaboote create
     ```
 
-    Edit `$NIXOS_DIR/modules/laptop/boot/default.nix` and uncomment `./lanzaboote.nix`.
+    Set `features.secureboot.enabled = true;` in the 'FEATURE VARIABLES' section
     ```
-    $ nixos nano modules/laptop/boot/default.nix
+    $ nixos edit vars
     ```
 
     Switch to the new configuration.
@@ -421,10 +425,10 @@ Ensure all variables are defined in the `$NIXOS_DIR/vars/vars.nix` and secrets i
 
 2. Enable impermanence in configuration.
 
-    Edit `$NIXOS_DIR/modules/laptop/default.nix` and uncomment `./impermanence`.
+    Set `features.impermanence.enabled = true;` in the `FEATURE VARIABLES` section.
 
     ```
-    $ nixos nano modules/laptop/default.nix
+    $ nixos edit vars
     ```
 
 3. Switch to the new configuration.

@@ -294,6 +294,20 @@ elif [ "$1" == "vars" ]; then
 
   # external monitor screen identifier (usually HDMI-A-1)
   outputs.monitor = "$VARS_OUTPUTS_MONITOR";
+
+  ####################
+  # FEATURE VARIABLES
+  ####################
+
+  # secure boot
+  # provided by the lanzaboote project
+  # read docs/laptop-setup.md before enabling
+  features.secureboot.enabled = false;
+
+  # impermanence
+  # using zfs snapshots and bind mounts
+  # read docs/laptop-setup.md before enabling
+  features.impermanence.enabled = false;
 }
 EOF
 
