@@ -44,6 +44,17 @@
       indent.enable = false;
     };
 
+    # completions
+    cmp.enable = true;
+    cmp = {
+      autoEnableSources = true;
+      settings.sources = [
+        { name = "nvim_lsp"; }
+        { name = "path"; }
+        { name = "buffer"; }
+      ];
+    };
+
     # none-ls
     none-ls.enable = true;
     none-ls.sources = {
