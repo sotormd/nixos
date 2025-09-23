@@ -117,3 +117,9 @@ $ nixos format
 ```
 $ nixos perms
 ```
+
+#### Repair nix store
+
+```
+$ nixos repair
+```

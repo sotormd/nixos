@@ -1,3 +1,5 @@
+{ lib, vars, ... }:
+
 {
   imports = [
     # MODULES - sorted alphabetically
@@ -37,12 +39,6 @@
 
     # gtk widget toolkit and other theming options
     ./gtk
-
-    # i2p browser
-    ./i2p-browser
-
-    # ephemerality
-    ./impermanence
 
     # mousepad text editor
     ./mousepad
@@ -85,5 +81,11 @@
 
     # zathura pdf reader
     ./zathura
-  ];
+  ]
+
+  # browser the i2p network
+  ++ lib.optImport vars.network.server.enable ./i2p-browser
+
+  # ephemerality
+  ++ lib.optImport vars.features.impermanence.enable ./impermanence;
 }

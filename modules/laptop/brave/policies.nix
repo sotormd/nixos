@@ -41,18 +41,18 @@
     DefaultSearchProviderEnabled = true;
 
     DefaultSearchProviderImageURL =
-      if (vars.network.server.enabled == true) then
+      if (vars.network.server.enable == true) then
         "https://${vars.network.server.domain}/searxng/static/themes/simple/img/favicon.svg"
       else
         "https://duckduckgo.com/assets/logo_header_mobile.alt.v109.svg";
 
-    DefaultSearchProviderKeyword = if (vars.network.server.enabled == true) then ":sx" else ":ddg";
+    DefaultSearchProviderKeyword = if (vars.network.server.enable == true) then ":sx" else ":ddg";
 
     DefaultSearchProviderName =
-      if (vars.network.server.enabled == true) then "SearXNG" else "DuckDuckGo";
+      if (vars.network.server.enable == true) then "SearXNG" else "DuckDuckGo";
 
     DefaultSearchProviderSearchURL =
-      if (vars.network.server.enabled == true) then
+      if (vars.network.server.enable == true) then
         "https://${vars.network.server.domain}/searxng/search?q={searchTerms}"
       else
         "https://duckduckgo.com/?q={searchTerms}";

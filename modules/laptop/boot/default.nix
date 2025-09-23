@@ -1,15 +1,17 @@
+{ lib, vars, ... }:
+
 {
   imports = [
     ./emulation.nix
 
     ./hw.nix
 
-    ./lanzaboote.nix
-
     ./loader.nix
 
-    # ./plymouth.nix
-
     ./sysctl.nix
-  ];
+  ]
+
+  ++ lib.optImport vars.features.secureboot.enable ./lanzaboote.nix
+
+  ++ lib.optImport vars.features.plymouth.enable ./plytmouth.nix;
 }

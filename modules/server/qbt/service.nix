@@ -25,14 +25,14 @@
                         chown qbt:qbt -R '${vars.network.qbt.data}'
 
                         # create configuration directory
-                        mkdir -p '/var/lib/qbt/home/.config/qBittorrent'
+                        mkdir -p '${vars.network.qbt.data}/qbt/home/.config/qBittorrent'
 
                         # set permissions on the configuration directory
-                        chown qbt:qbt -R '/var/lib/qbt/home/.config/qBittorrent'
+                        chown qbt:qbt -R '${vars.network.qbt.data}/qbt/home/.config/qBittorrent'
 
                         # write categories
-                        if [ ! -f '/var/lib/qbt/home/.config/qBittorrent/categories.json' ]; then
-                          cat > '/var/lib/qbt/home/.config/qBittorrent/categories.json' <<EOF
+                        if [ ! -f '${vars.network.qbt.data}/qbt/home/.config/qBittorrent/categories.json' ]; then
+                          cat > '${vars.network.qbt.data}/qbt/home/.config/qBittorrent/categories.json' <<EOF
             {
                 "Movies": {
                     "save_path": "${vars.network.qbt.data}/movies"
@@ -45,8 +45,8 @@
                         fi
 
                         # write configuration
-                        if [ ! -f '/var/lib/qbt/home/.config/qBittorrent/qBittorrent.conf' ]; then
-                          cat > '/var/lib/qbt/home/.config/qBittorrent/qBittorrent.conf' <<EOF
+                        if [ ! -f '${vars.network.qbt.data}/qbt/home/.config/qBittorrent/qBittorrent.conf' ]; then
+                          cat > '${vars.network.qbt.data}/qbt/home/.config/qBittorrent/qBittorrent.conf' <<EOF
             [BitTorrent]
             Session\AnonymousModeEnabled=true
             Session\DHTEnabled=false
@@ -93,10 +93,10 @@
                         fi
 
                         # set permissions on categories file and configuration file
-                        chown qbt:qbt '/var/lib/qbt/home/.config/qBittorrent/categories.json'
-                        chmod 600 '/var/lib/qbt/home/.config/qBittorrent/categories.json'
-                        chown qbt:qbt '/var/lib/qbt/home/.config/qBittorrent/qBittorrent.conf'
-                        chmod 600 '/var/lib/qbt/home/.config/qBittorrent/qBittorrent.conf'
+                        chown qbt:qbt '${vars.network.qbt.data}/qbt/home/.config/qBittorrent/categories.json'
+                        chmod 600 '${vars.network.qbt.data}/qbt/home/.config/qBittorrent/categories.json'
+                        chown qbt:qbt '${vars.network.qbt.data}/qbt/home/.config/qBittorrent/qBittorrent.conf'
+                        chmod 600 '${vars.network.qbt.data}/qbt/home/.config/qBittorrent/qBittorrent.conf'
 
           '';
         in

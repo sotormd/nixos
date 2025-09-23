@@ -1,28 +1,20 @@
 { vars, ... }:
 
 {
-  imports =
-    if (vars.network.server.enabled == true) then
-      [
-        ./css.nix
+  imports = [
+    ./css.nix
 
-        ./firejail.nix
+    ./firejail.nix
 
-        ./profile.nix
+    ./profile.nix
 
-        ./proxy.nix
+    ./proxy.nix
 
-        ./settings.nix
-      ]
-    else
-      [ ];
+    ./settings.nix
+  ];
 
-  home-manager.users."${vars.user.name}" =
-    if (vars.network.server.enabled == true) then
-      {
-        programs.firefox.enable = true;
-        programs.firefox.package = null;
-      }
-    else
-      { };
+  home-manager.users."${vars.user.name}" = {
+    programs.firefox.enable = true;
+    programs.firefox.package = null;
+  };
 }

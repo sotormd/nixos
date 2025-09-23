@@ -137,8 +137,8 @@ elif [ "$1" == "vars" ]; then
             VARS_NETWORK_IP=""
         fi
 
-        if [ -z "$VARS_NETWORK_SERVER_ENABLED" ]; then
-            VARS_NETWORK_SERVER_ENABLED="true"
+        if [ -z "$VARS_NETWORK_SERVER_ENABLE" ]; then
+            VARS_NETWORK_SERVER_ENABLE="true"
         fi
 
         if [ -z "$VARS_NETWORK_SERVER_IP" ]; then
@@ -268,7 +268,7 @@ elif [ "$1" == "vars" ]; then
   network.ip = "$VARS_NETWORK_IP";
 
   # whether to use server features or not
-  network.server.enabled = $VARS_NETWORK_SERVER_ENABLED;
+  network.server.enable = $VARS_NETWORK_SERVER_ENABLED;
 
   # static local home server ip address
   network.server.ip = "$VARS_NETWORK_SERVER_IP";
@@ -299,15 +299,27 @@ elif [ "$1" == "vars" ]; then
   # FEATURE VARIABLES
   ####################
 
-  # secure boot
+  # secure boot: boot signed software
   # provided by the lanzaboote project
   # read docs/laptop-setup.md before enabling
-  features.secureboot.enabled = false;
+  features.secureboot.enable = false;
 
-  # impermanence
+  # impermanence: erase your darlings
   # using zfs snapshots and bind mounts
   # read docs/laptop-setup.md before enabling
-  features.impermanence.enabled = false;
+  features.impermanence.enable = false;
+
+  # plymouth: boot splash screen
+  features.plymouth.enable = false;
+
+  # auto-cpufreq: optimize cpu speed & power
+  features.auto-cpufreq.enable = true;
+
+  # powertop: power management tool
+  features.powertop.enable = false;
+
+  # tlp: optimize battery life
+  features.tlp.enable = false;
 }
 EOF
 
@@ -547,6 +559,36 @@ EOF
 
   # jellyfin (loopback) port
   network.jellyfin.port = $VARS_NETWORK_JELLYFIN_PORT;
+
+  ####################
+  # FEATURE VARIABLES
+  ####################
+
+  # i2pd: invisible internet protocol daemon
+  # requires: nginx
+  features.i2pd.enable = false;
+
+  # jellyfin: media server
+  # requires: nginx
+  features.jellyfin.enable = false;
+
+  # nginx: web server
+  features.nginx.enable = false;
+
+  # qbittorrent: bittorrent client
+  # requires: i2pd, nginx
+  features.qbt.enable = false;
+
+  # searxng: metasearch engine
+  # requires: nginx
+  features.searxng.enable = false;
+
+  # unbound: validating recursive dns server
+  features.unbound.enable = false;
+
+  # vaultwarden: password manager
+  # requires: nginx
+  features.vaultwarden.enable = false;
 }
 EOF
 

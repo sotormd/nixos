@@ -269,9 +269,9 @@ The configuration expects a particular disk setup.
 
 6. Before switching to the new configuration, disable some modules that need further setup.
 
-    1. Secure boot is not set up, so ensure `features.secureboot.enabled` is set to `false` in the variables.
+    1. Secure boot is not set up, so ensure `features.secureboot.enable` is set to `false` in the variables.
 
-    2. Impermanence is not set up, so ensure `features.impermanence.enabled` is set to `false` in the variables.
+    2. Impermanence is not set up, so ensure `features.impermanence.enable` is set to `false` in the variables.
 
     ```
     $ nixos edit vars
@@ -324,7 +324,7 @@ Full list of possible environment variables:
 | `VARS_NETWORK_SSID`               | **Yes**   | Wireless network ssid.                              | -                                                 | `"net20"`                            |
 | `VARS_NETWORK_GATEWAY`            | No        | Wireless network gateway.                           | `"192.168.0.1"`                                   | `"10.0.0.0"`                         |
 | `VARS_NETWORK_IP`                 | **Yes**   | Static local IP address.                            | -                                                 | `"10.0.0.3"`                         |
-| `VARS_NETWORK_SERVER_ENABLED`     | No        | Whether to enable server-dependant features or not. | `"true"`                                          | `"false"`                            |
+| `VARS_NETWORK_SERVER_ENABLE`      | No        | Whether to enable server-dependant features or not. | `"true"`                                          | `"false"`                            |
 | `VARS_NETWORK_SERVER_IP`          | **Yes***  | Static local server IP address.                     | -                                                 | `"10.0.0.5"`                         |
 | `VARS_NETWORK_SERVER_DOMAIN`      | **Yes***  | Server domain.                                      | -                                                 | `"myserver.domain.com"`              |
 | `VARS_NETWORK_SERVER_SSH_PORT`    | No        | Server SSH port.                                    | `"22"`                                            | `"20000"`                            |
@@ -335,7 +335,7 @@ Full list of possible environment variables:
 | `SECRETS_HASHED_PASSWORD`         | No        | Hashed user password.                               | `$(mkpasswd -m yescrypt)`                         | -                                    |
 | `SECRETS_PSK`                     | No        | PSK for the network.                                | (user input)                                      | `"supersecretpsk"`                   |
 
-*Can skip if `VARS_NETWORK_SERVER_ENABLED` is `false`.
+*Can skip if `VARS_NETWORK_SERVER_ENABLE` is `false`.
 
 Required section only shows the minimum variables needed to ensure a working system (ie, the rest will use defaults).
 
@@ -367,7 +367,7 @@ Ensure all variables are defined in the `$NIXOS_DIR/vars/vars.nix` and secrets i
     $ nixos init lanzaboote create
     ```
 
-    Set `features.secureboot.enabled = true;` in the 'FEATURE VARIABLES' section
+    Set `features.secureboot.enable = true;` in the 'FEATURE VARIABLES' section
     ```
     $ nixos edit vars
     ```
@@ -425,7 +425,7 @@ Ensure all variables are defined in the `$NIXOS_DIR/vars/vars.nix` and secrets i
 
 2. Enable impermanence in configuration.
 
-    Set `features.impermanence.enabled = true;` in the `FEATURE VARIABLES` section.
+    Set `features.impermanence.enable = true;` in the `FEATURE VARIABLES` section.
 
     ```
     $ nixos edit vars
