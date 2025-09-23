@@ -2,7 +2,7 @@
 
 {
   home-manager.users."${vars.user.name}" =
-    if (vars.network.server.enabled == true) then
+    if (vars.network.server.enable == true) then
       {
         programs.ssh.matchBlocks.server = {
           hostname = vars.network.server.ip;

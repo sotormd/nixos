@@ -1,9 +1,12 @@
+{ lib, vars, ... }:
+
 {
-  imports = [
-    ./auto-cpufreq.nix
+  imports =
+    [ ]
 
-    #    ./powertop.nix
+    ++ lib.optImport vars.features.auto-cpufreq.enable ./auto-cpufreq.nix
 
-    #    ./tlp.nix
-  ];
+    ++ lib.optImport vars.features.powertop.enable ./powertop.nix
+
+    ++ lib.optImport vars.features.tlp.enable ./tlp.nix;
 }

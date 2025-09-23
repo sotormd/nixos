@@ -2,7 +2,7 @@
 
 {
   networking.nameservers =
-    if (vars.network.server.enabled == true) then
+    if (vars.network.server.enable == true) then
       [
         "192.168.0.37"
         "1.1.1.1"

@@ -36,6 +36,7 @@
     }@inputs:
 
     let
+      lib = nixpkgs.lib // (import ./lib { });
       vars = import ./vars/vars.nix;
       colors = import ./vars/colors.nix;
     in
@@ -48,6 +49,7 @@
       nixosConfigurations.laptop = nixpkgs.lib.nixosSystem {
         specialArgs = {
           inherit inputs;
+          inherit lib;
           inherit vars;
           inherit colors;
         };
@@ -76,6 +78,7 @@
       nixosConfigurations.server = nixpkgs.lib.nixosSystem {
         specialArgs = {
           inherit inputs;
+          inherit lib;
           inherit vars;
           inherit colors;
         };

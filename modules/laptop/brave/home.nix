@@ -2,7 +2,7 @@
 
 let
   linksText =
-    if (vars.network.server.enabled == true) then
+    if (vars.network.server.enable == true) then
       ''
         <a href="https://${vars.network.server.domain}/searxng/" class="link" data-short="/sx/" data-full="searxng">/sx/</a>
         <a href="https://${vars.network.server.domain}/vaultwarden/" class="link" data-short="/vw/" data-full="vaultwarden">/vw/</a>

@@ -8,10 +8,10 @@
 {
   home-manager.users."${vars.user.name}".home.packages = [ pkgs.sbctl ];
 
-  boot.loader.systemd-boot.enable = lib.mkForce (!vars.features.secureboot.enabled);
+  boot.loader.systemd-boot.enable = lib.mkForce false;
 
   boot.lanzaboote = {
-    enable = vars.features.secureboot.enabled;
+    enable = true;
     pkiBundle = "/var/lib/sbctl";
   };
 }

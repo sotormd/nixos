@@ -167,6 +167,18 @@
 
     You should see a directory tree of `$NIXOS_DIR` (in this case, of `/nixos`).
 
+9. Enable features.
+
+    Enable required features under the `FEATURE VARIABLES` section.
+    ```
+    $ nixos edit vars
+    ```
+
+    Switch to the new configuration.
+    ```
+    $ nixos switch
+    ```
+
 ### Environment variables.
 
 Full list of possible environment variables:
