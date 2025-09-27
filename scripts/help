@@ -1,0 +1,127 @@
+#! /usr/bin/env bash
+
+cat <<'EOF'
+NixOS Flake Helper
+==================
+
+Usage:
+  nixos [command] [args]
+
+When run with no command, equivalent to:
+  tree -I .git -I .local --filesfirst
+
+When run with a command not mentioned below,
+the command is run in $NIXOS_DIR.
+
+Commands
+--------
+
+  test
+  roles: laptop, server
+
+    $ nixos test
+    Test the current configuration.
+    Does not create a boot entry.
+
+  switch
+  roles: laptop, server
+
+    $ nixos switch
+    Switch to the current configuration.
+    Creates a boot entry.
+
+  commit
+  roles: laptop
+
+    $ nixos commit
+    Switch to and commit the current configuration.
+    Creates a boot entry and a Git commit.
+
+  update
+  roles: laptop, server
+
+    $ nixos update
+    Update flake inputs in flake.lock.
+    Equivalent to:
+      nix flake update
+
+  format
+  roles: laptop, server
+
+    $ nixos format
+    Format the flake using nixfmt.
+    Equivalent to:
+      find . -type f -name '*.nix' -exec nix fmt {} +
+
+  perms
+  roles: laptop, server
+
+    $ nixos perms
+    Apply correct permissions to all files in the flake.
+
+  purge
+  roles: laptop, server
+
+    $ nixos purge
+    Garbage collect old generations.
+    Equivalent to:
+      sudo nix-collect-garbage --delete-old
+
+  repair
+  roles: laptop, server
+
+    $ nixos repair
+    Attempt to repair the nix store.
+    Equivalent to:
+      sudo nix-store --verify --check-contents --repair
+
+  edit <vars|sops>
+  roles: laptop, server
+
+    $ nixos edit vars
+    Edit variables file
+
+    $ nixos edit sops
+    Edit sops-nix secrets
+
+  init <vars|sops> [replace]
+  roles: laptop, server
+
+    $ nixos init vars
+    Initialize variables (see docs/*-setup.md).
+
+    $ nixos init vars replace
+    Replace current variables.
+
+    $ nixos init sops
+    Initialize secrets (see docs/*-setup.md).
+
+    $ nixos init sops replace
+    Replace current secrets.
+
+  init lanzaboote <create|enroll>
+  roles: laptop
+
+    $ nixos init lanzaboote create
+    Create lanzaboote keys (see docs/laptop-setup.md).
+
+    $ nixos init lanzaboote enroll
+    Enroll lanzaboote keys (see docs/laptop-setup.md).
+
+  init impermanence
+  roles: laptop
+
+    $ nixos init impermanence
+    Populate the /persist directory for impermanence (see docs/laptop-setup.md).
+
+  serverpush <path>
+  roles: laptop
+
+    $ nixos serverpush /nixos
+    Push the flake to server:/nixos
+
+  help
+  roles: laptop, server
+
+    $ nixos help
+    Show this message and exit

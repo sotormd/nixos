@@ -57,6 +57,8 @@ if [ "$1" == "hardware" ]; then
 
 elif [ "$1" == "vars" ]; then
 
+    mkdir -p $VARS_DIR
+
     if [ -f "$VARS" ] && [[ "$2" != "replace" ]]; then
         echo "Error: vars.nix already exists"
         exit 1
@@ -268,7 +270,7 @@ elif [ "$1" == "vars" ]; then
   network.ip = "$VARS_NETWORK_IP";
 
   # whether to use server features or not
-  network.server.enable = $VARS_NETWORK_SERVER_ENABLED;
+  network.server.enable = $VARS_NETWORK_SERVER_ENABLE;
 
   # static local home server ip address
   network.server.ip = "$VARS_NETWORK_SERVER_IP";
@@ -602,6 +604,8 @@ EOF
 #############
 
 elif [ "$1" == "sops" ]; then
+
+    mkdir -p $VARS_DIR
 
     if [ -f "$SECRETS" ] && [[ "$2" != "replace" ]]; then
         echo "Error: secrets.yaml already exists"
