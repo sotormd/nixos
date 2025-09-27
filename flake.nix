@@ -84,7 +84,7 @@
           inherit inputs;
           inherit lib;
           inherit vars;
-          inherit colors;
+          inherit (colors.lib) colors;
         };
         modules = [
           # common configuration
