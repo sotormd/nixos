@@ -32,7 +32,7 @@ NixOS configuration flake for multiple hosts.
 | search engine     | `searxng`                             |
 | anonymity         | `i2pd` `oniux` `tor-browser`          |
 | passwords         | `vaultwarden`                         |
-| text editor       | `neovim` `vscodium` `nano` `mousepad` |
+| text editor       | [`neovim`](https://github.com/sotormd/neovim) `vscodium` `nano` `mousepad` |
 | gtk theme         | `Nordic-darker`                       |
 | gtk icons         | `Nordzy-dark`                         |
 | gtk cursor        | `Simp1e-Nord-Dark`                    |
@@ -49,77 +49,35 @@ NixOS configuration flake for multiple hosts.
 
 [server setup](./docs/server-setup.md)
 
-# Maintenance
+# `nixos` Flake Helper
 
-#### View flake tree
+Usage:
 
-```
-$ nixos
-```
+`nixos [command] [args]`
 
-#### Run command in flake directory
+When run with **no command**, equivalent to:
 
-```
-$ nixos $COMMAND_HERE
-```
+`$ nixos tree -I .git -I .local --filesfirst`
 
-eg.
+When run with a command not listed below, the command is dispatched to `$NIXOS_DIR`:
 
-```
-$ nixos nano modules/common/network/firewall.nix
-```
+`$ nixos vi modules/common/firewall.nix`
 
-#### Edit variables and secrets
+## Commands
 
-```
-$ nixos edit vars
-$ nixos edit sops
-```
-
-#### Test a new configuration
-
-```
-$ nixos test
-```
-
-#### Switch to a new configuration
-
-```
-$ nixos switch
-```
-
-#### Switch to and commit a new configuration
-
-```
-$ nixos commit
-```
-
-#### Update flake inputs
-
-```
-$ nixos update
-```
-
-#### Garbage collect
-
-```
-$ nixos purge
-```
-
-#### Format flake
-
-```
-$ nixos format
-```
-
-#### Fix file permissions
-
-```
-$ nixos perms
-```
-
-#### Repair nix store
-
-```
-$ nixos repair
-```
+| Command                            | `laptop` | `server` | Description                                                                                                                                            |
+|------------------------------------|----------|----------|--------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `test`                             | ✔      | ✔      | <br>`$ nixos test` <br>Test the current configuration. Does **not** create a boot entry.                                                                   |
+| `switch`                           | ✔      | ✔      | <br>`$ nixos switch` <br>Switch to the current configuration. Creates a boot entry.                                                                        |
+| `commit`                           | ✔      | ✘      | <br>`$ nixos commit` <br>Switch to and commit the current configuration. Creates a boot entry and a Git commit.                                            |
+| `update`                           | ✔      | ✔      | <br>`$ nixos update` <br>Update flake inputs in `flake.lock`. <br>Equivalent to: `$ nixos nix flake update`.                                               |
+| `format`                           | ✔      | ✔      | <br>`$ nixos format` <br>Format the flake using nixfmt. <br>Equivalent to: `$ find . -type f -name '*.nix' -exec nix fmt {} +`.                            |
+| `perms`                            | ✔      | ✔      | <br>`$ nixos perms` <br>Apply correct permissions to all files in the flake.                                                                               |
+| `purge`                            | ✔      | ✔      | <br>`$ nixos purge` <br>Garbage collect old generations. <br>Equivalent to: `$ sudo nix-collect-garbage --delete-old`.                                     |
+| `repair`                           | ✔      | ✔      | <br>`$ nixos repair` <br>Attempt to repair the nix store. <br>Equivalent to: `$ sudo nix-store --verify --check-contents --repair`.                        |
+| `edit <vars\|sops>`                | ✔      | ✔      | <br>`$ nixos edit vars` <br>Edit variables file. <br><br>`$ nixos edit sops` <br>Edit sops-nix secrets.                                                    |
+| `init <vars\|sops> [replace]`      | ✔      | ✔      | <br>`$ nixos init vars` <br>Initialize variables. <br><br>`$ nixos init vars replace` <br>Replace current variables. <br><br>`$ nixos init sops` <br>Initialize secrets. <br><br>`$ nixos init sops replace` <br>Replace current secrets. |
+| `init lanzaboote <create\|enroll>` | ✔      | ✘      | <br>`$ nixos init lanzaboote create` <br>Create lanzaboote keys. See [setup docs](docs/laptop-setup.md#6-setting-up-secure-boot). <br><br>`$ nixos init lanzaboote enroll` <br>Enroll lanzaboote keys. See [setup docs](docs/laptop-setup.md#6-setting-up-secure-boot). |
+| `init impermanence`                | ✔      | ✘      | <br>`$ nixos init impermanence` <br>Populate the `/persist` directory for impermanence. See [setup docs](docs/laptop-setup.md#7-setting-up-impermanence).  |
+| `serverpush <path>`                | ✔      | ✘      | <br>`$ nixos serverpush /nixos` <br>Push the flake to `server:/nixos`.                                                                                     |
+| `help`                             | ✔      | ✔      | <br>`$ nixos help` <br>Show this message and exit.                                                                                                         |

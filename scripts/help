@@ -8,10 +8,11 @@ Usage:
   nixos [command] [args]
 
 When run with no command, equivalent to:
-  tree -I .git -I .local --filesfirst
+  $ nixos tree -I .git -I .local --filesfirst
 
 When run with a command not mentioned below,
-the command is run in $NIXOS_DIR.
+the command is dispatched to $NIXOS_DIR.
+  $ nixos vi modules/common/firewall.nix
 
 Commands
 --------
@@ -43,7 +44,7 @@ Commands
     $ nixos update
     Update flake inputs in flake.lock.
     Equivalent to:
-      nix flake update
+      $ nixos nix flake update
 
   format
   roles: laptop, server
@@ -51,7 +52,7 @@ Commands
     $ nixos format
     Format the flake using nixfmt.
     Equivalent to:
-      find . -type f -name '*.nix' -exec nix fmt {} +
+      $ nixos find . -type f -name '*.nix' -exec nix fmt {} +
 
   perms
   roles: laptop, server
@@ -65,7 +66,7 @@ Commands
     $ nixos purge
     Garbage collect old generations.
     Equivalent to:
-      sudo nix-collect-garbage --delete-old
+      $ sudo nix-collect-garbage --delete-old
 
   repair
   roles: laptop, server
@@ -73,7 +74,7 @@ Commands
     $ nixos repair
     Attempt to repair the nix store.
     Equivalent to:
-      sudo nix-store --verify --check-contents --repair
+      $ sudo nix-store --verify --check-contents --repair
 
   edit <vars|sops>
   roles: laptop, server
@@ -125,3 +126,4 @@ Commands
 
     $ nixos help
     Show this message and exit
+EOF
