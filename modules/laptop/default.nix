@@ -46,6 +46,9 @@
     # mpv media player
     ./mpv
 
+    # neovim text editor
+    ./neovim
+
     # networking
     ./network
 
