@@ -17,6 +17,9 @@
     # timezone, locales, keyboard layout
     ./internationalization
 
+    # neovim text editor
+    ./neovim
+
     # networking
     ./network
 

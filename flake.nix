@@ -2,7 +2,9 @@
   description = "nixos configuration flake";
 
   inputs = {
-    nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
+    nixpkgs = {
+      url = "github:nixos/nixpkgs/nixos-unstable";
+    };
 
     home-manager = {
       url = "github:nix-community/home-manager";
@@ -19,8 +21,12 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
-    nixvim = {
-      url = "github:nix-community/nixvim";
+    neovim = {
+      url = "github:sotormd/neovim";
+    };
+
+    colors = {
+      url = "github:sotormd/colors";
     };
   };
 
@@ -31,14 +37,14 @@
       home-manager,
       sops-nix,
       lanzaboote,
-      nixvim,
+      neovim,
+      colors,
       ...
     }@inputs:
 
     let
       lib = nixpkgs.lib // (import ./lib { });
       vars = import ./vars/vars.nix;
-      colors = import ./vars/colors.nix;
     in
     {
       # formatting with nixfmt-rfc-style
@@ -51,7 +57,8 @@
           inherit inputs;
           inherit lib;
           inherit vars;
-          inherit colors;
+          inherit neovim;
+          inherit (colors.lib) colors;
         };
         modules = [
           # common configuration
@@ -68,9 +75,6 @@
 
           # lanzaboote - secure boot
           lanzaboote.nixosModules.lanzaboote
-
-          # nixvim - nix flavoured neovim
-          nixvim.nixosModules.nixvim
         ];
       };
 
