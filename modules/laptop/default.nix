@@ -83,7 +83,7 @@
     ./zathura
   ]
 
-  # browser the i2p network
+  # browse the i2p network
   ++ lib.optImport vars.network.server.enable ./i2p-browser
 
   # ephemerality
