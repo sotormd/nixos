@@ -15,6 +15,8 @@ NixOS configuration flake for multiple hosts.
 | bootloader        | `systemd-boot` `uboot`                                                     |
 | secureboot        | `lanzaboote`                                                               |
 | kernel            | `linux-hardened`                                                           |
+| auditing          | `auditd`                                                                   |
+| shell             | `bash`                                                                     |
 | filesystem        | `zfs`                                                                      |
 | networking        | `wpa_supplicant`                                                           |
 | dns               | `unbound`                                                                  |
@@ -46,6 +48,7 @@ NixOS configuration flake for multiple hosts.
 | media server      | `jellyfin`                                                                 |
 | resource monitor  | `btop` `htop`                                                              |
 | clipboard         | `cliphist`                                                                 |
+| screenshots       | `grimshot`                                                                 |
 
 # Setup
 
