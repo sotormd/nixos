@@ -18,12 +18,14 @@ NixOS configuration flake for multiple hosts.
 | filesystem        | `zfs`                                                                      |
 | networking        | `wpa_supplicant`                                                           |
 | dns               | `unbound`                                                                  |
+| audio             | `pipewire` `pulseaudio`                                                    |
 | display server    | `wayland`                                                                  |
 | compositor        | `swayfx`                                                                   |
 | bar               | `waybar`                                                                   |
 | widgets           | `eww`                                                                      |
 | launcher          | `rofi`                                                                     |
 | notifications     | `dunst`                                                                    |
+| terminal emulator | `foot`                                                                     |
 | file manager      | `thunar`                                                                   |
 | pdf reader        | `zathura`                                                                  |
 | image viewer      | `swayimg`                                                                  |
@@ -42,6 +44,8 @@ NixOS configuration flake for multiple hosts.
 | optimizations     | `auto-cpufreq` `tlp` `powertop`                                            |
 | web server        | `nginx`                                                                    |
 | media server      | `jellyfin`                                                                 |
+| resource monitor  | `btop` `htop`                                                              |
+| clipboard         | `cliphist`                                                                 |
 
 # Setup
 
