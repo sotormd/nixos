@@ -21,6 +21,8 @@ NixOS configuration flake for multiple hosts.
 | networking        | `wpa_supplicant`                                                           |
 | dns               | `unbound`                                                                  |
 | audio             | `pipewire` `pulseaudio`                                                    |
+| web server        | `nginx`                                                                    |
+| media server      | `jellyfin`                                                                 |
 | display server    | `wayland`                                                                  |
 | compositor        | `swayfx`                                                                   |
 | bar               | `waybar`                                                                   |
@@ -37,6 +39,9 @@ NixOS configuration flake for multiple hosts.
 | anonymity         | `i2pd` `oniux` `tor-browser`                                               |
 | passwords         | `vaultwarden`                                                              |
 | text editor       | [`neovim`](https://github.com/sotormd/neovim) `vscodium` `nano` `mousepad` |
+| version control   | `git`                                                                      |
+| development       | `rust` `python` `go` `haskell` `ruby`                                      |
+| colorscheme       | [`nord`](https://github.com/sotormd/colors)                                |
 | gtk theme         | `Nordic-darker`                                                            |
 | gtk icons         | `Nordzy-dark`                                                              |
 | gtk cursor        | `Simp1e-Nord-Dark`                                                         |
@@ -44,8 +49,6 @@ NixOS configuration flake for multiple hosts.
 | sandboxing        | `firejail`                                                                 |
 | virtualization    | `qemu` `virt-manager` `distrobox`                                          |
 | optimizations     | `auto-cpufreq` `tlp` `powertop`                                            |
-| web server        | `nginx`                                                                    |
-| media server      | `jellyfin`                                                                 |
 | resource monitor  | `btop` `htop`                                                              |
 | clipboard         | `cliphist`                                                                 |
 | screenshots       | `grimshot`                                                                 |
