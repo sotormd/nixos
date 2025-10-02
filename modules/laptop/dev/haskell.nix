@@ -3,8 +3,9 @@
 {
   home-manager.users."${vars.user.name}" = {
     home.packages = [
-      pkgs.cargo
-      pkgs.rustc
+      pkgs.stack
+      pkgs.cabal-install
+      pkgs.ghc
     ];
   };
 }
