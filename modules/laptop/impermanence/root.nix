@@ -4,18 +4,10 @@
   # Rollback /
   boot.initrd.systemd.services.rollback-root = {
     description = "Rollback /";
-    wantedBy = [
-      "initrd.target"
-    ];
-    after = [
-      "zfs-import-rpool.service"
-    ];
-    before = [
-      "sysroot.mount"
-    ];
-    path = with pkgs; [
-      zfs
-    ];
+    wantedBy = [ "initrd.target" ];
+    after = [ "zfs-import-rpool.service" ];
+    before = [ "sysroot.mount" ];
+    path = with pkgs; [ zfs ];
     unitConfig.DefaultDependencies = "no";
     serviceConfig.Type = "oneshot";
     script = ''

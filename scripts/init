@@ -63,6 +63,7 @@ elif [ "$1" == "vars" ]; then
         echo "Error: vars.nix already exists"
         exit 1
     else
+	cp $VARS "/tmp/vars.nix"
         rm $VARS
     fi
 
@@ -96,6 +97,30 @@ elif [ "$1" == "vars" ]; then
             VARS_DEVICE_ROOT=""
         fi
 
+	if [ -z "$VARS_DEVICE_SECUREBOOT_ENABLE" ]; then
+	    VARS_DEVICE_SECUREBOOT_ENABLE="false"
+	fi
+
+	if [ -z "$VARS_DEVICE_IMPERMANENCE_ENABLE" ]; then
+	    VARS_DEVICE_IMPERMANENCE_ENABLE="false"
+	fi
+
+	if [ -z "$VARS_DEVICE_PLYMOUTH_ENABLE" ]; then
+	    VARS_DEVICE_PLYMOUTH_ENABLE="false"
+	fi
+
+	if [ -z "$VARS_DEVICE_AUTOCPUFREQ_ENABLE" ]; then
+	    VARS_DEVICE_AUTOCPUFREQ_ENABLE="true"
+	fi
+
+	if [ -z "$VARS_DEVICE_POWERTOP_ENABLE" ]; then
+	    VARS_DEVICE_POWERTOP_ENABLE="false"
+	fi
+
+	if [ -z "$VARS_DEVICE_TLP_ENABLE" ]; then
+	    VARS_DEVICE_TLP_ENABLE="false"
+	fi
+	
         if [ -z "$VARS_USER_NAME" ]; then
             VARS_USER_NAME=$USER
         fi
@@ -227,6 +252,28 @@ elif [ "$1" == "vars" ]; then
   # ];
   device.luks = [ ];
 
+  # secure boot: boot signed software
+  # provided by the lanzaboote project
+  # read docs/laptop-setup.md before enabling
+  device.secureboot.enable = $VARS_DEVICE_SECUREBOOT_ENABLE;
+
+  # impermanence: erase your darlings
+  # using zfs snapshots and bind mounts
+  # read docs/laptop-setup.md before enabling
+  device.impermanence.enable = $VARS_DEVICE_IMPERMANENCE_ENABLE;
+
+  # plymouth: boot splash screen
+  device.plymouth.enable = $VARS_DEVICE_PLYMOUTH_ENABLE;
+
+  # auto-cpufreq: optimize cpu speed & power
+  device.auto-cpufreq.enable = $VARS_DEVICE_AUTOCPUFREQ_ENABLE;
+
+  # powertop: power management tool
+  device.powertop.enable = $VARS_DEVICE_POWERTOP_ENABLE;
+
+  # tlp: optimize battery life
+  device.tlp.enable = $VARS_DEVICE_TLP_ENABLE;
+
   #########################
   # USER ACCOUNT VARIABLES
   #########################
@@ -296,32 +343,6 @@ elif [ "$1" == "vars" ]; then
 
   # external monitor screen identifier (usually HDMI-A-1)
   outputs.monitor = "$VARS_OUTPUTS_MONITOR";
-
-  ####################
-  # FEATURE VARIABLES
-  ####################
-
-  # secure boot: boot signed software
-  # provided by the lanzaboote project
-  # read docs/laptop-setup.md before enabling
-  features.secureboot.enable = false;
-
-  # impermanence: erase your darlings
-  # using zfs snapshots and bind mounts
-  # read docs/laptop-setup.md before enabling
-  features.impermanence.enable = false;
-
-  # plymouth: boot splash screen
-  features.plymouth.enable = false;
-
-  # auto-cpufreq: optimize cpu speed & power
-  features.auto-cpufreq.enable = true;
-
-  # powertop: power management tool
-  features.powertop.enable = false;
-
-  # tlp: optimize battery life
-  features.tlp.enable = false;
 }
 EOF
 
@@ -397,6 +418,22 @@ EOF
             VARS_NETWORK_SSH_KEY=""
         fi
 
+	if [ -z "$VARS_NETWORK_UNBOUND_ENABLE" ]; then
+	    VARS_NETWORK_UNBOUND_ENABLE="false"
+	fi
+
+	if [ -z "$VARS_NETWORK_NGINX_ENABLE" ]; then
+	    VARS_NETWORK_NGINX_ENABLE="false"
+	fi
+
+	if [ -z "$VARS_NETWORK_SEARXNG_ENABLE" ]; then
+	    VARS_NETWORK_SEARXNG_ENABLE="false"
+	fi
+
+	if [ -z "$VARS_NETWORK_VAULTWARDEN_ENABLE" ]; then
+	    VARS_NETWORK_VAULTWARDEN_ENABLE="false"
+	fi
+
         if [ -z "$VARS_NETWORK_VAULTWARDEN_DATA" ]; then
             VARS_NETWORK_VAULTWARDEN_DATA="/var/lib/bitwarden_rs"
         fi
@@ -404,6 +441,10 @@ EOF
         if [ -z "$VARS_NETWORK_VAULTWARDEN_PORT" ]; then
             VARS_NETWORK_VAULTWARDEN_PORT="8222"
         fi
+
+	if [ -z "$VARS_NETWORK_I2PD_ENABLE" ]; then
+	    VARS_NETWORK_I2PD_ENABLE="false"
+	fi
 
         if [ -z "$VARS_NETWORK_I2PD_SAM_PORT" ]; then
             VARS_NETWORK_I2PD_SAM_PORT="7656"
@@ -421,6 +462,10 @@ EOF
             VARS_NETWORK_I2PD_WEBCONSOLE_PORT="7070"
         fi
 
+	if [ -z "$VARS_NETWORK_QBT_ENABLE" ]; then
+	    VARS_NETWORK_QBT_ENABLE="false"
+	fi
+
         if [ -z "$VARS_NETWORK_QBT_DATA" ]; then
             VARS_NETWORK_QBT_DATA="/var/lib/qbt/data"
         fi
@@ -428,6 +473,10 @@ EOF
         if [ -z "$VARS_NETWORK_QBT_PORT" ]; then
             VARS_NETWORK_QBT_PORT="8080"
         fi
+
+	if [ -z "$VARS_NETWORK_JELLYFIN_ENABLE" ]; then
+	    VARS_NETWORK_JELLYFIN_ENABLE="false"
+	fi
 
         if [ -z "$VARS_NETWORK_JELLYFIN_PORT" ]; then
             VARS_NETWORK_JELLYFIN_PORT="8096"
@@ -535,11 +584,29 @@ EOF
   # ssh keys
   network.ssh.keys = [ "$VARS_NETWORK_SSH_KEY" ];
 
+  # unbound: validating recursive dns server
+  network.unbound.enable = $VARS_NETWORK_UNBOUND_ENABLE;
+
+  # nginx: web server
+  network.nginx.enable = $VARS_NETWORK_NGINX_ENABLE;
+
+  # searxng: metasearch engine
+  # requires: nginx
+  network.searxng.enable = $VARS_NETWORK_SEARXNG_ENABLE;
+
+  # vaultwarden: password manager
+  # requires: nginx
+  network.vaultwarden.enable = $VARS_NETWORK_VAULTWARDEN_ENABLE;
+
   # vaultwarden data directory
   network.vaultwarden.data = "$VARS_NETWORK_VAULTWARDEN_DATA";
 
   # vaultwarden (loopback) port
   network.vaultwarden.port = $VARS_NETWORK_VAULTWARDEN_PORT;
+
+  # i2pd: invisible internet protocol daemon
+  # requires: nginx
+  network.i2pd.enable = $VARS_NETWORK_I2PD_ENABLE;
 
   # i2pd SAM (loopback) port
   network.i2pd.sam.port = $VARS_NETWORK_I2PD_SAM_PORT;
@@ -553,44 +620,22 @@ EOF
   # i2pd webconsole (loopback) port
   network.i2pd.webconsole.port = $VARS_NETWORK_I2PD_WEBCONSOLE_PORT;
 
+  # qbittorrent: bittorrent client
+  # requires: i2pd, nginx
+  network.qbt.enable = $VARS_NETWORK_QBT_ENABLE;
+
   # qbittorrent data directory
   network.qbt.data = "$VARS_NETWORK_QBT_DATA";
 
   # qbittorrent (loopback) port
   network.qbt.port = $VARS_NETWORK_QBT_PORT;
 
-  # jellyfin (loopback) port
-  network.jellyfin.port = $VARS_NETWORK_JELLYFIN_PORT;
-
-  ####################
-  # FEATURE VARIABLES
-  ####################
-
-  # i2pd: invisible internet protocol daemon
-  # requires: nginx
-  features.i2pd.enable = false;
-
   # jellyfin: media server
   # requires: nginx
-  features.jellyfin.enable = false;
+  network.jellyfin.enable = $VARS_NETWORK_JELLYFIN_ENABLE;
 
-  # nginx: web server
-  features.nginx.enable = false;
-
-  # qbittorrent: bittorrent client
-  # requires: i2pd, nginx
-  features.qbt.enable = false;
-
-  # searxng: metasearch engine
-  # requires: nginx
-  features.searxng.enable = false;
-
-  # unbound: validating recursive dns server
-  features.unbound.enable = false;
-
-  # vaultwarden: password manager
-  # requires: nginx
-  features.vaultwarden.enable = false;
+  # jellyfin (loopback) port
+  network.jellyfin.port = $VARS_NETWORK_JELLYFIN_PORT;
 }
 EOF
 
@@ -611,6 +656,7 @@ elif [ "$1" == "sops" ]; then
         echo "Error: secrets.yaml already exists"
         exit 1
     else
+	cp $SECRETS "/tmp/secrets.yaml"
         rm $SECRETS
     fi
 

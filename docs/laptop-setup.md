@@ -269,9 +269,9 @@ The configuration expects a particular disk setup.
 
 6. Before switching to the new configuration, disable some modules that need further setup.
 
-    1. Secure boot is not set up, so ensure `features.secureboot.enable` is set to `false` in the variables.
+    1. Secure boot is not set up, so ensure `device.secureboot.enable` is set to `false` in the variables.
 
-    2. Impermanence is not set up, so ensure `features.impermanence.enable` is set to `false` in the variables.
+    2. Impermanence is not set up, so ensure `device.impermanence.enable` is set to `false` in the variables.
 
     ```
     $ nixos edit vars
@@ -314,6 +314,12 @@ Full list of possible environment variables:
 | `VARS_DEVICE_BOOT`                | **Yes**   | Boot partition partuuid.                            | -                                                 | -                                    |
 | `VARS_DEVICE_SWAP`                | **Yes**   | Swap partition partuuid.                            | -                                                 | -                                    |
 | `VARS_DEVICE_ROOT`                | **Yes**   | Root partition partuuid.                            | -                                                 | -                                    |
+| `VARS_DEVICE_SECUREBOOT_ENABLE`   | No        | Enable secure boot.                                 | `"false"`                                         | `"true"`                             |
+| `VARS_DEVICE_IMPERMANENCE_ENABLE` | No        | Enable impermanence.                                | `"false"`                                         | `"true"`                             |
+| `VARS_DEVICE_PLYMOUTH_ENABLE`     | No        | Enable `plymouth` boot animations.                  | `"false"`                                         | `"true"`                             |
+| `VARS_DEVICE_AUTOCPUFREQ_ENABLE`  | No        | Enable `auto-cpufreq`.                              | `"true"`                                          | `"false"`                            |
+| `VARS_DEVICE_POWERTOP_ENABLE`     | No        | Enable `powertop`.                                  | `"false"`                                         | `"true"`                             |
+| `VARS_DEVICE_TLP_ENABLE`          | No        | Enable `tlp`.                                       | `"false"`                                         | `"true"`                             |
 | `VARS_USER_NAME`                  | No        | Username.                                           | `$USER`                                           | `"Bar"`                              |
 | `VARS_USER_EMAIL`                 | **Yes**   | Email used for git commits.                         | -                                                 | `"Bar@domain.com"`                   |
 | `VARS_USER_GITHUB_KEYFILE`        | No        | Github SSH identity key.                            | `"id_ed25519_github"`                             | `"id_rsa_github"`                    |
@@ -324,7 +330,7 @@ Full list of possible environment variables:
 | `VARS_NETWORK_SSID`               | **Yes**   | Wireless network ssid.                              | -                                                 | `"net20"`                            |
 | `VARS_NETWORK_GATEWAY`            | No        | Wireless network gateway.                           | `"192.168.0.1"`                                   | `"10.0.0.0"`                         |
 | `VARS_NETWORK_IP`                 | **Yes**   | Static local IP address.                            | -                                                 | `"10.0.0.3"`                         |
-| `VARS_NETWORK_SERVER_ENABLE`      | No        | Whether to enable server-dependant features or not. | `"true"`                                          | `"false"`                            |
+| `VARS_NETWORK_SERVER_ENABLE`      | No        | Enable server-dependant features.                   | `"true"`                                          | `"false"`                            |
 | `VARS_NETWORK_SERVER_IP`          | **Yes***  | Static local server IP address.                     | -                                                 | `"10.0.0.5"`                         |
 | `VARS_NETWORK_SERVER_DOMAIN`      | **Yes***  | Server domain.                                      | -                                                 | `"myserver.domain.com"`              |
 | `VARS_NETWORK_SERVER_SSH_PORT`    | No        | Server SSH port.                                    | `"22"`                                            | `"20000"`                            |
@@ -367,7 +373,7 @@ Ensure all variables are defined in the `$NIXOS_DIR/vars/vars.nix` and secrets i
     $ nixos init lanzaboote create
     ```
 
-    Set `features.secureboot.enable = true;` in the 'FEATURE VARIABLES' section
+    Set `device.secureboot.enable = true;` in `vars.nix`.
     ```
     $ nixos edit vars
     ```
@@ -425,7 +431,7 @@ Ensure all variables are defined in the `$NIXOS_DIR/vars/vars.nix` and secrets i
 
 2. Enable impermanence in configuration.
 
-    Set `features.impermanence.enable = true;` in the `FEATURE VARIABLES` section.
+    Set `device.impermanence.enable = true;` in `vars.nix`.
 
     ```
     $ nixos edit vars

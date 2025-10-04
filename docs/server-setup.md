@@ -167,9 +167,9 @@
 
     You should see a directory tree of `$NIXOS_DIR` (in this case, of `/nixos`).
 
-9. Enable features.
+9. Enable services.
 
-    Enable required features under the `FEATURE VARIABLES` section.
+    Enable required services by setting `network.<service>.enable = true;` in `vars.nix`.
     ```
     $ nixos edit vars
     ```
@@ -203,14 +203,21 @@ Full list of possible environment variables:
 | `VARS_NETWORK_DUCKDNS_DOMAIN`             | No        | DuckDNS domain name.                                | `"$(uname -n)-server.duckdns.org"`                          | `"nixos-server-0b123df.duckdns.org"` |
 | `VARS_NETWORK_SSH_PORT`                   | No        | SSH port.                                           | `"22"`                                                      | `"20000"`                            |
 | `VARS_NETWORK_SSH_KEY`                    | No        | Allowed public key.                                 | -                                                           | `"AAAA..."`                          |
+| `VARS_NETWORK_UNBOUND_ENABLE`             | No        | Enable Unbound.                                     | `"false"`                                                   | `"true"`                             |
+| `VARS_NETWORK_NGINX_ENABLE`               | No        | Enable Nginx.                                       | `"false"`                                                   | `"true"`                             |
+| `VARS_NETWORK_SEARXNG_ENABLE`             | No        | Enable SearXNG.                                     | `"false"`                                                   | `"true"`                             |
+| `VARS_NETWORK_VAULTWARDEN_ENABLE`         | No        | Enable Vaultwarden.                                 | `"false"`                                                   | `"true"`                             |
 | `VARS_NETWORK_VAULTWARDEN_DATA`           | No        | Vaultwarden data directory.                         | `"/var/lib/bitwarden_rs"`                                   | `"/mnt/drive/vaultwarden-data"`      |
 | `VARS_NETWORK_VAULTWARDEN_PORT`           | No        | Vaultwarden web vault rocket (loopback) port.       | `"8222"`                                                    | `"20001"`                            |
+| `VARS_NETWORK_I2PD_ENABLE`                | No        | Enable I2PD.                                        | `"false"`                                                   | `"true"`                             |
 | `VARS_NETWORK_I2PD_SAM_PORT`              | No        | I2PD SAM (loopback) port.                           | `"7656"`                                                    | `"20002"`                            |
 | `VARS_NETWORK_I2PD_HTTP_PROXY_PORT`       | No        | I2PD HTTP proxy (LAN) port.                         | `"4444"`                                                    | `"20003"`                            |
 | `VARS_NETWORK_I2PD_SOCKS_PROXY_PORT`      | No        | I2PD SOCKS proxy (loopback) port.                   | `"4447"`                                                    | `"20004"`                            |
 | `VARS_NETWORK_I2PD_WEBCONSOLE_PROXY_PORT` | No        | I2PD webconsole (loopback) port.                    | `"7070"`                                                    | `"20005"`                            |
+| `VARS_NETWORK_QBT_ENABLE`                 | No        | Enable qBittorrent.                                 | `"false"`                                                   | `"true"`                             |
 | `VARS_NETWORK_QBT_DATA`                   | No        | qBittorrent data directory.                         | `"/var/lib/qbt/data"`                                       | `"/mnt/drive/qbt"`                   |
 | `VARS_NETWORK_QBT_PORT`                   | No        | qBittorrent webui (loopback) port.                  | `"8080"`                                                    | `"20006"`                            |
+| `VARS_NETWORK_JELLYFIN_ENABLE`            | No        | Enable Jellyfin.                                    | `"false"`                                                   | `"true"`                             |
 | `VARS_NETWORK_JELLYFIN_PORT`              | No        | Jellyfin web (loopback) port.                       | `"8096"`                                                    | `"20007"`                            |
 | `SECRETS_HASHED_PASSWORD`                 | No        | Hashed user password.                               | `$(mkpasswd -m yescrypt)`                                   | -                                    |
 | `SECRETS_PSK`                             | No        | PSK for the network.                                | (user input)                                                | `"supersecretpsk"`                   |
