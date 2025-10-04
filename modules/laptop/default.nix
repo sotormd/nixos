@@ -87,5 +87,5 @@
   ++ lib.optImport vars.network.server.enable ./i2p-browser
 
   # ephemerality
-  ++ lib.optImport vars.features.impermanence.enable ./impermanence;
+  ++ lib.optImport vars.device.impermanence.enable ./impermanence;
 }

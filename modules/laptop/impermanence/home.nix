@@ -4,18 +4,10 @@
   # Rollback /home
   boot.initrd.systemd.services.rollback-home = {
     description = "Rollback /home";
-    wantedBy = [
-      "initrd.target"
-    ];
-    after = [
-      "zfs-import-rpool.service"
-    ];
-    before = [
-      "sysroot.mount"
-    ];
-    path = with pkgs; [
-      zfs
-    ];
+    wantedBy = [ "initrd.target" ];
+    after = [ "zfs-import-rpool.service" ];
+    before = [ "sysroot.mount" ];
+    path = with pkgs; [ zfs ];
     unitConfig.DefaultDependencies = "no";
     serviceConfig.Type = "oneshot";
     script = ''
@@ -31,12 +23,8 @@
       "rollback-home.service"
       "home.mount"
     ];
-    before = [
-      "home-manager-${vars.user.name}.service"
-    ];
-    path = with pkgs; [
-      coreutils
-    ];
+    before = [ "home-manager-${vars.user.name}.service" ];
+    path = with pkgs; [ coreutils ];
     serviceConfig.Type = "oneshot";
     script = ''
       mkdir -p /home/${vars.user.name}/.config
