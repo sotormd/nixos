@@ -260,6 +260,7 @@ elif [ "$1" == "vars" ]; then
   # impermanence: erase your darlings
   # using zfs snapshots and bind mounts
   # read docs/laptop-setup.md before enabling
+  # requires: secureboot
   device.impermanence.enable = $VARS_DEVICE_IMPERMANENCE_ENABLE;
 
   # plymouth: boot splash screen
