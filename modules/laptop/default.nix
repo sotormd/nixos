@@ -1,91 +1,96 @@
 { lib, vars, ... }:
 
 {
-  imports = [
-    # MODULES - sorted alphabetically
+  imports = lib.concatMap (x: x) [
+    [
+      # assertions - ensure no tomfoolery
+      ./assertions.nix
 
-    # audio with pipewire
-    ./audio
+      # MODULES - sorted alphabetically
 
-    # files in ~/.local/share/backgrounds
-    ./backgrounds
+      # audio with pipewire
+      ./audio
 
-    # secureboot, plymouth, sysctl options, etc
-    ./boot
+      # files in ~/.local/share/backgrounds
+      ./backgrounds
 
-    # brave web browser
-    ./brave
+      # secureboot, plymouth, sysctl options, etc
+      ./boot
 
-    # btop system resources monitor
-    ./btop
+      # brave web browser
+      ./brave
 
-    # clipboard manager
-    ./cliphist
+      # btop system resources monitor
+      ./btop
 
-    # vscodium code editor
-    ./codium
+      # clipboard manager
+      ./cliphist
 
-    # cpu frequency optimizations, power management
-    ./cpu
+      # vscodium code editor
+      ./codium
 
-    # development tools
-    ./dev
+      # cpu frequency optimizations, power management
+      ./cpu
 
-    # dunst notification daemon
-    ./dunst
+      # development tools
+      ./dev
 
-    # wm-agnostic widgets
-    ./eww
+      # dunst notification daemon
+      ./dunst
 
-    # gtk widget toolkit and other theming options
-    ./gtk
+      # wm-agnostic widgets
+      ./eww
 
-    # mousepad text editor
-    ./mousepad
+      # gtk widget toolkit and other theming options
+      ./gtk
 
-    # mpv media player
-    ./mpv
+      # mousepad text editor
+      ./mousepad
 
-    # neovim text editor
-    ./neovim
+      # mpv media player
+      ./mpv
 
-    # networking
-    ./network
+      # neovim text editor
+      ./neovim
 
-    # packages
-    ./packages
+      # networking
+      ./network
 
-    # launcher
-    ./rofi
+      # packages
+      ./packages
 
-    # sops-nix secrets management
-    ./sops
+      # launcher
+      ./rofi
 
-    # secure shell
-    ./ssh
+      # sops-nix secrets management
+      ./sops
 
-    # sway wayland compositor
-    ./sway
+      # secure shell
+      ./ssh
 
-    # thunar file manager
-    ./thunar
+      # sway wayland compositor
+      ./sway
 
-    # the onion router
-    ./tor
+      # thunar file manager
+      ./thunar
 
-    # virtualisation with qemu, distrobox, etc
-    ./virtualization
+      # the onion router
+      ./tor
 
-    # waybar wayland panel
-    ./waybar
+      # virtualisation with qemu, distrobox, etc
+      ./virtualization
 
-    # zathura pdf reader
-    ./zathura
-  ]
+      # waybar wayland panel
+      ./waybar
 
-  # browse the i2p network
-  ++ lib.optImport vars.network.server.enable ./i2p-browser
+      # zathura pdf reader
+      ./zathura
+    ]
 
-  # ephemerality
-  ++ lib.optImport vars.device.impermanence.enable ./impermanence;
+    # browse the i2p network
+    (lib.optImport vars.network.server.enable ./i2p-browser)
+
+    # ephemerality
+    (lib.optImport vars.device.impermanence.enable ./impermanence)
+  ];
 }
