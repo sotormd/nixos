@@ -144,4 +144,7 @@
 
   # external monitor screen identifier (usually HDMI-A-1)
   outputs.monitor = "HDMI-A-1";
+
+  # wallpaper
+  outputs.wallpaper = "nixos";
 }
