@@ -12,7 +12,7 @@
       };
 
       cursor = {
-        style = "beam";
+        style = "block";
       };
 
       colors = {
