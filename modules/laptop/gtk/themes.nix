@@ -1,7 +1,7 @@
 { pkgs, vars, ... }:
 
 {
-  home-manager.users."${vars.user.name}" = {
+  home-manager.users.${vars.user.name} = {
     gtk.theme.package = pkgs.nordic;
     gtk.theme.name = "Nordic-darker";
 

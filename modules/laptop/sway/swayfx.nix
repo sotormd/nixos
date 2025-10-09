@@ -1,7 +1,7 @@
 { pkgs, vars, ... }:
 
 {
-  home-manager.users."${vars.user.name}" = {
+  home-manager.users.${vars.user.name} = {
     # swayfx config
     wayland.windowManager.sway.extraConfig = ''
       corner_radius 5

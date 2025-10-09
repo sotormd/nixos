@@ -46,7 +46,7 @@
     (lib.optImport vars.network.vaultwarden.enable ./vaultwarden)
   ];
 
-  home-manager.users."${vars.user.name}" = {
+  home-manager.users.${vars.user.name} = {
     # set user dirs
     xdg.userDirs = {
       enable = true;

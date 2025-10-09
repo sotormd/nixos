@@ -31,7 +31,7 @@ in
     ];
   };
 
-  home-manager.users."${vars.user.name}" = {
+  home-manager.users.${vars.user.name} = {
     programs.vscode.package = hmWrapper;
   };
 }

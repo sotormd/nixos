@@ -1,7 +1,7 @@
 { vars, ... }:
 
 {
-  home-manager.users."${vars.user.name}" = {
+  home-manager.users.${vars.user.name} = {
     home.file.".config/Mousepad/settings.conf" = {
       force = true;
       text = ''

@@ -1,7 +1,7 @@
 { vars, ... }:
 
 {
-  home-manager.users."${vars.user.name}" = {
+  home-manager.users.${vars.user.name} = {
     xdg.mimeApps.enable = true;
 
     xdg.mimeApps.defaultApplications = {

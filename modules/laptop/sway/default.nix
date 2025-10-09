@@ -25,7 +25,7 @@
     ./swaylock.nix
   ];
 
-  home-manager.users."${vars.user.name}" = {
+  home-manager.users.${vars.user.name} = {
     # enable the sway wayland compositor
     wayland.windowManager.sway.enable = true;
   };

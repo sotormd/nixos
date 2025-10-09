@@ -14,5 +14,5 @@
     ./settings.nix
   ];
 
-  home-manager.users."${vars.user.name}".home.packages = [ pkgs.sops ];
+  home-manager.users.${vars.user.name}.home.packages = [ pkgs.sops ];
 }

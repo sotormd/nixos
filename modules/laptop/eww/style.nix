@@ -1,7 +1,7 @@
 { vars, colors, ... }:
 
 {
-  home-manager.users."${vars.user.name}" = {
+  home-manager.users.${vars.user.name} = {
     home.file.".config/eww/eww.scss".text = ''
         .dock0, .dock1 {
           background: transparent;

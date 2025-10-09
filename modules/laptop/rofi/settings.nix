@@ -6,7 +6,7 @@
 }:
 
 {
-  home-manager.users."${vars.user.name}" = {
+  home-manager.users.${vars.user.name} = {
     programs.rofi.theme = "${pkgs.writeText "style.rasi" ''
       /*****----- Configuration -----*****/
       configuration {

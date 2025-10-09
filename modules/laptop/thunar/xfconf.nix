@@ -3,7 +3,7 @@
 {
   programs.xfconf.enable = true;
 
-  home-manager.users."${vars.user.name}" = {
+  home-manager.users.${vars.user.name} = {
     xfconf.settings.thunar = {
       "last-view" = "ThunarIconView";
       "last-icon-view-zoom-level" = "THUNAR_ZOOM_LEVEL_100_PERCENT";

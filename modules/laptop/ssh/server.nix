@@ -1,7 +1,7 @@
 { vars, ... }:
 
 {
-  home-manager.users."${vars.user.name}" =
+  home-manager.users.${vars.user.name} =
     if (vars.network.server.enable == true) then
       {
         programs.ssh.matchBlocks.server = {

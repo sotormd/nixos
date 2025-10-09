@@ -1,7 +1,7 @@
 { vars, ... }:
 
 {
-  home-manager.users."${vars.user.name}" = {
+  home-manager.users.${vars.user.name} = {
     programs.ssh.matchBlocks.github = {
       hostname = "github.com";
       user = "git";

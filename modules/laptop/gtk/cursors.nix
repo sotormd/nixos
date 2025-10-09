@@ -1,7 +1,7 @@
 { pkgs, vars, ... }:
 
 {
-  home-manager.users."${vars.user.name}" = {
+  home-manager.users.${vars.user.name} = {
     gtk.cursorTheme.package = pkgs.simp1e-cursors;
     gtk.cursorTheme.name = "Simp1e-Nord-Dark";
     gtk.cursorTheme.size = 1;

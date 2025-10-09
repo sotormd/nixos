@@ -7,7 +7,7 @@
     ./server.nix
   ];
 
-  home-manager.users."${vars.user.name}" = {
+  home-manager.users.${vars.user.name} = {
     programs.ssh.enable = true;
     programs.ssh.enableDefaultConfig = false;
   };

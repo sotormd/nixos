@@ -1,7 +1,7 @@
 { pkgs, vars, ... }:
 
 {
-  home-manager.users."${vars.user.name}" = {
+  home-manager.users.${vars.user.name} = {
     programs.waybar.settings = {
       mainBar = {
         height = 32;

@@ -1,7 +1,7 @@
 { vars, ... }:
 
 {
-  home-manager.users."${vars.user.name}" = {
+  home-manager.users.${vars.user.name} = {
     programs.firefox.profiles."i2p".settings = {
       "network.proxy.type" = 1;
       "network.proxy.http" = vars.network.server.ip;

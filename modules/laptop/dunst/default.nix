@@ -7,7 +7,7 @@
     ./settings.nix
   ];
 
-  home-manager.users."${vars.user.name}" = {
+  home-manager.users.${vars.user.name} = {
     services.dunst.enable = true;
   };
 }

@@ -14,7 +14,7 @@ let
       '''';
 in
 {
-  home-manager.users."${vars.user.name}" = {
+  home-manager.users.${vars.user.name} = {
     home.file.".local/share/home.html".text = ''
       <!DOCTYPE html>
       <html lang="en">

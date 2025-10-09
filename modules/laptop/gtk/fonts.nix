@@ -1,7 +1,7 @@
 { pkgs, vars, ... }:
 
 {
-  home-manager.users."${vars.user.name}" = {
+  home-manager.users.${vars.user.name} = {
     gtk.font.package = pkgs.ibm-plex;
     gtk.font.name = "IBM Plex Sans";
     gtk.font.size = 10;
