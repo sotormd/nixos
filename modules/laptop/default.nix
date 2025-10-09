@@ -74,9 +74,6 @@
       # thunar file manager
       ./thunar
 
-      # the onion router
-      ./tor
-
       # virtualisation with qemu, distrobox, etc
       ./virtualization
 
