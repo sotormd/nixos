@@ -2,6 +2,9 @@
 
 {
   home-manager.users."${vars.user.name}" = {
-    home.packages = [ pkgs.oniux ];
+    home.packages = with pkgs; [
+      tor-browser
+      oniux
+    ];
   };
 }
