@@ -4,7 +4,7 @@
   # enable the virt-manager gui
   programs.virt-manager.enable = true;
 
-  home-manager.users."${vars.user.name}" = {
+  home-manager.users.${vars.user.name} = {
     # add the qemu connection to virt-manager
     dconf = {
       enable = true;

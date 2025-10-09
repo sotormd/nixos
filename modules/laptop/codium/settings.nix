@@ -1,7 +1,7 @@
 { vars, ... }:
 
 {
-  home-manager.users."${vars.user.name}" = {
+  home-manager.users.${vars.user.name} = {
     programs.vscode.profiles.default.userSettings = {
       "files.autoSave" = "afterDelay";
       "editor.fontFamily" = "IBM Plex Mono";

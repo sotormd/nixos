@@ -6,7 +6,7 @@
 }:
 
 {
-  home-manager.users."${vars.user.name}".home.packages = [ pkgs.sbctl ];
+  home-manager.users.${vars.user.name}.home.packages = [ pkgs.sbctl ];
 
   boot.loader.systemd-boot.enable = lib.mkForce false;
 

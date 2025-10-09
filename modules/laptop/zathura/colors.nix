@@ -1,7 +1,7 @@
 { vars, colors, ... }:
 
 {
-  home-manager.users."${vars.user.name}" = {
+  home-manager.users.${vars.user.name} = {
     programs.zathura.options = {
       notification-error-bg = "#${colors.bg0}";
       notification-error-fg = "#${colors.red}";

@@ -6,7 +6,7 @@
 }:
 
 {
-  home-manager.users."${vars.user.name}" = {
+  home-manager.users.${vars.user.name} = {
     # sway wayland compositor options
     wayland.windowManager.sway = {
       # disable xwayland completely

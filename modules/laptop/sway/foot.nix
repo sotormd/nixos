@@ -1,7 +1,7 @@
 { vars, colors, ... }:
 
 {
-  home-manager.users."${vars.user.name}" = {
+  home-manager.users.${vars.user.name} = {
     # enable the foot terminal emulator
     programs.foot.enable = true;
 

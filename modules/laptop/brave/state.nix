@@ -16,7 +16,7 @@ let
   };
 in
 {
-  home-manager.users."${vars.user.name}" = {
+  home-manager.users.${vars.user.name} = {
     home.file.".config/BraveSoftware/Brave-Browser/Local State" = {
       text = builtins.toJSON localState;
       force = true;

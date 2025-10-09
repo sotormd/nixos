@@ -10,7 +10,7 @@
 
     ./themes.nix
   ];
-  home-manager.users."${vars.user.name}" = {
+  home-manager.users.${vars.user.name} = {
     # enable GTK+
     gtk.enable = true;
 

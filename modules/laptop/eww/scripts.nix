@@ -5,7 +5,7 @@
 }:
 
 {
-  home-manager.users."${vars.user.name}" = {
+  home-manager.users.${vars.user.name} = {
     home.file.".config/eww/scripts/music.sh" = {
       executable = true;
       text = ''

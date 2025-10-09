@@ -4,7 +4,7 @@ let
   COVER_TEXT = "\${COVER}";
 in
 {
-  home-manager.users."${vars.user.name}" = {
+  home-manager.users.${vars.user.name} = {
     home.file.".config/eww/eww.yuck".text = ''
             (defvar dock-items-json "[]")
             (defpoll SONG :interval "1s" `/home/${vars.user.name}/.config/eww/scripts/music.sh --song`)

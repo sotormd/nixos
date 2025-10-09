@@ -4,7 +4,7 @@
   # to unlock sessions with swaylock
   security.pam.services.swaylock = { };
 
-  home-manager.users."${vars.user.name}" = {
+  home-manager.users.${vars.user.name} = {
     # enable swaylock
     programs.swaylock.enable = true;
 

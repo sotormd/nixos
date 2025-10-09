@@ -1,7 +1,7 @@
 { vars, colors, ... }:
 
 {
-  home-manager.users."${vars.user.name}" = {
+  home-manager.users.${vars.user.name} = {
     programs.waybar.style = ''
       * {
         font-family: 'IBM Plex Sans';
