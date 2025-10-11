@@ -200,6 +200,10 @@ elif [ "$1" == "vars" ]; then
             VARS_OUTPUTS_WALLPAPER="mario"
         fi
 
+	if [ -z "$VARS_OUTPUTS_LOCKSCREEN" ]; then
+            VARS_OUTPUTS_LOCKSCREEN="camera"
+        fi
+
         # create vars file
         cat > $VARS <<EOF
 {
@@ -351,6 +355,9 @@ elif [ "$1" == "vars" ]; then
 
   # wallpaper
   outputs.wallpaper = "$VARS_OUTPUTS_WALLPAPER";
+
+  # lockscreen
+  outputs.lockscreen = "$VARS_OUTPUTS_LOCKSCREEN";
 }
 EOF
 

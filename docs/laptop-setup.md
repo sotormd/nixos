@@ -339,6 +339,7 @@ Full list of possible environment variables:
 | `VARS_OUTPUTS_LAPTOP`             | No        | Identifier for laptop screen.                       | `"eDP-1"`                                         | `"eDP-1"`                            |
 | `VARS_OUTPUTS_MONITOR`            | No        | Identifier for monitor screen.                      | `"HDMI-A-1"`                                      | `"HDMI-A-1"`                         |
 | `VARS_OUTPUTS_WALLPAPER`          | No        | Wallpaper name.                                     | `"mario"`                                         | `"nixos"`                            |
+| `VARS_OUTPUTS_LOCKSCREEN`         | No        | Lockscreen wallpaper name.                          | `"camera"`                                        | `"mario"`                            |
 | `SECRETS_HASHED_PASSWORD`         | No        | Hashed user password.                               | `$(mkpasswd -m yescrypt)`                         | -                                    |
 | `SECRETS_PSK`                     | No        | PSK for the network.                                | (user input)                                      | `"supersecretpsk"`                   |
 

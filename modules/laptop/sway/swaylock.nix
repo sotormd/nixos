@@ -11,7 +11,7 @@
     # settings for swaylock
     programs.swaylock.settings = {
       # background image
-      image = "~/.local/share/backgrounds/bg.png";
+      image = "~/.local/share/backgrounds/lock.png";
 
       # fonts
       font = "IBM Plex Sans";
@@ -32,7 +32,7 @@
       text-caps-lock-color = "#${colors.yellow}";
 
       # indicator options
-      indicator-radius = 70;
+      indicator-radius = 170;
       indicator-thickness = 9;
 
       # line options
