@@ -11,9 +11,6 @@
       # audio with pipewire
       ./audio
 
-      # files in ~/.local/share/backgrounds
-      ./backgrounds
-
       # secureboot, plymouth, sysctl options, etc
       ./boot
 

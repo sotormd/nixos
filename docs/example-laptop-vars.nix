@@ -146,8 +146,8 @@
   outputs.monitor = "HDMI-A-1";
 
   # wallpaper
-  outputs.wallpaper = "nixos";
+  outputs.wallpaper = "nord.mario";
 
   # lockscreen
-  outputs.lockscreen = "camera";
+  outputs.lockscreen = "nord.camera";
 }

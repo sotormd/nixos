@@ -399,7 +399,8 @@
         "lanzaboote": "lanzaboote",
         "neovim": "neovim",
         "nixpkgs": "nixpkgs_3",
-        "sops-nix": "sops-nix"
+        "sops-nix": "sops-nix",
+        "wallpapers": "wallpapers"
       }
     },
     "rust-overlay": {
@@ -470,6 +471,21 @@
       "original": {
         "owner": "nix-systems",
         "repo": "default",
+        "type": "github"
+      }
+    },
+    "wallpapers": {
+      "locked": {
+        "lastModified": 1760206474,
+        "narHash": "sha256-wsnI7hjWbkrIcx1ggl6wiD987T9d50Ibu5b1fmosSBY=",
+        "owner": "sotormd",
+        "repo": "wallpapers",
+        "rev": "391cd4fd3c7970777b4a9ec46c436a9fdf5d8042",
+        "type": "github"
+      },
+      "original": {
+        "owner": "sotormd",
+        "repo": "wallpapers",
         "type": "github"
       }
     }
