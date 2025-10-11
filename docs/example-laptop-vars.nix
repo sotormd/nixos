@@ -147,4 +147,7 @@
 
   # wallpaper
   outputs.wallpaper = "nixos";
+
+  # lockscreen
+  outputs.lockscreen = "camera";
 }

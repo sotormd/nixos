@@ -33,7 +33,7 @@
         startup = [
           # set background
           {
-            command = ''${pkgs.swayfx}/bin/swaymsg output "*" bg ~/.local/share/backgrounds/bg.png fill'';
+            command = ''${pkgs.swayfx}/bin/swaymsg output "*" bg ~/.local/share/backgrounds/wall.png fill'';
             always = true;
           }
 
