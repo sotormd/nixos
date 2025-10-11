@@ -2,19 +2,7 @@
 
 {
   home-manager.users.${vars.user.name} = {
-    # enable the foot terminal emulator
-    programs.foot.enable = true;
-
     programs.foot.settings = {
-      main = {
-        font = "IBM Plex Mono:size=10";
-        dpi-aware = "yes";
-      };
-
-      cursor = {
-        style = "block";
-      };
-
       colors = {
         background = colors.bg0;
         foreground = colors.fg0;

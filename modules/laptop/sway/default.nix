@@ -4,8 +4,6 @@
   imports = [
     ./bindsyms.nix
 
-    ./foot.nix
-
     ./modes.nix
 
     ./opengl.nix
