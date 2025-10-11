@@ -42,6 +42,7 @@ NixOS configuration flake for multiple hosts.
 | version control   | `git`                                                                      |
 | development       | `rust` `python` `go` `haskell` `ruby`                                      |
 | colorscheme       | [`nord`](https://github.com/sotormd/colors)                                |
+| wallpapers        | [`wallpapers`](https://github.com/sotormd/wallpapers)                      |
 | gtk theme         | `Nordic-darker`                                                            |
 | gtk icons         | `Nordzy-dark`                                                              |
 | gtk cursor        | `Simp1e-Nord-Dark`                                                         |

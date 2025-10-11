@@ -2,6 +2,8 @@
 
 {
   imports = [
+    ./backgrounds.nix
+
     ./bindsyms.nix
 
     ./modes.nix

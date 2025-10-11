@@ -197,11 +197,11 @@ elif [ "$1" == "vars" ]; then
         fi
 
 	if [ -z "$VARS_OUTPUTS_WALLPAPER" ]; then
-            VARS_OUTPUTS_WALLPAPER="mario"
+            VARS_OUTPUTS_WALLPAPER="nord.mario"
         fi
 
 	if [ -z "$VARS_OUTPUTS_LOCKSCREEN" ]; then
-            VARS_OUTPUTS_LOCKSCREEN="camera"
+            VARS_OUTPUTS_LOCKSCREEN="nord.camera"
         fi
 
         # create vars file

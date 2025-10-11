@@ -28,6 +28,10 @@
     colors = {
       url = "github:sotormd/colors";
     };
+
+    wallpapers = {
+      url = "github:sotormd/wallpapers";
+    };
   };
 
   outputs =
@@ -39,6 +43,7 @@
       lanzaboote,
       neovim,
       colors,
+      wallpapers,
       ...
     }@inputs:
 
@@ -59,6 +64,7 @@
           inherit vars;
           inherit neovim;
           inherit (colors.lib) colors;
+          inherit (wallpapers.lib) wallpapers;
         };
         modules = [
           # common configuration
