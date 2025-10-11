@@ -41,6 +41,9 @@
       # wm-agnostic widgets
       ./eww
 
+      # foot terminal emulator
+      ./foot
+
       # gtk widget toolkit and other theming options
       ./gtk
 
