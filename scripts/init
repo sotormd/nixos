@@ -201,7 +201,7 @@ elif [ "$1" == "vars" ]; then
         fi
 
 	if [ -z "$VARS_OUTPUTS_LOCKSCREEN" ]; then
-            VARS_OUTPUTS_LOCKSCREEN="nord.camera"
+            VARS_OUTPUTS_LOCKSCREEN="nord.files"
         fi
 
         # create vars file
