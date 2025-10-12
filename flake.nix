@@ -73,7 +73,7 @@
           # entry point to configuration
           ./modules/laptop
 
-          # home manager - to declaratively manager home directory
+          # home manager - to declaratively manage home directory
           home-manager.nixosModules.home-manager
 
           # sops-nix - secret management with sops
@@ -99,7 +99,7 @@
           # entry point to configuration
           ./modules/server
 
-          # home manager - to declaratively manager home directory
+          # home manager - to declaratively manage home directory
           home-manager.nixosModules.home-manager
 
           # sops-nix - secret management with sops
