@@ -32,8 +32,8 @@
       text-caps-lock-color = "#${colors.yellow}";
 
       # indicator options
-      indicator-radius = 170;
-      indicator-thickness = 9;
+      indicator-radius = 200;
+      indicator-thickness = 20;
 
       # line options
       line-uses-inside = true;
