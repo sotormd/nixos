@@ -31,12 +31,6 @@
 
         # startup commands
         startup = [
-          # set background
-          {
-            command = ''${pkgs.swayfx}/bin/swaymsg output "*" bg ~/.local/share/backgrounds/wall.png fill'';
-            always = true;
-          }
-
           # start swayidle
           {
             command = ''
