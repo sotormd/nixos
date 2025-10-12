@@ -19,7 +19,7 @@
 
       # colors
       bs-hl-color = "#${colors.yellow}";
-      inside-color = "#${colors.bg0}";
+      inside-color = "#${colors.bg0}00";
       inside-clear-color = "#${colors.yellow}";
       inside-ver-color = "#${colors.blue2}";
       inside-wrong-color = "#${colors.red}";
@@ -33,7 +33,7 @@
 
       # indicator options
       indicator-radius = 200;
-      indicator-thickness = 20;
+      indicator-thickness = 15;
 
       # line options
       line-uses-inside = true;
