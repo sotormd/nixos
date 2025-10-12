@@ -10,7 +10,7 @@ The configuration expects a particular disk setup.
 
 2. Verify the checksum of the image.
 
-    ```
+    ```console
     $ echo "cba2... nixos-...iso" | sha256sum --check
     ```
 
@@ -38,14 +38,14 @@ The configuration expects a particular disk setup.
 
 2. Assign variables to the partitions for ease of use.
 
-    ```
+    ```console
     $ sudo blkid
     /dev/nvme0n1p1: ... PARTUUID="aaa.."
     /dev/nvme0n1p2: ... PARTUUID="bbb.."
     /dev/nvme0n1p3: ... PARTUUID="ccc.."
     ```
 
-    ```
+    ```console
     $ export BOOT=/dev/disk/by-partuuid/aaa...
     $ export SWAP=/dev/disk/by-partuuid/bbb...
     $ export ROOT=/dev/disk/by-partuuid/ccc...
@@ -53,20 +53,20 @@ The configuration expects a particular disk setup.
 
 3. Format boot partition.
 
-    ```
+    ```console
     $ sudo mkfs.vfat $BOOT
     ```
 
 4. Enable swap.
 
-    ```
+    ```console
     $ sudo mkswap $SWAP
     $ sudo swapon $SWAP
     ```
 
 5. Enable `LUKS` encryption.
 
-    ```
+    ```console
     $ sudo cryptsetup luksFormat $ROOT
     $ sudo cryptsetup luksOpen $ROOT root
     ```
@@ -75,7 +75,7 @@ The configuration expects a particular disk setup.
 
 5. Create `ZFS` pools.
 
-    ```
+    ```console
     $ sudo zpool create \
     -O compression=lz4 \
     -O xattr=sa \
@@ -98,7 +98,7 @@ The configuration expects a particular disk setup.
 
 6. Create `ZFS` datasets.
 
-    ```
+    ```console
     $ sudo zfs create rpool/root -o mountpoint=legacy
     $ sudo zfs create rpool/home -o mountpoint=legacy
     $ sudo zfs create rpool/nix -o mountpoint=legacy
@@ -109,20 +109,20 @@ The configuration expects a particular disk setup.
 
     ZFS's performance will deteriorate significantly when more than 80% of the available space is used - to avoid this, reserve disk space beforehand.
 
-    ```
+    ```console
     $ sudo zfs create rpool/reserved -o refreservation=10G -o mountpoint=none
     ```
 
 8. Create empty snapshots of `rpool/root` and `rpool/home` for impermanence.
 
-    ```
+    ```console
     $ sudo zfs snapshot rpool/root@blank
     $ sudo zfs snapshot rpool/home@blank
     ```
 
 9. Mount `ZFS` datasets.
 
-    ```
+    ```console
     $ sudo mkdir -p /mnt && sudo mount rpool/root /mnt -t zfs
     $ sudo mkdir -p /mnt/home && sudo mount rpool/home /mnt/home -t zfs
     $ sudo mkdir -p /mnt/nix && sudo mount rpool/nix /mnt/nix -t zfs
@@ -131,7 +131,7 @@ The configuration expects a particular disk setup.
 
 10. Mount boot partition.
 
-    ```
+    ```console
     $ sudo mkdir -p /mnt/boot && sudo mount $BOOT /mnt/boot
     ```
 
@@ -139,7 +139,7 @@ The configuration expects a particular disk setup.
 
 1. Generate NixOS configuration.
 
-    ```
+    ```console
     $ sudo nixos-generate-config --root /mnt
     ```
 
@@ -147,10 +147,10 @@ The configuration expects a particular disk setup.
 
     `/mnt/etc/nixos/configuration.nix`
 
-    ```
+    ```nix
     {
     # rest of the config
-    ...
+    # ...
 
         # flake support
         nix.settings.experimental-features = ["nix-command" "flakes"];
@@ -173,16 +173,17 @@ The configuration expects a particular disk setup.
         };
         users.groups.Bar = {};
 
-    ...
+    # ...
     # rest of the config
     }
     ```
 
     `/mnt/etc/nixos/hardware-configuration.nix`
 
-    ```
+    ```nix
     {
     # rest of the config
+    # ...
 
     boot.initrd.luks.devices = {
         root = {
@@ -191,6 +192,7 @@ The configuration expects a particular disk setup.
         };
     };
 
+    # ...
     # rest of the config
     }
     ```
@@ -199,13 +201,13 @@ The configuration expects a particular disk setup.
 
 3. Install NixOS.
 
-    ```
+    ```console
     $ sudo nixos-install
     ```
 
 4. Reboot into the new system.
 
-    ```
+    ```console
     $ sudo reboot
     ```
 
@@ -213,7 +215,7 @@ The configuration expects a particular disk setup.
 
 1. Once booted into the new installation, set up basic environment variables.
 
-    ```
+    ```console
     $ export NIXOS_DIR=/persist/nixos
     $ export NIXOS_ROLE=laptop
     ```
@@ -222,7 +224,7 @@ The configuration expects a particular disk setup.
 
 2. Clone this repository.
 
-    ```
+    ```console
     $ sudo mkdir -p $NIXOS_DIR
     $ sudo chown Bar: $NIXOS_DIR
     $ nix shell nixpkgs#git --command git clone https://github.com/sotormd/nixos $NIXOS_DIR
@@ -230,7 +232,7 @@ The configuration expects a particular disk setup.
 
 3. Initialize variables.
 
-    ```
+    ```console
     $ export VARS_DEVICE_BOOT=$BOOT
     $ export VARS_DEVICE_SWAP=$SWAP
     $ export VARS_DEVICE_ROOT=$ROOT
@@ -245,7 +247,7 @@ The configuration expects a particular disk setup.
 
 4. Initialize secrets.
 
-    ```
+    ```console
     $ $NIXOS_DIR/scripts/nixos init sops
     ```
 
@@ -257,13 +259,13 @@ The configuration expects a particular disk setup.
 
     To ensure all variables are set, edit the variables file.
 
-    ```
+    ```console
     $ $NIXOS_DIR/scripts/nixos edit vars
     ```
 
     To ensure all secrets are set, edit the secrets file.
 
-    ```
+    ```console
     $ nix shell nixpkgs#sops nixpkgs#gnupg --command $NIXOS_DIR/scripts/nixos edit sops
     ```
 
@@ -273,19 +275,19 @@ The configuration expects a particular disk setup.
 
     2. Impermanence is not set up, so ensure `device.impermanence.enable` is set to `false` in the variables.
 
-    ```
+    ```console
     $ nixos edit vars
     ```
 
 7. Switch to the new configuration for the first time.
 
-    ```
+    ```console
     $ nix shell nixpkgs#git --command $NIXOS_DIR/scripts/nixos switch
     ```
 
 8. Reboot the system.
 
-    ```
+    ```console
     $ sudo reboot
     ```
 
@@ -294,7 +296,7 @@ The configuration expects a particular disk setup.
 
 9. Check that the `$NIXOS_DIR` and `$NIXOS_ROLE` environment variables are set.
 
-    ```
+    ```console
     $ nixos
     ```
 
@@ -359,7 +361,7 @@ Ensure all variables are defined in the `$NIXOS_DIR/vars/vars.nix` and secrets i
 
     Ensure you have booted in UEFI mode and Secure Boot is supported.
 
-    ```
+    ```console
     $ bootctl status
     System:
      Firmware: UEFI
@@ -371,23 +373,23 @@ Ensure all variables are defined in the `$NIXOS_DIR/vars/vars.nix` and secrets i
 
 2. Create secure boot keys.
 
-    ```
+    ```console
     $ nixos init lanzaboote create
     ```
 
     Set `device.secureboot.enable = true;` in `vars.nix`.
-    ```
+    ```console
     $ nixos edit vars
     ```
 
     Switch to the new configuration.
-    ```
+    ```console
     $ nixos switch
     ```
 
     Verify `sbctl verify` output.
 
-    ```
+    ```console
     $ nix shell nixpkgs#sbctl --command sudo sbctl verify
     Verifying file database and EFI images in /boot...
     ✓ /boot/EFI/BOOT/BOOTX64.EFI is signed
@@ -404,7 +406,7 @@ Ensure all variables are defined in the `$NIXOS_DIR/vars/vars.nix` and secrets i
 
 4. Boot into NixOS and enroll Secure Boot keys.
 
-    ```
+    ```console
     $ nixos init lanzaboote enroll
     ```
 
@@ -414,7 +416,7 @@ Ensure all variables are defined in the `$NIXOS_DIR/vars/vars.nix` and secrets i
 
     Boot into NixOS and Secure Boot should be activated and in user mode.
 
-    ```
+    ```console
     $ bootctl status
     ...
     Secure Boot: enabled (user)
@@ -427,7 +429,7 @@ Ensure all variables are defined in the `$NIXOS_DIR/vars/vars.nix` and secrets i
 
 1. Populate the `/persist/` directory.
 
-    ```
+    ```console
     $ nixos init impermanence
     ```
 
@@ -435,13 +437,13 @@ Ensure all variables are defined in the `$NIXOS_DIR/vars/vars.nix` and secrets i
 
     Set `device.impermanence.enable = true;` in `vars.nix`.
 
-    ```
+    ```console
     $ nixos edit vars
     ```
 
 3. Switch to the new configuration.
 
-    ```
+    ```console
     $ nixos switch
     ```
 
@@ -451,13 +453,13 @@ Keyfile encrypted LUKS devices can be set up via `vars.nix`
 
 Modify the `device.luks` variable under `DEVICE VARIABLES` in `vars.nix`
 
-```
-$ nixos nano vars/vars.nix
+```console
+$ nixos edit vars
 ```
 
 For example, to set up two devices `ht02` and `ht03`:
 
-```
+```nix
   device.luks = [
     {
         name = "ht02";
