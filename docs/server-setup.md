@@ -8,7 +8,7 @@
 
 2. Verify the checksum of the image.
 
-    ```
+    ```console
     $ echo "cba2... nixos-...iso" | sha256sum --check
     ```
 
@@ -20,23 +20,23 @@
 
 2. Optional: disable annoying dmesg messages.
 
-    ```
+    ```console
     $ sudo dmesg -n 1
     ```
 
 3. Generate config.
 
-    ```
+    ```console
     $ sudo nixos-generate-config
     ```
 
 4. Edit the configuration for first rebuild.
 
     `/etc/nixos/configuration.nix`
-    ```
+    ```nix
     {
     # rest of the config
-    ...
+    # ...
 
         # enable flakes
         nix.settings.experimental-features = [ "nix-command" "flakes" ];
@@ -59,26 +59,26 @@
         };
         users.groups.Bar = {};
 
-    ...
+    # ...
     # rest of the config
     }
     ```
 
 5. Connect to the internet.
 
-    ```
+    ```console
     $ nmtui
     ```
 
 6. Ensure internet connection.
 
-    ```
+    ```console
     $ ping archlinux.org
     ```
 
 7. Rebuild the configuration and reboot.
 
-    ```
+    ```console
     $ sudo nixos-rebuild switch
     $ sudo reboot
     ```
@@ -87,7 +87,7 @@
 
 1. Once booted into the new installation, log in as the new user and set up basic environment variables.
 
-    ```
+    ```console
     $ export NIXOS_DIR=/nixos
     $ export NIXOS_ROLE=server
     ```
@@ -96,7 +96,7 @@
 
 2. Clone this repository.
 
-    ```
+    ```console
     $ sudo mkdir -p $NIXOS_DIR
     $ sudo chown Bar: $NIXOS_DIR
     $ nix shell nixpkgs#git --command git clone https://github.com/sotormd/nixos $NIXOS_DIR
@@ -106,7 +106,7 @@
 
     First, check `sudo blkid` output to find the root partition partuuid.
 
-    ```
+    ```console
     $ export VARS_DEVICE_ROOT=2178694e-02
     $ export VARS_USER_EMAIL=Bar@domain.com
     $ export VARS_NETWORK_SSID=BarsNetwork
@@ -121,7 +121,7 @@
 
 4. Initialize secrets.
 
-    ```
+    ```console
     $ export SECRETS_DUCKDNS_TOKEN=aaa...
     $ $NIXOS_DIR/scripts/nixos init sops
     ```
@@ -134,25 +134,25 @@
 
     To ensure all variables are set, edit the variables file.
 
-    ```
+    ```console
     $ $NIXOS_DIR/scripts/nixos edit vars
     ```
 
     To ensure all secrets are set, edit the secrets file.
 
-    ```
+    ```console
     $ nix shell nixpkgs#sops nixpkgs#gnupg --command $NIXOS_DIR/scripts/nixos edit sops
     ```
 
 6. Switch to the new configuration for the first time.
 
-    ```
+    ```console
     $ nix shell nixpkgs#git --command $NIXOS_DIR/scripts/nixos switch
     ```
 
 7. Reboot the system.
 
-    ```
+    ```console
     $ sudo reboot
     ```
 
@@ -161,7 +161,7 @@
 
 8. Check that the `$NIXOS_DIR` and `$NIXOS_ROLE` environment variables are set.
 
-    ```
+    ```console
     $ nixos
     ```
 
@@ -170,12 +170,12 @@
 9. Enable services.
 
     Enable required services by setting `network.<service>.enable = true;` in `vars.nix`.
-    ```
+    ```console
     $ nixos edit vars
     ```
 
     Switch to the new configuration.
-    ```
+    ```console
     $ nixos switch
     ```
 
@@ -248,7 +248,7 @@ Reverse proxy:
 
 qBittorrent will initially start with username `admin` and a random password. Check the service status for the password.
 
-```
+```console
 $ systemctl status qbt
 ```
 
@@ -270,13 +270,13 @@ Keyfile encrypted LUKS devices can be set up via `vars.nix`
 
 Modify the `device.luks` variable under `DEVICE VARIABLES` in `vars.nix`
 
-```
-$ nixos nano vars/vars.nix
+```console
+$ nixos edit vars
 ```
 
 For example, to set up two devices `ht02` and `ht03`:
 
-```
+```nix
   device.luks = [
     {
         name = "ht02";
