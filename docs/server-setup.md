@@ -1,6 +1,6 @@
 # `server` Setup
 
-###### Intended for Raspberry Pi hosts.
+**Intended for Raspberry Pi hosts using the NixOS aarch64 sd card image.**
 
 ## 1. Obtaining a NixOS image.
 
