@@ -117,7 +117,10 @@
   # static local device ip
   network.ip = "10.0.0.120";
 
-  # whether to use server features or not
+  # use sae (dragonfly) authentication
+  network.wpa3.enable = true;
+
+  # use server features
   network.server.enable = true;
 
   # static local home server ip address

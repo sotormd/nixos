@@ -332,6 +332,7 @@ Full list of possible environment variables:
 | `VARS_NETWORK_SSID`               | **Yes**   | Wireless network ssid.                              | -                                                 | `"net20"`                            |
 | `VARS_NETWORK_GATEWAY`            | No        | Wireless network gateway.                           | `"192.168.0.1"`                                   | `"10.0.0.0"`                         |
 | `VARS_NETWORK_IP`                 | **Yes**   | Static local IP address.                            | -                                                 | `"10.0.0.3"`                         |
+| `VARS_NETWORK_WPA3_ENABLE`        | No        | Enable SAE (dragonfly) authentication.              | `"true"`                                          | `"false"`                            |
 | `VARS_NETWORK_SERVER_ENABLE`      | No        | Enable server-dependant features.                   | `"true"`                                          | `"false"`                            |
 | `VARS_NETWORK_SERVER_IP`          | **Yes***  | Static local server IP address.                     | -                                                 | `"10.0.0.5"`                         |
 | `VARS_NETWORK_SERVER_DOMAIN`      | **Yes***  | Server domain.                                      | -                                                 | `"myserver.domain.com"`              |
