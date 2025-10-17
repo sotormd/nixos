@@ -99,6 +99,9 @@
   # static local device ip
   network.ip = "10.0.0.100";
 
+  # use sae (dragonfly) authentication
+  network.wpa3.enable = false;
+
   # duckdns domain
   network.duckdns.domain = "bars-server.duckdns.org";
 

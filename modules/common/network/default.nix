@@ -1,15 +1,21 @@
+{ lib, vars, ... }:
+
 {
-  imports = [
-    ./disable-ipv6.nix
+  imports = lib.concatMap (x: x) [
+    [
+      ./disable-ipv6.nix
 
-    ./firewall.nix
+      ./firewall.nix
 
-    ./host.nix
+      ./host.nix
 
-    ./issue.nix
+      ./issue.nix
 
-    ./static.nix
+      ./static.nix
 
-    ./wifi.nix
+      ./wifi.nix
+    ]
+
+    (lib.optImport vars.network.wpa3.enable ./wpa3.nix)
   ];
 }

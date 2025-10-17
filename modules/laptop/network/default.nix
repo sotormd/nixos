@@ -9,7 +9,5 @@
     ./timesyncd.nix
 
     ./tor.nix
-
-    ./wpa3.nix
   ];
 }

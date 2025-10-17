@@ -200,6 +200,7 @@ Full list of possible environment variables:
 | `VARS_NETWORK_GATEWAY`                    | No        | Wireless network gateway.                           | `"192.168.0.1"`                                             | `"10.0.0.0"`                         |
 | `VARS_NETWORK_RANGE`                      | No        | CIDR allowed to access server.                      | `"192.168.0.0/24"`                                          | `"10.0.0.0/24"`                      |
 | `VARS_NETWORK_IP`                         | **Yes**   | Static local IP address.                            | -                                                           | `"10.0.0.3"`                         |
+| `VARS_NETWORK_WPA3_ENABLE`                | No        | Enable SAE (dragonfly) authentication.              | `"true"`                                                    | `"false"`                            |
 | `VARS_NETWORK_DUCKDNS_DOMAIN`             | No        | DuckDNS domain name.                                | `"$(uname -n)-server.duckdns.org"`                          | `"nixos-server-0b123df.duckdns.org"` |
 | `VARS_NETWORK_SSH_PORT`                   | No        | SSH port.                                           | `"22"`                                                      | `"20000"`                            |
 | `VARS_NETWORK_SSH_KEY`                    | No        | Allowed public key.                                 | -                                                           | `"AAAA..."`                          |

@@ -164,6 +164,10 @@ elif [ "$1" == "vars" ]; then
             VARS_NETWORK_IP=""
         fi
 
+	if [ -z "$VARS_NETWORK_WPA3_ENABLE" ]; then
+            VARS_NETWORK_WPA3_ENABLE="true"
+        fi
+
         if [ -z "$VARS_NETWORK_SERVER_ENABLE" ]; then
             VARS_NETWORK_SERVER_ENABLE="true"
         fi
@@ -325,7 +329,10 @@ elif [ "$1" == "vars" ]; then
   # static local device ip
   network.ip = "$VARS_NETWORK_IP";
 
-  # whether to use server features or not
+  # use sae (dragonfly) authentication
+  network.wpa3.enable = $VARS_NETWORK_WPA3_ENABLE;
+
+  # use server features
   network.server.enable = $VARS_NETWORK_SERVER_ENABLE;
 
   # static local home server ip address
@@ -418,6 +425,10 @@ EOF
         if [ -z "$VARS_NETWORK_IP" ]; then
             echo "Warning: VARS_NETWORK_IP is unset"
             VARS_NETWORK_IP=""
+        fi
+
+	if [ -z "$VARS_NETWORK_WPA3_ENABLE" ]; then
+            VARS_NETWORK_WPA3_ENABLE="false"
         fi
 
         if [ -z "$VARS_NETWORK_DUCKDNS_DOMAIN" ]; then
@@ -589,6 +600,9 @@ EOF
 
   # static local device ip
   network.ip = "$VARS_NETWORK_IP";
+
+  # use sae (dragonfly) authentication
+  network.wpa3.enable = $VARS_NETWORK_WPA3_ENABLE;
 
   # duckdns domain
   network.duckdns.domain = "$VARS_NETWORK_DUCKDNS_DOMAIN";
