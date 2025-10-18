@@ -4,5 +4,5 @@ set -e
 
 (
 	cd $NIXOS_DIR
-	nix flake update
+	nix flake update "$@"
 )
