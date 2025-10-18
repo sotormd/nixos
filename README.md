@@ -92,3 +92,5 @@ When run with a command not listed below, the command is dispatched to `$NIXOS_D
 | `init impermanence`                | ✔      | ✘      | <br>`$ nixos init impermanence` <br>Populate the `/persist` directory for impermanence. See [setup docs](docs/laptop-setup.md#7-setting-up-impermanence).  |
 | `serverpush <path>`                | ✔      | ✘      | <br>`$ nixos serverpush /nixos` <br>Push the flake to `server:/nixos`.                                                                                     |
 | `help`                             | ✔      | ✔      | <br>`$ nixos help` <br>Show this message and exit.                                                                                                         |
+
+See [scripts](./docs/scripts.md) for some detailed examples.
