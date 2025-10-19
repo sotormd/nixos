@@ -116,6 +116,10 @@
 
       # nix-on-droid configuration
       nixOnDroidConfigurations.default = nix-on-droid.lib.nixOnDroidConfiguration {
+        specialArgs = {
+          inherit inputs;
+          inherit (colors.lib) colors;
+        };
         pkgs = import nixpkgs {
           system = "aarch64-linux";
           overlays = [ nix-on-droid.overlays.default ];

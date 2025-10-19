@@ -2,6 +2,9 @@
   imports = [
     # MODULES - sorted alphabetically
 
+    # terminal colors
+    ./colors.nix
+
     # packages
     ./packages.nix
 
