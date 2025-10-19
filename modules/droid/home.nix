@@ -1,4 +1,6 @@
 {
+  imports = [ ./packages.nix ];
+
   home.stateVersion = "24.05";
 
   home.sessionVariables.NIXOS_ROLE = "droid";

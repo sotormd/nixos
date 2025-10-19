@@ -2,7 +2,7 @@
 
 {
   # packages to appear in the system environment
-  environment.packages = with pkgs; [
+  home.packages = with pkgs; [
     micro
     procps
     killall
