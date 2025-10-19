@@ -7,12 +7,8 @@
 
     # list of extensions
     programs.vscode.profiles.default.extensions = with pkgs.vscode-extensions; [
-      ms-python.python
-      rust-lang.rust-analyzer
-      jnoortheen.nix-ide
       arcticicestudio.nord-visual-studio-code
       pkief.material-icon-theme
-      # vscodevim.vim
     ];
   };
 }
