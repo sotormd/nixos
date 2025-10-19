@@ -16,9 +16,17 @@ To rebuild the configuration for the first time:
 $ nix shell nixpkgs#git --command nix-on-droid switch --flake github:sotormd/nixos
 ```
 
-For successive rebuilds:
+## 3. Usage
+
+Switch to the new configuration at `github:sotormd/nixos`:
 
 ```console
 $ switch
+```
+
+Garbage collect:
+
+```console
+$ purge
 ```
 
