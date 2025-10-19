@@ -9,6 +9,9 @@
       "Mod4+g" = ''
         exec ${pkgs.swayfx}/bin/swaymsg workspace $(${pkgs.swayfx}/bin/swaymsg -t get_workspaces -r | ${pkgs.jq}/bin/jq -r '.[].name' | rofi -dmenu -p "")
       '';
+      "Mod4+shift+g" = ''
+        exec ${pkgs.swayfx}/bin/swaymsg move workspace $(${pkgs.swayfx}/bin/swaymsg -t get_workspaces -r | ${pkgs.jq}/bin/jq -r '.[].name' | rofi -dmenu -p "")
+      '';
     };
   };
 }
