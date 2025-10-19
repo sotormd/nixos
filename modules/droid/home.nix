@@ -5,4 +5,5 @@
   home.sessionVariables.PS1 = ''\n\[\033[1;32m\]nix \w \$\[\033[0m\] '';
 
   home.shellAliases.switch = "nix-on-droid switch --flake github:sotormd/nixos";
+  home.shellAliases.purge = "nix-collect-garbage --delete-old";
 }
