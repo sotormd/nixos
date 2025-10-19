@@ -1,4 +1,14 @@
 {
+  imports = [
+    # MODULES - sorted alphabetically
+
+    # packages
+    ./packages.nix
+
+    # switch & purge
+    ./scripts.nix
+  ];
+
   environment.etcBackupExtension = ".bak";
 
   nix.extraOptions = ''

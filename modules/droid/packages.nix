@@ -2,7 +2,7 @@
 
 {
   # packages to appear in the system environment
-  home.packages = with pkgs; [
+  environment.packages = with pkgs; [
     micro
     procps
     killall
@@ -42,5 +42,6 @@
     nano
     imagemagick
     tree
+    which
   ];
 }
