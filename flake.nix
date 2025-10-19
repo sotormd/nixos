@@ -116,7 +116,7 @@
 
       # nix-on-droid configuration
       nixOnDroidConfigurations.default = nix-on-droid.lib.nixOnDroidConfiguration {
-        specialArgs = {
+        extraSpecialArgs = {
           inherit inputs;
           inherit (colors.lib) colors;
         };
