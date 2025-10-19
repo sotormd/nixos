@@ -56,9 +56,17 @@ NixOS configuration flake for multiple hosts.
 
 # Setup
 
-[laptop setup](./docs/laptop-setup.md)
+1. `laptop` role
 
-[server setup](./docs/server-setup.md)
+    [Setup docs](./docs/laptop-setup.md)
+
+2. `server` role
+
+    [Setup docs](./docs/server-setup.md)
+
+3. `droid` role
+
+    [Setup docs](./docs/droid-setup.md)
 
 # `nixos` Flake Helper
 
