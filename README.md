@@ -36,6 +36,7 @@ NixOS configuration flake for multiple hosts.
 | media player      | `mpv`                                                                               |
 | browser           | `brave`                                                                             |
 | search engine     | `searxng`                                                                           |
+| bittorrent        | `qbittorrent-nox`                                                                   |
 | anonymity         | `i2pd` `oniux`                                                                      |
 | passwords         | `vaultwarden`                                                                       |
 | text editor       | [`neovim`](https://github.com/sotormd/neovim) `vscodium` `nano` `mousepad` `micro`  |
