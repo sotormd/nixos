@@ -39,5 +39,8 @@
     bashInteractive
     htop
     ncurses
+    nano
+    imagemagick
+    tree
   ];
 }
