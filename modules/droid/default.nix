@@ -1,0 +1,22 @@
+{
+  imports = [
+    # MODULES - sorted alphabetically
+
+    # list of packages
+    ./packages.nix
+  ];
+
+  environment.etcBackupExtension = ".bak";
+
+  nix.extraOptions = ''
+    experimental-features = nix-command flakes
+  '';
+
+  home-manager = {
+    config = ./home.nix;
+    backupFileExtension = "hm-bak";
+    useGlobalPkgs = true;
+  };
+
+  system.stateVersion = "24.05";
+}

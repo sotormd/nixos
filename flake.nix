@@ -21,6 +21,12 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
+    nix-on-droid = {
+      url = "github:nix-community/nix-on-droid/release-24.05";
+      inputs.nixpkgs.follows = "nixpkgs";
+      inputs.home-manager.follows = "home-manager";
+    };
+
     neovim = {
       url = "github:sotormd/neovim";
     };
@@ -41,6 +47,7 @@
       home-manager,
       sops-nix,
       lanzaboote,
+      nix-on-droid,
       neovim,
       colors,
       wallpapers,
@@ -105,6 +112,16 @@
           # sops-nix - secret management with sops
           sops-nix.nixosModules.sops
         ];
+      };
+
+      # nix-on-droid configuration
+      nixOnDroidConfigurations.default = nix-on-droid.lib.nixOnDroidConfiguration {
+        pkgs = import nixpkgs { 
+	  system = "aarch64-linux";
+          overlays = [ nix-on-droid.overlays.default ];
+	};
+        modules = [ ./modules/droid ];
+	home-manager-path = home-manager.outPath;
       };
     };
 }
