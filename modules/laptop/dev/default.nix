@@ -6,8 +6,6 @@
 
     ./python.nix
 
-    ./ruby.nix
-
     ./rust.nix
   ];
 }
