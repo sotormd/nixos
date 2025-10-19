@@ -21,9 +21,8 @@
       # security auditing
       lynis
 
-      # text editors
+      # text editor
       nano
-      micro
 
       # fast incremental file transfer utility
       rsync
