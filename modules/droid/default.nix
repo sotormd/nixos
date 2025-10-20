@@ -18,11 +18,14 @@
     experimental-features = nix-command flakes
   '';
 
-  home-manager = {
-    config = ./home.nix;
-    backupFileExtension = "hm-bak";
-    useGlobalPkgs = true;
+  environment.sessionVariables = {
+    NIXOS_ROLE = "droid";
+    PS1 = ''\n\[\033[1;32m\]nix \w \$\[\033[0m\] '';
   };
+
+  environment.motd = ''
+    nix-on-droid
+  '';
 
   system.stateVersion = "24.05";
 }
