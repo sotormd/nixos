@@ -2,13 +2,13 @@
 
 NixOS configuration flake for multiple hosts.
 
-`laptop` `server`
+`laptop`: Laptop configuration
+
+`server`: Headless home server configuration.
+
+`droid`: nix-on-droid configuration.
 
 ![nixos](screenshots/nixos.png)
-
-`droid`
-
-![nix-on-droid](screenshots/nix-on-droid.png)
 
 # Features
 
