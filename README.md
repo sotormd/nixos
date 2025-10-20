@@ -2,25 +2,6 @@
 
 NixOS configuration flake for multiple hosts.
 
-<table style="width:100%">
-  <tr>
-    <th>Role</th>
-    <th>Target</th>
-  </tr>
-  <tr>
-    <td><code>laptop</code></td>
-    <td>Laptop</td>
-  </tr>
-  <tr>
-    <td><code>server</code></td>
-    <td>Headless home server</td>
-  </tr>
-  <tr>
-    <td><code>droid</code></td>
-    <td>nix-on-droid</td>
-  </tr>
-</table>
-
 ![nixos](screenshots/nixos.png)
 
 # Features
