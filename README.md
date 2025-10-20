@@ -68,7 +68,7 @@ NixOS configuration flake for multiple hosts.
 
     [Setup docs](./docs/laptop-setup.md)
 
-2. `server` role: Home server configuration
+2. `server` role: Headless home server configuration
 
     [Setup docs](./docs/server-setup.md)
 
