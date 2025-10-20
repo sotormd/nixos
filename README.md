@@ -10,6 +10,7 @@ NixOS configuration flake for multiple hosts.
 |-------------------|-------------------------------------------------------------------------------------|
 | distro            | `NixOS`                                                                             |
 | packages          | `nixos-unstable`                                                                    |
+| android           | `nix-on-droid`                                                                      |
 | package manager   | `lix`                                                                               |
 | secrets           | `sops-nix` `sops`                                                                   |
 | bootloader        | `systemd-boot` `uboot`                                                              |
