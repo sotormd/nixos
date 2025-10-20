@@ -8,6 +8,20 @@ $ nixos help
 
 This document outlines several useful examples, apart from those covered in [README.md](../README.md#nixos-flake-helper).
 
+# Contents
+
+1. [Updating the Lockfile](#updating-the-lockfile)
+2. [Testing a New Configuration](#testing-a-new-configuration)
+3. [Switching to a New Configuration](#switching-to-a-new-configuration)
+4. [Committing a New Configuration](#committing-a-new-configuration)
+5. [Format the Flake](#format-the-flake)
+6. [Fix Flake Permissions](#fix-flake-permissions)
+7. [Garbage Collect](#garbage-collect)
+8. [Repair the Nix Store](#repair-the-nix-store)
+9. [Push Local Changes to server](#push-local-changes-to-server)
+10. [Edit variables / secrets](#edit-variables--secrets)
+11. [Miscellaneous](#miscellaneous)
+
 # Updating the Lockfile
 
 To update all inputs:

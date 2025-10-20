@@ -4,6 +4,12 @@ NixOS configuration flake for multiple hosts.
 
 ![nixos](screenshots/nixos.png)
 
+# Contents
+
+1. [Features](#features)
+2. [Setup](#setup)
+3. [`nixos` Flake Helper](#nixos-flake-helper)
+
 # Features
 
 |                   |                                                                                     |

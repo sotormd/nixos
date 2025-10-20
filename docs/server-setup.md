@@ -2,6 +2,14 @@
 
 **Intended for Raspberry Pi hosts using the NixOS aarch64 sd card image.**
 
+# Contents
+
+1. [Obtaining a NixOS image](#1-obtaining-a-nixos-image)
+2. [First boot](#2-first-boot)
+3. [Applying configuration](#3-applying-configuration)
+4. [Further setup](#4-further-setup)
+5. [Adding LUKS encrypted devices](#5-adding-luks-encrypted-devices)
+
 ## 1. Obtaining a NixOS image.
 
 1. Get a NixOS aarch64 image from [here](https://hydra.nixos.org/job/nixos/trunk-combined/nixos.sd_image.aarch64-linux/).
