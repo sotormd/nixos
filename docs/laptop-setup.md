@@ -4,6 +4,19 @@ To skip installation and directly apply configuration on a system with experimen
 
 **The configuration expects a particular disk setup.**
 
+![Screenshot](../screenshots/nixos.png)
+
+# Contents
+
+1. [Obtaining a live NixOS image](#1-obtaining-a-live-nixos-image)
+2. [Preparing the device](#2-preparing-the-device)
+3. [Partitioning disks](#3-partitioning-disks)
+4. [Installing NixOS](#4-installing-nixos)
+5. [Applying configuration](#5-applying-configuration)
+6. [Setting up Secure Boot](#6-setting-up-secure-boot)
+7. [Setting up impermanence](#7-setting-up-impermanence)
+8. [Adding LUKS encrypted devices](#8-adding-luks-encrypted-devices)
+
 ## 1. Obtaining a live NixOS image.
 
 1. Get a NixOS image from [here](https://nixos.org/download/).
