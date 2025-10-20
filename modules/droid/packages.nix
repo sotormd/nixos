@@ -36,7 +36,6 @@
     findutils
     coreutils
     less
-    bashInteractive
     htop
     ncurses
     nano

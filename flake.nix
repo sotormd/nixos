@@ -120,12 +120,8 @@
           inherit inputs;
           inherit (colors.lib) colors;
         };
-        pkgs = import nixpkgs {
-          system = "aarch64-linux";
-          overlays = [ nix-on-droid.overlays.default ];
-        };
+        pkgs = import nixpkgs { system = "aarch64-linux"; };
         modules = [ ./modules/droid ];
-        home-manager-path = home-manager.outPath;
       };
     };
 }
