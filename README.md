@@ -2,7 +2,13 @@
 
 NixOS configuration flake for multiple hosts.
 
-![Screenshot](docs/screenshot.png)
+`laptop` `server`
+
+![nixos](screenshots/nixos.png)
+
+`droid`
+
+![nix-on-droid](screenshots/nix-on-droid.png)
 
 # Features
 
@@ -58,15 +64,15 @@ NixOS configuration flake for multiple hosts.
 
 # Setup
 
-1. `laptop` role
+1. `laptop` role: Laptop configuration
 
     [Setup docs](./docs/laptop-setup.md)
 
-2. `server` role
+2. `server` role: Home server configuration
 
     [Setup docs](./docs/server-setup.md)
 
-3. `droid` role
+3. `droid` role: nix-on-droid configuration
 
     [Setup docs](./docs/droid-setup.md)
 
