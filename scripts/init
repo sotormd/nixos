@@ -244,7 +244,7 @@ elif [ "$1" == "vars" ]; then
   # partition partuuids
   # find them from /dev/disk/by-partuuid/...
   # assumes a specific configuration
-  # see ../docs/laptop-setup.md
+  # see ../docs/laptop.md
   device.boot = "$VARS_DEVICE_BOOT";
   device.swap = "$VARS_DEVICE_SWAP";
   device.root = "$VARS_DEVICE_ROOT";
@@ -266,12 +266,12 @@ elif [ "$1" == "vars" ]; then
 
   # secure boot: boot signed software
   # provided by the lanzaboote project
-  # read docs/laptop-setup.md before enabling
+  # read docs/laptop.md before enabling
   device.secureboot.enable = $VARS_DEVICE_SECUREBOOT_ENABLE;
 
   # impermanence: erase your darlings
   # using zfs snapshots and bind mounts
-  # read docs/laptop-setup.md before enabling
+  # read docs/laptop.md before enabling
   # requires: secureboot
   device.impermanence.enable = $VARS_DEVICE_IMPERMANENCE_ENABLE;
 
@@ -541,7 +541,7 @@ EOF
   # partition partuuids
   # find them from /dev/disk/by-partuuid/...
   # assumes a specific configuration
-  # see ../docs/server-setup.md
+  # see ../docs/server.md
   device.root = "$VARS_DEVICE_ROOT";
 
   # luks: encrypted luks devices

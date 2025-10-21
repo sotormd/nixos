@@ -29,7 +29,7 @@
   # partition partuuids
   # find them from /dev/disk/by-partuuid/...
   # assumes a specific configuration
-  # see ../docs/server-setup.md
+  # see ../docs/server.md
   device.root = "2178694e-02";
 
   # luks: encrypted luks devices

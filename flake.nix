@@ -123,5 +123,29 @@
         pkgs = import nixpkgs { system = "aarch64-linux"; };
         modules = [ ./modules/droid ];
       };
+
+      # images
+      nixosConfigurations = {
+        gnomeImage = nixpkgs.lib.nixosSystem {
+          specialArgs = { inherit inputs; };
+          modules = [
+            ./images/desktop
+            ./images/desktop/gnome.nix
+          ];
+        };
+
+        plasmaImage = nixpkgs.lib.nixosSystem {
+          specialArgs = { inherit inputs; };
+          modules = [
+            ./images/desktop
+            ./images/desktop/plasma.nix
+          ];
+        };
+
+        minimalImage = nixpkgs.lib.nixosSystem {
+          specialArgs = { inherit inputs; };
+          modules = [ ./images/minimal ];
+        };
+      };
     };
 }

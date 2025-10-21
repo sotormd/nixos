@@ -8,6 +8,7 @@ NixOS configuration flake for multiple hosts.
 
 1. [Features](#features)
 2. [Setup](#setup)
+3. [Images](#images)
 3. [`nixos` Flake Helper](#nixos-flake-helper)
 
 # Features
@@ -66,15 +67,21 @@ NixOS configuration flake for multiple hosts.
 
 1. `laptop` role: Laptop configuration
 
-    [Setup docs](./docs/laptop-setup.md)
+    [Setup docs](./docs/laptop.md)
 
 2. `server` role: Headless home server configuration
 
-    [Setup docs](./docs/server-setup.md)
+    [Setup docs](./docs/server.md)
 
 3. `droid` role: nix-on-droid configuration
 
-    [Setup docs](./docs/droid-setup.md)
+    [Setup docs](./docs/droid.md)
+
+# Images
+
+Three images, `minimal`, `gnome` and `plasma` are included (for installation, recovery, etc.)
+
+See [images](./docs/images.md) for more details.
 
 # `nixos` Flake Helper
 
@@ -104,8 +111,8 @@ When run with a command not listed below, the command is dispatched to `$NIXOS_D
 | `repair`                           | ✔      | ✔      | <br>`$ nixos repair` <br>Attempt to repair the nix store.                                                                                                  |
 | `edit <vars\|sops>`                | ✔      | ✔      | <br>`$ nixos edit vars` <br>Edit variables file. <br><br>`$ nixos edit sops` <br>Edit sops-nix secrets.                                                    |
 | `init <vars\|sops> [replace]`      | ✔      | ✔      | <br>`$ nixos init vars` <br>Initialize variables. <br><br>`$ nixos init vars replace` <br>Replace current variables. <br><br>`$ nixos init sops` <br>Initialize secrets. <br><br>`$ nixos init sops replace` <br>Replace current secrets. |
-| `init lanzaboote <create\|enroll>` | ✔      | ✘      | <br>`$ nixos init lanzaboote create` <br>Create lanzaboote keys. See [setup docs](docs/laptop-setup.md#6-setting-up-secure-boot). <br><br>`$ nixos init lanzaboote enroll` <br>Enroll lanzaboote keys. See [setup docs](docs/laptop-setup.md#6-setting-up-secure-boot). |
-| `init impermanence`                | ✔      | ✘      | <br>`$ nixos init impermanence` <br>Populate the `/persist` directory for impermanence. See [setup docs](docs/laptop-setup.md#7-setting-up-impermanence).  |
+| `init lanzaboote <create\|enroll>` | ✔      | ✘      | <br>`$ nixos init lanzaboote create` <br>Create lanzaboote keys. See [setup docs](docs/laptop.md#6-setting-up-secure-boot). <br><br>`$ nixos init lanzaboote enroll` <br>Enroll lanzaboote keys. See [setup docs](docs/laptop.md#6-setting-up-secure-boot). |
+| `init impermanence`                | ✔      | ✘      | <br>`$ nixos init impermanence` <br>Populate the `/persist` directory for impermanence. See [setup docs](docs/laptop.md#7-setting-up-impermanence).  |
 | `serverpush <path>`                | ✔      | ✘      | <br>`$ nixos serverpush /nixos` <br>Push the flake to `server:/nixos`.                                                                                     |
 | `help`                             | ✔      | ✔      | <br>`$ nixos help` <br>Show this message and exit.                                                                                                         |
 
