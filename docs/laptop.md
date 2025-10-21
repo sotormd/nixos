@@ -86,7 +86,7 @@ To skip installation and directly apply configuration on a system with experimen
 
     The partition should be available at `/dev/mapper/root` now.
 
-5. Create `ZFS` pools.
+6. Create `ZFS` pools.
 
     ```console
     $ sudo zpool create \
@@ -109,7 +109,7 @@ To skip installation and directly apply configuration on a system with experimen
     | mountpoint  | none     | Prevents automatic mounting of zpool, useful for NixOS.                                                    |
     | ashift      | 12       | Sets the sector size to **4K (2^12)**, optimal for modern storage devices (SSDs and advanced format HDDs). |
 
-6. Create `ZFS` datasets.
+7. Create `ZFS` datasets.
 
     ```console
     $ sudo zfs create rpool/root -o mountpoint=legacy
@@ -118,7 +118,7 @@ To skip installation and directly apply configuration on a system with experimen
     $ sudo zfs create rpool/persist -o mountpoint=legacy
     ```
 
-7. Create a reserved dataset.
+8. Create a reserved dataset.
 
     ZFS's performance will deteriorate significantly when more than 80% of the available space is used - to avoid this, reserve disk space beforehand.
 
@@ -126,14 +126,14 @@ To skip installation and directly apply configuration on a system with experimen
     $ sudo zfs create rpool/reserved -o refreservation=10G -o mountpoint=none
     ```
 
-8. Create empty snapshots of `rpool/root` and `rpool/home` for impermanence.
+9. Create empty snapshots of `rpool/root` and `rpool/home` for impermanence.
 
     ```console
     $ sudo zfs snapshot rpool/root@blank
     $ sudo zfs snapshot rpool/home@blank
     ```
 
-9. Mount `ZFS` datasets.
+10. Mount `ZFS` datasets.
 
     ```console
     $ sudo mkdir -p /mnt && sudo mount rpool/root /mnt -t zfs
@@ -142,7 +142,7 @@ To skip installation and directly apply configuration on a system with experimen
     $ sudo mkdir -p /mnt/persist && sudo mount rpool/persist /mnt/persist -t zfs
     ```
 
-10. Mount boot partition.
+11. Mount boot partition.
 
     ```console
     $ sudo mkdir -p /mnt/boot && sudo mount $BOOT /mnt/boot
