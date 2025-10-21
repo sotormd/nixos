@@ -32,7 +32,7 @@
   # partition partuuids
   # find them from /dev/disk/by-partuuid/...
   # assumes a specific configuration
-  # see ../docs/laptop-setup.md
+  # see ../docs/laptop.md
   device.boot = "aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa";
   device.swap = "bbbbbbbb-aaaa-aaaa-aaaa-aaaaaaaaaaaa";
   device.root = "cccccccc-aaaa-aaaa-aaaa-aaaaaaaaaaaa";
@@ -54,12 +54,12 @@
 
   # secure boot: boot signed software
   # provided by the lanzaboote project
-  # read docs/laptop-setup.md before enabling
+  # read docs/laptop.md before enabling
   device.secureboot.enable = true;
 
   # impermanence: erase your darlings
   # using zfs snapshots and bind mounts
-  # read docs/laptop-setup.md before enabling
+  # read docs/laptop.md before enabling
   # requires: secureboot
   device.impermanence.enable = true;
 

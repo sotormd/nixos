@@ -89,13 +89,13 @@ Commands
   roles: laptop, server
 
     $ nixos init vars
-    Initialize variables (see docs/*-setup.md).
+    Initialize variables (see docs).
 
     $ nixos init vars replace
     Replace current variables.
 
     $ nixos init sops
-    Initialize secrets (see docs/*-setup.md).
+    Initialize secrets (see docs).
 
     $ nixos init sops replace
     Replace current secrets.
@@ -104,16 +104,16 @@ Commands
   roles: laptop
 
     $ nixos init lanzaboote create
-    Create lanzaboote keys (see docs/laptop-setup.md).
+    Create lanzaboote keys (see docs/laptop.md).
 
     $ nixos init lanzaboote enroll
-    Enroll lanzaboote keys (see docs/laptop-setup.md).
+    Enroll lanzaboote keys (see docs/laptop.md).
 
   init impermanence
   roles: laptop
 
     $ nixos init impermanence
-    Populate the /persist directory for impermanence (see docs/laptop-setup.md).
+    Populate the /persist directory for impermanence (see docs/laptop.md).
 
   serverpush <path>
   roles: laptop
