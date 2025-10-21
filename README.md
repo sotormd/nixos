@@ -9,7 +9,7 @@ NixOS configuration flake for multiple hosts.
 1. [Features](#features)
 2. [Setup](#setup)
 3. [Images](#images)
-3. [nixos: Flake Helper](#nixos-flake-helper)
+4. [nixos: Flake Helper](#nixos-flake-helper)
 
 # Features
 
