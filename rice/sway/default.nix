@@ -8,8 +8,6 @@
 
     ./outputs.nix
 
-    ./start.nix
-
     ./sway.nix
 
     ./swayfx.nix
