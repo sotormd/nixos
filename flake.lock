@@ -630,11 +630,11 @@
     },
     "wallpapers": {
       "locked": {
-        "lastModified": 1760265421,
-        "narHash": "sha256-zB6yuID1FwunBupnhPGGeDUyF4OnM2q5R8EQ8Pz5O1Q=",
+        "lastModified": 1761112509,
+        "narHash": "sha256-e2IvVOUXzFrYb23Bl/5rf/i5UaFHMcA9pzPJLtbzPuc=",
         "owner": "sotormd",
         "repo": "wallpapers",
-        "rev": "7ad9c2050dd227e77c761dbd9cc96cf7220c676d",
+        "rev": "57d762baab58122f989b7dd414a863fb020064cf",
         "type": "github"
       },
       "original": {

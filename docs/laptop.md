@@ -2,7 +2,7 @@
 
 To skip installation and directly apply configuration on a system with experimental features `flakes` and `nix-command` enabled, skip to [this](#5-applying-configuration) section.
 
-**The configuration expects a particular disk setup.**
+**The configuration expects a particular disk setup.** To replicate just the desktop, see [rice](./rice.md).
 
 ![Screenshot](../screenshots/nixos.png)
 

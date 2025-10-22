@@ -12,8 +12,8 @@ in
 {
   home-manager.users.${vars.user.name} = {
     home.file = {
-      ".local/share/backgrounds/wall.png".source = getWallpaper vars.outputs.wallpaper;
-      ".local/share/backgrounds/lock.png".source = getWallpaper vars.outputs.lockscreen;
+      ".local/share/backgrounds/wall.png".source = lib.mkForce (getWallpaper vars.outputs.wallpaper);
+      ".local/share/backgrounds/lock.png".source = lib.mkForce (getWallpaper vars.outputs.lockscreen);
     };
   };
 }
