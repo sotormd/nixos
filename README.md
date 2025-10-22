@@ -69,6 +69,8 @@ NixOS configuration flake for multiple hosts.
 
     [Setup docs](./docs/laptop.md)
 
+    To replicate just the desktop, see [rice](./docs/rice.md).
+
 2. `server` role: Headless home server configuration
 
     [Setup docs](./docs/server.md)
@@ -79,7 +81,7 @@ NixOS configuration flake for multiple hosts.
 
 # Images
 
-Three images, `minimal`, `gnome` and `plasma` are included (for installation, recovery, etc.)
+Three images: `minimal`, `gnome` and `plasma` are included (for installation, recovery, etc.)
 
 See [images](./docs/images.md) for more details.
 

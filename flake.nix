@@ -63,6 +63,9 @@
       formatter.x86_64-linux = nixpkgs.legacyPackages.x86_64-linux.nixfmt-rfc-style;
       formatter.aarch64-linux = nixpkgs.legacyPackages.aarch64-linux.nixfmt-rfc-style;
 
+      # "rice"
+      homeManagerModules.rice = import ./rice;
+
       # laptop nixos configuration
       nixosConfigurations.laptop = nixpkgs.lib.nixosSystem {
         specialArgs = {
@@ -82,6 +85,17 @@
 
           # home manager - to declaratively manage home directory
           home-manager.nixosModules.home-manager
+
+          # rice
+          {
+            home-manager.extraSpecialArgs = {
+              inherit (colors.lib) colors;
+              inherit (wallpapers.lib) wallpapers;
+            };
+            home-manager.users.${vars.user.name} = {
+              imports = [ self.homeManagerModules.rice ];
+            };
+          }
 
           # sops-nix - secret management with sops
           sops-nix.nixosModules.sops

@@ -13,9 +13,6 @@
           mode = "1920x1080@75Hz";
           position = "1920 0";
         };
-        "*" = {
-          bg = "~/.local/share/backgrounds/wall.png fill";
-        };
       };
 
       # assing workspaces to outputs

@@ -32,18 +32,6 @@
       # development tools
       ./dev
 
-      # dunst notification daemon
-      ./dunst
-
-      # wm-agnostic widgets
-      ./eww
-
-      # foot terminal emulator
-      ./foot
-
-      # gtk widget toolkit and other theming options
-      ./gtk
-
       # mousepad text editor
       ./mousepad
 
@@ -59,9 +47,6 @@
       # packages
       ./packages
 
-      # launcher
-      ./rofi
-
       # sops-nix secrets management
       ./sops
 
@@ -76,9 +61,6 @@
 
       # virtualisation with qemu, distrobox, etc
       ./virtualization
-
-      # waybar wayland panel
-      ./waybar
 
       # zathura pdf reader
       ./zathura
