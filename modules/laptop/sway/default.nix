@@ -12,6 +12,8 @@
 
     ./polkit.nix
 
+    ./start.nix
+
     ./swaylock.nix
   ];
 }
