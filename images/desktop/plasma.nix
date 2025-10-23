@@ -1,4 +1,5 @@
+{ modulesPath, ... }:
+
 {
-  services.displayManager.sddm.enable = true;
-  services.desktopManager.plasma6.enable = true;
+  imports = [ "${modulesPath}/installer/cd-dvd/installation-cd-graphical-calamares-plasma6.nix" ];
 }
