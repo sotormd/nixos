@@ -1,4 +1,5 @@
+{ modulesPath, ... }:
+
 {
-  services.displayManager.gdm.enable = true;
-  services.desktopManager.gnome.enable = true;
+  imports = [ "${modulesPath}/installer/cd-dvd/installation-cd-graphical-calamares-gnome.nix" ];
 }
