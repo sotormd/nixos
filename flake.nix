@@ -140,7 +140,7 @@
 
       # images
       nixosConfigurations = {
-        gnomeImage = nixpkgs.lib.nixosSystem {
+        imageGnome = nixpkgs.lib.nixosSystem {
           specialArgs = { inherit inputs; };
           modules = [
             ./images/desktop
@@ -148,7 +148,7 @@
           ];
         };
 
-        plasmaImage = nixpkgs.lib.nixosSystem {
+        imagePlasma = nixpkgs.lib.nixosSystem {
           specialArgs = { inherit inputs; };
           modules = [
             ./images/desktop
@@ -156,7 +156,7 @@
           ];
         };
 
-        minimalImage = nixpkgs.lib.nixosSystem {
+        imageMinimal = nixpkgs.lib.nixosSystem {
           specialArgs = { inherit inputs; };
           modules = [ ./images/minimal ];
         };
