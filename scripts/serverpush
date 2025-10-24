@@ -1,7 +1,7 @@
 #! /usr/bin/env bash
 
 if [ -z "$1" ]; then
-    echo "Error: expected target directory"
+    echo "Error: expected target directory" >&2
     exit 1
 fi
 
@@ -17,6 +17,6 @@ if [ "$NIXOS_ROLE" == "laptop" ]; then
     $NIXOS_DIR/ \
     server:$1/
 else
-    echo "Error: unexpected role $NIXOS_ROLE"
+    echo "Error: unexpected role $NIXOS_ROLE" >&2
     exit 1
 fi

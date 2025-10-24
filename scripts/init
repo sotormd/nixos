@@ -11,7 +11,7 @@ if [ "$ROLE" == "laptop" ]; then
 elif [ "$ROLE" == "server" ]; then
     SOPS_DIR="/var/lib/sops-nix"
 else
-    echo "Error: unexpected role $NIXOS_ROLE"
+    echo "Error: unexpected role $NIXOS_ROLE" >&2
     exit 1
 fi
 SOPS_YAML="$DIR/.sops.yaml"
@@ -29,13 +29,13 @@ PERSIST_DIR_HOME="$PERSIST_DIR_ROOT/home/$USER"
 if [ "$1" == "hardware" ]; then
 
     if [ -f "modules/$ROLE/hardware-configuration.nix" ] && [[ "$2" != "replace" ]]; then
-        echo "Error: hardware-configuration.nix already exists"
+        echo "Error: hardware-configuration.nix already exists" >&2
         exit 1
     fi
 
     sudo nixos-generate-config --dir /tmp/nixos
 
-    echo "Warning: hardware configuration is now managed within the flake"
+    echo "Warning: hardware configuration is now managed within the flake" >&2
     exit 1
 
     if [ -f "/tmp/nixos/hardware-configuration.nix" ]; then
@@ -60,7 +60,7 @@ elif [ "$1" == "vars" ]; then
     mkdir -p $VARS_DIR
 
     if [ -f "$VARS" ] && [[ "$2" != "replace" ]]; then
-        echo "Error: vars.nix already exists"
+        echo "Error: vars.nix already exists" >&2
         exit 1
     else
 	cp $VARS "/tmp/vars.nix"
@@ -83,17 +83,17 @@ elif [ "$1" == "vars" ]; then
         fi
 
         if [ -z "$VARS_DEVICE_BOOT" ]; then
-            echo "Warning: VARS_DEVICE_BOOT is unset"
+            echo "Warning: VARS_DEVICE_BOOT is unset" >&2
             VARS_DEVICE_BOOT=""
         fi
 
         if [ -z "$VARS_DEVICE_SWAP" ]; then
-            echo "Warning: VARS_DEVICE_SWAP is unset"
+            echo "Warning: VARS_DEVICE_SWAP is unset" >&2
             VARS_DEVICE_SWAP=""
         fi
 
         if [ -z "$VARS_DEVICE_ROOT" ]; then
-            echo "Warning: VARS_DEVICE_ROOT is unset"
+            echo "Warning: VARS_DEVICE_ROOT is unset" >&2
             VARS_DEVICE_ROOT=""
         fi
 
@@ -126,7 +126,7 @@ elif [ "$1" == "vars" ]; then
         fi
 
         if [ -z "$VARS_USER_EMAIL" ]; then
-            echo "Warning: VARS_USER_EMAIL is unset"
+            echo "Warning: VARS_USER_EMAIL is unset" >&2
             VARS_USER_EMAIL=""
         fi
 
@@ -151,7 +151,7 @@ elif [ "$1" == "vars" ]; then
         fi
 
         if [ -z "$VARS_NETWORK_SSID" ]; then
-            echo "Warning: VARS_NETWORK_SSID is unset"
+            echo "Warning: VARS_NETWORK_SSID is unset" >&2
             VARS_NETWORK_SSID=""
         fi
 
@@ -160,7 +160,7 @@ elif [ "$1" == "vars" ]; then
         fi
 
         if [ -z "$VARS_NETWORK_IP" ]; then
-            echo "Warning: VARS_NETWORK_IP is unset"
+            echo "Warning: VARS_NETWORK_IP is unset" >&2
             VARS_NETWORK_IP=""
         fi
 
@@ -380,7 +380,7 @@ EOF
         fi
 
         if [ -z "$VARS_DEVICE_ROOT" ]; then
-            echo "Warning: VARS_DEVICE_ROOT is unset"
+            echo "Warning: VARS_DEVICE_ROOT is unset" >&2
             VARS_DEVICE_ROOT=""
         fi
 
@@ -389,7 +389,7 @@ EOF
         fi
 
         if [ -z "$VARS_USER_EMAIL" ]; then
-            echo "Warning: VARS_USER_EMAIL is unset"
+            echo "Warning: VARS_USER_EMAIL is unset" >&2
             VARS_USER_EMAIL=""
         fi
 
@@ -410,7 +410,7 @@ EOF
         fi
 
         if [ -z "$VARS_NETWORK_SSID" ]; then
-            echo "Warning: VARS_NETWORK_SSID is unset"
+            echo "Warning: VARS_NETWORK_SSID is unset" >&2
             VARS_NETWORK_SSID=""
         fi
 
@@ -423,7 +423,7 @@ EOF
         fi
 
         if [ -z "$VARS_NETWORK_IP" ]; then
-            echo "Warning: VARS_NETWORK_IP is unset"
+            echo "Warning: VARS_NETWORK_IP is unset" >&2
             VARS_NETWORK_IP=""
         fi
 
@@ -440,7 +440,7 @@ EOF
         fi
 
         if [ -z "$VARS_NETWORK_SSH_KEY" ]; then
-            echo "Warning: VARS_NETWORK_SSH_KEY is unset"
+            echo "Warning: VARS_NETWORK_SSH_KEY is unset" >&2
             VARS_NETWORK_SSH_KEY=""
         fi
 
@@ -682,7 +682,7 @@ elif [ "$1" == "sops" ]; then
     mkdir -p $VARS_DIR
 
     if [ -f "$SECRETS" ] && [[ "$2" != "replace" ]]; then
-        echo "Error: secrets.yaml already exists"
+        echo "Error: secrets.yaml already exists" >&2
         exit 1
     else
 	cp $SECRETS "/tmp/secrets.yaml"
@@ -729,7 +729,7 @@ elif [ "$1" == "sops" ]; then
     if [ "$ROLE" == "server" ]; then
 
         if [ -z "$SECRETS_DUCKDNS_TOKEN" ]; then
-            echo "Warning: SECRETS_DUCKDNS_TOKEN is unset"
+            echo "Warning: SECRETS_DUCKDNS_TOKEN is unset" >&2
             SECRETS_DUCKDNS_TOKEN=""
         fi
 
@@ -837,7 +837,7 @@ EOF
 elif [ "$1" == "lanzaboote" ]; then
 
     if ! [ "$ROLE" == "laptop" ]; then
-        echo "Error: unexpected role $NIXOS_ROLE"
+        echo "Error: unexpected role $NIXOS_ROLE" >&2
         exit 1
     fi
 
@@ -856,22 +856,22 @@ elif [ "$1" == "lanzaboote" ]; then
 elif [ "$1" == "impermanence" ]; then
 
     if ! [ "$ROLE" == "laptop" ]; then
-        echo "Error: unexpected role $NIXOS_ROLE"
+        echo "Error: unexpected role $NIXOS_ROLE" >&2
         exit 1
     fi
 
     if [ ! -d "$PERSIST_DIR" ]; then
-        echo "Error: $PERSIST_DIR doesn't exist"
+        echo "Error: $PERSIST_DIR doesn't exist" >&2
         exit 1
     fi
 
     if [ -d "$PERSIST_DIR_ROOT" ]; then
-        echo "$PERSIST_DIR_ROOT already exists"
+        echo "Error: $PERSIST_DIR_ROOT already exists" >&2
         exit 0
     fi
 
     if [ -d "$PERSIST_DIR_HOME" ]; then
-        echo "$PERSIST_DIR_HOME already exists"
+        echo "Error: $PERSIST_DIR_HOME already exists" >&2
         exit 0
     fi
 
