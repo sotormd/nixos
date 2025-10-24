@@ -4,7 +4,7 @@ To skip installation and directly apply configuration on a system with experimen
 
 **The configuration expects a particular disk setup.** To replicate just the desktop, see [rice](./rice.md).
 
-![Screenshot](../screenshots/nixos.png)
+![Screenshot](./screenshots/nixos.png)
 
 # Contents
 
