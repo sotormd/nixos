@@ -11,7 +11,7 @@ if [ "$ROLE" == "laptop" ]; then
 elif [ "$ROLE" == "server" ]; then
     SOPS_DIR="/var/lib/sops-nix"
 else
-    echo "Error: unexpected role $NIXOS_ROLE"
+    echo "Error: unexpected role $NIXOS_ROLE" >&2
     exit 1
 fi
 SECRETS="$VARS_DIR/secrets.yaml"
@@ -21,6 +21,6 @@ if [ "$1" == "vars" ]; then
 elif [ "$1" == "sops" ]; then
     sudo GNUPGHOME="$SOPS_DIR" sops vars/secrets.yaml
 else
-    echo "Error: expected argument 'vars' or 'sops'"
+    echo "Error: expected argument 'vars' or 'sops'" >&2
     exit 1
 fi
