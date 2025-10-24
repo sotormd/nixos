@@ -18,9 +18,6 @@
       # resource monitor
       htop
 
-      # security auditing
-      lynis
-
       # text editor
       nano
 
