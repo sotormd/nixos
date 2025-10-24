@@ -2,7 +2,7 @@
 
 [nix-on-droid](https://github.com/nix-community/nix-on-droid) configuration
 
-![Screenshot](../screenshots/nix-on-droid.png)
+![Screenshot](./screenshots/nix-on-droid.png)
 
 # Contents
 

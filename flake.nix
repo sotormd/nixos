@@ -64,7 +64,7 @@
       formatter.aarch64-linux = nixpkgs.legacyPackages.aarch64-linux.nixfmt-rfc-style;
 
       # "rice"
-      homeManagerModules.rice = import ./rice;
+      homeManagerModules.rice = import ./modules/rice;
 
       # laptop nixos configuration
       nixosConfigurations.laptop = nixpkgs.lib.nixosSystem {
@@ -143,22 +143,22 @@
         imageGnome = nixpkgs.lib.nixosSystem {
           specialArgs = { inherit inputs; };
           modules = [
-            ./images/desktop
-            ./images/desktop/gnome.nix
+            ./modules/images
+            ./modules/images/gnome.nix
           ];
         };
 
         imagePlasma = nixpkgs.lib.nixosSystem {
           specialArgs = { inherit inputs; };
           modules = [
-            ./images/desktop
-            ./images/desktop/plasma.nix
+            ./modules/images
+            ./modules/images/plasma.nix
           ];
         };
 
         imageMinimal = nixpkgs.lib.nixosSystem {
           specialArgs = { inherit inputs; };
-          modules = [ ./images/minimal ];
+          modules = [ ./modules/images ];
         };
       };
     };

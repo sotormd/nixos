@@ -2,7 +2,7 @@
 
 NixOS configuration flake for multiple hosts.
 
-![nixos](screenshots/nixos.png)
+![nixos](./docs/screenshots/nixos.png)
 
 # Contents
 
