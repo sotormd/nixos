@@ -142,23 +142,17 @@
       nixosConfigurations = {
         imageGnome = nixpkgs.lib.nixosSystem {
           specialArgs = { inherit inputs; };
-          modules = [
-            ./modules/images
-            ./modules/images/gnome.nix
-          ];
+          modules = [ ./modules/images/gnome.nix ];
         };
 
         imagePlasma = nixpkgs.lib.nixosSystem {
           specialArgs = { inherit inputs; };
-          modules = [
-            ./modules/images
-            ./modules/images/plasma.nix
-          ];
+          modules = [ ./modules/images/plasma.nix ];
         };
 
         imageMinimal = nixpkgs.lib.nixosSystem {
           specialArgs = { inherit inputs; };
-          modules = [ ./modules/images ];
+          modules = [ ./modules/images/minimal.nix ];
         };
       };
     };
