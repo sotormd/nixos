@@ -6,6 +6,8 @@
 
     ./main.nix
 
+    ./prompt.nix
+
     ./sudo.nix
   ];
 }
