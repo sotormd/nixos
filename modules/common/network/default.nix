@@ -3,6 +3,8 @@
 {
   imports = lib.concatMap (x: x) [
     [
+      ./adblock.nix
+
       ./disable-ipv6.nix
 
       ./firewall.nix

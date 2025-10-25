@@ -27,6 +27,11 @@
       inputs.home-manager.follows = "home-manager";
     };
 
+    hosts = {
+      url = "github:StevenBlack/hosts";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+
     neovim = {
       url = "github:sotormd/neovim";
     };
@@ -48,6 +53,7 @@
       sops-nix,
       lanzaboote,
       nix-on-droid,
+      hosts,
       neovim,
       colors,
       wallpapers,
@@ -102,6 +108,9 @@
 
           # lanzaboote - secure boot
           lanzaboote.nixosModules.lanzaboote
+
+          # /etc/hosts
+          hosts.nixosModule
         ];
       };
 
@@ -125,6 +134,9 @@
 
           # sops-nix - secret management with sops
           sops-nix.nixosModules.sops
+
+          # /etc/hosts
+          hosts.nixosModule
         ];
       };
 
