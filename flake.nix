@@ -70,7 +70,7 @@
       formatter.aarch64-linux = nixpkgs.legacyPackages.aarch64-linux.nixfmt-rfc-style;
 
       # "rice"
-      homeManagerModules.rice = import ./modules/rice;
+      nixosModules.rice = import ./modules/rice;
 
       # laptop nixos configuration
       nixosConfigurations.laptop = nixpkgs.lib.nixosSystem {
@@ -99,7 +99,7 @@
               inherit (wallpapers.lib) wallpapers;
             };
             home-manager.users.${vars.user.name} = {
-              imports = [ self.homeManagerModules.rice ];
+              imports = [ self.nixosModules.rice ];
             };
           }
 
