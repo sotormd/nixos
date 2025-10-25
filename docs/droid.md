@@ -2,8 +2,6 @@
 
 [nix-on-droid](https://github.com/nix-community/nix-on-droid) configuration
 
-![Screenshot](./screenshots/nix-on-droid.png)
-
 # Contents
 
 1. [Installing nix-on-droid](#1-installing-nix-on-droid)
