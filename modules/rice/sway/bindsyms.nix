@@ -79,9 +79,6 @@
       "XF86AudioNext" = "exec ${pkgs.playerctl}/bin/playerctl next";
       "Mod4+XF86AudioPlay" = "exec ${pkgs.playerctl}/bin/playerctl stop";
 
-      # leave
-      "Mod4+Escape" = "mode leave";
-
       # screenshot
       "Mod4+Print" = "mode screenshot";
       "Mod4+shift+s" = "exec ${pkgs.sway-contrib.grimshot}/bin/grimshot copy area";
