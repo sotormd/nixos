@@ -182,6 +182,26 @@
         "type": "github"
       }
     },
+    "hosts": {
+      "inputs": {
+        "nixpkgs": [
+          "nixpkgs"
+        ]
+      },
+      "locked": {
+        "lastModified": 1760670453,
+        "narHash": "sha256-KQx4CWPfKBJwuBONYSE7AIKa7UBXBvtNVcrOmkPrjkY=",
+        "owner": "StevenBlack",
+        "repo": "hosts",
+        "rev": "5da10a61afc297307c489903bfc35b1eb8dac674",
+        "type": "github"
+      },
+      "original": {
+        "owner": "StevenBlack",
+        "repo": "hosts",
+        "type": "github"
+      }
+    },
     "ixx": {
       "inputs": {
         "flake-utils": [
@@ -533,6 +553,7 @@
       "inputs": {
         "colors": "colors",
         "home-manager": "home-manager",
+        "hosts": "hosts",
         "lanzaboote": "lanzaboote",
         "neovim": "neovim",
         "nix-on-droid": "nix-on-droid",
@@ -630,11 +651,11 @@
     },
     "wallpapers": {
       "locked": {
-        "lastModified": 1761112509,
-        "narHash": "sha256-e2IvVOUXzFrYb23Bl/5rf/i5UaFHMcA9pzPJLtbzPuc=",
+        "lastModified": 1761239917,
+        "narHash": "sha256-hVtsaaLLQFn5OScFP0CqXWrpoTJfI+5NpbpRYNlUFLY=",
         "owner": "sotormd",
         "repo": "wallpapers",
-        "rev": "57d762baab58122f989b7dd414a863fb020064cf",
+        "rev": "940443abe3acd432b82a090dc9eba61c37b0a394",
         "type": "github"
       },
       "original": {
