@@ -18,17 +18,6 @@
         "Right" = "resize grow width 10px";
       };
 
-      # leave mode - lock/logout/suspend/poweroff/reboot
-      leave = {
-        Escape = "mode default";
-        Return = "mode default";
-        "l" = "mode default; exec ${pkgs.swaylock}/bin/swaylock";
-        "x" = "mode default; exec ${pkgs.swayfx}/bin/swaymsg exit";
-        "s" = "mode default; exec systemctl suspend";
-        "u" = "mode default; exec systemctl poweroff";
-        "r" = "mode default; exec systemctl reboot";
-      };
-
       # screenshot mode with grimshot
       screenshot = {
         Escape = "mode default";

@@ -173,12 +173,12 @@
         padding: 5px;
       }
 
-      .start-box {
+      .start-box, .leave {
         background: #${colors.bg1};
         border-radius : 7px;
       }
 
-      .start-inner-box {
+      .start-inner-box, .leave-widget-box {
         background: #${colors.bg0};
         border-radius: 7px;
         padding: 10px;
