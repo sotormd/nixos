@@ -20,7 +20,7 @@
 
   environment.sessionVariables = {
     NIXOS_ROLE = "droid";
-    PS1 = ''\n\[\033[1;32m\]nix \w \$\[\033[0m\] '';
+    PS1 = ''\n\[\033[1;32m\]nix \w λ\[\033[0m\] '';
   };
 
   environment.motd = ''
