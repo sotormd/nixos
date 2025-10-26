@@ -200,3 +200,13 @@ Remove an accidental commit that hasn't been pushed yet:
 ```console
 $ nixos git reset --soft HEAD~1
 ```
+
+Copy the contents of flake.nix
+```console
+$ nixos cat flake.nix | wl-copy
+```
+
+Open an editor in the flake directory
+```
+$ nixos vi .
+```
