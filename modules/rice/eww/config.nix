@@ -320,39 +320,31 @@ in
     		  (eventbox
                         :class "leave-box"
                         :cursor "hand2"
-                        :onclick "${pkgs.eww}/bin/eww close leave0 leave1; ${pkgs.swayfx}/bin/swaymsg mode default; ${pkgs.swaylock}/bin/swaylock &"
+                        :onclick "${pkgs.eww}/bin/eww close leavewindow; ${pkgs.swayfx}/bin/swaymsg mode default; ${pkgs.swaylock}/bin/swaylock &"
                         (box :class "lock" "󰌾"))
                       (eventbox
                         :class "leave-box"
                         :cursor "hand2"
-                        :onclick "${pkgs.eww}/bin/eww close leave0 leave1; ${pkgs.swayfx}/bin/swaymsg mode default; ${pkgs.swayfx}/bin/swaymsg exit"
+                        :onclick "${pkgs.eww}/bin/eww close leavewindow; ${pkgs.swayfx}/bin/swaymsg mode default; ${pkgs.swayfx}/bin/swaymsg exit"
                         (box :class "exit" "󰗽"))
                       (eventbox
                         :class "leave-box"
                         :cursor "hand2"
-                        :onclick "${pkgs.eww}/bin/eww close leave0 leave1; ${pkgs.swayfx}/bin/swaymsg mode default; systemctl suspend"
+                        :onclick "${pkgs.eww}/bin/eww close leavewindow; ${pkgs.swayfx}/bin/swaymsg mode default; systemctl suspend"
                         (box :class "suspend" "󰤄"))
                       (eventbox
                         :class "leave-box"
                         :cursor "hand2"
-                        :onclick "${pkgs.eww}/bin/eww close leave0 leave1; ${pkgs.swayfx}/bin/swaymsg mode default; systemctl poweroff"
+                        :onclick "${pkgs.eww}/bin/eww close leavewindow; ${pkgs.swayfx}/bin/swaymsg mode default; systemctl poweroff"
                         (box :class "poweroff" ""))
                       (eventbox
                         :class "leave-box"
                         :cursor "hand2"
-                        :onclick "${pkgs.eww}/bin/eww close leave0 leave1; ${pkgs.swayfx}/bin/swaymsg mode default; systemctl reboot"
+                        :onclick "${pkgs.eww}/bin/eww close leavewindow; ${pkgs.swayfx}/bin/swaymsg mode default; systemctl reboot"
                         (box :class "reboot" ""))))
 
-                  (defwindow dock0
+                  (defwindow dock
                     :monitor 0
-                    :geometry (geometry
-                                :anchor "bottom center")
-                    :stacking "fg"
-                    :exclusive true
-                    (dock))
-
-                  (defwindow dock1
-                    :monitor 1
                     :geometry (geometry
                                 :anchor "bottom center")
                     :stacking "fg"
@@ -368,23 +360,14 @@ in
                     :exclusive false
                     (start))
 
-                  (defwindow leave0
-    	        :monitor 0
-    		:geometry (geometry
-    		             :anchor "center"
-    			     :width 500)
-    		:stacking "fg"
-    		:exclusive false
-    		(leave))
-
-                  (defwindow leave1
-    	        :monitor 1
-    		:geometry (geometry
-    		             :anchor "center"
-    			     :width 500)
-    		:stacking "fg"
-    		:exclusive false
-    		(leave))
+                  (defwindow leavewindow
+                    :monitor 0
+                    :geometry (geometry
+                                :anchor "center"
+                                :width 500)
+                    :stacking "fg"
+                    :exclusive false
+                    (leave))
 
                   (defwindow calendar
                     :monitor 1
