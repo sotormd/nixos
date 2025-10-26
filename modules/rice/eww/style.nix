@@ -1,8 +1,8 @@
-{ config, colors, ... }:
+{ colors, ... }:
 
 {
   home.file.".config/eww/eww.scss".text = ''
-      .dock0, .dock1 {
+      .dock {
         background: transparent;
       }
 
@@ -167,15 +167,19 @@
         font-family: "IBM Plex Mono";
       }
 
-      .start {
+      .start, .leavewindow {
         background: transparent;
         margin: 5px;
         padding: 5px;
       }
 
-      .start-box, .leave {
+      .start-box {
         background: #${colors.bg1};
         border-radius : 7px;
+      }
+
+      .leave-widget-box {
+        border: 5px solid #${colors.bg1};
       }
 
       .start-inner-box, .leave-widget-box {
