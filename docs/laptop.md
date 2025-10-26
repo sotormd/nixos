@@ -224,6 +224,12 @@ To skip installation and directly apply configuration on a system with experimen
 
 ## 5. Applying configuration.
 
+**This configuration expects a particular disk setup.**
+
+This flake doesn't rely on any `hardware-configuration.nix`, and instead manages hardware configuration [here](../modules/laptop/boot/hw.nix). Also, it assumes a UEFI host.
+
+If you wish to replicate ONLY the desktop, see [rice](./rice.md).
+
 1. Once booted into the new installation, set up basic environment variables.
 
     ```console
