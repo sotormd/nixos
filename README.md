@@ -13,7 +13,6 @@ NixOS configuration flake for multiple hosts.
 
 # Features
 
-
 |                   |                                                                                     |
 |-------------------|-------------------------------------------------------------------------------------|
 | distro            | `NixOS`                                                                             |
@@ -28,11 +27,10 @@ NixOS configuration flake for multiple hosts.
 | shell             | `bash`                                                                              |
 | filesystem        | `zfs`                                                                               |
 | networking        | `wpa_supplicant`                                                                    |
+| dns               | `unbound`                                                                           |
 | audio             | `pipewire` `pulseaudio`                                                             |
-| sandboxing        | `firejail`                                                                          |
-| virtualization    | `qemu` `virt-manager` `distrobox`                                                   |
-| optimizations     | `auto-cpufreq` `tlp` `powertop`                                                     |
-| resource monitor  | `btop` `htop`                                                                       |
+| web server        | `nginx`                                                                             |
+| media server      | `jellyfin`                                                                          |
 | display server    | `wayland`                                                                           |
 | compositor        | `swayfx`                                                                            |
 | bar               | `waybar`                                                                            |
@@ -45,24 +43,25 @@ NixOS configuration flake for multiple hosts.
 | image viewer      | `swayimg`                                                                           |
 | media player      | `mpv`                                                                               |
 | browser           | `brave`                                                                             |
+| search engine     | `searxng`                                                                           |
+| bittorrent        | `qbittorrent-nox`                                                                   |
+| anonymity         | `i2pd` `oniux`                                                                      |
+| passwords         | `vaultwarden`                                                                       |
+| text editor       | [`neovim`](https://github.com/sotormd/neovim) `vscodium` `nano` `mousepad` `micro`  |
+| version control   | `git`                                                                               |
+| development       | `rust` `python` `go` `haskell`                                                      |
 | colorscheme       | [`nord`](https://github.com/sotormd/colors)                                         |
 | wallpapers        | [`wallpapers`](https://github.com/sotormd/wallpapers)                               |
 | gtk theme         | `Nordic-darker`                                                                     |
 | gtk icons         | `Nordzy-dark`                                                                       |
 | gtk cursor        | `Simp1e-Nord-Dark`                                                                  |
 | font              | `IBM Plex`                                                                          |
+| sandboxing        | `firejail`                                                                          |
+| virtualization    | `qemu` `virt-manager` `distrobox`                                                   |
+| optimizations     | `auto-cpufreq` `tlp` `powertop`                                                     |
+| resource monitor  | `btop` `htop`                                                                       |
 | clipboard         | `cliphist`                                                                          |
 | screenshots       | `grimshot`                                                                          |
-| text editor       | [`neovim`](https://github.com/sotormd/neovim) `vscodium` `nano` `mousepad` `micro`  |
-| version control   | `git`                                                                               |
-| development       | `rust` `python` `go` `haskell`                                                      |
-| dns server        | `unbound`                                                                           |
-| web server        | `nginx`                                                                             |
-| media server      | `jellyfin`                                                                          |
-| search engine     | `searxng`                                                                           |
-| bittorrent        | `qbittorrent-nox`                                                                   |
-| anonymity         | `i2pd` `oniux`                                                                      |
-| passwords         | `vaultwarden`                                                                       |
 
 # Setup
 
