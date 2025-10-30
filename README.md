@@ -13,7 +13,6 @@ NixOS configuration flake for multiple hosts.
 
 # Features
 
-Base
 
 |                   |                                                                                     |
 |-------------------|-------------------------------------------------------------------------------------|
@@ -34,11 +33,6 @@ Base
 | virtualization    | `qemu` `virt-manager` `distrobox`                                                   |
 | optimizations     | `auto-cpufreq` `tlp` `powertop`                                                     |
 | resource monitor  | `btop` `htop`                                                                       |
-
-Desktop
-
-|                   |                                                                                     |
-|-------------------|-------------------------------------------------------------------------------------|
 | display server    | `wayland`                                                                           |
 | compositor        | `swayfx`                                                                            |
 | bar               | `waybar`                                                                            |
@@ -59,19 +53,9 @@ Desktop
 | font              | `IBM Plex`                                                                          |
 | clipboard         | `cliphist`                                                                          |
 | screenshots       | `grimshot`                                                                          |
-
-Development
-
-|                   |                                                                                     |
-|-------------------|-------------------------------------------------------------------------------------|
 | text editor       | [`neovim`](https://github.com/sotormd/neovim) `vscodium` `nano` `mousepad` `micro`  |
 | version control   | `git`                                                                               |
 | development       | `rust` `python` `go` `haskell`                                                      |
-
-Services
-
-|                   |                                                                                     |
-|-------------------|-------------------------------------------------------------------------------------|
 | dns server        | `unbound`                                                                           |
 | web server        | `nginx`                                                                             |
 | media server      | `jellyfin`                                                                          |
