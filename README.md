@@ -29,7 +29,6 @@ Base
 | shell             | `bash`                                                                              |
 | filesystem        | `zfs`                                                                               |
 | networking        | `wpa_supplicant`                                                                    |
-| dns               | `unbound`                                                                           |
 | audio             | `pipewire` `pulseaudio`                                                             |
 | sandboxing        | `firejail`                                                                          |
 | virtualization    | `qemu` `virt-manager` `distrobox`                                                   |
@@ -73,6 +72,7 @@ Services
 
 |                   |                                                                                     |
 |-------------------|-------------------------------------------------------------------------------------|
+| dns server        | `unbound`                                                                           |
 | web server        | `nginx`                                                                             |
 | media server      | `jellyfin`                                                                          |
 | search engine     | `searxng`                                                                           |
