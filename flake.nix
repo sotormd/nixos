@@ -70,7 +70,7 @@
       formatter.aarch64-linux = nixpkgs.legacyPackages.aarch64-linux.nixfmt-rfc-style;
 
       # "rice"
-      nixosModules.rice = import ./modules/rice;
+      homeManagerModules.rice = import ./modules/rice;
 
       # laptop nixos configuration
       nixosConfigurations.laptop = nixpkgs.lib.nixosSystem {
@@ -99,7 +99,7 @@
               inherit (wallpapers.lib) wallpapers;
             };
             home-manager.users.${vars.user.name} = {
-              imports = [ self.nixosModules.rice ];
+              imports = [ self.homeManagerModules.rice ];
             };
           }
 
@@ -147,22 +147,22 @@
         modules = [ ./modules/droid ];
       };
 
-      # images
-      nixosConfigurations = {
-        imageGnome = nixpkgs.lib.nixosSystem {
-          specialArgs = { inherit inputs; };
-          modules = [ ./modules/images/gnome.nix ];
-        };
+      # gnome image
+      nixosConfigurations.imageGnome = nixpkgs.lib.nixosSystem {
+        specialArgs = { inherit inputs; };
+        modules = [ ./modules/images/gnome.nix ];
+      };
 
-        imagePlasma = nixpkgs.lib.nixosSystem {
-          specialArgs = { inherit inputs; };
-          modules = [ ./modules/images/plasma.nix ];
-        };
+      # plasma image
+      nixosConfigurations.imagePlasma = nixpkgs.lib.nixosSystem {
+        specialArgs = { inherit inputs; };
+        modules = [ ./modules/images/plasma.nix ];
+      };
 
-        imageMinimal = nixpkgs.lib.nixosSystem {
-          specialArgs = { inherit inputs; };
-          modules = [ ./modules/images/minimal.nix ];
-        };
+      # minimal image
+      nixosConfigurations.imageMinimal = nixpkgs.lib.nixosSystem {
+        specialArgs = { inherit inputs; };
+        modules = [ ./modules/images/minimal.nix ];
       };
     };
 }
