@@ -11,9 +11,6 @@
     # clam av
     ./clamav
 
-    # home-manager
-    ./home
-
     # timezone, locales, keyboard layout
     ./internationalization
 
@@ -28,6 +25,9 @@
 
     # sandboxing with firejail, apparmor
     ./sandbox
+
+    # scripts
+    ./scripts
 
     # sops-nix secrets management
     ./sops

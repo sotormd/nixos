@@ -45,14 +45,4 @@
     # vaultwarden password manager
     (lib.optional vars.network.vaultwarden.enable ./vaultwarden)
   ];
-
-  home-manager.users.${vars.user.name} = {
-    # set user dirs
-    xdg.userDirs = {
-      enable = true;
-      documents = null;
-      download = null;
-      pictures = null;
-    };
-  };
 }

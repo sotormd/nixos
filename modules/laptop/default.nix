@@ -6,6 +6,9 @@
       # assertions - ensure no tomfoolery
       ./assertions.nix
 
+      # home-manager
+      ./home.nix
+
       # MODULES - sorted alphabetically
 
       # audio with pipewire
@@ -58,6 +61,9 @@
 
       # thunar file manager
       ./thunar
+
+      # users
+      ./users
 
       # virtualisation with qemu, distrobox, etc
       ./virtualization
