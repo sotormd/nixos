@@ -1,7 +1,8 @@
 { pkgs, vars, ... }:
 
 {
-  home-manager.users.${vars.user.name} = {
-    home.packages = [ pkgs.oniux ];
-  };
+  users.users.${vars.user.name}.packages = [
+    pkgs.oniux
+    pkgs.tor-browser
+  ];
 }

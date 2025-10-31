@@ -1,11 +1,9 @@
 { pkgs, vars, ... }:
 
 {
-  home-manager.users.${vars.user.name} = {
-    home.packages = [
-      pkgs.stack
-      pkgs.cabal-install
-      pkgs.ghc
-    ];
-  };
+  users.users.${vars.user.name}.packages = [
+    pkgs.stack
+    pkgs.cabal-install
+    pkgs.ghc
+  ];
 }

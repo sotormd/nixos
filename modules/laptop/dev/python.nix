@@ -1,7 +1,5 @@
 { pkgs, vars, ... }:
 
 {
-  home-manager.users.${vars.user.name} = {
-    home.packages = [ pkgs.python3 ];
-  };
+  users.users.${vars.user.name}.packages = [ pkgs.python3 ];
 }

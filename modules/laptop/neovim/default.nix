@@ -1,7 +1,9 @@
+{ vars, neovim, ... }:
+
 {
   imports = [
     ./editor.nix
-
-    ./package.nix
   ];
+
+  users.users.${vars.user.name}.packages = [ neovim.packages.x86_64-linux.default ];
 }

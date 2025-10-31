@@ -5,7 +5,5 @@
     ./config.nix
   ];
 
-  home-manager.users.${vars.user.name} = {
-    home.packages = [ pkgs.xfce.mousepad ];
-  };
+  users.users.${vars.user.name}.packages = [ pkgs.xfce.mousepad ];
 }
