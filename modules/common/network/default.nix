@@ -18,6 +18,6 @@
       ./wifi.nix
     ]
 
-    (lib.optImport vars.network.wpa3.enable ./wpa3.nix)
+    (lib.optional vars.network.wpa3.enable ./wpa3.nix)
   ];
 }
