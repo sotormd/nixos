@@ -11,7 +11,5 @@
     ./xfconf.nix
   ];
 
-  home-manager.users.${vars.user.name} = {
-    home.packages = [ pkgs.xfce.thunar ];
-  };
+  users.users.${vars.user.name}.packages = [ pkgs.xfce.thunar ];
 }

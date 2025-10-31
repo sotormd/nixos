@@ -1,10 +1,8 @@
 { pkgs, vars, ... }:
 
 {
-  home-manager.users.${vars.user.name} = {
-    home.packages = [
-      pkgs.cargo
-      pkgs.rustc
-    ];
-  };
+  users.users.${vars.user.name}.packages = [
+    pkgs.cargo
+    pkgs.rustc
+  ];
 }

@@ -45,7 +45,7 @@ NixOS configuration flake for multiple hosts.
 | browser           | `brave`                                                                             |
 | search engine     | `searxng`                                                                           |
 | bittorrent        | `qbittorrent-nox`                                                                   |
-| anonymity         | `i2pd` `oniux`                                                                      |
+| anonymity         | `i2pd` `oniux` `tor-browser`                                                        |
 | passwords         | `vaultwarden`                                                                       |
 | text editor       | [`neovim`](https://github.com/sotormd/neovim) `vscodium` `nano` `mousepad` `micro`  |
 | version control   | `git`                                                                               |

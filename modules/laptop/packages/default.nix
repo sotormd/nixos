@@ -1,9 +1,9 @@
 {
   imports = [
-    ./home.nix
-
     ./mime.nix
 
     ./system.nix
+
+    ./user.nix
   ];
 }
