@@ -1,4 +1,4 @@
-{ vars, ... }:
+{ lib, vars, ... }:
 
 {
   programs.chromium.extraOpts = {
@@ -40,22 +40,25 @@
     # search engine
     DefaultSearchProviderEnabled = true;
 
-    DefaultSearchProviderImageURL =
-      if (vars.network.server.enable == true) then
+    DefaultSearchProviderImageURL = lib.concatStrings (
+      lib.choose vars.network.server.enable
         "https://${vars.network.server.domain}/searxng/static/themes/simple/img/favicon.svg"
-      else
-        "https://duckduckgo.com/assets/logo_header_mobile.alt.v109.svg";
+        "https://duckduckgo.com/assets/logo_header_mobile.alt.v109.svg"
+    );
 
-    DefaultSearchProviderKeyword = if (vars.network.server.enable == true) then ":sx" else ":ddg";
+    DefaultSearchProviderKeyword = lib.concatStrings (
+      lib.choose vars.network.server.enable ":sx" ":ddg"
+    );
 
-    DefaultSearchProviderName =
-      if (vars.network.server.enable == true) then "SearXNG" else "DuckDuckGo";
+    DefaultSearchProviderName = lib.concatStrings (
+      lib.choose vars.network.server.enable "SearXNG" "DuckDuckGo"
+    );
 
-    DefaultSearchProviderSearchURL =
-      if (vars.network.server.enable == true) then
+    DefaultSearchProviderSearchURL = lib.concatStrings (
+      lib.choose vars.network.server.enable
         "https://${vars.network.server.domain}/searxng/search?q={searchTerms}"
-      else
-        "https://duckduckgo.com/?q={searchTerms}";
+        "https://duckduckgo.com/?q={searchTerms}"
+    );
 
     # disable the password manager
     PasswordManagerEnabled = false;

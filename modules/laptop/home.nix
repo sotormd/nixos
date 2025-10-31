@@ -10,14 +10,6 @@
   home-manager.backupFileExtension = "backup";
 
   home-manager.users.${vars.user.name} = {
-    imports = [
-      ./git.nix
-
-      ./nixos.nix
-
-      ./xdg.nix
-    ];
-
     # allow home-manager to manage itself
     programs.home-manager.enable = true;
 

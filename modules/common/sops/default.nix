@@ -1,9 +1,4 @@
-{
-  pkgs,
-  home-manager,
-  vars,
-  ...
-}:
+{ pkgs, vars, ... }:
 
 {
   imports = [
@@ -14,5 +9,5 @@
     ./settings.nix
   ];
 
-  home-manager.users.${vars.user.name}.home.packages = [ pkgs.sops ];
+  users.users.${vars.user.name}.packages = [ pkgs.sops ];
 }

@@ -129,9 +129,6 @@
           # entry point to configuration
           ./modules/server
 
-          # home manager - to declaratively manage home directory
-          home-manager.nixosModules.home-manager
-
           # sops-nix - secret management with sops
           sops-nix.nixosModules.sops
 

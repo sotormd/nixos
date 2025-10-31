@@ -1,7 +1,7 @@
 {
   imports = [
-    ./home.nix
-
     ./system.nix
+
+    ./user.nix
   ];
 }
