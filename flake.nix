@@ -6,6 +6,10 @@
       url = "github:nixos/nixpkgs/nixos-unstable";
     };
 
+    flake-parts = {
+      url = "github:hercules-ci/flake-parts";
+    };
+
     home-manager = {
       url = "github:nix-community/home-manager";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -49,6 +53,7 @@
     {
       self,
       nixpkgs,
+      flake-parts,
       home-manager,
       sops-nix,
       lanzaboote,
@@ -59,110 +64,103 @@
       wallpapers,
       ...
     }@inputs:
+    flake-parts.lib.mkFlake { inherit inputs; } {
+      systems = [
+        "x86_64-linux"
+        "aarch64-linux"
+      ];
 
-    let
-      lib = nixpkgs.lib // (import ./lib { });
-      vars = import ./vars/vars.nix;
-    in
-    {
-      # formatting with nixfmt-rfc-style
-      formatter.x86_64-linux = nixpkgs.legacyPackages.x86_64-linux.nixfmt-rfc-style;
-      formatter.aarch64-linux = nixpkgs.legacyPackages.aarch64-linux.nixfmt-rfc-style;
-
-      # "rice"
-      homeManagerModules.rice = import ./modules/rice;
-
-      # laptop nixos configuration
-      nixosConfigurations.laptop = nixpkgs.lib.nixosSystem {
-        specialArgs = {
-          inherit inputs;
-          inherit lib;
-          inherit vars;
-          inherit neovim;
-          inherit (colors.lib) colors;
-          inherit (wallpapers.lib) wallpapers;
+      perSystem =
+        { pkgs, ... }:
+        {
+          # formatter
+          formatter = pkgs.nixfmt-rfc-style;
         };
-        modules = [
-          # common configuration
-          ./modules/common
 
-          # entry point to configuration
-          ./modules/laptop
+      flake =
+        let
+          lib = nixpkgs.lib // (import ./lib { });
+          vars = import ./vars/vars.nix;
+        in
+        {
+          # "rice"
+          homeManagerModules.rice = import ./modules/rice;
 
-          # home manager - to declaratively manage home directory
-          home-manager.nixosModules.home-manager
-
-          # rice
-          {
-            home-manager.extraSpecialArgs = {
+          # laptop configuration
+          nixosConfigurations.laptop = nixpkgs.lib.nixosSystem {
+            specialArgs = {
+              inherit inputs;
+              inherit lib;
+              inherit vars;
+              inherit neovim;
               inherit (colors.lib) colors;
               inherit (wallpapers.lib) wallpapers;
             };
-            home-manager.users.${vars.user.name} = {
-              imports = [ self.homeManagerModules.rice ];
+            modules = [
+              ./modules/common
+              ./modules/laptop
+
+              home-manager.nixosModules.home-manager
+
+              {
+                home-manager.extraSpecialArgs = {
+                  inherit (colors.lib) colors;
+                  inherit (wallpapers.lib) wallpapers;
+                };
+                home-manager.users.${vars.user.name} = {
+                  imports = [ self.homeManagerModules.rice ];
+                };
+              }
+
+              sops-nix.nixosModules.sops
+              lanzaboote.nixosModules.lanzaboote
+              hosts.nixosModule
+            ];
+          };
+
+          # server configuration
+          nixosConfigurations.server = nixpkgs.lib.nixosSystem {
+            specialArgs = {
+              inherit inputs;
+              inherit lib;
+              inherit vars;
+              inherit (colors.lib) colors;
             };
-          }
+            modules = [
+              ./modules/common
+              ./modules/server
+              sops-nix.nixosModules.sops
+              hosts.nixosModule
+            ];
+          };
 
-          # sops-nix - secret management with sops
-          sops-nix.nixosModules.sops
+          # gnome image
+          nixosConfigurations.imageGnome = nixpkgs.lib.nixosSystem {
+            specialArgs = { inherit inputs; };
+            modules = [ ./modules/images/gnome.nix ];
+          };
 
-          # lanzaboote - secure boot
-          lanzaboote.nixosModules.lanzaboote
+          # plasma image
+          nixosConfigurations.imagePlasma = nixpkgs.lib.nixosSystem {
+            specialArgs = { inherit inputs; };
+            modules = [ ./modules/images/plasma.nix ];
+          };
 
-          # /etc/hosts
-          hosts.nixosModule
-        ];
-      };
+          # minimal image
+          nixosConfigurations.imageMinimal = nixpkgs.lib.nixosSystem {
+            specialArgs = { inherit inputs; };
+            modules = [ ./modules/images/minimal.nix ];
+          };
 
-      # server nixos configuration
-      nixosConfigurations.server = nixpkgs.lib.nixosSystem {
-        specialArgs = {
-          inherit inputs;
-          inherit lib;
-          inherit vars;
-          inherit (colors.lib) colors;
+          # nix-on-droid configuration
+          nixOnDroidConfigurations.default = nix-on-droid.lib.nixOnDroidConfiguration {
+            extraSpecialArgs = {
+              inherit inputs;
+              inherit (colors.lib) colors;
+            };
+            pkgs = import nixpkgs { system = "aarch64-linux"; };
+            modules = [ ./modules/droid ];
+          };
         };
-        modules = [
-          # common configuration
-          ./modules/common
-
-          # entry point to configuration
-          ./modules/server
-
-          # sops-nix - secret management with sops
-          sops-nix.nixosModules.sops
-
-          # /etc/hosts
-          hosts.nixosModule
-        ];
-      };
-
-      # nix-on-droid configuration
-      nixOnDroidConfigurations.default = nix-on-droid.lib.nixOnDroidConfiguration {
-        extraSpecialArgs = {
-          inherit inputs;
-          inherit (colors.lib) colors;
-        };
-        pkgs = import nixpkgs { system = "aarch64-linux"; };
-        modules = [ ./modules/droid ];
-      };
-
-      # gnome image
-      nixosConfigurations.imageGnome = nixpkgs.lib.nixosSystem {
-        specialArgs = { inherit inputs; };
-        modules = [ ./modules/images/gnome.nix ];
-      };
-
-      # plasma image
-      nixosConfigurations.imagePlasma = nixpkgs.lib.nixosSystem {
-        specialArgs = { inherit inputs; };
-        modules = [ ./modules/images/plasma.nix ];
-      };
-
-      # minimal image
-      nixosConfigurations.imageMinimal = nixpkgs.lib.nixosSystem {
-        specialArgs = { inherit inputs; };
-        modules = [ ./modules/images/minimal.nix ];
-      };
     };
 }
