@@ -25,25 +25,25 @@
     ]
 
     # invisible internet protocol daemon
-    (lib.optImport vars.network.i2pd.enable ./i2pd)
+    (lib.optional vars.network.i2pd.enable ./i2pd)
 
     # jellyfin media server
-    (lib.optImport vars.network.jellyfin.enable ./jellyfin)
+    (lib.optional vars.network.jellyfin.enable ./jellyfin)
 
     # nginx web server
-    (lib.optImport vars.network.nginx.enable ./nginx)
+    (lib.optional vars.network.nginx.enable ./nginx)
 
     # qbittorrent torrent client
-    (lib.optImport vars.network.qbt.enable ./qbt)
+    (lib.optional vars.network.qbt.enable ./qbt)
 
     # searxng metasearch engine
-    (lib.optImport vars.network.searxng.enable ./searxng)
+    (lib.optional vars.network.searxng.enable ./searxng)
 
     # unbound validating recursive dns server
-    (lib.optImport vars.network.unbound.enable ./unbound)
+    (lib.optional vars.network.unbound.enable ./unbound)
 
     # vaultwarden password manager
-    (lib.optImport vars.network.vaultwarden.enable ./vaultwarden)
+    (lib.optional vars.network.vaultwarden.enable ./vaultwarden)
   ];
 
   home-manager.users.${vars.user.name} = {

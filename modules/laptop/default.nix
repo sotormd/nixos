@@ -67,9 +67,9 @@
     ]
 
     # browse the i2p network
-    (lib.optImport vars.network.server.enable ./i2p-browser)
+    (lib.optional vars.network.server.enable ./i2p-browser)
 
     # ephemerality
-    (lib.optImport vars.device.impermanence.enable ./impermanence)
+    (lib.optional vars.device.impermanence.enable ./impermanence)
   ];
 }
