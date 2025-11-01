@@ -15,21 +15,6 @@
         "type": "github"
       }
     },
-    "colors_2": {
-      "locked": {
-        "lastModified": 1760205316,
-        "narHash": "sha256-Pja4LXFbDBmvR5p9lPIvRp8Rq/afkS4dgK+3puHLVBk=",
-        "owner": "sotormd",
-        "repo": "colors",
-        "rev": "49fea5774176474e6e2b9996f53cdaa4f460919a",
-        "type": "github"
-      },
-      "original": {
-        "owner": "sotormd",
-        "repo": "colors",
-        "type": "github"
-      }
-    },
     "crane": {
       "locked": {
         "lastModified": 1754269165,
@@ -260,17 +245,16 @@
     },
     "neovim": {
       "inputs": {
-        "colors": "colors_2",
         "flake-parts": "flake-parts_3",
         "nixpkgs": "nixpkgs",
         "nvf": "nvf"
       },
       "locked": {
-        "lastModified": 1762002199,
-        "narHash": "sha256-upMVwktDIlFmERGtqGhB9UcUh+Vwa3FNWIB7Of6Gw88=",
+        "lastModified": 1762007931,
+        "narHash": "sha256-OIIlRe6HA0FL3Bk4ZDJT9Art935ca6cYmWRT2PbBN4k=",
         "owner": "sotormd",
         "repo": "neovim",
-        "rev": "3944ca0ff5cd64e7a54aa8cee12e2b1f0296797f",
+        "rev": "64165c90f28da85e305d40a2cc5a8045bf19caef",
         "type": "github"
       },
       "original": {
