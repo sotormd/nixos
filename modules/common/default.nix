@@ -9,7 +9,7 @@
     ./boot
 
     # clam av
-    ./clamav
+    #    ./clamav
 
     # timezone, locales, keyboard layout
     ./internationalization
