@@ -26,19 +26,15 @@ let
         [
           {
             name = serviceName;
-            value =
-              let
-                escapedId = builtins.replaceStrings [ ":" ] [ "\\x3a" ] entry.id;
-              in
-              {
-                description = "Set hdparm settings for ${entry.name}";
-                wantedBy = [ "multi-user.target" ];
-                after = [ "multi-user.target" ];
-                serviceConfig = {
-                  Type = "oneshot";
-                  ExecStart = ''${pkgs.hdparm}/sbin/hdparm -B 254 -S 0 "/dev/disk/by-id/${disk_id}"'';
-                };
+            value = {
+              description = "Set hdparm settings for ${entry.name}";
+              wantedBy = [ "multi-user.target" ];
+              after = [ "multi-user.target" ];
+              serviceConfig = {
+                Type = "oneshot";
+                ExecStart = ''${pkgs.hdparm}/sbin/hdparm -B 254 -S 0 "/dev/disk/by-id/${disk_id}"'';
               };
+            };
           }
         ]
       else

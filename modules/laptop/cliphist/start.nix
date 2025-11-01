@@ -1,4 +1,4 @@
-{ pkgs, vars, ... }:
+{ vars, ... }:
 
 {
   home-manager.users.${vars.user.name} = {
