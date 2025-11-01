@@ -1,11 +1,4 @@
 {
-  pkgs,
-  home-manager,
-  vars,
-  ...
-}:
-
-{
   # disable pulseaudio
   services.pulseaudio.enable = false;
 
