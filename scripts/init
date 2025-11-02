@@ -729,7 +729,6 @@ elif [ "$1" == "sops" ]; then
     if [ "$ROLE" == "server" ]; then
 
         if [ -z "$SECRETS_DUCKDNS_TOKEN" ]; then
-            echo "Warning: SECRETS_DUCKDNS_TOKEN is unset" >&2
             SECRETS_DUCKDNS_TOKEN=""
         fi
 
