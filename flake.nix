@@ -38,6 +38,7 @@
 
     neovim = {
       url = "github:sotormd/neovim";
+      inputs.nixpkgs.follows = "nixpkgs";
     };
 
     colors = {
@@ -46,6 +47,11 @@
 
     wallpapers = {
       url = "github:sotormd/wallpapers";
+    };
+
+    homepage = {
+      url = "github:sotormd/homepage";
+      inputs.colors.follows = "colors";
     };
   };
 
@@ -62,6 +68,7 @@
       neovim,
       colors,
       wallpapers,
+      homepage,
       ...
     }@inputs:
     flake-parts.lib.mkFlake { inherit inputs; } {
@@ -95,6 +102,7 @@
               inherit neovim;
               inherit (colors.lib) colors;
               inherit (wallpapers.lib) wallpapers;
+              inherit (homepage.lib) makeHomepage;
             };
             modules = [
               ./modules/common

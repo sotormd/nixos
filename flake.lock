@@ -183,6 +183,26 @@
         "type": "github"
       }
     },
+    "homepage": {
+      "inputs": {
+        "colors": [
+          "colors"
+        ]
+      },
+      "locked": {
+        "lastModified": 1762107789,
+        "narHash": "sha256-3trSS9QsK+YbYiuJhqPFyF2AICLfpTsXD7eP5HMfRuQ=",
+        "owner": "sotormd",
+        "repo": "homepage",
+        "rev": "ca2166586ff22ea9703461567567f179cf5fb6ca",
+        "type": "github"
+      },
+      "original": {
+        "owner": "sotormd",
+        "repo": "homepage",
+        "type": "github"
+      }
+    },
     "hosts": {
       "inputs": {
         "nixpkgs": [
@@ -246,7 +266,9 @@
     "neovim": {
       "inputs": {
         "flake-parts": "flake-parts_3",
-        "nixpkgs": "nixpkgs",
+        "nixpkgs": [
+          "nixpkgs"
+        ],
         "nvf": "nvf"
       },
       "locked": {
@@ -316,16 +338,16 @@
     },
     "nixpkgs": {
       "locked": {
-        "lastModified": 1761907660,
-        "narHash": "sha256-kJ8lIZsiPOmbkJypG+B5sReDXSD1KGu2VEPNqhRa/ew=",
+        "lastModified": 1759386674,
+        "narHash": "sha256-wg1Lz/1FC5Q13R+mM5a2oTV9TA9L/CHHTm3/PiLayfA=",
         "owner": "nixos",
         "repo": "nixpkgs",
-        "rev": "2fb006b87f04c4d3bdf08cfdbc7fab9c13d94a15",
+        "rev": "625ad6366178f03acd79f9e3822606dd7985b657",
         "type": "github"
       },
       "original": {
         "owner": "nixos",
-        "ref": "nixos-unstable",
+        "ref": "nixpkgs-unstable",
         "repo": "nixpkgs",
         "type": "github"
       }
@@ -393,22 +415,6 @@
       }
     },
     "nixpkgs_2": {
-      "locked": {
-        "lastModified": 1759386674,
-        "narHash": "sha256-wg1Lz/1FC5Q13R+mM5a2oTV9TA9L/CHHTm3/PiLayfA=",
-        "owner": "nixos",
-        "repo": "nixpkgs",
-        "rev": "625ad6366178f03acd79f9e3822606dd7985b657",
-        "type": "github"
-      },
-      "original": {
-        "owner": "nixos",
-        "ref": "nixpkgs-unstable",
-        "repo": "nixpkgs",
-        "type": "github"
-      }
-    },
-    "nixpkgs_3": {
       "locked": {
         "lastModified": 1759036355,
         "narHash": "sha256-0m27AKv6ka+q270dw48KflE0LwQYrO7Fm4/2//KCVWg=",
@@ -483,7 +489,7 @@
         "flake-compat": "flake-compat_2",
         "flake-parts": "flake-parts_4",
         "mnw": "mnw",
-        "nixpkgs": "nixpkgs_2",
+        "nixpkgs": "nixpkgs",
         "systems": "systems"
       },
       "locked": {
@@ -531,11 +537,12 @@
         "colors": "colors",
         "flake-parts": "flake-parts",
         "home-manager": "home-manager",
+        "homepage": "homepage",
         "hosts": "hosts",
         "lanzaboote": "lanzaboote",
         "neovim": "neovim",
         "nix-on-droid": "nix-on-droid",
-        "nixpkgs": "nixpkgs_3",
+        "nixpkgs": "nixpkgs_2",
         "sops-nix": "sops-nix",
         "wallpapers": "wallpapers"
       }
