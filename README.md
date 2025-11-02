@@ -402,6 +402,7 @@ github:sotormd/nixos
 | image viewer      | `swayimg`                                                                          |
 | media player      | `mpv`                                                                              |
 | browser           | `brave`                                                                            |
+| homepage          | [`homepage`](https://github.com/sotormd/homepage)                                  |
 | search engine     | `searxng`                                                                          |
 | bittorrent        | `qbittorrent-nox`                                                                  |
 | anonymity         | `i2pd` `oniux` `tor-browser`                                                       |
