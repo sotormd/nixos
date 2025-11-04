@@ -204,6 +204,46 @@ github:sotormd/nixos
 │   │   │   ├── mime.nix
 │   │   │   ├── system.nix
 │   │   │   └── user.nix
+│   │   ├── rice
+│   │   │   ├── default.nix
+│   │   │   ├── dunst
+│   │   │   │   ├── default.nix
+│   │   │   │   ├── settings.nix
+│   │   │   │   └── start.nix
+│   │   │   ├── eww
+│   │   │   │   ├── config.nix
+│   │   │   │   ├── default.nix
+│   │   │   │   ├── scripts.nix
+│   │   │   │   ├── start.nix
+│   │   │   │   └── style.nix
+│   │   │   ├── foot
+│   │   │   │   ├── colors.nix
+│   │   │   │   ├── default.nix
+│   │   │   │   └── settings.nix
+│   │   │   ├── gtk
+│   │   │   │   ├── cursors.nix
+│   │   │   │   ├── default.nix
+│   │   │   │   ├── fonts.nix
+│   │   │   │   ├── icons.nix
+│   │   │   │   └── themes.nix
+│   │   │   ├── rofi
+│   │   │   │   ├── default.nix
+│   │   │   │   ├── settings.nix
+│   │   │   │   └── start.nix
+│   │   │   ├── sway
+│   │   │   │   ├── backgrounds.nix
+│   │   │   │   ├── bindsyms.nix
+│   │   │   │   ├── default.nix
+│   │   │   │   ├── modes.nix
+│   │   │   │   ├── outputs.nix
+│   │   │   │   ├── swayfx.nix
+│   │   │   │   ├── swaylock.nix
+│   │   │   │   └── sway.nix
+│   │   │   └── waybar
+│   │   │       ├── default.nix
+│   │   │       ├── settings.nix
+│   │   │       ├── start.nix
+│   │   │       └── style.nix
 │   │   ├── sops
 │   │   │   ├── default.nix
 │   │   │   ├── secrets.nix
@@ -240,46 +280,6 @@ github:sotormd/nixos
 │   │       ├── colors.nix
 │   │       ├── default.nix
 │   │       └── fonts.nix
-│   ├── rice
-│   │   ├── default.nix
-│   │   ├── dunst
-│   │   │   ├── default.nix
-│   │   │   ├── settings.nix
-│   │   │   └── start.nix
-│   │   ├── eww
-│   │   │   ├── config.nix
-│   │   │   ├── default.nix
-│   │   │   ├── scripts.nix
-│   │   │   ├── start.nix
-│   │   │   └── style.nix
-│   │   ├── foot
-│   │   │   ├── colors.nix
-│   │   │   ├── default.nix
-│   │   │   └── settings.nix
-│   │   ├── gtk
-│   │   │   ├── cursors.nix
-│   │   │   ├── default.nix
-│   │   │   ├── fonts.nix
-│   │   │   ├── icons.nix
-│   │   │   └── themes.nix
-│   │   ├── rofi
-│   │   │   ├── default.nix
-│   │   │   ├── settings.nix
-│   │   │   └── start.nix
-│   │   ├── sway
-│   │   │   ├── backgrounds.nix
-│   │   │   ├── bindsyms.nix
-│   │   │   ├── default.nix
-│   │   │   ├── modes.nix
-│   │   │   ├── outputs.nix
-│   │   │   ├── swayfx.nix
-│   │   │   ├── swaylock.nix
-│   │   │   └── sway.nix
-│   │   └── waybar
-│   │       ├── default.nix
-│   │       ├── settings.nix
-│   │       ├── start.nix
-│   │       └── style.nix
 │   └── server
 │       ├── assertions.nix
 │       ├── default.nix

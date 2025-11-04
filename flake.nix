@@ -91,7 +91,7 @@
         in
         {
           # "rice"
-          homeManagerModules.rice = import ./modules/rice;
+          homeManagerModules.rice = import ./modules/laptop/rice;
 
           # laptop configuration
           nixosConfigurations.laptop = nixpkgs.lib.nixosSystem {
