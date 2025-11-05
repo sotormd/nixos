@@ -1,7 +1,8 @@
 { pkgs, vars, ... }:
 
+let
+  package = import ./package.nix { inherit pkgs; };
+in
 {
-  imports = [ ./settings.nix ];
-
-  users.users.${vars.user.name}.packages = [ pkgs.mpv ];
+  users.users.${vars.user.name}.packages = [ package.mpv ];
 }

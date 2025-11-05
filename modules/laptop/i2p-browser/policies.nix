@@ -1,5 +1,5 @@
 {
-  extraPolicies = {
+  policies = {
     AppAutoUpdate = false;
     AutofillAddressEnabled = false;
     AutofillCreditCardEnabled = false;

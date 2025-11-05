@@ -5,7 +5,7 @@ let
 in
 {
   programs.firejail.wrappedBinaries.i2p-browser = {
-    executable = "${package.policiesFirefox}/bin/firefox";
+    executable = "${package.i2pBrowser}/bin/i2p-browser";
     profile = "${pkgs.firejail}/etc/firejail/firefox.profile";
     extraArgs = [ "--nonewprivs" ];
   };

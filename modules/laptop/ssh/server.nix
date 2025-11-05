@@ -1,15 +1,12 @@
-{ lib, vars, ... }:
+{ vars, ... }:
 
 {
-  home-manager.users.${vars.user.name} = lib.mkMerge (
-    lib.optional vars.network.server.enable {
-      programs.ssh.matchBlocks.server = {
-        hostname = vars.network.server.ip;
-        port = vars.network.server.ssh.port;
-        user = vars.user.name;
-        identityFile = "/home/${vars.user.name}/.ssh/${vars.network.server.ssh.keyfile}";
-        identitiesOnly = true;
-      };
-    }
-  );
+  programs.ssh.extraConfig = ''
+    Host server
+        IdentitiesOnly yes
+        User ${vars.user.name}
+        HostName ${vars.network.server.ip}
+        Port ${toString vars.network.server.ssh.port}
+        IdentityFile /home/${vars.user.name}/.ssh/${vars.network.server.ssh.keyfile}
+  '';
 }
