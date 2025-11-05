@@ -1,14 +1,9 @@
-{ vars, ... }:
+{ lib, vars, ... }:
 
 {
-  imports = [
-    ./github.nix
+  imports = lib.concatMap (x: x) [
+    [ ./github.nix ]
 
-    ./server.nix
+    (lib.optional vars.network.server.enable ./server.nix)
   ];
-
-  home-manager.users.${vars.user.name} = {
-    programs.ssh.enable = true;
-    programs.ssh.enableDefaultConfig = false;
-  };
 }

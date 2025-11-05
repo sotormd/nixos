@@ -1,12 +1,11 @@
 { vars, ... }:
 
 {
-  home-manager.users.${vars.user.name} = {
-    programs.ssh.matchBlocks.github = {
-      hostname = "github.com";
-      user = "git";
-      identityFile = "/home/${vars.user.name}/.ssh/${vars.user.github.keyfile}";
-      identitiesOnly = true;
-    };
-  };
+  programs.ssh.extraConfig = ''
+    Host github
+        IdentitiesOnly yes
+        User git
+        HostName github.com
+        IdentityFile /home/${vars.user.name}/.ssh/${vars.user.github.keyfile}
+  '';
 }

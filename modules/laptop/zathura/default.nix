@@ -1,13 +1,13 @@
-{ vars, ... }:
-
 {
-  imports = [
-    ./colors.nix
+  pkgs,
+  colors,
+  vars,
+  ...
+}:
 
-    ./fonts.nix
-  ];
-
-  home-manager.users.${vars.user.name} = {
-    programs.zathura.enable = true;
-  };
+let
+  package = import ./package.nix { inherit pkgs colors; };
+in
+{
+  users.users.${vars.user.name}.packages = [ package.zathura ];
 }
