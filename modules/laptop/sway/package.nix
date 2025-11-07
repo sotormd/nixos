@@ -54,15 +54,19 @@ let
       bindsym Mod4+shift+9 exec ${pkgs.swayfx}/bin/swaymsg move workspace $(${pkgs.swayfx}/bin/swaymsg -t get_outputs | ${pkgs.jq}/bin/jq -r '.[] | select(.focused) | .name | if . == "${vars.outputs.monitor}" then "1" elif . == "${vars.outputs.laptop}" then "0" else "unknown" end')9
 
       bindsym Mod4+Down focus down
+      bindsym Mod4+shift+Down move down
       bindsym Mod4+Escape mode leave; exec eww open leavewindow --screen $(${pkgs.swayfx}/bin/swaymsg -t get_outputs | ${pkgs.jq}/bin/jq -r '.[] | select(.focused) | .name')
       bindsym Mod4+Left focus left
+      bindsym Mod4+shift+Left move left
       bindsym Mod4+Page_Down workspace next
       bindsym Mod4+Page_Up workspace prev
       bindsym Mod4+Print mode screenshot
       bindsym Mod4+Return exec foot
       bindsym Mod4+Right focus right
+      bindsym Mod4+shift+Right move right
       bindsym Mod4+Tab exec eww open dock --toggle --screen $(${pkgs.swayfx}/bin/swaymsg -t get_outputs | ${pkgs.jq}/bin/jq -r '.[] | select(.focused) | .name')
       bindsym Mod4+Up focus up
+      bindsym Mod4+shift+Up move up
       bindsym Mod4+XF86AudioPlay exec ${pkgs.playerctl}/bin/playerctl stop
       bindsym Mod4+a focus parent
       bindsym Mod4+b splith
@@ -73,10 +77,15 @@ let
       bindsym Mod4+shift+g exec ${pkgs.swayfx}/bin/swaymsg move workspace $(${pkgs.swayfx}/bin/swaymsg -t get_workspaces -r | ${pkgs.jq}/bin/jq -r '.[].name' | rofi -dmenu -p "")
       bindsym Mod4+grave exec eww open start --toggle --screen $(${pkgs.swayfx}/bin/swaymsg -t get_outputs | ${pkgs.jq}/bin/jq -r '.[] | select(.focused) | .name')
       bindsym Mod4+h focus left
+      bindsym Mod4+shift+h move left
       bindsym Mod4+j focus down
+      bindsym Mod4+shift+j move down
       bindsym Mod4+k focus up
+      bindsym Mod4+shift+k move up
       bindsym Mod4+l focus right
+      bindsym Mod4+shift+l move right
       bindsym Mod4+minus scratchpad show
+      bindsym Mod4+shift+minus move scratchpad
       bindsym Mod4+o exec ${pkgs.swayfx}/bin/swaymsg opacity 1
       bindsym Mod4+r mode resize
       bindsym Mod4+s layout stacking
