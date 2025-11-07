@@ -70,8 +70,6 @@
 
    [Setup docs](./docs/laptop.md)
 
-   To replicate just the desktop, see [rice](./docs/rice.md).
-
 2. `server` role: Headless home server configuration
 
    [Setup docs](./docs/server.md)

@@ -10,5 +10,5 @@ let
   getWallpaper = pathStr: lib.attrsets.getAttrFromPath (lib.splitString "." pathStr) wallpapers;
 in
 {
-  wallpaper = getWallpaper vars.outputs.wallpaper;
+  lockscreen = getWallpaper vars.outputs.lockscreen;
 }

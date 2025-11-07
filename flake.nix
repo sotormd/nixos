@@ -90,9 +90,6 @@
           vars = import ./vars/vars.nix;
         in
         {
-          # "rice"
-          homeManagerModules.rice = import ./modules/laptop/rice;
-
           # laptop configuration
           nixosConfigurations.laptop = nixpkgs.lib.nixosSystem {
             specialArgs = {
@@ -105,24 +102,19 @@
               inherit (homepage.lib) makeHomepage;
             };
             modules = [
+
               ./modules/common
+
               ./modules/laptop
 
               home-manager.nixosModules.home-manager
 
-              {
-                home-manager.extraSpecialArgs = {
-                  inherit (colors.lib) colors;
-                  inherit (wallpapers.lib) wallpapers;
-                };
-                home-manager.users.${vars.user.name} = {
-                  imports = [ self.homeManagerModules.rice ];
-                };
-              }
-
               sops-nix.nixosModules.sops
+
               lanzaboote.nixosModules.lanzaboote
+
               hosts.nixosModule
+
             ];
           };
 
@@ -135,10 +127,15 @@
               inherit (colors.lib) colors;
             };
             modules = [
+
               ./modules/common
+
               ./modules/server
+
               sops-nix.nixosModules.sops
+
               hosts.nixosModule
+
             ];
           };
 
