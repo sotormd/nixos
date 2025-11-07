@@ -1261,13 +1261,13 @@ let
 
                   # actions
                   if self.ids.get(client) and state == "unfocused":
-                      left = f"swaymsg [con_id={self.ids.get(client)[-1]}] focus"
+                      left = f"${pkgs.swayfx}/bin/swaymsg [con_id={self.ids.get(client)[-1]}] focus"
                       middle = right = scroll = None
                   elif self.ids.get(client) and state == "focused":
-                      left = f"swaymsg [con_id={self.ids.get(client)[-1]}] floating toggle"
-                      middle = f"swaymsg [con_id={self.ids.get(client)[-1]}] kill"
-                      right = f"swaymsg [con_id={self.ids.get(client)[-1]}] move scratchpad"
-                      scroll = f"swaymsg [con_id={self.ids.get(client)[0]}] focus"
+                      left = f"${pkgs.swayfx}/bin/swaymsg [con_id={self.ids.get(client)[-1]}] floating toggle"
+                      middle = f"${pkgs.swayfx}/bin/swaymsg [con_id={self.ids.get(client)[-1]}] kill"
+                      right = f"${pkgs.swayfx}/bin/swaymsg [con_id={self.ids.get(client)[-1]}] move scratchpad"
+                      scroll = f"${pkgs.swayfx}/bin/swaymsg [con_id={self.ids.get(client)[0]}] focus"
                   elif state == "empty":
                       left = client_details.get("exec")
                       middle = right = scroll = None
@@ -1318,13 +1318,13 @@ let
 
                   # left click action
                   if self.ids.get(client) and state == "unfocused":
-                      left = f"swaymsg [con_id={self.ids.get(client)[-1]}] focus"
+                      left = f"${pkgs.swayfx}/bin/swaymsg [con_id={self.ids.get(client)[-1]}] focus"
                       middle = right = scroll = None
                   elif self.ids.get(client) and state == "focused":
-                      left = f"swaymsg [con_id={self.ids.get(client)[-1]}] floating toggle"
-                      middle = f"swaymsg [con_id={self.ids.get(client)[-1]}] kill"
-                      right = f"swaymsg [con_id={self.ids.get(client)[-1]}] move scratchpad"
-                      scroll = f"swaymsg [con_id={self.ids.get(client)[0]}] focus"
+                      left = f"${pkgs.swayfx}/bin/swaymsg [con_id={self.ids.get(client)[-1]}] floating toggle"
+                      middle = f"${pkgs.swayfx}/bin/swaymsg [con_id={self.ids.get(client)[-1]}] kill"
+                      right = f"${pkgs.swayfx}/bin/swaymsg [con_id={self.ids.get(client)[-1]}] move scratchpad"
+                      scroll = f"${pkgs.swayfx}/bin/swaymsg [con_id={self.ids.get(client)[0]}] focus"
                   else:
                       left = middle = right = scroll = None
 
