@@ -23,9 +23,6 @@
       # btop system resources monitor
       ./btop
 
-      # clipboard manager
-      ./cliphist
-
       # vscodium code editor
       ./codium
 
@@ -34,6 +31,18 @@
 
       # development tools
       ./dev
+
+      # dunst notification daemon
+      ./dunst
+
+      # eww wm-agnostic widgets
+      ./eww
+
+      # foot terminal emulator
+      ./foot
+
+      # gtk theming
+      ./gtk
 
       # mousepad text editor
       ./mousepad
@@ -50,6 +59,9 @@
       # packages
       ./packages
 
+      # rofi launcher
+      ./rofi
+
       # sops-nix secrets management
       ./sops
 
@@ -59,6 +71,9 @@
       # sway wayland compositor
       ./sway
 
+      # swaylock session locker
+      ./swaylock
+
       # thunar file manager
       ./thunar
 
@@ -67,6 +82,9 @@
 
       # virtualisation with qemu, distrobox, etc
       ./virtualization
+
+      # waybar wayland panel
+      ./waybar
 
       # zathura pdf reader
       ./zathura

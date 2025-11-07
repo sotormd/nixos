@@ -1,11 +1,8 @@
-{ vars, ... }:
+{ pkgs, vars, ... }:
 
+let
+  package = import ./package.nix { inherit pkgs; };
+in
 {
-  imports = [
-    ./settings.nix
-  ];
-
-  home-manager.users.${vars.user.name} = {
-    programs.btop.enable = true;
-  };
+  users.users.${vars.user.name}.packages = [ package.btop ];
 }

@@ -21,9 +21,7 @@ in
 {
   imports = [
     ./settings.nix
-
-    ./start.nix
   ];
 
-  users.users.${vars.user.name}.packages = [ package.sway ];
+  users.users.${vars.user.name}.packages = [ package.swaylock ];
 }
