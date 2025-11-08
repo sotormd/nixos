@@ -279,6 +279,7 @@ let
                 "symbol": ""
             },
             "mousepad": {
+                "exec": "mousepad",
                 "symbol": "󱩼"
             },
             "swayimg": {
@@ -299,7 +300,9 @@ let
         },
         "pinned_clients": [
             "brave-browser",
-            "foot"
+            "foot",
+            "Thunar",
+            "mousepad"
         ]
       }
     '';
