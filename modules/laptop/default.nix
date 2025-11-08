@@ -24,7 +24,7 @@
       ./btop
 
       # vscodium code editor
-      ./codium
+      #      ./codium
 
       # cpu frequency optimizations, power management
       ./cpu
@@ -45,7 +45,7 @@
       ./gtk
 
       # mousepad text editor
-      ./mousepad
+      #      ./mousepad
 
       # mpv media player
       ./mpv
@@ -75,7 +75,7 @@
       ./swaylock
 
       # thunar file manager
-      ./thunar
+      #      ./thunar
 
       # users
       ./users

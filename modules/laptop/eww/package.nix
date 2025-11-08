@@ -1094,9 +1094,7 @@ let
         },
         "pinned_clients": [
             "brave-browser",
-            "foot",
-            "Thunar",
-            "codium"
+            "foot"
         ]
       }
     '';
