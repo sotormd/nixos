@@ -45,7 +45,7 @@
       ./gtk
 
       # mousepad text editor
-      #      ./mousepad
+      ./mousepad
 
       # mpv media player
       ./mpv
@@ -75,7 +75,7 @@
       ./swaylock
 
       # thunar file manager
-      #      ./thunar
+      ./thunar
 
       # users
       ./users
