@@ -1,5 +1,7 @@
 {
   imports = [
+    ./desktop.nix
+
     ./extensions.nix
 
     ./firejail.nix

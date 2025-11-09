@@ -6,9 +6,6 @@
       # assertions - ensure no tomfoolery
       ./assertions.nix
 
-      # home-manager
-      ./home.nix
-
       # MODULES - sorted alphabetically
 
       # audio with pipewire

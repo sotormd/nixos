@@ -13,6 +13,12 @@ let
   config = pkgs.writeTextFile {
     name = "config";
     text = ''
+      exec ${pkgs.dconf}/bin/dconf write /org/gnome/desktop/interface/font-name "'IBM Plex Sans 10'"
+      exec ${pkgs.dconf}/bin/dconf write /org/gnome/desktop/interface/icon-theme "'Nordzy-dark'"
+      exec ${pkgs.dconf}/bin/dconf write /org/gnome/desktop/interface/gtk-theme "'Nordic-darker'"
+      exec ${pkgs.dconf}/bin/dconf write /org/gnome/desktop/interface/color-scheme "'prefer-dark'"
+      exec ${pkgs.dconf}/bin/dconf write /org/gnome/desktop/wm/preferences/button-layout "':'"
+
       font pango:IBM Plex Sans 8.000000
       floating_modifier Mod4
       default_border pixel 3

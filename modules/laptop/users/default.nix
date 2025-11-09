@@ -1,3 +1,9 @@
 {
-  imports = [ ./xdg.nix ];
+  imports = [
+    ./hjem.nix
+
+    #    ./home.nix
+
+    ./xdg.nix
+  ];
 }
