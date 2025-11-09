@@ -62,6 +62,7 @@ let
       bindsym Mod4+Page_Up workspace prev
       bindsym Mod4+Print mode screenshot
       bindsym Mod4+Return exec foot
+      bindsym Mod4+backslash exec brave
       bindsym Mod4+Right focus right
       bindsym Mod4+shift+Right move right
       bindsym Mod4+Tab exec eww open dock --toggle --screen $(${pkgs.swayfx}/bin/swaymsg -t get_outputs | ${pkgs.jq}/bin/jq -r '.[] | select(.focused) | .name')
