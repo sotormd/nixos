@@ -27,7 +27,7 @@ set -e
 
     if [[ $confirm =~ ^[Yy]$ ]]; then
 
-        sudo nixos-rebuild test --flake .#$NIXOS_ROLE
+        sudo nixos-rebuild test --flake .#$NIXOS_ROLE --fallback
 
         git reset -- vars/vars.nix vars/secrets.yaml .sops.yaml
 
