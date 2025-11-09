@@ -2,6 +2,8 @@
 
 ~~slighly overengineered~~ NixOS configuration flake for multiple hosts.
 
+![nixos](./docs/screenshots/nixos.gif)
+
 Nix specific features:
 
 - completely reproducible, pure evaluation
@@ -12,10 +14,9 @@ Nix specific features:
 - package management using [lix](https://lix.systems)
 - android environment using
   [nix-on-droid](https://github.com/nix-community/nix-on-droid)
+- nixos flake helper [cli](#nixos-flake-helper)
 
 See [Features](#features) for all features.
-
-![nixos](./docs/screenshots/nixos.gif)
 
 # Contents
 
