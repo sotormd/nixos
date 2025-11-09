@@ -103,9 +103,7 @@
             };
             modules = [
 
-              ./modules/common
-
-              ./modules/laptop
+              ./hosts/laptop.nix
 
               home-manager.nixosModules.home-manager
 
@@ -128,9 +126,7 @@
             };
             modules = [
 
-              ./modules/common
-
-              ./modules/server
+              ./hosts/server.nix
 
               sops-nix.nixosModules.sops
 
@@ -142,19 +138,19 @@
           # gnome image
           nixosConfigurations.imageGnome = nixpkgs.lib.nixosSystem {
             specialArgs = { inherit inputs; };
-            modules = [ ./modules/images/gnome.nix ];
+            modules = [ ./hosts/imageGnome.nix ];
           };
 
           # plasma image
           nixosConfigurations.imagePlasma = nixpkgs.lib.nixosSystem {
             specialArgs = { inherit inputs; };
-            modules = [ ./modules/images/plasma.nix ];
+            modules = [ ./hosts/imagePlasma.nix ];
           };
 
           # minimal image
           nixosConfigurations.imageMinimal = nixpkgs.lib.nixosSystem {
             specialArgs = { inherit inputs; };
-            modules = [ ./modules/images/minimal.nix ];
+            modules = [ ./hosts/imageMinimal.nix ];
           };
 
           # nix-on-droid configuration
@@ -164,7 +160,7 @@
               inherit (colors.lib) colors;
             };
             pkgs = import nixpkgs { system = "aarch64-linux"; };
-            modules = [ ./modules/droid ];
+            modules = [ ./hosts/droid.nix ];
           };
         };
     };
