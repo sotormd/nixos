@@ -125,7 +125,7 @@ let
   };
 in
 {
-  home-manager.users.${vars.user.name} = {
-    home.file.".local/share/home.html".text = homepageHtml;
+  hjem.users.${vars.user.name} = {
+    files.".local/share/home.html".text = homepageHtml;
   };
 }

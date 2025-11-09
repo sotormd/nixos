@@ -10,8 +10,8 @@
       url = "github:hercules-ci/flake-parts";
     };
 
-    home-manager = {
-      url = "github:nix-community/home-manager";
+    hjem = {
+      url = "github:feel-co/hjem";
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
@@ -28,7 +28,6 @@
     nix-on-droid = {
       url = "github:nix-community/nix-on-droid/release-24.05";
       inputs.nixpkgs.follows = "nixpkgs";
-      inputs.home-manager.follows = "home-manager";
     };
 
     hosts = {
@@ -60,7 +59,7 @@
       self,
       nixpkgs,
       flake-parts,
-      home-manager,
+      hjem,
       sops-nix,
       lanzaboote,
       nix-on-droid,
@@ -105,7 +104,7 @@
 
               ./hosts/laptop.nix
 
-              home-manager.nixosModules.home-manager
+              hjem.nixosModules.default
 
               sops-nix.nixosModules.sops
 

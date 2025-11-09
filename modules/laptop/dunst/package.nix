@@ -1,7 +1,12 @@
-{ pkgs, colors, ... }:
+{
+  pkgs,
+  colors,
+  vars,
+  ...
+}:
 
 let
-  config = import ./config.nix { inherit pkgs colors; };
+  config = import ./config.nix { inherit pkgs colors vars; };
 in
 {
   dunst = pkgs.writeShellScriptBin "dunst" ''

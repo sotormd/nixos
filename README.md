@@ -20,6 +20,8 @@
 | android           | `nix-on-droid`                                           |
 | package manager   | `lix`                                                    |
 | secrets           | `sops-nix` `sops`                                        |
+| ~ symlinks        | `hjem`                                                   |
+| dotfiles          | `wrappers`                                               |
 | bootloader        | `systemd-boot` `uboot`                                   |
 | secureboot        | `lanzaboote`                                             |
 | kernel            | `linux-hardened`                                         |

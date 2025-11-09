@@ -1,4 +1,9 @@
-{ pkgs, colors, ... }:
+{
+  pkgs,
+  colors,
+  vars,
+  ...
+}:
 
 let
   config = pkgs.writeTextFile {
@@ -10,7 +15,7 @@ let
       font="IBM Plex Sans 9"
       frame_color="#${colors.blue2}"
       gap_size=5
-      monitor=1
+      monitor=${vars.outputs.monitor}
       offset="5x5"
       origin="top-right"
 

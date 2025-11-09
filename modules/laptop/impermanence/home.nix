@@ -23,7 +23,7 @@
       "rollback-home.service"
       "home.mount"
     ];
-    before = [ "home-manager-${vars.user.name}.service" ];
+    before = [ "hjem-activate@${vars.user.name}.service" ];
     path = with pkgs; [ coreutils ];
     serviceConfig.Type = "oneshot";
     script = ''
