@@ -22,7 +22,7 @@
             background: transparent;
             min-width: 20px;
             min-height: 20px;
-            font-family: "IBM Plex Mono";
+            font-family: "${colors.fonts.monospace}";
             border-top: 3px solid #${colors.bg1};
             border-bottom: 3px solid #${colors.bg1};
             margin-top: 0px;
@@ -77,7 +77,7 @@
           color: #${colors.fg0};
           font-size: 9pt;
           font-weight: 500;
-          font-family: "IBM Plex Sans";
+          font-family: "${colors.fonts.normal}";
           margin-bottom: 14px;
 
           .week-row {
@@ -166,7 +166,7 @@
         .month, .year {
           font-weight: 900;
           font-size: 0.8em;
-          font-family: "IBM Plex Mono";
+          font-family: "${colors.fonts.monospace}";
         }
 
         .start, .leavewindow {
@@ -380,7 +380,7 @@
 
       .lyrics-box {
         background-color: transparent;
-        font-family: "IBM Plex Sans";
+        font-family: "${colors.fonts.normal}";
       }
 
       .lyrics-line {

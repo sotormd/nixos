@@ -14,7 +14,7 @@
 
       /*****----- Global Properties -----*****/
       * {
-          font:                        "IBM Plex Sans 11";
+          font:                        "${colors.fonts.normal} 11";
           border-colour:               #${colors.blue2};
           handle-colour:               #${colors.blue2};
           background-colour:           #${colors.bg3};

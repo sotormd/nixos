@@ -1,8 +1,13 @@
-{ pkgs, vars, ... }:
+{
+  pkgs,
+  colors,
+  vars,
+  ...
+}:
 
 let
   policies = import ./policies.nix;
-  profile = import ./profile.nix { inherit pkgs vars; };
+  profile = import ./profile.nix { inherit pkgs colors vars; };
 
   policiesFirefox = pkgs.wrapFirefox pkgs.firefox-unwrapped {
     extraPolicies = policies.policies;

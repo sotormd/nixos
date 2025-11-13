@@ -13,7 +13,7 @@ let
   config = pkgs.writeTextFile {
     name = "config";
     text = ''
-      font=IBM Plex Sans
+      font=${colors.fonts.normal}
       font-size=16
 
       image=${backgrounds.lockscreen}

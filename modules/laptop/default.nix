@@ -20,9 +20,6 @@
       # btop system resources monitor
       ./btop
 
-      # vscodium code editor
-      #      ./codium
-
       # cpu frequency optimizations, power management
       ./cpu
 

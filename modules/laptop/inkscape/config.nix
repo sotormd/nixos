@@ -1111,8 +1111,8 @@
         <group
            id="theme"
            defaultPreferDarkTheme="0"
-           defaultIconTheme="Nordzy-dark"
-           defaultGtkTheme="Nordic-darker"
+           defaultIconTheme="${colors.gtk.icons.name}"
+           defaultGtkTheme="${colors.gtk.theme.name}"
            narrowSpinButton="1"
            preferDarkTheme="1"
            darkTheme="1"

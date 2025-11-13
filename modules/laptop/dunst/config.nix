@@ -12,7 +12,7 @@ let
       [global]
       background="#${colors.bg0}"
       corner_radius=7
-      font="IBM Plex Sans 9"
+      font="${colors.fonts.normal} 9"
       frame_color="#${colors.blue2}"
       gap_size=5
       monitor=${vars.outputs.monitor}

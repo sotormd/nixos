@@ -1,4 +1,4 @@
-{ pkgs, ... }:
+{ colors, pkgs, ... }:
 
 let
   initialPreferences = {
@@ -112,10 +112,10 @@ let
 
     # fonts
     webkit.webprefs.fonts = {
-      fixed.Zyyy = "IBM Plex Mono";
-      sansserif.Zyyy = "IBM Plex Sans";
-      serif.Zyyy = "IBM Plex Serif";
-      standard.Zyyy = "IBM Plex Sans";
+      fixed.Zyyy = "${colors.fonts.monospace}";
+      sansserif.Zyyy = "${colors.fonts.sansserif}";
+      serif.Zyyy = "${colors.fonts.serif}";
+      standard.Zyyy = "${colors.fonts.normal}";
     };
 
     #####################

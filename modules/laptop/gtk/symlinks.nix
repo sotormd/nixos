@@ -1,63 +1,84 @@
-{ pkgs, vars, ... }:
+{
+  pkgs,
+  colors,
+  vars,
+  ...
+}:
 
 {
   hjem.users.${vars.user.name} = {
-    files.".local/share/themes/Nordic-darker".source = "${pkgs.nordic}/share/themes/Nordic-darker";
+    files = {
+      ".local/share/themes/${colors.gtk.theme.name}".source = "${
+        pkgs.${colors.gtk.theme.package}
+      }/share/themes/${colors.gtk.theme.name}";
 
-    files.".local/share/icons/Nordzy-dark".source = "${pkgs.nordzy-icon-theme}/share/icons/Nordzy-dark";
+      ".local/share/icons/${colors.gtk.icons.name}".source = "${
+        pkgs.${colors.gtk.icons.package}
+      }/share/icons/${colors.gtk.icons.name}";
 
-    files.".local/share/fonts/ibm-plex".source = "${pkgs.ibm-plex}/share/fonts/opentype";
-    files.".local/share/fonts/nerdfonts-im-writer".source =
-      "${pkgs.nerd-fonts.im-writing}/share/fonts/truetype/NerdFonts/iMWriting";
-    files.".local/share/fonts/noto-fonts-color-emoji".source =
-      "${pkgs.noto-fonts-color-emoji}/share/fonts/noto";
+      ".icons/${colors.gtk.cursor.name}".source = "${
+        pkgs.${colors.gtk.cursor.package}
+      }/share/icons/${colors.gtk.cursor.name}";
 
-    files.".icons/Simp1e-Nord-Dark".source = "${pkgs.simp1e-cursors}/share/icons/Simp1e-Nord-Dark";
+      ".icons/default/index.theme".text = ''
+        [Icon Theme]
+        Name=Default
+        Comment=Default Cursor Theme
+        Inherits=${colors.gtk.cursor.name}
+      '';
 
-    files.".Xresources".text = ''
-      Xcursor.size: 1
-      Xcursor.theme: Simp1e-Nord-Dark
-    '';
+      ".Xresources".text = ''
+        Xcursor.size: 1
+        Xcursor.theme: ${colors.gtk.cursor.name}
+      '';
 
-    files.".gtkrc-2.0".text = ''
-      gtk-cursor-theme-name = "Simp1e-Nord-Dark"
-      gtk-cursor-theme-size = 1
-      gtk-font-name = "IBM Plex Sans 10"
-      gtk-icon-theme-name = "Nordzy-dark"
-      gtk-theme-name = "Nordic-darker"
-    '';
+      ".gtkrc-2.0".text = ''
+        gtk-cursor-theme-name = "${colors.gtk.cursor.name}"
+        gtk-cursor-theme-size = 1
+        gtk-font-name = "${colors.fonts.normal} 10"
+        gtk-icon-theme-name = "${colors.gtk.icons.name}"
+        gtk-theme-name = "${colors.gtk.theme.name}"
+      '';
 
-    files.".icons/default/index.theme".text = ''
-      [Icon Theme]
-      Name=Default
-      Comment=Default Cursor Theme
-      Inherits=Simp1e-Nord-Dark
-    '';
+      ".config/gtk-3.0/settings.ini".text = ''
+        [Settings]
+        gtk-cursor-theme-name=${colors.gtk.cursor.name}
+        gtk-cursor-theme-size=1
+        gtk-font-name=${colors.fonts.normal} 10
+        gtk-icon-theme-name=${colors.gtk.icons.name}
+        gtk-theme-name=${colors.gtk.theme.name}
+      '';
 
-    files.".config/gtk-3.0/settings.ini".text = ''
-      [Settings]
-      gtk-cursor-theme-name=Simp1e-Nord-Dark
-      gtk-cursor-theme-size=1
-      gtk-font-name=IBM Plex Sans 10
-      gtk-icon-theme-name=Nordzy-dark
-      gtk-theme-name=Nordic-darker
-    '';
+      ".config/gtk-4.0/settings.ini".text = ''
+        [Settings]
+        gtk-cursor-theme-name=${colors.gtk.cursor.name}
+        gtk-cursor-theme-size=1
+        gtk-font-name=${colors.fonts.normal} 10
+        gtk-icon-theme-name=${colors.gtk.icons.name}
+        gtk-theme-name=${colors.gtk.theme.name}
+      '';
 
-    files.".config/gtk-4.0/settings.ini".text = ''
-      [Settings]
-      gtk-cursor-theme-name=Simp1e-Nord-Dark
-      gtk-cursor-theme-size=1
-      gtk-font-name=IBM Plex Sans 10
-      gtk-icon-theme-name=Nordzy-dark
-      gtk-theme-name=Nordic-darker
-    '';
-
-    files.".config/gtk-4.0/gtk.css".text = ''
-      /**
-       * GTK 4 reads the theme configured by gtk-theme-name, but ignores it.
-       * It does however respect user CSS, so import the theme from here.
-      **/
-      @import url("file://${pkgs.nordic}/share/themes/Nordic-darker/gtk-4.0/gtk.css");
-    '';
+      ".config/gtk-4.0/gtk.css".text = ''
+        /**
+         * GTK 4 reads the theme configured by gtk-theme-name, but ignores it.
+         * It does however respect user CSS, so import the theme from here.
+        **/
+        @import url("file://${
+          pkgs.${colors.gtk.theme.package}
+        }/share/themes/${colors.gtk.theme.name}/gtk-4.0/gtk.css");
+      '';
+    }
+    // builtins.listToAttrs (
+      map (pkg: {
+        name = ".local/share/fonts/${pkg}";
+        value.source = "${pkgs.${pkg}}/share/fonts";
+      }) colors.fonts.packages
+    )
+    // builtins.listToAttrs (
+      map (pkg: {
+        name = ".local/share/fonts/nerdfonts/${pkg}";
+        value.source = "${pkgs.nerd-fonts.${pkg}}/share/fonts";
+      }) colors.fonts.nerdfonts
+    );
   };
 }
