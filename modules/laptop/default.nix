@@ -41,6 +41,9 @@
       # gtk theming
       ./gtk
 
+      # inkscape vector graphics editor
+      ./inkscape
+
       # mousepad text editor
       ./mousepad
 
