@@ -266,6 +266,10 @@ let
                 "exec": "codium",
                 "symbol": ""
             },
+            "org.inkscape.Inkscape": {
+                "exec": "inkscape",
+                "symbol": ""
+            },
             "auto-cpufreq": {
                 "symbol": ""
             },
@@ -301,6 +305,7 @@ let
         "pinned_clients": [
             "brave-browser",
             "foot",
+            "org.inkscape.Inkscape",
             "Thunar",
             "mousepad"
         ]
