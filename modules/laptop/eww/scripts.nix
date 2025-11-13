@@ -270,6 +270,10 @@ let
                 "exec": "inkscape",
                 "symbol": ""
             },
+            "brave-open.spotify.com__-Default": {
+                "exec": "spotify",
+                "symbol": ""
+            },
             "auto-cpufreq": {
                 "symbol": ""
             },
@@ -304,6 +308,7 @@ let
         },
         "pinned_clients": [
             "brave-browser",
+            "brave-open.spotify.com__-Default",
             "foot",
             "org.inkscape.Inkscape",
             "Thunar",
