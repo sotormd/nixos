@@ -42,7 +42,7 @@ let
       set recolor-darkcolor	"#${colors.fg2}"
       set recolor	"true"
 
-      set font "IBM Plex Mono"
+      set font "${colors.fonts.monospace}"
     '';
     destination = "/zathurarc";
   };

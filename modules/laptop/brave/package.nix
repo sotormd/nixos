@@ -1,7 +1,12 @@
-{ pkgs, config, ... }:
+{
+  pkgs,
+  config,
+  colors,
+  ...
+}:
 
 let
-  preferences = import ./preferences.nix { inherit pkgs; };
+  preferences = import ./preferences.nix { inherit pkgs colors; };
   args = import ./args.nix;
 in
 {

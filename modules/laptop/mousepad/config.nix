@@ -1,4 +1,4 @@
-{ vars, ... }:
+{ colors, vars, ... }:
 
 {
   hjem.users.${vars.user.name} = {
@@ -8,7 +8,7 @@
 
       [org/xfce/mousepad/preferences/view]
       use-default-monospace-font=false
-      font-name='IBM Plex Mono 10'
+      font-name='${colors.fonts.monospace} 10'
     '';
   };
 }

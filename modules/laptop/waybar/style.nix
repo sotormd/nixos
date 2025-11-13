@@ -5,7 +5,7 @@
     name = "style";
     text = ''
       * {
-        font-family: 'IBM Plex Sans';
+        font-family: '${colors.fonts.normal}';
         background: transparent;
       }
 

@@ -1,12 +1,13 @@
 {
   pkgs,
   config,
+  colors,
   vars,
   ...
 }:
 
 let
-  package = import ./package.nix { inherit pkgs config; };
+  package = import ./package.nix { inherit pkgs config colors; };
 in
 {
   programs.firejail.wrappedBinaries.brave = {

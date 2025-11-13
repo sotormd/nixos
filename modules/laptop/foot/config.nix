@@ -33,7 +33,7 @@ let
 
       [main]
       dpi-aware=yes
-      font=IBM Plex Mono:size=10
+      font=${colors.fonts.monospace}:size=10
     '';
     destination = "/foot.ini";
   };
