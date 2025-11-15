@@ -201,6 +201,9 @@ To edit secrets:
 $ nixos edit sops
 ```
 
+If you want to recreate the variables / secrets, you can use
+`nixos init <vars|sops> replace`.
+
 # Miscellaneous
 
 Dispatch any command to `$NIXOS_DIR`:

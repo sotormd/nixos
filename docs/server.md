@@ -194,52 +194,47 @@
 
 Full list of possible environment variables:
 
-| Name                                      | Required? | Explanation                                        | Default                                           | Example                              |
-| ----------------------------------------- | --------- | -------------------------------------------------- | ------------------------------------------------- | ------------------------------------ |
-| `NIXOS_DIR`                               | **Yes**   | Directory where the NixOS configuration is stored. | -                                                 | `"/nixos"`                           |
-| `NIXOS_ROLE`                              | **Yes**   | `laptop` or `server` role                          | -                                                 | `"server"`                           |
-| `VARS_DEVICE_HOSTNAME`                    | No        | Hostname of the device.                            | `$(uname -n)`                                     | `"Foo"`                              |
-| `VARS_DEVICE_MACHINEID`                   | No        | `systemd` machine-id.                              | `$(cat /etc/machine-id)`                          | `"51934ba93b754bf28caf413f7e6c65bd"` |
-| `VARS_DEVICE_ROOT`                        | **Yes**   | Root partition partuuid.                           | -                                                 | -                                    |
-| `VARS_USER_NAME`                          | No        | Username.                                          | `$USER`                                           | `"Bar"`                              |
-| `VARS_USER_EMAIL`                         | **Yes**   | Email used for git commits.                        | -                                                 | `"Bar@domain.com"`                   |
-| `VARS_I18N_TIMEZONE`                      | No        | Timezone.                                          | `$(timedatectl show --property=Timezone --value)` | `"Europe/Berlin"`                    |
-| `VARS_I18N_KEYBOARD`                      | No        | Keyboard layout.                                   | `"us"`                                            | `"us"`                               |
-| `VARS_I18N_LOCALE`                        | No        | Locale.                                            | `"en_US.UTF-8"`                                   | `"de_DE.UTF-8"`                      |
-| `VARS_NETWORK_INTERFACE`                  | No        | Wireless network interface.                        | `"wlp1s0"`                                        | `"wlan0"`                            |
-| `VARS_NETWORK_SSID`                       | **Yes**   | Wireless network ssid.                             | -                                                 | `"net20"`                            |
-| `VARS_NETWORK_GATEWAY`                    | No        | Wireless network gateway.                          | `"192.168.0.1"`                                   | `"10.0.0.0"`                         |
-| `VARS_NETWORK_RANGE`                      | No        | CIDR allowed to access server.                     | `"192.168.0.0/24"`                                | `"10.0.0.0/24"`                      |
-| `VARS_NETWORK_IP`                         | **Yes**   | Static local IP address.                           | -                                                 | `"10.0.0.3"`                         |
-| `VARS_NETWORK_WPA3_ENABLE`                | No        | Enable SAE (dragonfly) authentication.             | `"true"`                                          | `"false"`                            |
-| `VARS_NETWORK_DUCKDNS_DOMAIN`             | No        | DuckDNS domain name.                               | `"$(uname -n)-server.duckdns.org"`                | `"nixos-server-0b123df.duckdns.org"` |
-| `VARS_NETWORK_SSH_PORT`                   | No        | SSH port.                                          | `"22"`                                            | `"20000"`                            |
-| `VARS_NETWORK_SSH_KEY`                    | No        | Allowed public key.                                | -                                                 | `"AAAA..."`                          |
-| `VARS_NETWORK_UNBOUND_ENABLE`             | No        | Enable Unbound.                                    | `"false"`                                         | `"true"`                             |
-| `VARS_NETWORK_NGINX_ENABLE`               | No        | Enable Nginx.                                      | `"false"`                                         | `"true"`                             |
-| `VARS_NETWORK_SEARXNG_ENABLE`             | No        | Enable SearXNG.                                    | `"false"`                                         | `"true"`                             |
-| `VARS_NETWORK_VAULTWARDEN_ENABLE`         | No        | Enable Vaultwarden.                                | `"false"`                                         | `"true"`                             |
-| `VARS_NETWORK_VAULTWARDEN_DATA`           | No        | Vaultwarden data directory.                        | `"/var/lib/bitwarden_rs"`                         | `"/mnt/drive/vaultwarden-data"`      |
-| `VARS_NETWORK_VAULTWARDEN_PORT`           | No        | Vaultwarden web vault rocket (loopback) port.      | `"8222"`                                          | `"20001"`                            |
-| `VARS_NETWORK_I2PD_ENABLE`                | No        | Enable I2PD.                                       | `"false"`                                         | `"true"`                             |
-| `VARS_NETWORK_I2PD_SAM_PORT`              | No        | I2PD SAM (loopback) port.                          | `"7656"`                                          | `"20002"`                            |
-| `VARS_NETWORK_I2PD_HTTP_PROXY_PORT`       | No        | I2PD HTTP proxy (LAN) port.                        | `"4444"`                                          | `"20003"`                            |
-| `VARS_NETWORK_I2PD_SOCKS_PROXY_PORT`      | No        | I2PD SOCKS proxy (loopback) port.                  | `"4447"`                                          | `"20004"`                            |
-| `VARS_NETWORK_I2PD_WEBCONSOLE_PROXY_PORT` | No        | I2PD webconsole (loopback) port.                   | `"7070"`                                          | `"20005"`                            |
-| `VARS_NETWORK_QBT_ENABLE`                 | No        | Enable qBittorrent.                                | `"false"`                                         | `"true"`                             |
-| `VARS_NETWORK_QBT_DATA`                   | No        | qBittorrent data directory.                        | `"/var/lib/qbt/data"`                             | `"/mnt/drive/qbt"`                   |
-| `VARS_NETWORK_QBT_PORT`                   | No        | qBittorrent webui (loopback) port.                 | `"8080"`                                          | `"20006"`                            |
-| `VARS_NETWORK_JELLYFIN_ENABLE`            | No        | Enable Jellyfin.                                   | `"false"`                                         | `"true"`                             |
-| `VARS_NETWORK_JELLYFIN_PORT`              | No        | Jellyfin web (loopback) port.                      | `"8096"`                                          | `"20007"`                            |
-| `SECRETS_HASHED_PASSWORD`                 | No        | Hashed user password.                              | `$(mkpasswd -m yescrypt)`                         | -                                    |
-| `SECRETS_PSK`                             | No        | PSK for the network.                               | (user input)                                      | `"supersecretpsk"`                   |
-| `SECRETS_DUCKDNS_TOKEN`                   | No        | DuckDNS API token.                                 | -                                                 | `"aaa..."`                           |
-| `SECRETS_SEARXNG_KEY`                     | No        | SearXNG secret key.                                | (randomly generated)                              | `"bbb..."`                           |
-
-Required section only shows the minimum variables needed to ensure a working
-system (ie, the rest will use defaults).
-
-Service specific variables/secrets are required if the service is enabled.
+| Name                                      | Explanation                                        | Default                                           | Example                              |
+| ----------------------------------------- | -------------------------------------------------- | ------------------------------------------------- | ------------------------------------ |
+| `NIXOS_DIR`                               | Directory where the NixOS configuration is stored. | -                                                 | `"/nixos"`                           |
+| `NIXOS_ROLE`                              | `laptop` or `server` role                          | -                                                 | `"server"`                           |
+| `VARS_DEVICE_HOSTNAME`                    | Hostname of the device.                            | `$(uname -n)`                                     | `"Foo"`                              |
+| `VARS_DEVICE_MACHINEID`                   | `systemd` machine-id.                              | `$(cat /etc/machine-id)`                          | `"51934ba93b754bf28caf413f7e6c65bd"` |
+| `VARS_DEVICE_ROOT`                        | Root partition partuuid.                           | -                                                 | -                                    |
+| `VARS_USER_NAME`                          | Username.                                          | `$USER`                                           | `"Bar"`                              |
+| `VARS_USER_EMAIL`                         | Email used for git commits.                        | -                                                 | `"Bar@domain.com"`                   |
+| `VARS_I18N_TIMEZONE`                      | Timezone.                                          | `$(timedatectl show --property=Timezone --value)` | `"Europe/Berlin"`                    |
+| `VARS_I18N_KEYBOARD`                      | Keyboard layout.                                   | `"us"`                                            | `"us"`                               |
+| `VARS_I18N_LOCALE`                        | Locale.                                            | `"en_US.UTF-8"`                                   | `"de_DE.UTF-8"`                      |
+| `VARS_NETWORK_INTERFACE`                  | Wireless network interface.                        | `"wlp1s0"`                                        | `"wlan0"`                            |
+| `VARS_NETWORK_SSID`                       | Wireless network ssid.                             | -                                                 | `"net20"`                            |
+| `VARS_NETWORK_GATEWAY`                    | Wireless network gateway.                          | `"192.168.0.1"`                                   | `"10.0.0.0"`                         |
+| `VARS_NETWORK_RANGE`                      | CIDR allowed to access server.                     | `"192.168.0.0/24"`                                | `"10.0.0.0/24"`                      |
+| `VARS_NETWORK_IP`                         | Static local IP address.                           | -                                                 | `"10.0.0.3"`                         |
+| `VARS_NETWORK_WPA3_ENABLE`                | Enable SAE (dragonfly) authentication.             | `"true"`                                          | `"false"`                            |
+| `VARS_NETWORK_DUCKDNS_DOMAIN`             | DuckDNS domain name.                               | `"$(uname -n)-server.duckdns.org"`                | `"nixos-server-0b123df.duckdns.org"` |
+| `VARS_NETWORK_SSH_PORT`                   | SSH port.                                          | `"22"`                                            | `"20000"`                            |
+| `VARS_NETWORK_SSH_KEY`                    | Allowed public key.                                | -                                                 | `"AAAA..."`                          |
+| `VARS_NETWORK_UNBOUND_ENABLE`             | Enable Unbound.                                    | `"false"`                                         | `"true"`                             |
+| `VARS_NETWORK_NGINX_ENABLE`               | Enable Nginx.                                      | `"false"`                                         | `"true"`                             |
+| `VARS_NETWORK_SEARXNG_ENABLE`             | Enable SearXNG.                                    | `"false"`                                         | `"true"`                             |
+| `VARS_NETWORK_VAULTWARDEN_ENABLE`         | Enable Vaultwarden.                                | `"false"`                                         | `"true"`                             |
+| `VARS_NETWORK_VAULTWARDEN_DATA`           | Vaultwarden data directory.                        | `"/var/lib/bitwarden_rs"`                         | `"/mnt/drive/vaultwarden-data"`      |
+| `VARS_NETWORK_VAULTWARDEN_PORT`           | Vaultwarden web vault rocket (loopback) port.      | `"8222"`                                          | `"20001"`                            |
+| `VARS_NETWORK_I2PD_ENABLE`                | Enable I2PD.                                       | `"false"`                                         | `"true"`                             |
+| `VARS_NETWORK_I2PD_SAM_PORT`              | I2PD SAM (loopback) port.                          | `"7656"`                                          | `"20002"`                            |
+| `VARS_NETWORK_I2PD_HTTP_PROXY_PORT`       | I2PD HTTP proxy (LAN) port.                        | `"4444"`                                          | `"20003"`                            |
+| `VARS_NETWORK_I2PD_SOCKS_PROXY_PORT`      | I2PD SOCKS proxy (loopback) port.                  | `"4447"`                                          | `"20004"`                            |
+| `VARS_NETWORK_I2PD_WEBCONSOLE_PROXY_PORT` | I2PD webconsole (loopback) port.                   | `"7070"`                                          | `"20005"`                            |
+| `VARS_NETWORK_QBT_ENABLE`                 | Enable qBittorrent.                                | `"false"`                                         | `"true"`                             |
+| `VARS_NETWORK_QBT_DATA`                   | qBittorrent data directory.                        | `"/var/lib/qbt/data"`                             | `"/mnt/drive/qbt"`                   |
+| `VARS_NETWORK_QBT_PORT`                   | qBittorrent webui (loopback) port.                 | `"8080"`                                          | `"20006"`                            |
+| `VARS_NETWORK_JELLYFIN_ENABLE`            | Enable Jellyfin.                                   | `"false"`                                         | `"true"`                             |
+| `VARS_NETWORK_JELLYFIN_PORT`              | Jellyfin web (loopback) port.                      | `"8096"`                                          | `"20007"`                            |
+| `SECRETS_HASHED_PASSWORD`                 | Hashed user password.                              | `$(mkpasswd -m yescrypt)`                         | -                                    |
+| `SECRETS_PSK`                             | PSK for the network.                               | (user input)                                      | `"supersecretpsk"`                   |
+| `SECRETS_DUCKDNS_TOKEN`                   | DuckDNS API token.                                 | -                                                 | `"aaa..."`                           |
+| `SECRETS_SEARXNG_KEY`                     | SearXNG secret key.                                | (randomly generated)                              | `"bbb..."`                           |
 
 Ensure all relevant variables are defined in the `$NIXOS_DIR/vars/vars.nix` and
 secrets in `$NIXOS_DIR/vars/secrets.yaml`.

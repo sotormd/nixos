@@ -100,51 +100,6 @@ ${bold}${yellow}  edit <vars|sops>${reset}
     ${green}\$ nixos edit sops${reset}
     Edit sops-nix secrets
 
-${bold}${yellow}  init disks <boot|swap|root|mount>${reset}
-  ${dim}roles:${reset} laptop
-
-    ${green}\$ nixos init disks boot
-    Format \$BOOT as FAT32
-
-    ${green}\$ nixos init disks swap
-    Format \$SWAP as swap
-
-    ${green}\$ nixos init disks root
-    Create LUKS encrypted ZFS rpool on \$ROOT
-
-    ${green}\$ nixos init disks mount
-    Mount partitions under /mnt
-
-${bold}${yellow}  init <vars|sops> [replace]${reset}
-  ${dim}roles:${reset} laptop, server
-
-    ${green}\$ nixos init vars${reset}
-    Initialize variables (see docs).
-
-    ${green}\$ nixos init vars replace${reset}
-    Replace current variables.
-
-    ${green}\$ nixos init sops${reset}
-    Initialize secrets (see docs).
-
-    ${green}\$ nixos init sops replace${reset}
-    Replace current secrets.
-
-${bold}${yellow}  init lanzaboote <create|enroll>${reset}
-  ${dim}roles:${reset} laptop
-
-    ${green}\$ nixos init lanzaboote create${reset}
-    Create lanzaboote keys (see docs/laptop.md).
-
-    ${green}\$ nixos init lanzaboote enroll${reset}
-    Enroll lanzaboote keys (see docs/laptop.md).
-
-${bold}${yellow}  init impermanence${reset}
-  ${dim}roles:${reset} laptop
-
-    ${green}\$ nixos init impermanence${reset}
-    Populate the /persist directory for impermanence (see docs/laptop.md).
-
 ${bold}${yellow}  serverpush <path>${reset}
   ${dim}roles:${reset} laptop
 
