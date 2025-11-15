@@ -6,7 +6,22 @@ To get a basic overview of available commands:
 $ nixos help
 ```
 
-This document outlines several useful examples, apart from those covered in [README.md](../README.md#nixos-flake-helper).
+This document outlines several useful examples, apart from those covered in
+[README.md](../README.md#nixos-flake-helper).
+
+Additionally, the script is also exposed as the default package of the flake.
+
+so running
+
+```console
+$ nix run $NIXOS_DIR -- switch
+```
+
+is equivalent to
+
+```console
+$ nixos switch
+```
 
 # Contents
 
@@ -31,11 +46,13 @@ $ nixos update
 ```
 
 To update a specific input:
+
 ```console
 $ nixos update nixpkgs
 ```
 
 To update multiple specific inputs:
+
 ```console
 $ nixos update nixpkgs home-manager
 ```
@@ -43,6 +60,7 @@ $ nixos update nixpkgs home-manager
 After updating the lockfile, you need to test / switch to apply changes.
 
 To switch to the previously committed lockfile:
+
 ```console
 $ nixos git checkout HEAD flake.lock
 ```
@@ -60,6 +78,7 @@ $ nixos test
 ```
 
 To skip the confirmation:
+
 ```console
 $ yes | nixos test
 ```
@@ -77,6 +96,7 @@ $ nixos switch
 ```
 
 To skip the confirmation:
+
 ```console
 $ yes | nixos switch
 ```
@@ -96,16 +116,19 @@ $ nixos commit
 ```
 
 To skip the confirmation:
+
 ```console
 $ yes | nixos commit
 ```
 
 To mention a git commit message:
+
 ```console
 $ nixos commit -m "docs: update scripts.md"
 ```
 
-If a message is not mentioned with the `-m` flag, the `$EDITOR` will be opened to ask the user for a git commit message.
+If a message is not mentioned with the `-m` flag, the `$EDITOR` will be opened
+to ask the user for a git commit message.
 
 # Format the Flake
 
@@ -125,7 +148,8 @@ $ nixos find . -type f -name '*.nix' -exec nix fmt {} +
 $ nixos perms
 ```
 
-This ensures all files are owned by `$USER`, applies `600` to all files, `700` to all directories and `700` to all files under `$NIXOS_DIR/scripts/`.
+This ensures all files are owned by `$USER`, applies `600` to all files, `700`
+to all directories and `700` to all files under `$NIXOS_DIR/scripts/`.
 
 # Garbage Collect
 
@@ -136,6 +160,7 @@ $ nixos purge
 ```
 
 This iis equivalent to running:
+
 ```console
 $ nixos sudo nix-collect-garbage --delete-old
 ```
@@ -147,6 +172,7 @@ $ nixos repair
 ```
 
 This is equivalent to running:
+
 ```console
 $ nixos sudo nix-store --verify --check-contents --repair
 ```
@@ -156,6 +182,7 @@ $ nixos sudo nix-store --verify --check-contents --repair
 > Not available for `server` role.
 
 To push to `server:/nixos`:
+
 ```console
 $ nixos serverpush /nixos
 ```
@@ -163,11 +190,13 @@ $ nixos serverpush /nixos
 # Edit variables / secrets.
 
 To edit variables:
+
 ```console
 $ nixos edit vars
 ```
 
 To edit secrets:
+
 ```console
 $ nixos edit sops
 ```
@@ -175,6 +204,7 @@ $ nixos edit sops
 # Miscellaneous
 
 Dispatch any command to `$NIXOS_DIR`:
+
 ```console
 $ nixos <command>
 ```
@@ -182,31 +212,37 @@ $ nixos <command>
 For example:
 
 Add a git remote:
+
 ```console
 $ nixos git remote add gh git@github:user/repo.git
 ```
 
 Remove a git remote:
+
 ```console
 $ nixos git remote remove gh
 ```
 
 Push to a git remote:
+
 ```console
 $ nixos git push gh master
 ```
 
 Remove an accidental commit that hasn't been pushed yet:
+
 ```console
 $ nixos git reset --soft HEAD~1
 ```
 
 Copy the contents of flake.nix
+
 ```console
 $ nixos cat flake.nix | wl-copy
 ```
 
 Open an editor in the flake directory
+
 ```
 $ nixos vi .
 ```
