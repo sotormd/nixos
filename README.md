@@ -93,8 +93,10 @@ See [Features](#features) for all features.
 
 # Images
 
-Three images: `minimal`, `gnome` and `plasma` are included (for installation,
-recovery, etc.)
+Two images: `minimal` and `gnome` are included (for installation, recovery,
+etc.)
+
+These images have experimental features `flakes` and `nix-command` enabled.
 
 See [images](./docs/images.md) for more details.
 
