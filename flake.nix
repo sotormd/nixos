@@ -88,6 +88,17 @@
               nixosScript = builtins.readFile ./scripts/nixos;
             in
             pkgs.writeShellScriptBin "nixos-from-flake" nixosScript;
+
+          # disks
+          packages.disks =
+            let
+              initScriptFile = ./scripts/init;
+            in
+            pkgs.writeShellScriptBin "disks-from-flake" ''
+              #! ${pkgs.runtimeShell}
+
+              ${initScriptFile} disks "$@"
+            '';
         };
 
       flake =

@@ -64,6 +64,9 @@ experimental features `flakes` and `nix-command` enabled, skip to
    $ export ROOT=/dev/disk/by-partuuid/ccc...
    ```
 
+   **Steps 3 through 11 show manual formatting and mounting. Instead, you can
+   use the automated script in step 12.**
+
 3. Format boot partition.
 
    ```console
@@ -149,7 +152,23 @@ experimental features `flakes` and `nix-command` enabled, skip to
     $ sudo mkdir -p /mnt/boot && sudo mount $BOOT /mnt/boot
     ```
 
+12. Automated formatting and mounting.
+
+    ```console
+    $ export NIXOS_DISKS_DRY_RUN=false
+    $ nix run github:sotormd/nixos#disks -- boot
+    $ nix run github:sotormd/nixos#disks -- swap
+    $ nix run github:sotormd/nixos#disks -- root
+    $ nix run github:sotormd/nixos#disks -- mount
+    ```
+
 ## 4. Installing NixOS.
+
+**This step is only required if the live ISO does not have flakes enabled**
+
+If the live ISO has flakes enabled, you can directly install this configuration
+with `nixos-install`. However, if you do not know what you are doing, it is
+better to follow the instructions below.
 
 1. Generate NixOS configuration.
 
