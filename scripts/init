@@ -51,6 +51,131 @@ if [ "$1" == "hardware" ]; then
     sudo shred /tmp/nixos/hardware-configuration.nix
     sudo rm -rf /tmp/nixos
 
+##################
+# PARTITIONS INIT
+# ################
+
+elif [ "$1" == "disks" ]; then
+
+    if [[ "$NIXOS_ROLE" != "laptop" ]]; then
+        echo "Error: unexpected role $NIXOS_ROLE" >&2
+        exit 1
+    fi
+
+    if [ -z "$NIXOS_DISKS_DRY_RUN" ]; then
+        NIXOS_DISKS_DRY_RUN=true
+    fi
+
+    if [ -z "$2" ]; then
+        echo "Error: expected argument (boot/swap/root/mount)" >&2
+        exit 1
+    fi
+
+    set -euo pipefail
+    DRY_RUN="$NIXOS_DISKS_DRY_RUN"
+
+    : "${BOOT:?Please set BOOT (e.g. /dev/disk/by-partuuid/xxx)}"
+    echo "BOOT=$BOOT"
+    : "${SWAP:?Please set SWAP (e.g. /dev/disk/by-partuuid/xxx)}"
+    echo "SWAP=$SWAP"
+    : "${ROOT:?Please set ROOT (e.g. /dev/disk/by-partuuid/xxx)}"
+    echo "ROOT=$ROOT"
+
+    if $DRY_RUN; then
+      echo "DRY RUN: no destructive actions will be performed. Re-run with NIXOS_DISKS_DRY_RUN=false to actually apply."
+    fi
+
+    read -rp "Are you absolutely sure you want to proceed? Type 'I UNDERSTAND' to continue: " CONFIRM
+    if [[ "$CONFIRM" != "I UNDERSTAND" ]]; then
+      echo "Aborting."
+      exit 1
+    fi
+
+    # helper for running or echoing
+    run() {
+      if $DRY_RUN; then
+        echo "+ $*"
+      else
+        echo "+ $*"; eval "$@"
+      fi
+    }
+
+    # Wait for udev
+    run "udevadm settle"
+
+    if [ "$2" == "boot" ]; then
+
+        # 1) Format boot as FAT32 (ESP)
+        run "mkfs.vfat -F32 -n BOOT ${BOOT}"
+
+    elif [ "$2" == "swap" ]; then
+
+        # 2) Setup swap
+        run "mkswap ${SWAP}"
+        run "swapon ${SWAP}"
+
+    elif [ "$2" == "root" ]; then
+
+        # 3) Wipe signatures on root before LUKS to avoid troubles
+        run "wipefs -a ${ROOT} || true"
+
+        # 4) LUKS encrypt root
+        # - use LUKS2, pbkdf=argon2id defaults; prompts for passphrase
+        run "cryptsetup luksFormat --type luks2 ${ROOT}"
+        run "cryptsetup luksOpen ${ROOT} root"
+
+        # 5) Wait for /dev/mapper/root
+        run "udevadm settle"
+
+        # 6) Create ZFS pool on /dev/mapper/root
+        # If re-using disk, consider "zpool destroy -f rpool" first (user responsibility)
+        ZPOOL_NAME="rpool"
+        ZPOOL_DEVICE="/dev/mapper/root"
+
+        # Recommended zpool create options from docs
+        ZPOOL_ARGS=(
+          -O compression=lz4
+          -O xattr=sa
+          -O acltype=posixacl
+          -O atime=off
+          -O mountpoint=none
+          -o ashift=12
+        )
+
+        # create pool
+        run "zpool create ${ZPOOL_NAME} ${ZPOOL_ARGS[*]} ${ZPOOL_DEVICE}"
+
+        # 7) Create datasets
+        run "zfs create rpool/root -o mountpoint=legacy"
+        run "zfs create rpool/home -o mountpoint=legacy"
+        run "zfs create rpool/nix -o mountpoint=legacy"
+        run "zfs create rpool/persist -o mountpoint=legacy"
+
+        # 8) reserved dataset
+        run "zfs create rpool/reserved -o refreservation=10G -o mountpoint=none"
+
+        # 9) empty snapshots for impermanence
+        run "zfs snapshot rpool/root@blank"
+        run "zfs snapshot rpool/home@blank"
+
+    elif [ "$2" == "mount" ]; then
+
+        # 10) mount filesystems
+        run "mkdir -p /mnt"
+        run "mount -t zfs rpool/root /mnt"
+        run "mkdir -p /mnt/home /mnt/nix /mnt/persist"
+        run "mount -t zfs rpool/home /mnt/home"
+        run "mount -t zfs rpool/nix /mnt/nix"
+        run "mount -t zfs rpool/persist /mnt/persist"
+
+        # 11) mount boot
+        run "mkdir -p /mnt/boot"
+        run "mount ${BOOT} /mnt/boot"
+
+    fi
+     
+    echo "Done. If DRY RUN: re-run with NIXOS_DISKS_DRY_RUN=false to actually perform the steps."
+
 ############
 # VARS INIT
 ############
