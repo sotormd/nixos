@@ -1,13 +1,17 @@
 #! /usr/bin/env bash
 
-DIR=$NIXOS_DIR
+if [ -z "$NIXOS_ROOT_MOUNT" ]; then
+    NIXOS_ROOT_MOUNT="/"
+fi
+
+DIR="$NIXOS_ROOT_MOUNT/$NIXOS_DIR"
 ROLE=$NIXOS_ROLE
 
 VARS_DIR="$DIR/vars"
 VARS="$VARS_DIR/vars.nix"
 
 if [ "$ROLE" == "laptop" ]; then
-    SOPS_DIR="/persist/sops-nix"
+    SOPS_DIR="$NIXOS_ROOT_MOUNT/persist/sops-nix"
 elif [ "$ROLE" == "server" ]; then
     SOPS_DIR="/var/lib/sops-nix"
 else
@@ -18,7 +22,7 @@ SOPS_YAML="$DIR/.sops.yaml"
 SECRETS="$VARS_DIR/secrets.yaml"
 TEMP_SECRETS="/tmp/sops-nix-init.yaml"
 
-PERSIST_DIR="/persist"
+PERSIST_DIR="${NIXOS_ROOT_MOUNT}/persist"
 PERSIST_DIR_ROOT="$PERSIST_DIR/root"
 PERSIST_DIR_HOME="$PERSIST_DIR_ROOT/home/$USER"
 
