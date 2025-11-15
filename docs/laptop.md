@@ -4,7 +4,7 @@ To skip installation and directly apply configuration on a system with
 experimental features `flakes` and `nix-command` enabled, skip to
 [this](#5-applying-configuration) section.
 
-**The configuration expects a particular disk setup.**
+**The configuration expects a particular disk setup (covered below).**
 
 # Contents
 
@@ -154,6 +154,8 @@ experimental features `flakes` and `nix-command` enabled, skip to
 
 12. Automated formatting and mounting.
 
+    This automates steps 3 through 11.
+
     ```console
     $ export NIXOS_DISKS_DRY_RUN=false
     $ nix run github:sotormd/nixos#disks -- boot
@@ -163,12 +165,6 @@ experimental features `flakes` and `nix-command` enabled, skip to
     ```
 
 ## 4. Installing NixOS.
-
-**This step is only required if the live ISO does not have flakes enabled**
-
-If the live ISO has flakes enabled, you can directly install this configuration
-with `nixos-install`. However, if you do not know what you are doing, it is
-better to follow the instructions below.
 
 1. Generate NixOS configuration.
 
