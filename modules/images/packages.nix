@@ -68,6 +68,7 @@
     sg3_utils
     smartmontools
     socat
+    sops
     strace
     sysstat
     testdisk

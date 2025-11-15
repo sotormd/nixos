@@ -89,15 +89,15 @@
             in
             pkgs.writeShellScriptBin "nixos-from-flake" nixosScript;
 
-          # disks
-          packages.disks =
+          # for initial setup
+          packages.init =
             let
               initScriptFile = ./scripts/init;
             in
-            pkgs.writeShellScriptBin "disks-from-flake" ''
+            pkgs.writeShellScriptBin "init-from-flake" ''
               #! ${pkgs.runtimeShell}
 
-              ${initScriptFile} disks "$@"
+              ${initScriptFile} "$@"
             '';
         };
 

@@ -1,4 +1,4 @@
-{ modulesPath, ... }:
+{ pkgs, modulesPath, ... }:
 
 {
   imports = [
@@ -13,6 +13,10 @@
   ];
 
   time.timeZone = "UTC";
+
+  environment.systemPackages = with pkgs; [ nerd-fonts.fira-code ];
+
+  environment.sessionVariables.EDITOR = "vi";
 
   nixpkgs.hostPlatform.system = "x86_64-linux";
 }

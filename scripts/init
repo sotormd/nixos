@@ -4,7 +4,7 @@ if [ -z "$NIXOS_ROOT_MOUNT" ]; then
     NIXOS_ROOT_MOUNT=""
 fi
 
-DIR="$NIXOS_ROOT_MOUNT/$NIXOS_DIR"
+DIR="$NIXOS_ROOT_MOUNT$NIXOS_DIR"
 ROLE=$NIXOS_ROLE
 
 VARS_DIR="$DIR/vars"
@@ -55,14 +55,14 @@ if [ "$1" == "hardware" ]; then
     sudo shred /tmp/nixos/hardware-configuration.nix
     sudo rm -rf /tmp/nixos
 
-##################
-# PARTITIONS INIT
-# ################
+##############
+# DISKS INIT
+# ############
 
 elif [ "$1" == "disks" ]; then
 
-    if [[ "$NIXOS_ROLE" != "laptop" ]]; then
-        echo "Error: unexpected role $NIXOS_ROLE" >&2
+    if ! [ "$ROLE" == "laptop" ]; then
+        echo "Error: unexpected role $ROLE" >&2
         exit 1
     fi
 
@@ -110,23 +110,23 @@ elif [ "$1" == "disks" ]; then
     if [ "$2" == "boot" ]; then
 
         # 1) Format boot as FAT32 (ESP)
-        run "mkfs.vfat -F32 -n BOOT ${BOOT}"
+        run "sudo mkfs.vfat -F32 -n BOOT ${BOOT}"
 
     elif [ "$2" == "swap" ]; then
 
         # 2) Setup swap
-        run "mkswap ${SWAP}"
-        run "swapon ${SWAP}"
+        run "sudo mkswap ${SWAP}"
+        run "sudo swapon ${SWAP}"
 
     elif [ "$2" == "root" ]; then
 
         # 3) Wipe signatures on root before LUKS to avoid troubles
-        run "wipefs -a ${ROOT} || true"
+        run "sudo wipefs -a ${ROOT} || true"
 
         # 4) LUKS encrypt root
         # - use LUKS2, pbkdf=argon2id defaults; prompts for passphrase
-        run "cryptsetup luksFormat --type luks2 ${ROOT}"
-        run "cryptsetup luksOpen ${ROOT} root"
+        run "sudo cryptsetup luksFormat --type luks2 ${ROOT}"
+        run "sudo cryptsetup luksOpen ${ROOT} root"
 
         # 5) Wait for /dev/mapper/root
         run "udevadm settle"
@@ -147,34 +147,34 @@ elif [ "$1" == "disks" ]; then
         )
 
         # create pool
-        run "zpool create ${ZPOOL_NAME} ${ZPOOL_ARGS[*]} ${ZPOOL_DEVICE}"
+        run "sudo zpool create ${ZPOOL_NAME} ${ZPOOL_ARGS[*]} ${ZPOOL_DEVICE}"
 
         # 7) Create datasets
-        run "zfs create rpool/root -o mountpoint=legacy"
-        run "zfs create rpool/home -o mountpoint=legacy"
-        run "zfs create rpool/nix -o mountpoint=legacy"
-        run "zfs create rpool/persist -o mountpoint=legacy"
+        run "sudo zfs create rpool/root -o mountpoint=legacy"
+        run "sudo zfs create rpool/home -o mountpoint=legacy"
+        run "sudo zfs create rpool/nix -o mountpoint=legacy"
+        run "sudo zfs create rpool/persist -o mountpoint=legacy"
 
         # 8) reserved dataset
-        run "zfs create rpool/reserved -o refreservation=10G -o mountpoint=none"
+        run "sudo zfs create rpool/reserved -o refreservation=10G -o mountpoint=none"
 
         # 9) empty snapshots for impermanence
-        run "zfs snapshot rpool/root@blank"
-        run "zfs snapshot rpool/home@blank"
+        run "sudo zfs snapshot rpool/root@blank"
+        run "sudo zfs snapshot rpool/home@blank"
 
     elif [ "$2" == "mount" ]; then
 
         # 10) mount filesystems
-        run "mkdir -p /mnt"
-        run "mount -t zfs rpool/root /mnt"
-        run "mkdir -p /mnt/home /mnt/nix /mnt/persist"
-        run "mount -t zfs rpool/home /mnt/home"
-        run "mount -t zfs rpool/nix /mnt/nix"
-        run "mount -t zfs rpool/persist /mnt/persist"
+        run "sudo mkdir -p /mnt"
+        run "sudo mount -t zfs rpool/root /mnt"
+        run "sudo mkdir -p /mnt/home /mnt/nix /mnt/persist"
+        run "sudo mount -t zfs rpool/home /mnt/home"
+        run "sudo mount -t zfs rpool/nix /mnt/nix"
+        run "sudo mount -t zfs rpool/persist /mnt/persist"
 
         # 11) mount boot
-        run "mkdir -p /mnt/boot"
-        run "mount ${BOOT} /mnt/boot"
+        run "sudo mkdir -p /mnt/boot"
+        run "sudo mount ${BOOT} /mnt/boot"
 
     fi
      
@@ -185,6 +185,18 @@ elif [ "$1" == "disks" ]; then
 ############
 
 elif [ "$1" == "vars" ]; then
+
+    if [ "$2" == "edit" ]; then
+        $EDITOR $DIR/vars/vars.nix
+        exit 0
+    fi
+
+    : "${BOOT:?Please set BOOT (e.g. /dev/disk/by-partuuid/xxx)}"
+    echo "BOOT=$BOOT"
+    : "${SWAP:?Please set SWAP (e.g. /dev/disk/by-partuuid/xxx)}"
+    echo "SWAP=$SWAP"
+    : "${ROOT:?Please set ROOT (e.g. /dev/disk/by-partuuid/xxx)}"
+    echo "ROOT=$ROOT"
 
     mkdir -p $VARS_DIR
 
@@ -212,43 +224,40 @@ elif [ "$1" == "vars" ]; then
         fi
 
         if [ -z "$VARS_DEVICE_BOOT" ]; then
-            echo "Warning: VARS_DEVICE_BOOT is unset" >&2
-            VARS_DEVICE_BOOT=""
+            VARS_DEVICE_BOOT="${BOOT##*/}"
         fi
 
         if [ -z "$VARS_DEVICE_SWAP" ]; then
-            echo "Warning: VARS_DEVICE_SWAP is unset" >&2
-            VARS_DEVICE_SWAP=""
+            VARS_DEVICE_SWAP="${SWAP##*/}"
         fi
 
         if [ -z "$VARS_DEVICE_ROOT" ]; then
-            echo "Warning: VARS_DEVICE_ROOT is unset" >&2
-            VARS_DEVICE_ROOT=""
+            VARS_DEVICE_ROOT="${ROOT##*/}"
         fi
 
-	if [ -z "$VARS_DEVICE_SECUREBOOT_ENABLE" ]; then
-	    VARS_DEVICE_SECUREBOOT_ENABLE="false"
-	fi
+	    if [ -z "$VARS_DEVICE_SECUREBOOT_ENABLE" ]; then
+	        VARS_DEVICE_SECUREBOOT_ENABLE="false"
+    	fi
 
-	if [ -z "$VARS_DEVICE_IMPERMANENCE_ENABLE" ]; then
-	    VARS_DEVICE_IMPERMANENCE_ENABLE="false"
-	fi
+	    if [ -z "$VARS_DEVICE_IMPERMANENCE_ENABLE" ]; then
+    	    VARS_DEVICE_IMPERMANENCE_ENABLE="false"
+	    fi
 
-	if [ -z "$VARS_DEVICE_PLYMOUTH_ENABLE" ]; then
-	    VARS_DEVICE_PLYMOUTH_ENABLE="false"
-	fi
+    	if [ -z "$VARS_DEVICE_PLYMOUTH_ENABLE" ]; then
+	        VARS_DEVICE_PLYMOUTH_ENABLE="false"
+    	fi
 
-	if [ -z "$VARS_DEVICE_AUTOCPUFREQ_ENABLE" ]; then
-	    VARS_DEVICE_AUTOCPUFREQ_ENABLE="true"
-	fi
+    	if [ -z "$VARS_DEVICE_AUTOCPUFREQ_ENABLE" ]; then
+    	    VARS_DEVICE_AUTOCPUFREQ_ENABLE="true"
+    	fi
 
-	if [ -z "$VARS_DEVICE_POWERTOP_ENABLE" ]; then
-	    VARS_DEVICE_POWERTOP_ENABLE="false"
-	fi
+    	if [ -z "$VARS_DEVICE_POWERTOP_ENABLE" ]; then
+    	    VARS_DEVICE_POWERTOP_ENABLE="false"
+    	fi
 
-	if [ -z "$VARS_DEVICE_TLP_ENABLE" ]; then
-	    VARS_DEVICE_TLP_ENABLE="false"
-	fi
+    	if [ -z "$VARS_DEVICE_TLP_ENABLE" ]; then
+    	    VARS_DEVICE_TLP_ENABLE="false"
+	    fi
 	
         if [ -z "$VARS_USER_NAME" ]; then
             VARS_USER_NAME=$USER
@@ -293,7 +302,7 @@ elif [ "$1" == "vars" ]; then
             VARS_NETWORK_IP=""
         fi
 
-	if [ -z "$VARS_NETWORK_WPA3_ENABLE" ]; then
+    	if [ -z "$VARS_NETWORK_WPA3_ENABLE" ]; then
             VARS_NETWORK_WPA3_ENABLE="true"
         fi
 
@@ -329,11 +338,11 @@ elif [ "$1" == "vars" ]; then
             VARS_OUTPUTS_MONITOR="HDMI-A-1"
         fi
 
-	if [ -z "$VARS_OUTPUTS_WALLPAPER" ]; then
+    	if [ -z "$VARS_OUTPUTS_WALLPAPER" ]; then
             VARS_OUTPUTS_WALLPAPER="nord.mario"
         fi
 
-	if [ -z "$VARS_OUTPUTS_LOCKSCREEN" ]; then
+	    if [ -z "$VARS_OUTPUTS_LOCKSCREEN" ]; then
             VARS_OUTPUTS_LOCKSCREEN="nord.files"
         fi
 
@@ -509,8 +518,7 @@ EOF
         fi
 
         if [ -z "$VARS_DEVICE_ROOT" ]; then
-            echo "Warning: VARS_DEVICE_ROOT is unset" >&2
-            VARS_DEVICE_ROOT=""
+            VARS_DEVICE_ROOT="2178694e-02"
         fi
 
         if [ -z "$VARS_USER_NAME" ]; then
@@ -518,7 +526,6 @@ EOF
         fi
 
         if [ -z "$VARS_USER_EMAIL" ]; then
-            echo "Warning: VARS_USER_EMAIL is unset" >&2
             VARS_USER_EMAIL=""
         fi
 
@@ -539,7 +546,6 @@ EOF
         fi
 
         if [ -z "$VARS_NETWORK_SSID" ]; then
-            echo "Warning: VARS_NETWORK_SSID is unset" >&2
             VARS_NETWORK_SSID=""
         fi
 
@@ -552,11 +558,10 @@ EOF
         fi
 
         if [ -z "$VARS_NETWORK_IP" ]; then
-            echo "Warning: VARS_NETWORK_IP is unset" >&2
             VARS_NETWORK_IP=""
         fi
 
-	if [ -z "$VARS_NETWORK_WPA3_ENABLE" ]; then
+	    if [ -z "$VARS_NETWORK_WPA3_ENABLE" ]; then
             VARS_NETWORK_WPA3_ENABLE="false"
         fi
 
@@ -569,25 +574,24 @@ EOF
         fi
 
         if [ -z "$VARS_NETWORK_SSH_KEY" ]; then
-            echo "Warning: VARS_NETWORK_SSH_KEY is unset" >&2
             VARS_NETWORK_SSH_KEY=""
         fi
 
-	if [ -z "$VARS_NETWORK_UNBOUND_ENABLE" ]; then
-	    VARS_NETWORK_UNBOUND_ENABLE="false"
-	fi
+    	if [ -z "$VARS_NETWORK_UNBOUND_ENABLE" ]; then
+    	    VARS_NETWORK_UNBOUND_ENABLE="false"
+    	fi
 
-	if [ -z "$VARS_NETWORK_NGINX_ENABLE" ]; then
-	    VARS_NETWORK_NGINX_ENABLE="false"
-	fi
+    	if [ -z "$VARS_NETWORK_NGINX_ENABLE" ]; then
+    	    VARS_NETWORK_NGINX_ENABLE="false"
+    	fi
 
-	if [ -z "$VARS_NETWORK_SEARXNG_ENABLE" ]; then
-	    VARS_NETWORK_SEARXNG_ENABLE="false"
-	fi
+    	if [ -z "$VARS_NETWORK_SEARXNG_ENABLE" ]; then
+    	    VARS_NETWORK_SEARXNG_ENABLE="false"
+    	fi
 
-	if [ -z "$VARS_NETWORK_VAULTWARDEN_ENABLE" ]; then
-	    VARS_NETWORK_VAULTWARDEN_ENABLE="false"
-	fi
+    	if [ -z "$VARS_NETWORK_VAULTWARDEN_ENABLE" ]; then
+    	    VARS_NETWORK_VAULTWARDEN_ENABLE="false"
+    	fi
 
         if [ -z "$VARS_NETWORK_VAULTWARDEN_DATA" ]; then
             VARS_NETWORK_VAULTWARDEN_DATA="/var/lib/bitwarden_rs"
@@ -597,9 +601,9 @@ EOF
             VARS_NETWORK_VAULTWARDEN_PORT="8222"
         fi
 
-	if [ -z "$VARS_NETWORK_I2PD_ENABLE" ]; then
-	    VARS_NETWORK_I2PD_ENABLE="false"
-	fi
+	    if [ -z "$VARS_NETWORK_I2PD_ENABLE" ]; then
+    	    VARS_NETWORK_I2PD_ENABLE="false"
+    	fi
 
         if [ -z "$VARS_NETWORK_I2PD_SAM_PORT" ]; then
             VARS_NETWORK_I2PD_SAM_PORT="7656"
@@ -617,9 +621,9 @@ EOF
             VARS_NETWORK_I2PD_WEBCONSOLE_PORT="7070"
         fi
 
-	if [ -z "$VARS_NETWORK_QBT_ENABLE" ]; then
-	    VARS_NETWORK_QBT_ENABLE="false"
-	fi
+    	if [ -z "$VARS_NETWORK_QBT_ENABLE" ]; then
+    	    VARS_NETWORK_QBT_ENABLE="false"
+    	fi
 
         if [ -z "$VARS_NETWORK_QBT_DATA" ]; then
             VARS_NETWORK_QBT_DATA="/var/lib/qbt/data"
@@ -629,9 +633,9 @@ EOF
             VARS_NETWORK_QBT_PORT="8080"
         fi
 
-	if [ -z "$VARS_NETWORK_JELLYFIN_ENABLE" ]; then
-	    VARS_NETWORK_JELLYFIN_ENABLE="false"
-	fi
+    	if [ -z "$VARS_NETWORK_JELLYFIN_ENABLE" ]; then
+    	    VARS_NETWORK_JELLYFIN_ENABLE="false"
+    	fi
 
         if [ -z "$VARS_NETWORK_JELLYFIN_PORT" ]; then
             VARS_NETWORK_JELLYFIN_PORT="8096"
@@ -808,6 +812,10 @@ EOF
 
 elif [ "$1" == "sops" ]; then
 
+    if [ "$2" == "edit" ]; then
+        sudo GNUPGHOME="$SOPS_DIR" sops $DIR/vars/secrets.yaml
+    fi
+
     mkdir -p $VARS_DIR
 
     if [ -f "$SECRETS" ] && [[ "$2" != "replace" ]]; then
@@ -957,6 +965,30 @@ EOF
     # set permissions for secrets file
     sudo chmod 600 $SECRETS
 
+###############
+# INSTALLATION
+###############
+
+elif [ "$1" == "install" ]; then
+
+    if ! [ "$ROLE" == "laptop" ]; then
+        echo "Error: unexpected role $ROLE" >&2
+        exit 1
+    fi
+
+    if ! [ "$NIXOS_ROOT_MOUNT" == "/mnt" ]; then
+        echo "Error: unexpected root mount $NIXOS_ROOT_MOUNT"
+        exit 1
+    fi 
+
+    (
+        cd $DIR
+        git add .
+
+        sudo nixos-install --root $NIXOS_ROOT_MOUNT --flake $DIR#$ROLE --no-root-passwd
+
+        git reset -- vars/vars.nix vars/secrets.yaml .sops.yaml
+    )
 
 #############
 # LANZABOOTE
@@ -965,7 +997,7 @@ EOF
 elif [ "$1" == "lanzaboote" ]; then
 
     if ! [ "$ROLE" == "laptop" ]; then
-        echo "Error: unexpected role $NIXOS_ROLE" >&2
+        echo "Error: unexpected role $ROLE" >&2
         exit 1
     fi
 
@@ -984,7 +1016,7 @@ elif [ "$1" == "lanzaboote" ]; then
 elif [ "$1" == "impermanence" ]; then
 
     if ! [ "$ROLE" == "laptop" ]; then
-        echo "Error: unexpected role $NIXOS_ROLE" >&2
+        echo "Error: unexpected role $ROLE" >&2
         exit 1
     fi
 
