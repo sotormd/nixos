@@ -158,12 +158,6 @@
             modules = [ ./hosts/imageGnome.nix ];
           };
 
-          # plasma image
-          nixosConfigurations.imagePlasma = nixpkgs.lib.nixosSystem {
-            specialArgs = { inherit inputs; };
-            modules = [ ./hosts/imagePlasma.nix ];
-          };
-
           # minimal image
           nixosConfigurations.imageMinimal = nixpkgs.lib.nixosSystem {
             specialArgs = { inherit inputs; };
