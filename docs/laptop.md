@@ -158,10 +158,10 @@ experimental features `flakes` and `nix-command` enabled, skip to
 
     ```console
     $ export NIXOS_DISKS_DRY_RUN=false
-    $ nix run github:sotormd/nixos#disks -- boot
-    $ nix run github:sotormd/nixos#disks -- swap
-    $ nix run github:sotormd/nixos#disks -- root
-    $ nix run github:sotormd/nixos#disks -- mount
+    $ nix run github:sotormd/nixos#init -- disks boot
+    $ nix run github:sotormd/nixos#init -- disks swap
+    $ nix run github:sotormd/nixos#init -- disks root
+    $ nix run github:sotormd/nixos#init -- disks mount
     ```
 
 ## 4. Installing NixOS.
@@ -347,50 +347,45 @@ UEFI host.
 
 Full list of possible environment variables:
 
-| Name                              | Required? | Explanation                                        | Default                                           | Example                              |
-| --------------------------------- | --------- | -------------------------------------------------- | ------------------------------------------------- | ------------------------------------ |
-| `NIXOS_DIR`                       | **Yes**   | Directory where the NixOS configuration is stored. | -                                                 | `"/persist/nixos"`                   |
-| `NIXOS_ROLE`                      | **Yes**   | `laptop` or `server` role                          | -                                                 | `"laptop"`                           |
-| `VARS_DEVICE_HOSTNAME`            | No        | Hostname of the device.                            | `$(uname -n)`                                     | `"Foo"`                              |
-| `VARS_DEVICE_MACHINEID`           | No        | `systemd` machine-id.                              | `$(cat /etc/machine-id)`                          | `"51934ba93b754bf28caf413f7e6c65bd"` |
-| `VARS_DEVICE_HOSTID`              | No        | Host ID, required for `ZFS`.                       | `$(head -c 8 /etc/machine-id)`                    | `"51934b"`                           |
-| `VARS_DEVICE_BOOT`                | **Yes**   | Boot partition partuuid.                           | -                                                 | -                                    |
-| `VARS_DEVICE_SWAP`                | **Yes**   | Swap partition partuuid.                           | -                                                 | -                                    |
-| `VARS_DEVICE_ROOT`                | **Yes**   | Root partition partuuid.                           | -                                                 | -                                    |
-| `VARS_DEVICE_SECUREBOOT_ENABLE`   | No        | Enable secure boot.                                | `"false"`                                         | `"true"`                             |
-| `VARS_DEVICE_IMPERMANENCE_ENABLE` | No        | Enable impermanence.                               | `"false"`                                         | `"true"`                             |
-| `VARS_DEVICE_PLYMOUTH_ENABLE`     | No        | Enable `plymouth` boot animations.                 | `"false"`                                         | `"true"`                             |
-| `VARS_DEVICE_AUTOCPUFREQ_ENABLE`  | No        | Enable `auto-cpufreq`.                             | `"true"`                                          | `"false"`                            |
-| `VARS_DEVICE_POWERTOP_ENABLE`     | No        | Enable `powertop`.                                 | `"false"`                                         | `"true"`                             |
-| `VARS_DEVICE_TLP_ENABLE`          | No        | Enable `tlp`.                                      | `"false"`                                         | `"true"`                             |
-| `VARS_USER_NAME`                  | No        | Username.                                          | `$USER`                                           | `"Bar"`                              |
-| `VARS_USER_EMAIL`                 | **Yes**   | Email used for git commits.                        | -                                                 | `"Bar@domain.com"`                   |
-| `VARS_USER_GITHUB_KEYFILE`        | No        | Github SSH identity key.                           | `"id_ed25519_github"`                             | `"id_rsa_github"`                    |
-| `VARS_I18N_TIMEZONE`              | No        | Timezone.                                          | `$(timedatectl show --property=Timezone --value)` | `"Europe/Berlin"`                    |
-| `VARS_I18N_KEYBOARD`              | No        | Keyboard layout.                                   | `"us"`                                            | `"us"`                               |
-| `VARS_I18N_LOCALE`                | No        | Locale.                                            | `"en_US.UTF-8"`                                   | `"de_DE.UTF-8"`                      |
-| `VARS_NETWORK_INTERFACE`          | No        | Wireless network interface.                        | `"wlp1s0"`                                        | `"wlan0"`                            |
-| `VARS_NETWORK_SSID`               | **Yes**   | Wireless network ssid.                             | -                                                 | `"net20"`                            |
-| `VARS_NETWORK_GATEWAY`            | No        | Wireless network gateway.                          | `"192.168.0.1"`                                   | `"10.0.0.0"`                         |
-| `VARS_NETWORK_IP`                 | **Yes**   | Static local IP address.                           | -                                                 | `"10.0.0.3"`                         |
-| `VARS_NETWORK_WPA3_ENABLE`        | No        | Enable SAE (dragonfly) authentication.             | `"true"`                                          | `"false"`                            |
-| `VARS_NETWORK_SERVER_ENABLE`      | No        | Enable server-dependant features.                  | `"true"`                                          | `"false"`                            |
-| `VARS_NETWORK_SERVER_IP`          | **Yes***  | Static local server IP address.                    | -                                                 | `"10.0.0.5"`                         |
-| `VARS_NETWORK_SERVER_DOMAIN`      | **Yes***  | Server domain.                                     | -                                                 | `"myserver.domain.com"`              |
-| `VARS_NETWORK_SERVER_SSH_PORT`    | No        | Server SSH port.                                   | `"22"`                                            | `"20000"`                            |
-| `VARS_NETWORK_SERVER_SSH_KEYFILE` | No        | Server SSH identity key.                           | `"id_ed25519_server"`                             | `"id_rsa"`                           |
-| `VARS_NETWORK_SERVER_I2P_PORT`    | No        | Server I2P HTTP proxy port.                        | `"4444"`                                          | `"23001"`                            |
-| `VARS_OUTPUTS_LAPTOP`             | No        | Identifier for laptop screen.                      | `"eDP-1"`                                         | `"eDP-1"`                            |
-| `VARS_OUTPUTS_MONITOR`            | No        | Identifier for monitor screen.                     | `"HDMI-A-1"`                                      | `"HDMI-A-1"`                         |
-| `VARS_OUTPUTS_WALLPAPER`          | No        | Wallpaper name.                                    | `"nord.mario"`                                    | `"nord.nixos"`                       |
-| `VARS_OUTPUTS_LOCKSCREEN`         | No        | Lockscreen wallpaper name.                         | `"nord.files"`                                    | `"nord.nixos"`                       |
-| `SECRETS_HASHED_PASSWORD`         | No        | Hashed user password.                              | `$(mkpasswd -m yescrypt)`                         | -                                    |
-| `SECRETS_PSK`                     | No        | PSK for the network.                               | (user input)                                      | `"supersecretpsk"`                   |
-
-*Can skip if `VARS_NETWORK_SERVER_ENABLE` is `false`.
-
-Required section only shows the minimum variables needed to ensure a working
-system (ie, the rest will use defaults).
+| Name                              | Explanation                                        | Default                                           | Example                              |
+| --------------------------------- | -------------------------------------------------- | ------------------------------------------------- | ------------------------------------ |
+| `NIXOS_DIR`                       | Directory where the NixOS configuration is stored. | -                                                 | `"/persist/nixos"`                   |
+| `NIXOS_ROLE`                      | `laptop` or `server` role                          | -                                                 | `"laptop"`                           |
+| `VARS_DEVICE_HOSTNAME`            | Hostname of the device.                            | `$(uname -n)`                                     | `"Foo"`                              |
+| `VARS_DEVICE_MACHINEID`           | `systemd` machine-id.                              | `$(cat /etc/machine-id)`                          | `"51934ba93b754bf28caf413f7e6c65bd"` |
+| `VARS_DEVICE_HOSTID`              | Host ID, required for `ZFS`.                       | `$(head -c 8 /etc/machine-id)`                    | `"51934b"`                           |
+| `VARS_DEVICE_BOOT`                | Boot partition partuuid.                           | `"$BOOT"`                                         | -                                    |
+| `VARS_DEVICE_SWAP`                | Swap partition partuuid.                           | `"$SWAP"`                                         | -                                    |
+| `VARS_DEVICE_ROOT`                | Root partition partuuid.                           | `"$ROOT"`                                         | -                                    |
+| `VARS_DEVICE_SECUREBOOT_ENABLE`   | Enable secure boot.                                | `"false"`                                         | `"true"`                             |
+| `VARS_DEVICE_IMPERMANENCE_ENABLE` | Enable impermanence.                               | `"false"`                                         | `"true"`                             |
+| `VARS_DEVICE_PLYMOUTH_ENABLE`     | Enable `plymouth` boot animations.                 | `"false"`                                         | `"true"`                             |
+| `VARS_DEVICE_AUTOCPUFREQ_ENABLE`  | Enable `auto-cpufreq`.                             | `"true"`                                          | `"false"`                            |
+| `VARS_DEVICE_POWERTOP_ENABLE`     | Enable `powertop`.                                 | `"false"`                                         | `"true"`                             |
+| `VARS_DEVICE_TLP_ENABLE`          | Enable `tlp`.                                      | `"false"`                                         | `"true"`                             |
+| `VARS_USER_NAME`                  | Username.                                          | `$USER`                                           | `"Bar"`                              |
+| `VARS_USER_EMAIL`                 | Email used for git commits.                        | -                                                 | `"Bar@domain.com"`                   |
+| `VARS_USER_GITHUB_KEYFILE`        | Github SSH identity key.                           | `"id_ed25519_github"`                             | `"id_rsa_github"`                    |
+| `VARS_I18N_TIMEZONE`              | Timezone.                                          | `$(timedatectl show --property=Timezone --value)` | `"Europe/Berlin"`                    |
+| `VARS_I18N_KEYBOARD`              | Keyboard layout.                                   | `"us"`                                            | `"us"`                               |
+| `VARS_I18N_LOCALE`                | Locale.                                            | `"en_US.UTF-8"`                                   | `"de_DE.UTF-8"`                      |
+| `VARS_NETWORK_INTERFACE`          | Wireless network interface.                        | `"wlp1s0"`                                        | `"wlan0"`                            |
+| `VARS_NETWORK_SSID`               | Wireless network ssid.                             | -                                                 | `"net20"`                            |
+| `VARS_NETWORK_GATEWAY`            | Wireless network gateway.                          | `"192.168.0.1"`                                   | `"10.0.0.0"`                         |
+| `VARS_NETWORK_IP`                 | Static local IP address.                           | -                                                 | `"10.0.0.3"`                         |
+| `VARS_NETWORK_WPA3_ENABLE`        | Enable SAE (dragonfly) authentication.             | `"true"`                                          | `"false"`                            |
+| `VARS_NETWORK_SERVER_ENABLE`      | Enable server-dependant features.                  | `"true"`                                          | `"false"`                            |
+| `VARS_NETWORK_SERVER_IP`          | Static local server IP address.                    | -                                                 | `"10.0.0.5"`                         |
+| `VARS_NETWORK_SERVER_DOMAIN`      | Server domain.                                     | -                                                 | `"myserver.domain.com"`              |
+| `VARS_NETWORK_SERVER_SSH_PORT`    | Server SSH port.                                   | `"22"`                                            | `"20000"`                            |
+| `VARS_NETWORK_SERVER_SSH_KEYFILE` | Server SSH identity key.                           | `"id_ed25519_server"`                             | `"id_rsa"`                           |
+| `VARS_NETWORK_SERVER_I2P_PORT`    | Server I2P HTTP proxy port.                        | `"4444"`                                          | `"23001"`                            |
+| `VARS_OUTPUTS_LAPTOP`             | Identifier for laptop screen.                      | `"eDP-1"`                                         | `"eDP-1"`                            |
+| `VARS_OUTPUTS_MONITOR`            | Identifier for monitor screen.                     | `"HDMI-A-1"`                                      | `"HDMI-A-1"`                         |
+| `VARS_OUTPUTS_WALLPAPER`          | Wallpaper name.                                    | `"nord.mario"`                                    | `"nord.nixos"`                       |
+| `VARS_OUTPUTS_LOCKSCREEN`         | Lockscreen wallpaper name.                         | `"nord.files"`                                    | `"nord.nixos"`                       |
+| `SECRETS_HASHED_PASSWORD`         | Hashed user password.                              | `$(mkpasswd -m yescrypt)`                         | -                                    |
+| `SECRETS_PSK`                     | PSK for the network.                               | (user input)                                      | `"supersecretpsk"`                   |
 
 Ensure all variables are defined in the `$NIXOS_DIR/vars/vars.nix` and secrets
 in `$NIXOS_DIR/vars/secrets.yaml`.
