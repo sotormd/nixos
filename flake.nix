@@ -81,6 +81,13 @@
         {
           # formatter
           formatter = pkgs.nixfmt-rfc-style;
+
+          # scripts as a package
+          packages.default =
+            let
+              nixosScript = builtins.readFile ./scripts/nixos;
+            in
+            pkgs.writeShellScriptBin "nixos-from-flake" nixosScript;
         };
 
       flake =
