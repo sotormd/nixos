@@ -214,7 +214,7 @@ For example:
 Add a git remote:
 
 ```console
-$ nixos git remote add gh git@github:user/repo.git
+$ nixos git remote add gh git@github.com:user/repo.git
 ```
 
 Remove a git remote:
