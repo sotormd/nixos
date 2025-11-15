@@ -4,6 +4,8 @@ if [ -z "$NIXOS_ROOT_MOUNT" ]; then
     NIXOS_ROOT_MOUNT=""
 fi
 
+set -euo pipefail
+
 DIR="$NIXOS_ROOT_MOUNT$NIXOS_DIR"
 ROLE=$NIXOS_ROLE
 
@@ -75,7 +77,6 @@ elif [ "$1" == "disks" ]; then
         exit 1
     fi
 
-    set -euo pipefail
     DRY_RUN="$NIXOS_DISKS_DRY_RUN"
 
     : "${BOOT:?Please set BOOT (e.g. /dev/disk/by-partuuid/xxx)}"
@@ -180,6 +181,21 @@ elif [ "$1" == "disks" ]; then
      
     echo "Done. If DRY RUN: re-run with NIXOS_DISKS_DRY_RUN=false to actually perform the steps."
 
+##############
+# CLONE FLAKE
+##############
+
+elif [ "$1" == "clone" ]; then
+
+    if ! [ "$ROLE" == "laptop" ]; then
+        echo "Error: unexpected role $ROLE" >&2
+        exit 1
+    fi
+
+    sudo mkdir -p $DIR
+    sudo git clone https://github.com/sotormd/nixos $DIR
+    sudo chown 1000:1000 -R $DIR
+
 ############
 # VARS INIT
 ############
@@ -204,8 +220,8 @@ elif [ "$1" == "vars" ]; then
         echo "Error: vars.nix already exists" >&2
         exit 1
     else
-	cp $VARS "/tmp/vars.nix"
-        rm $VARS
+	    cp $VARS "/tmp/vars.nix"
+        rm $VARS || true
     fi
 
     if [ "$ROLE" == "laptop" ]; then
@@ -264,7 +280,6 @@ elif [ "$1" == "vars" ]; then
         fi
 
         if [ -z "$VARS_USER_EMAIL" ]; then
-            echo "Warning: VARS_USER_EMAIL is unset" >&2
             VARS_USER_EMAIL=""
         fi
 
@@ -289,7 +304,6 @@ elif [ "$1" == "vars" ]; then
         fi
 
         if [ -z "$VARS_NETWORK_SSID" ]; then
-            echo "Warning: VARS_NETWORK_SSID is unset" >&2
             VARS_NETWORK_SSID=""
         fi
 
@@ -298,7 +312,6 @@ elif [ "$1" == "vars" ]; then
         fi
 
         if [ -z "$VARS_NETWORK_IP" ]; then
-            echo "Warning: VARS_NETWORK_IP is unset" >&2
             VARS_NETWORK_IP=""
         fi
 
@@ -814,6 +827,7 @@ elif [ "$1" == "sops" ]; then
 
     if [ "$2" == "edit" ]; then
         sudo GNUPGHOME="$SOPS_DIR" sops $DIR/vars/secrets.yaml
+	    exit 0
     fi
 
     mkdir -p $VARS_DIR
@@ -822,8 +836,8 @@ elif [ "$1" == "sops" ]; then
         echo "Error: secrets.yaml already exists" >&2
         exit 1
     else
-	cp $SECRETS "/tmp/secrets.yaml"
-        rm $SECRETS
+	    cp $SECRETS "/tmp/secrets.yaml"
+        rm $SECRETS || true
     fi
 
     # check environment variables
