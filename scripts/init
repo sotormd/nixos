@@ -1,7 +1,7 @@
 #! /usr/bin/env bash
 
 if [ -z "$NIXOS_ROOT_MOUNT" ]; then
-    NIXOS_ROOT_MOUNT="/"
+    NIXOS_ROOT_MOUNT=""
 fi
 
 DIR="$NIXOS_ROOT_MOUNT/$NIXOS_DIR"
