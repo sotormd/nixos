@@ -1,8 +1,6 @@
 # `laptop` Setup
 
-To skip installation and directly apply configuration on a system with
-experimental features `flakes` and `nix-command` enabled, skip to
-[this](#5-applying-configuration) section.
+Bootstrap process for the `laptop` role.
 
 **The configuration expects a particular disk setup (covered below).**
 
@@ -12,26 +10,40 @@ experimental features `flakes` and `nix-command` enabled, skip to
 2. [Preparing the device](#2-preparing-the-device)
 3. [Partitioning disks](#3-partitioning-disks)
 4. [Installing NixOS](#4-installing-nixos)
-5. [Applying configuration](#5-applying-configuration)
-6. [Setting up Secure Boot](#6-setting-up-secure-boot)
-7. [Setting up impermanence](#7-setting-up-impermanence)
-8. [Adding LUKS encrypted devices](#8-adding-luks-encrypted-devices)
+5. [Setting up Secure Boot](#5-setting-up-secure-boot)
+6. [Setting up impermanence](#6-setting-up-impermanence)
+7. [Adding LUKS encrypted devices](#7-adding-luks-encrypted-devices)
 
 ## 1. Obtaining a live NixOS image.
 
-1. Get a NixOS image from [here](https://nixos.org/download/).
+1. Get a live NixOS image that has experimental features `flakes` and
+   `nix-command` enabled.
 
-2. Verify the checksum of the image.
+   Two such images are included in this flake. To use the included GNOME image:
 
-   ```console
-   $ echo "cba2... nixos-...iso" | sha256sum --check
+   ```bash
+   nix run nixpkgs#nixos-generators -- \
+   --format iso \
+   --flake github:sotormd/nixos#imageGnome \
+   -o /tmp/gnome-image
    ```
+
+   The generated image will be available under `/tmp/gnome-image/iso/`.
+
+   For more information, see [images.md](./images.md).
+
+2. Write the generated image to a removable medium (eg. a usb stick) using `dd`
+   or any equivalent tool.
 
 ## 2. Preparing the device.
 
 1. Disable secure boot for installation. It can be enabled later.
 
-2. Boot into the live NixOS image.
+2. Boot into the live NixOS image and set the role.
+
+   ```bash
+   export NIXOS_ROLE=laptop
+   ```
 
 ## 3. Partitioning disks.
 
@@ -51,48 +63,61 @@ experimental features `flakes` and `nix-command` enabled, skip to
 
 2. Assign variables to the partitions for ease of use.
 
-   ```console
-   $ sudo blkid
-   /dev/nvme0n1p1: ... PARTUUID="aaa.."
-   /dev/nvme0n1p2: ... PARTUUID="bbb.."
-   /dev/nvme0n1p3: ... PARTUUID="ccc.."
+   ```bash
+   export BOOT=/dev/disk/by-partuuid/aaa...
+   export SWAP=/dev/disk/by-partuuid/bbb...
+   export ROOT=/dev/disk/by-partuuid/ccc...
    ```
 
-   ```console
-   $ export BOOT=/dev/disk/by-partuuid/aaa...
-   $ export SWAP=/dev/disk/by-partuuid/bbb...
-   $ export ROOT=/dev/disk/by-partuuid/ccc...
+   To find the partuuids:
+
+   ```bash
+   sudo blkid
    ```
 
-   **Steps 3 through 11 show manual formatting and mounting. Instead, you can
-   use the automated script in step 12.**
+3. Format and mount partitions for installation.
+
+   ```bash
+   export NIXOS_DISKS_DRY_RUN=false
+   nix run github:sotormd/nixos#init -- disks boot
+   nix run github:sotormd/nixos#init -- disks swap
+   nix run github:sotormd/nixos#init -- disks root
+   nix run github:sotormd/nixos#init -- disks mount
+   ```
+
+   Or alternatively, format and mount the partitions manually by following
+   equivalent steps mentioned below.
+
+<details>
+
+<summary>Click to expand: manual steps</summary>
 
 3. Format boot partition.
 
-   ```console
-   $ sudo mkfs.vfat $BOOT
+   ```bash
+   sudo mkfs.vfat $BOOT
    ```
 
 4. Enable swap.
 
-   ```console
-   $ sudo mkswap $SWAP
-   $ sudo swapon $SWAP
+   ```bash
+   sudo mkswap $SWAP
+   sudo swapon $SWAP
    ```
 
 5. Enable `LUKS` encryption.
 
-   ```console
-   $ sudo cryptsetup luksFormat $ROOT
-   $ sudo cryptsetup luksOpen $ROOT root
+   ```bash
+   sudo cryptsetup luksFormat $ROOT
+   sudo cryptsetup luksOpen $ROOT root
    ```
 
    The partition should be available at `/dev/mapper/root` now.
 
 6. Create `ZFS` pools.
 
-   ```console
-   $ sudo zpool create \
+   ```bash
+   sudo zpool create \
    -O compression=lz4 \
    -O xattr=sa \
    -O acltype=posixacl \
@@ -114,11 +139,11 @@ experimental features `flakes` and `nix-command` enabled, skip to
 
 7. Create `ZFS` datasets.
 
-   ```console
-   $ sudo zfs create rpool/root -o mountpoint=legacy
-   $ sudo zfs create rpool/home -o mountpoint=legacy
-   $ sudo zfs create rpool/nix -o mountpoint=legacy
-   $ sudo zfs create rpool/persist -o mountpoint=legacy
+   ```bash
+   sudo zfs create rpool/root -o mountpoint=legacy
+   sudo zfs create rpool/home -o mountpoint=legacy
+   sudo zfs create rpool/nix -o mountpoint=legacy
+   sudo zfs create rpool/persist -o mountpoint=legacy
    ```
 
 8. Create a reserved dataset.
@@ -126,224 +151,98 @@ experimental features `flakes` and `nix-command` enabled, skip to
    ZFS's performance will deteriorate significantly when more than 80% of the
    available space is used - to avoid this, reserve disk space beforehand.
 
-   ```console
-   $ sudo zfs create rpool/reserved -o refreservation=10G -o mountpoint=none
+   ```bash
+   sudo zfs create rpool/reserved -o refreservation=10G -o mountpoint=none
    ```
 
 9. Create empty snapshots of `rpool/root` and `rpool/home` for impermanence.
 
-   ```console
-   $ sudo zfs snapshot rpool/root@blank
-   $ sudo zfs snapshot rpool/home@blank
+   ```bash
+   sudo zfs snapshot rpool/root@blank
+   sudo zfs snapshot rpool/home@blank
    ```
 
 10. Mount `ZFS` datasets.
 
-    ```console
-    $ sudo mkdir -p /mnt && sudo mount rpool/root /mnt -t zfs
-    $ sudo mkdir -p /mnt/home && sudo mount rpool/home /mnt/home -t zfs
-    $ sudo mkdir -p /mnt/nix && sudo mount rpool/nix /mnt/nix -t zfs
-    $ sudo mkdir -p /mnt/persist && sudo mount rpool/persist /mnt/persist -t zfs
+    ```bash
+    sudo mkdir -p /mnt && sudo mount rpool/root /mnt -t zfs
+    sudo mkdir -p /mnt/home && sudo mount rpool/home /mnt/home -t zfs
+    sudo mkdir -p /mnt/nix && sudo mount rpool/nix /mnt/nix -t zfs
+    sudo mkdir -p /mnt/persist && sudo mount rpool/persist /mnt/persist -t zfs
     ```
 
 11. Mount boot partition.
 
-    ```console
-    $ sudo mkdir -p /mnt/boot && sudo mount $BOOT /mnt/boot
+    ```bash
+    sudo mkdir -p /mnt/boot && sudo mount $BOOT /mnt/boot
     ```
 
-12. Automated formatting and mounting.
-
-    This automates steps 3 through 11.
-
-    ```console
-    $ export NIXOS_DISKS_DRY_RUN=false
-    $ nix run github:sotormd/nixos#init -- disks boot
-    $ nix run github:sotormd/nixos#init -- disks swap
-    $ nix run github:sotormd/nixos#init -- disks root
-    $ nix run github:sotormd/nixos#init -- disks mount
-    ```
+</details>
 
 ## 4. Installing NixOS.
 
-1. Generate NixOS configuration.
+1. Set basic environment variables.
 
-   ```console
-   $ sudo nixos-generate-config --root /mnt
+   ```bash
+   export NIXOS_ROOT_MOUNT=/mnt
+   export NIXOS_DIR=/persist/nixos
    ```
 
-2. Modify the generated configuration.
+2. Clone this flake.
 
-   `/mnt/etc/nixos/configuration.nix`
-
-   ```nix
-   {
-   # rest of the config
-   # ...
-
-       # flake support
-       nix.settings.experimental-features = ["nix-command" "flakes"];
-
-       # easier to set these up now
-       networking.hostName = "Foo";
-       time.timeZone = "Continent/City";
-
-       # random 8 digit hex code
-       networking.hostId = "12345678";
-
-       # set up a user
-       users.users.Bar = {
-           isNormalUser = true;
-           extraGroups = [ "wheel" ];
-           group = "Bar";
-
-           # for installation only
-           password = "test";
-       };
-       users.groups.Bar = {};
-
-   # ...
-   # rest of the config
-   }
+   ```bash
+   nix run github:sotormd/nixos#init -- clone
    ```
 
-   `/mnt/etc/nixos/hardware-configuration.nix`
+   The flake will be cloned to `$NIXOS_ROOT_MOUNT$NIXOS_DIR`.
 
-   ```nix
-   {
-   # rest of the config
-   # ...
+3. Initialize variables and secrets.
 
-   boot.initrd.luks.devices = {
-       root = {
-           device = "/dev/disk/by-partuuid/ccc...";
-           preLVM = true;
-       };
-   };
-
-   # ...
-   # rest of the config
-   }
+   ```bash
+   nix run github:sotormd/nixos#init -- vars
+   nix run github:sotormd/nixos#init -- sops
    ```
 
-   > **Random encryption on swap:** In swap configuration, change the device
-   > name from `/dev/disk/by-uuid...` to `/dev/disk/by-partuuid/bbb...` and set
-   > `randomEncryption = true;`. This is needed since the uuids change on every
-   > boot with random encryption.
+   Variables and secrets can be configured through environment variables while
+   bootstrapping, see [this](#environment-variables) list for all available
+   environment variables.
 
-3. Install NixOS.
+4. Edit variables and secrets.
 
-   ```console
-   $ sudo nixos-install
+   ```bash
+   nix run github:sotormd/nixos#init -- vars edit
+   nix run github:sotormd/nixos#init -- sops edit
    ```
 
-4. Reboot into the new system.
+   Make sure all variables and secrets are properly defined.
 
-   ```console
-   $ sudo reboot
+5. Install NixOS
+
+   ```bash
+   nix run github:sotormd/nixos#init -- install
    ```
 
-## 5. Applying configuration.
+6. Finish installation.
 
-**This configuration expects a particular disk setup.**
-
-This flake doesn't rely on any `hardware-configuration.nix`, and instead manages
-hardware configuration [here](../modules/laptop/boot/hw.nix). Also, it assumes a
-UEFI host.
-
-1. Once booted into the new installation, set up basic environment variables.
-
-   ```console
-   $ export NIXOS_DIR=/persist/nixos
-   $ export NIXOS_ROLE=laptop
+   ```bash
+   sudo reboot
    ```
 
-   See [this](#environment-variables) section for all variables.
+   Remove the removable medium and boot into the newly installed NixOS
+   installation.
 
-2. Clone this repository.
-
-   ```console
-   $ sudo mkdir -p $NIXOS_DIR
-   $ sudo chown Bar: $NIXOS_DIR
-   $ nix shell nixpkgs#git --command git clone https://github.com/sotormd/nixos $NIXOS_DIR
-   ```
-
-3. Initialize variables.
-
-   ```console
-   $ export VARS_DEVICE_BOOT=$BOOT
-   $ export VARS_DEVICE_SWAP=$SWAP
-   $ export VARS_DEVICE_ROOT=$ROOT
-   $ export VARS_USER_EMAIL=Bar@domain.com
-   $ export VARS_NETWORK_SSID=BarsNetwork
-   $ export VARS_NETWORK_GATEWAY=10.0.0.1
-   $ export VARS_NETWORK_IP=10.0.0.20
-   $ $NIXOS_DIR/scripts/nixos init vars
-   ```
-
-   See [this](#environment-variables) section for all variables.
-
-4. Initialize secrets.
-
-   ```console
-   $ $NIXOS_DIR/scripts/nixos init sops
-   ```
-
-   It is possible to configure through environment variables.
-
-   See [this](#environment-variables) section for all variables.
-
-5. Edit variables/secrets.
-
-   To ensure all variables are set, edit the variables file.
-
-   ```console
-   $ $NIXOS_DIR/scripts/nixos edit vars
-   ```
-
-   To ensure all secrets are set, edit the secrets file.
-
-   ```console
-   $ nix shell nixpkgs#sops nixpkgs#gnupg --command $NIXOS_DIR/scripts/nixos edit sops
-   ```
-
-6. Before switching to the new configuration, disable some modules that need
-   further setup.
-
-   1. Secure boot is not set up, so ensure `device.secureboot.enable` is set to
-      `false` in the variables.
-
-   2. Impermanence is not set up, so ensure `device.impermanence.enable` is set
-      to `false` in the variables.
-
-   ```console
-   $ nixos edit vars
-   ```
-
-7. Switch to the new configuration for the first time.
-
-   ```console
-   $ nix shell nixpkgs#git --command $NIXOS_DIR/scripts/nixos switch
-   ```
-
-8. Reboot the system.
-
-   ```console
-   $ sudo reboot
-   ```
-
-   If everything goes well, you should be able to log in to `sway` from `tty1`.
-
-9. Check that the `$NIXOS_DIR` and `$NIXOS_ROLE` environment variables are set.
-
-   ```console
-   $ nixos
-   ```
-
-   You should see a directory tree of `$NIXOS_DIR` (in this case, of
-   `/persist/nixos`).
+   You should be able to log in to the sway desktop and use the `nixos` command.
 
 ### Environment variables.
+
+You _can_ set all variables and secrets while bootstrapping using these
+environment variables.
+
+This is useful if you have a `.env` file you wish to export environment
+variables from.
+
+Otherwise, it is simpler to edit the variables and secrets files like mentioned
+in step 4.
 
 Full list of possible environment variables:
 
@@ -387,10 +286,9 @@ Full list of possible environment variables:
 | `SECRETS_HASHED_PASSWORD`         | Hashed user password.                              | `$(mkpasswd -m yescrypt)`                         | -                                    |
 | `SECRETS_PSK`                     | PSK for the network.                               | (user input)                                      | `"supersecretpsk"`                   |
 
-Ensure all variables are defined in the `$NIXOS_DIR/vars/vars.nix` and secrets
-in `$NIXOS_DIR/vars/secrets.yaml`.
+Ensure all variables and secrets are properly defined.
 
-## 6. Setting up Secure Boot
+## 5. Setting up Secure Boot
 
 > WARNING: Secure Boot for NixOS is under active development. Make sure you read
 > lanzaboote documentation before proceeding.
@@ -402,42 +300,32 @@ in `$NIXOS_DIR/vars/secrets.yaml`.
 
    Ensure you have booted in UEFI mode and Secure Boot is supported.
 
-   ```console
-   $ bootctl status
-   System:
-    Firmware: UEFI
-   Secure Boot: disabled (disabled)
-   ...
+   ```bash
+   bootctl status
    ```
 
    Consider setting up a BIOS password if you haven't already.
 
 2. Create secure boot keys.
 
-   ```console
-   $ nixos init lanzaboote create
+   ```bash
+   nixos init lanzaboote create
    ```
 
    Set `device.secureboot.enable = true;` in `vars.nix`.
-   ```console
-   $ nixos edit vars
+   ```bash
+   nixos edit vars
    ```
 
    Switch to the new configuration.
-   ```console
-   $ nixos switch
+   ```bash
+   nixos switch
    ```
 
    Verify `sbctl verify` output.
 
-   ```console
-   $ nix shell nixpkgs#sbctl --command sudo sbctl verify
-   Verifying file database and EFI images in /boot...
-   ✓ /boot/EFI/BOOT/BOOTX64.EFI is signed
-   ✓ /boot/EFI/Linux/nixos-generation-355.efi is signed
-   ✓ /boot/EFI/Linux/nixos-generation-356.efi is signed
-   ✗ /boot/EFI/nixos/0n01vj3mq06pc31i2yhxndvhv4kwl2vp-linux-6.1.3-bzImage.efi is not signed
-   ✓ /boot/EFI/systemd/systemd-bootx64.efi is signed
+   ```bash
+   nix shell nixpkgs#sbctl --command sudo sbctl verify
    ```
    It is expected that `bzImage.efi` files are not signed.
 
@@ -447,8 +335,8 @@ in `$NIXOS_DIR/vars/secrets.yaml`.
 
 4. Boot into NixOS and enroll Secure Boot keys.
 
-   ```console
-   $ nixos init lanzaboote enroll
+   ```bash
+   nixos init lanzaboote enroll
    ```
 
 5. Enable Secure Boot in BIOS.
@@ -457,46 +345,43 @@ in `$NIXOS_DIR/vars/secrets.yaml`.
 
    Boot into NixOS and Secure Boot should be activated and in user mode.
 
-   ```console
-   $ bootctl status
-   ...
-   Secure Boot: enabled (user)
-   ...
+   ```bash
+   bootctl status
    ```
 
-## 7. Setting up impermanence.
+## 6. Setting up impermanence.
 
 > This section assumes Secure Boot is set up and keys are available at
 > `/var/lib/sbctl`.
 
 1. Populate the `/persist/` directory.
 
-   ```console
-   $ nixos init impermanence
+   ```bash
+   nixos init impermanence
    ```
 
 2. Enable impermanence in configuration.
 
    Set `device.impermanence.enable = true;` in `vars.nix`.
 
-   ```console
-   $ nixos edit vars
+   ```bash
+   nixos edit vars
    ```
 
 3. Switch to the new configuration.
 
-   ```console
-   $ nixos switch
+   ```bash
+   nixos switch
    ```
 
-## 8. Adding LUKS encrypted devices
+## 7. Adding LUKS encrypted devices
 
 Keyfile encrypted LUKS devices can be set up via `vars.nix`
 
 Modify the `device.luks` variable under `DEVICE VARIABLES` in `vars.nix`
 
-```console
-$ nixos edit vars
+```bash
+nixos edit vars
 ```
 
 For example, to set up two devices `ht02` and `ht03`:
