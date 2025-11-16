@@ -4,8 +4,6 @@ if [ -z "$NIXOS_ROOT_MOUNT" ]; then
     NIXOS_ROOT_MOUNT=""
 fi
 
-set -euo pipefail
-
 DIR="$NIXOS_ROOT_MOUNT$NIXOS_DIR"
 ROLE=$NIXOS_ROLE
 
@@ -44,6 +42,7 @@ if [ "$1" == "hardware" ]; then
     echo "Warning: hardware configuration is now managed within the flake" >&2
     exit 1
 
+    # ignored legacy behaviour
     if [ -f "/tmp/nixos/hardware-configuration.nix" ]; then
         if cp "/tmp/nixos/hardware-configuration.nix" "$DIR/modules/$ROLE/hardware-configuration.nix"; then
             echo "generated hardware-configuration.nix was moved to $DIR/modules/$ROLE/hardware-configuration.nix"
@@ -62,6 +61,8 @@ if [ "$1" == "hardware" ]; then
 # ############
 
 elif [ "$1" == "disks" ]; then
+
+    set -euo pipefail
 
     if ! [ "$ROLE" == "laptop" ]; then
         echo "Error: unexpected role $ROLE" >&2
@@ -179,7 +180,7 @@ elif [ "$1" == "disks" ]; then
 
     fi
      
-    echo "Done. If DRY RUN: re-run with NIXOS_DISKS_DRY_RUN=false to actually perform the steps."
+    echo "Done."
 
 ##############
 # CLONE FLAKE
@@ -220,8 +221,8 @@ elif [ "$1" == "vars" ]; then
         echo "Error: vars.nix already exists" >&2
         exit 1
     else
-	    cp $VARS "/tmp/vars.nix"
-        rm $VARS || true
+	    cp "$VARS" "/tmp/vars.nix" || true
+        rm "$VARS" || true
     fi
 
     if [ "$ROLE" == "laptop" ]; then
@@ -836,8 +837,8 @@ elif [ "$1" == "sops" ]; then
         echo "Error: secrets.yaml already exists" >&2
         exit 1
     else
-	    cp $SECRETS "/tmp/secrets.yaml"
-        rm $SECRETS || true
+	    cp "$SECRETS" "/tmp/secrets.yaml" || true
+        rm "$SECRETS" || true
     fi
 
     # check environment variables
