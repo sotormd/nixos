@@ -244,7 +244,9 @@ variables from.
 Otherwise, it is simpler to edit the variables and secrets files like mentioned
 in step 4.
 
-Full list of possible environment variables:
+<details>
+
+<summary>Click to expand: full list of possible environment variables</summary>
 
 | Name                              | Explanation                                        | Default                                           | Example                              |
 | --------------------------------- | -------------------------------------------------- | ------------------------------------------------- | ------------------------------------ |
@@ -287,6 +289,8 @@ Full list of possible environment variables:
 | `SECRETS_PSK`                     | PSK for the network.                               | (user input)                                      | `"supersecretpsk"`                   |
 
 Ensure all variables and secrets are properly defined.
+
+</details>
 
 ## 5. Setting up Secure Boot
 
