@@ -42,5 +42,6 @@
     imagemagick
     tree
     which
+    rsync
   ];
 }
