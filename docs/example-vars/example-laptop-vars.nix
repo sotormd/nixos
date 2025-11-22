@@ -39,18 +39,17 @@
 
   # luks: encrypted luks devices
   # example usage:
-  # device.luks = [
-  #   {
-  #       name = "ht02";
+  # device.luks = {
+  #   ht02 = {
   #       uuid = "3f74d2e3-5a67-4b86-b2c3-842f39e45b7a";
   #       id = "usb-Samsung_192939485710293857281029-0:0";
   #       keyfile = "/root/keys/ht02";
   #       mount = "/mnt/ht02";
   #       fs = "xfs";
   #       hdparm = false;
-  #   }
-  # ];
-  device.luks = [ ];
+  #   };
+  # };
+  device.luks = { };
 
   # secure boot: boot signed software
   # provided by the lanzaboote project

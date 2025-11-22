@@ -34,28 +34,26 @@
 
   # luks: encrypted luks devices
   # example usage:
-  # device.luks = [
-  #   {
-  #       name = "ht02";
+  # device.luks = {
+  #   ht02 = {
   #       uuid = "3f74d2e3-5a67-4b86-b2c3-842f39e45b7a";
   #       id = "usb-Samsung_192939485710293857281029-0:0";
   #       keyfile = "/root/keys/ht02";
   #       mount = "/mnt/ht02";
   #       fs = "xfs";
   #       hdparm = false;
-  #   }
-  # ];
-  device.luks = [
-    {
-      name = "samsung";
+  #   };
+  # };
+  device.luks = {
+    samsung = {
       uuid = "bbbbbbbb-bbbb-bbbb-bbbb-bbbbbbbbbbbb";
       id = "usb-Samsung_192939485710293857281029-0:0";
       keyfile = "/root/keys/samsung";
       mount = "/mnt/samsung";
       fs = "xfs";
       hdparm = true;
-    }
-  ];
+    };
+  };
 
   #########################
   # USER ACCOUNT VARIABLES

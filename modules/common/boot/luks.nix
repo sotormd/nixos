@@ -1,8 +1,12 @@
 { pkgs, vars, ... }:
 
 let
+  luksList = builtins.map (name: vars.device.luks.${name} // { inherit name; }) (
+    builtins.attrNames vars.device.luks
+  );
+
   crypttabText = builtins.concatStringsSep "\n" (
-    builtins.map (entry: "${entry.name} UUID=${entry.uuid} ${entry.keyfile} luks") vars.device.luks
+    builtins.map (entry: "${entry.name} UUID=${entry.uuid} ${entry.keyfile} luks") luksList
   );
 
   fileSystemEntries = builtins.listToAttrs (
@@ -12,7 +16,7 @@ let
         device = "/dev/mapper/${entry.name}";
         fsType = entry.fs;
       };
-    }) vars.device.luks
+    }) luksList
   );
 
   hdparmServices = builtins.listToAttrs (
@@ -20,7 +24,6 @@ let
       entry:
       if entry ? hdparm && entry.hdparm then
         let
-          disk_id = entry.id;
           serviceName = "hdparm-${entry.name}";
         in
         [
@@ -32,20 +35,18 @@ let
               after = [ "multi-user.target" ];
               serviceConfig = {
                 Type = "oneshot";
-                ExecStart = ''${pkgs.hdparm}/sbin/hdparm -B 254 -S 0 "/dev/disk/by-id/${disk_id}"'';
+                ExecStart = ''${pkgs.hdparm}/sbin/hdparm -B 254 -S 0 "/dev/disk/by-id/${entry.id}"'';
               };
             };
           }
         ]
       else
         [ ]
-    ) vars.device.luks
+    ) luksList
   );
 in
 {
   environment.etc.crypttab.text = crypttabText;
-
   fileSystems = fileSystemEntries;
-
   systemd.services = hdparmServices;
 }

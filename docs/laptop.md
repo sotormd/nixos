@@ -391,24 +391,22 @@ nixos edit vars
 For example, to set up two devices `ht02` and `ht03`:
 
 ```nix
-device.luks = [
-  {
-      name = "ht02";
+device.luks = {
+  ht02 = {
       uuid = "3f74d2e3-5a67-4b86-b2c3-842f39e45b7a";
       id = "usb-Hitachi_192939485710293857281029-0:0";
       keyfile = "/root/keys/ht02";
       mount = "/mnt/ht02";
       fs = "xfs";
       hdparm = false;
-  }
-  {
-      name = "ht03";
+  };
+  ht03 = {
       uuid = "5a67d2e3-842f-3f74-b2c3-4b8639e45b7a";
       id = "usb-Samsung_110011002933881992003918-0:0";
       keyfile = "/root/keys/ht03";
       mount = "/mnt/ht03";
       fs = "ext4";
       hdparm = false;
-  }
-];
+  };
+};
 ```
