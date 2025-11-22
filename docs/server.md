@@ -245,6 +245,9 @@ secrets in `$NIXOS_DIR/vars/secrets.yaml`.
 
 The nginx web server is hosted at `https://<your-duckdns-domain>`.
 
+It attempts to fetch a Let's Encrypt certificate with a DNS-01 challenge using
+your duckdns domain.
+
 Reverse proxy:
 
 |                |                       |                             |
