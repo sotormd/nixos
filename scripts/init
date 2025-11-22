@@ -179,7 +179,7 @@ elif [ "$1" == "disks" ]; then
         run "sudo mount ${BOOT} /mnt/boot"
 
     fi
-     
+
     echo "Done."
 
 ##############
@@ -275,7 +275,7 @@ elif [ "$1" == "vars" ]; then
     	if [ -z "$VARS_DEVICE_TLP_ENABLE" ]; then
     	    VARS_DEVICE_TLP_ENABLE="false"
 	    fi
-	
+
         if [ -z "$VARS_USER_NAME" ]; then
             VARS_USER_NAME=$USER
         fi
@@ -403,18 +403,17 @@ elif [ "$1" == "vars" ]; then
 
   # luks: encrypted luks devices
   # example usage:
-  # device.luks = [
-  #   {
-  #       name = "ht02";
+  # device.luks = {
+  #   ht02 = {
   #       uuid = "3f74d2e3-5a67-4b86-b2c3-842f39e45b7a";
   #       id = "usb-Samsung_192939485710293857281029-0:0";
   #       keyfile = "/root/keys/ht02";
   #       mount = "/mnt/ht02";
   #       fs = "xfs";
   #       hdparm = false;
-  #   }
-  # ];
-  device.luks = [ ];
+  #   };
+  # };
+  device.luks = { };
 
   # secure boot: boot signed software
   # provided by the lanzaboote project
@@ -693,18 +692,17 @@ EOF
 
   # luks: encrypted luks devices
   # example usage:
-  # device.luks = [
-  #   {
-  #       name = "ht02";
+  # device.luks = {
+  #   ht02 = {
   #       uuid = "3f74d2e3-5a67-4b86-b2c3-842f39e45b7a";
   #       id = "usb-Samsung_192939485710293857281029-0:0";
   #       keyfile = "/root/keys/ht02";
   #       mount = "/mnt/ht02";
   #       fs = "xfs";
   #       hdparm = false;
-  #   }
-  # ];
-  device.luks = [ ];
+  #   };
+  # };
+  device.luks = { };
 
   #########################
   # USER ACCOUNT VARIABLES
@@ -994,7 +992,7 @@ elif [ "$1" == "install" ]; then
     if ! [ "$NIXOS_ROOT_MOUNT" == "/mnt" ]; then
         echo "Error: unexpected root mount $NIXOS_ROOT_MOUNT"
         exit 1
-    fi 
+    fi
 
     (
         cd $DIR
