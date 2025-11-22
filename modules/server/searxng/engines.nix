@@ -13,8 +13,8 @@
     "brave".disabled = false;
     "duckduckgo".disabled = false;
     "google".disabled = false;
-    "bing".disabled = false;
 
+    "bing".disabled = true;
     "qwant".disabled = true;
     "startpage".disabled = true;
     "wiby".disabled = true;
