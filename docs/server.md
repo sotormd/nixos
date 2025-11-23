@@ -287,13 +287,13 @@ the end of the page.
 
 # **5. Adding External Disks**
 
-External disks—whether **unencrypted**, **LUKS-encrypted**, or **requiring
-hdparm tweaks**—can be configured declaratively through `vars.nix`.
+External disks - whether **unencrypted**, **LUKS-encrypted**, or **requiring
+hdparm tweaks** - can be configured declaratively through `vars.nix`.
 
 Open the variables file:
 
-```console
-$ nixos edit vars
+```bash
+nixos edit vars
 ```
 
 All configuration happens under the `device.*` sections.
@@ -334,10 +334,10 @@ Use `device.luks` to define encrypted volumes that unlock using a keyfile.
 
 Each entry requires:
 
-- `uuid` — LUKS container UUID (`blkid` output)
-- `keyfile` — path to keyfile
-- `mount` — where the decrypted mapper device should mount
-- `fs` — filesystem inside the LUKS container (`ext4`, `xfs`, etc.)
+- `uuid` - LUKS container UUID (`blkid` output)
+- `keyfile` - path to keyfile
+- `mount` - where the decrypted mapper device should mount
+- `fs` - filesystem inside the LUKS container (`ext4`, `xfs`, etc.)
 
 ### **Example**
 
