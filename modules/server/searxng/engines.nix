@@ -37,7 +37,6 @@
     "wikivoyage".disabled = true;
 
     # general > misc
-    "wikidata".disabled = false;
     "wikipedia".disabled = false;
 
     "alexandria".disabled = true;
@@ -57,6 +56,7 @@
     "yep".disabled = true;
     "bpb".disabled = true;
     "tagesschau".disabled = true;
+    "wikidata".disabled = true;
     "wikimini".disabled = true;
     "360search".disabled = true;
     "baidu".disabled = true;
