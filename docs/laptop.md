@@ -12,7 +12,7 @@ Bootstrap process for the `laptop` role.
 4. [Installing NixOS](#4-installing-nixos)
 5. [Setting up Secure Boot](#5-setting-up-secure-boot)
 6. [Setting up impermanence](#6-setting-up-impermanence)
-7. [Adding LUKS encrypted devices](#7-adding-luks-encrypted-devices)
+7. [Adding external disks](#7-adding-external-disks)
 
 ## 1. Obtaining a live NixOS image.
 
@@ -378,35 +378,139 @@ Ensure all variables and secrets are properly defined.
    nixos switch
    ```
 
-## 7. Adding LUKS encrypted devices
+# **7. Adding External Disks**
 
-Keyfile encrypted LUKS devices can be set up via `vars.nix`
+External disks—whether **unencrypted**, **LUKS-encrypted**, or **requiring
+hdparm tweaks**—can be configured declaratively through `vars.nix`.
 
-Modify the `device.luks` variable under `DEVICE VARIABLES` in `vars.nix`
+Open the variables file:
 
-```bash
-nixos edit vars
+```console
+$ nixos edit vars
 ```
 
-For example, to set up two devices `ht02` and `ht03`:
+All configuration happens under the `device.*` sections.
+
+## **5.1 Unencrypted Disks (device.mount)**
+
+Use `device.mount` to configure _plain, unencrypted_ filesystems.
+
+Each attribute key is the mount point, and the value describes the underlying
+block device.
+
+### **Example**
+
+```nix
+device.mount = {
+  "/mnt/media" = {
+    device = "/dev/disk/by-uuid/243fdae5-89df-4407-e6163e688f4d";
+    fsType = "xfs";
+    options = [ "defaults" ];
+    neededForBoot = false;
+  };
+
+  "/mnt/backup" = {
+    device = "/dev/disk/by-partuuid/1b2c3d4e-55ff-8899-aabb-ccddeeff0011";
+    fsType = "ext4";
+    options = [ "noatime" ];
+    neededForBoot = false;
+  };
+};
+```
+
+These are translated directly into `fileSystems` entries during system
+generation.
+
+## **5.2 LUKS-Encrypted Disks (device.luks)**
+
+Use `device.luks` to define encrypted volumes that unlock using a keyfile.
+
+Each entry requires:
+
+- `uuid` — LUKS container UUID (`blkid` output)
+- `keyfile` — path to keyfile
+- `mount` — where the decrypted mapper device should mount
+- `fs` — filesystem inside the LUKS container (`ext4`, `xfs`, etc.)
+
+### **Example**
 
 ```nix
 device.luks = {
   ht02 = {
-      uuid = "3f74d2e3-5a67-4b86-b2c3-842f39e45b7a";
-      id = "usb-Hitachi_192939485710293857281029-0:0";
-      keyfile = "/root/keys/ht02";
-      mount = "/mnt/ht02";
-      fs = "xfs";
-      hdparm = false;
+    uuid = "3f74d2e3-5a67-4b86-b2c3-842f39e45b7a";
+    keyfile = "/root/keys/ht02";
+    mount = "/mnt/ht02";
+    fs = "xfs";
   };
+
   ht03 = {
-      uuid = "5a67d2e3-842f-3f74-b2c3-4b8639e45b7a";
-      id = "usb-Samsung_110011002933881992003918-0:0";
-      keyfile = "/root/keys/ht03";
-      mount = "/mnt/ht03";
-      fs = "ext4";
-      hdparm = false;
+    uuid = "5a67d2e3-842f-3f74-b2c3-4b8639e45b7a";
+    keyfile = "/root/keys/ht03";
+    mount = "/mnt/ht03";
+    fs = "ext4";
   };
 };
 ```
+
+### **What happens automatically**
+
+For each entry:
+
+1. A `/etc/crypttab` entry is generated:
+
+   ```
+   <name> UUID=<uuid> <keyfile> luks
+   ```
+2. The device unlocks to `/dev/mapper/<name>`
+3. A filesystem entry is created:
+
+   ```
+   fileSystems."<mount>" = {
+     device = "/dev/mapper/<name>";
+     fsType = "<fs>";
+   };
+   ```
+
+---
+
+## **5.3 hdparm Configuration (device.hdparm)**
+
+Use `device.hdparm` to disable aggressive head-parking or alter disk power
+behavior for HDDs.
+
+This accepts a **list of disk IDs** (as used in `/dev/disk/by-id`).
+
+### **Example**
+
+```nix
+device.hdparm = [
+  "usb-WD_Elements_25A2_575852314134393745303255-0:0"
+  "usb-Seagate_Expansion_1234567890ABCDEF-0:0"
+];
+```
+
+### **What the system generates**
+
+One systemd service per disk:
+
+```
+hdparm-0.service
+hdparm-1.service
+...
+```
+
+Each service runs:
+
+```
+hdparm -B 254 -S 0 /dev/disk/by-id/<id>
+```
+
+This prevents aggressive head parking and increases drive longevity.
+
+## **Summary**
+
+| Feature               | Config Location | Description                              |
+| --------------------- | --------------- | ---------------------------------------- |
+| **Unencrypted mount** | `device.mount`  | Direct filesystem mounts                 |
+| **Encrypted (LUKS)**  | `device.luks`   | Creates crypttab entries + mapper mounts |
+| **hdparm tuning**     | `device.hdparm` | Generates systemd services per drive     |

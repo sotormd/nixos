@@ -32,28 +32,46 @@
   # see ../docs/server.md
   device.root = "2178694e-02";
 
+  # mount: unencrypted mounts
+  # example usage:
+  #  device.mount = {
+  #    "/mnt/location" = {
+  #      device = "/dev/disk/by-partuuid/243fdae5-89df-4407-e6163e688f4d";
+  #      fsType = "xfs";
+  #      options = [ "defaults" ];
+  #      neededForBoot = false;
+  #    };
+  #  };
+  # this is directly translated to fileSystems."/mnt/location" = { ... };
+  device.mount = { };
+
   # luks: encrypted luks devices
   # example usage:
   # device.luks = {
   #   ht02 = {
   #       uuid = "3f74d2e3-5a67-4b86-b2c3-842f39e45b7a";
-  #       id = "usb-Samsung_192939485710293857281029-0:0";
   #       keyfile = "/root/keys/ht02";
   #       mount = "/mnt/ht02";
   #       fs = "xfs";
-  #       hdparm = false;
   #   };
   # };
   device.luks = {
     samsung = {
       uuid = "bbbbbbbb-bbbb-bbbb-bbbb-bbbbbbbbbbbb";
-      id = "usb-Samsung_192939485710293857281029-0:0";
       keyfile = "/root/keys/samsung";
       mount = "/mnt/samsung";
       fs = "xfs";
-      hdparm = true;
     };
   };
+
+  # hdparm: stop aggressive head parking
+  # example usage:
+  # device.hdparm = [
+  #   "usb-Samsung_192939485710293857281029-0:0"
+  #   "usb-Hitachi_192939485710293857281029-0:0"
+  # ];
+  # pass list of disk ids (/dev/disk/by-id/...)
+  device.hdparm = [ "usb-Samsung_192939485710293857281029-0:0" ];
 
   #########################
   # USER ACCOUNT VARIABLES
