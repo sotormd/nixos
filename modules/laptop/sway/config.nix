@@ -37,6 +37,8 @@ let
       client.placeholder #000000 #0c0c0c #ffffff #000000 #0c0c0c
       client.background ${colors.bg0}
 
+      bindsym Mod4+Shift+slash exec mousepad $NIXOS_DIR/docs/sway.md
+
       bindsym Mod4+0 exec ${pkgs.swayfx}/bin/swaymsg workspace $(${pkgs.swayfx}/bin/swaymsg -t get_outputs | ${pkgs.jq}/bin/jq -r '.[] | select(.focused) | .name | if . == "${vars.outputs.monitor}" then "1" elif . == "${vars.outputs.laptop}" then "0" else "unknown" end')10
       bindsym Mod4+1 exec ${pkgs.swayfx}/bin/swaymsg workspace $(${pkgs.swayfx}/bin/swaymsg -t get_outputs | ${pkgs.jq}/bin/jq -r '.[] | select(.focused) | .name | if . == "${vars.outputs.monitor}" then "1" elif . == "${vars.outputs.laptop}" then "0" else "unknown" end')1
       bindsym Mod4+2 exec ${pkgs.swayfx}/bin/swaymsg workspace $(${pkgs.swayfx}/bin/swaymsg -t get_outputs | ${pkgs.jq}/bin/jq -r '.[] | select(.focused) | .name | if . == "${vars.outputs.monitor}" then "1" elif . == "${vars.outputs.laptop}" then "0" else "unknown" end')2
