@@ -459,7 +459,7 @@ For each entry:
 1. A `/etc/crypttab` entry is generated:
 
    ```
-   <name> UUID=<uuid> <keyfile> luks
+   <name> UUID=<uuid> <keyfile> luks,nofail
    ```
 2. The device unlocks to `/dev/mapper/<name>`
 3. A filesystem entry is created:
