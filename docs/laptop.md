@@ -391,7 +391,7 @@ nixos edit vars
 
 All configuration happens under the `device.*` sections.
 
-## **5.1 Unencrypted Disks (device.mount)**
+## **Unencrypted Disks (device.mount)**
 
 Use `device.mount` to configure _plain, unencrypted_ filesystems.
 
@@ -421,7 +421,7 @@ device.mount = {
 These are translated directly into `fileSystems` entries during system
 generation.
 
-## **5.2 LUKS-Encrypted Disks (device.luks)**
+## **LUKS-Encrypted Disks (device.luks)**
 
 Use `device.luks` to define encrypted volumes that unlock using a keyfile.
 
@@ -473,7 +473,7 @@ For each entry:
 
 ---
 
-## **5.3 hdparm Configuration (device.hdparm)**
+## **hdparm Configuration (device.hdparm)**
 
 Use `device.hdparm` to disable aggressive head-parking or alter disk power
 behavior for HDDs.
