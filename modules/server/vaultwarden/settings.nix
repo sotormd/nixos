@@ -20,6 +20,9 @@
   # services.vaultwarden.DATA_FOLDER isnt honoured (?)
   fileSystems."/var/lib/bitwarden_rs" = {
     device = "${vars.network.vaultwarden.data}";
-    options = [ "bind" ];
+    options = [
+      "bind"
+      "nofail"
+    ];
   };
 }

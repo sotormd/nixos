@@ -8,7 +8,7 @@ let
   luksList = builtins.map (name: luks.${name} // { inherit name; }) luksNames;
 
   crypttabText = builtins.concatStringsSep "\n" (
-    builtins.map (entry: "${entry.name} UUID=${entry.uuid} ${entry.keyfile} luks") luksList
+    builtins.map (entry: "${entry.name} UUID=${entry.uuid} ${entry.keyfile} luks,nofail") luksList
   );
 
   luksFS = builtins.listToAttrs (
@@ -17,6 +17,7 @@ let
       value = {
         device = "/dev/mapper/${entry.name}";
         fsType = entry.fs;
+        options = [ "nofail" ];
       };
     }) luksList
   );
