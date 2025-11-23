@@ -11,6 +11,7 @@ Nix specific features:
 - symlinks in ~ managed using [hjem](https://github.com/feel-co/hjem)
 - secrets managed using [sops-nix](https://github.com/Mic92/sops-nix)
 - secure boot using [lanzaboote](https://github.com/nix-community/lanzaboote)
+- impermanence using zfs snapshots and bind mounts
 - package management using [lix](https://lix.systems)
 - android environment using
   [nix-on-droid](https://github.com/nix-community/nix-on-droid)
