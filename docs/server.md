@@ -378,8 +378,6 @@ For each entry:
    };
    ```
 
----
-
 ## **hdparm Configuration (device.hdparm)**
 
 Use `device.hdparm` to disable aggressive head-parking or alter disk power
