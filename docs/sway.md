@@ -2,6 +2,8 @@
 
 Interacting with the sway window manager
 
+Use `Mod4+Shift+slash` or `Mod4+?` to open this file
+
 # Contents
 
 - [Keybindings](#keybindings)
