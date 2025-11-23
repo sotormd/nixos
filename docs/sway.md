@@ -25,8 +25,8 @@ Use `Mod4+Shift+slash` or `Mod4+?` to open this file
 
 | Keybinding        | Description                                                    |
 | ----------------- | -------------------------------------------------------------- |
-| `Mod4+0..9`       | Switch to workspace 0–10 on the focused output                 |
-| `Mod4+Shift+0..9` | Move focused container to workspace 0–10 on the focused output |
+| `Mod4+1..0`       | Switch to workspace 1–10 on the focused output                 |
+| `Mod4+Shift+1..0` | Move focused container to workspace 1–10 on the focused output |
 | `Mod4+g`          | Switch to workspace via Rofi menu                              |
 | `Mod4+Shift+g`    | Move container to workspace via Rofi menu                      |
 | `Mod4+Page_Down`  | Next workspace                                                 |
