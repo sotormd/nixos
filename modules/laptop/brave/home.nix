@@ -100,11 +100,6 @@ let
           url = "https://search.nixos.org/options?channel=unstable&from=0&size=50&sort=relevance&type=packages";
         }
         {
-          short = "hm";
-          full = "hm options";
-          url = "https://home-manager-options.extranix.com/release=master?query=&release=master";
-        }
-        {
           short = "nw";
           full = "nixos wiki";
           url = "https://wiki.nixos.org/wiki/NixOS_Wiki";
@@ -113,6 +108,11 @@ let
           short = "aw";
           full = "arch wiki";
           url = "https://wiki.archlinux.org/title/Main_page";
+        }
+        {
+          short = "fb";
+          full = "freebsd docs";
+          url = "https://docs.freebsd.org/en/books/handbook";
         }
       ]
     ]
