@@ -378,7 +378,7 @@ Ensure all variables and secrets are properly defined.
    nixos switch
    ```
 
-# **7. Adding External Disks**
+## **7. Adding External Disks**
 
 External disks - whether **unencrypted**, **LUKS-encrypted**, or **requiring
 hdparm tweaks** - can be configured declaratively through `vars.nix`.
@@ -391,14 +391,14 @@ nixos edit vars
 
 All configuration happens under the `device.*` sections.
 
-## **Unencrypted Disks (device.mount)**
+### **Unencrypted Disks (device.mount)**
 
 Use `device.mount` to configure _plain, unencrypted_ filesystems.
 
 Each attribute key is the mount point, and the value describes the underlying
 block device.
 
-### **Example**
+#### **Example**
 
 ```nix
 device.mount = {
@@ -421,7 +421,7 @@ device.mount = {
 These are translated directly into `fileSystems` entries during system
 generation.
 
-## **LUKS-Encrypted Disks (device.luks)**
+### **LUKS-Encrypted Disks (device.luks)**
 
 Use `device.luks` to define encrypted volumes that unlock using a keyfile.
 
@@ -432,7 +432,7 @@ Each entry requires:
 - `mount` - where the decrypted mapper device should mount
 - `fs` - filesystem inside the LUKS container (`ext4`, `xfs`, etc.)
 
-### **Example**
+#### **Example**
 
 ```nix
 device.luks = {
@@ -452,7 +452,7 @@ device.luks = {
 };
 ```
 
-### **What happens automatically**
+#### **What happens automatically**
 
 For each entry:
 
@@ -471,14 +471,14 @@ For each entry:
    };
    ```
 
-## **hdparm Configuration (device.hdparm)**
+### **hdparm Configuration (device.hdparm)**
 
 Use `device.hdparm` to disable aggressive head-parking or alter disk power
 behavior for HDDs.
 
 This accepts a **list of disk IDs** (as used in `/dev/disk/by-id`).
 
-### **Example**
+#### **Example**
 
 ```nix
 device.hdparm = [
@@ -487,7 +487,7 @@ device.hdparm = [
 ];
 ```
 
-### **What the system generates**
+#### **What the system generates**
 
 One systemd service per disk:
 
@@ -505,7 +505,7 @@ hdparm -B 254 -S 0 /dev/disk/by-id/<id>
 
 This prevents aggressive head parking and increases drive longevity.
 
-## **Summary**
+### **Summary**
 
 | Feature               | Config Location | Description                              |
 | --------------------- | --------------- | ---------------------------------------- |
