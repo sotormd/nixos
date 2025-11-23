@@ -17,8 +17,8 @@ As with all NixOS installation images, the username for the live session is
 
 1. `minimal` image
 
-   ```console
-   $ nix run nixpkgs#nixos-generators -- \
+   ```bash
+   nix run nixpkgs#nixos-generators -- \
    --format iso \
    --flake github:sotormd/nixos#imageMinimal \
    -o /tmp/minimal-image
@@ -28,8 +28,8 @@ As with all NixOS installation images, the username for the live session is
 
 2. `gnome` image
 
-   ```console
-   $ nix run nixpkgs#nixos-generators -- \
+   ```bash
+   nix run nixpkgs#nixos-generators -- \
    --format iso \
    --flake github:sotormd/nixos#imageGnome \
    -o /tmp/gnome-image
