@@ -4,7 +4,7 @@
 
 ![nixos](./docs/screenshots/nixos.gif)
 
-Nix specific features:
+Nix-specific features:
 
 - completely reproducible, pure evaluation
 - dotfiles managed using wrappers implemented from basic nixpkgs functions
@@ -16,6 +16,7 @@ Nix specific features:
 - android environment using
   [nix-on-droid](https://github.com/nix-community/nix-on-droid)
 - nixos flake helper [cli](#nixos-flake-helper)
+- flake enabled [images](#images)
 
 See [Features](#features) for all features.
 
