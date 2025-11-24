@@ -35,7 +35,7 @@ jobs:
 
           MIN_SRC=$(echo /tmp/minimal-image/iso/*.iso)
           MIN_DST="nixos-minimal-${{ steps.ts.outputs.ts }}.iso"
-          mv "$MIN_SRC" "$MIN_DST"
+          cp "$MIN_SRC" "$MIN_DST"
 
       # -----------------------------------
       # Build GNOME ISO
@@ -49,7 +49,7 @@ jobs:
 
           GNOME_SRC=$(echo /tmp/gnome-image/iso/*.iso)
           GNOME_DST="nixos-gnome-${{ steps.ts.outputs.ts }}.iso"
-          mv "$GNOME_SRC" "$GNOME_DST"
+          cp "$GNOME_SRC" "$GNOME_DST"
 
       # -----------------------------------
       # Upload Artifacts
