@@ -104,14 +104,14 @@ let
       bindsym Mod4+v splitv
       bindsym Mod4+w layout tabbed
       bindsym Print exec ${pkgs.sway-contrib.grimshot}/bin/grimshot save screen
-      bindsym XF86AudioLowerVolume exec ${pkgs.wireplumber}/bin/wpctl set-volume @DEFAULT_AUDIO_SINK@ 5%-
+      bindsym XF86AudioLowerVolume exec volume 5%-
       bindsym XF86AudioMute exec ${pkgs.wireplumber}/bin/wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle
       bindsym XF86AudioNext exec ${pkgs.playerctl}/bin/playerctl next
       bindsym XF86AudioPlay exec ${pkgs.playerctl}/bin/playerctl play-pause
       bindsym XF86AudioPrev exec ${pkgs.playerctl}/bin/playerctl previous
-      bindsym XF86AudioRaiseVolume exec ${pkgs.wireplumber}/bin/wpctl set-volume @DEFAULT_AUDIO_SINK@ 5%+
-      bindsym XF86MonBrightnessDown exec ${pkgs.brightnessctl}/bin/brightnessctl set 5%-
-      bindsym XF86MonBrightnessUp exec ${pkgs.brightnessctl}/bin/brightnessctl set +5%
+      bindsym XF86AudioRaiseVolume exec volume 5%+
+      bindsym XF86MonBrightnessDown exec brightness 5%-
+      bindsym XF86MonBrightnessUp exec brightness +5%
 
       input "type:touchpad" {
         dwt enabled

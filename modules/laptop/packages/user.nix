@@ -9,9 +9,6 @@
     # compression
     file-roller
 
-    # notifications
-    libnotify
-
     # wayland image viewer
     swayimg
 
