@@ -212,11 +212,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1762163421,
-        "narHash": "sha256-GLSTak0fgD06MqF4CoQW1Al07AB5IcuoQRc4vHCc4XQ=",
+        "lastModified": 1763018055,
+        "narHash": "sha256-Hj0eSB185/eVqAruBhFk67EQyq579Jpv4YR4C01ky7U=",
         "owner": "sotormd",
         "repo": "homepage",
-        "rev": "6368da6a8f62dd568effc94879a0649a80ee7ca2",
+        "rev": "72a84c2c005ba402ef88aebd07d8cd3d03927323",
         "type": "github"
       },
       "original": {
@@ -294,11 +294,11 @@
         "nvf": "nvf"
       },
       "locked": {
-        "lastModified": 1762428052,
-        "narHash": "sha256-ar2UybicPk2XSB+CC7tPbo4VXsRJjKyeHVXkPaiReGg=",
+        "lastModified": 1764088229,
+        "narHash": "sha256-rJDs6Xq2hp0rZr3Hyu/AT/EQnzgXiHb7JqRNsUD0CZ4=",
         "owner": "sotormd",
         "repo": "neovim",
-        "rev": "7ae1dd563ce68662eec0694fcc67664781204d00",
+        "rev": "0800f9a28da29554f7b529854a8f5bd3f57c66a1",
         "type": "github"
       },
       "original": {
