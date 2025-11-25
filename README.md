@@ -3,12 +3,10 @@
 ~~slighly overengineered~~ NixOS configuration flake for multiple hosts.
 
 > **Note:** This flake aims to be a complete and reproducible NixOS
-> configuration,\
-> but it is not intended as a general-purpose introductory example due to its
-> size,\
-> complexity, and the specific choices I've made.\
-> Still, many parts of it may serve as useful reference modules when reviewed
-> selectively.
+> configuration, but it is not intended as a general-purpose introductory
+> example due to its size, complexity, and the specific choices I've made.
+> Nevertheless, many parts of it may serve as useful reference modules when
+> reviewed selectively.
 
 ![nixos](./docs/screenshots/nixos.gif)
 
