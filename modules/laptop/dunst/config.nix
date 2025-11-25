@@ -18,6 +18,7 @@ let
       monitor=${vars.outputs.monitor}
       offset="5x5"
       origin="top-right"
+      highlight="#${colors.blue2}"
 
       [urgency_critical]
       frame_color="#${colors.yellow}"
