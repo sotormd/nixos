@@ -2,11 +2,11 @@
   "nodes": {
     "colors": {
       "locked": {
-        "lastModified": 1763043273,
-        "narHash": "sha256-8EVuv7id0XrAfOIXC4Uw0zv59TrgMsWw2v1deHDplYw=",
+        "lastModified": 1764250136,
+        "narHash": "sha256-TaaYQHmPrWsy7VqAH9tKA+IGoYRpb0Cgr2jV2ITBcfY=",
         "owner": "sotormd",
         "repo": "colors",
-        "rev": "77d4c9f247d1453500ae4a5274619ba32cff30da",
+        "rev": "3cd2a78ef7dc111c96619f67043747d91e9794a9",
         "type": "github"
       },
       "original": {
@@ -212,11 +212,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1763018055,
-        "narHash": "sha256-Hj0eSB185/eVqAruBhFk67EQyq579Jpv4YR4C01ky7U=",
+        "lastModified": 1764250597,
+        "narHash": "sha256-O/DQhJK5tpzlDRgDzRPygOr8ngQRhHqO0yw0K/6j3Gg=",
         "owner": "sotormd",
         "repo": "homepage",
-        "rev": "72a84c2c005ba402ef88aebd07d8cd3d03927323",
+        "rev": "d89d76b17e2dca2af4d8f44f77e1c2e3be9e2032",
         "type": "github"
       },
       "original": {
