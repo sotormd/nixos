@@ -38,6 +38,7 @@
     neovim = {
       url = "github:sotormd/neovim";
       inputs.nixpkgs.follows = "nixpkgs";
+      inputs.colors.follows = "colors";
     };
 
     colors = {
