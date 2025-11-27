@@ -121,7 +121,6 @@ let
   homepageHtml = makeHomepage {
     inherit layout;
     n = 5;
-    font = "IBM Plex Sans";
   };
 in
 {
