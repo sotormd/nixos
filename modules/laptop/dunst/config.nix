@@ -10,18 +10,18 @@ let
     name = "dunstrc";
     text = ''
       [global]
-      background="#${colors.bg0}"
+      background="#${colors.dunst.bg}"
       corner_radius=7
       font="${colors.fonts.normal} 9"
-      frame_color="#${colors.blue2}"
+      frame_color="#${colors.dunst.normal}"
       gap_size=5
       monitor=${vars.outputs.monitor}
       offset="5x5"
       origin="top-right"
-      highlight="#${colors.blue2}"
+      highlight="#${colors.dunst.normal}"
 
       [urgency_critical]
-      frame_color="#${colors.yellow}"
+      frame_color="#${colors.dunst.urgent}"
     '';
     destination = "/dunstrc";
   };

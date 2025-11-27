@@ -2,11 +2,11 @@
   "nodes": {
     "colors": {
       "locked": {
-        "lastModified": 1764254032,
-        "narHash": "sha256-J1FMwGR6AUeQovryyf1Tg0D3iUU524AXZmKBOX+DpiQ=",
+        "lastModified": 1764262222,
+        "narHash": "sha256-hJj3Gqed/ZZvfXTtxvVOh6LKmfFg4/as36CYP7p8d3I=",
         "owner": "sotormd",
         "repo": "colors",
-        "rev": "6b651d8b667ebca2cff5f47c2b3b6fff22be7757",
+        "rev": "7e0717173820eb44854e651d2242cb29b91dc91a",
         "type": "github"
       },
       "original": {
@@ -287,6 +287,9 @@
     },
     "neovim": {
       "inputs": {
+        "colors": [
+          "colors"
+        ],
         "flake-parts": "flake-parts_3",
         "nixpkgs": [
           "nixpkgs"
@@ -294,11 +297,11 @@
         "nvf": "nvf"
       },
       "locked": {
-        "lastModified": 1764088229,
-        "narHash": "sha256-rJDs6Xq2hp0rZr3Hyu/AT/EQnzgXiHb7JqRNsUD0CZ4=",
+        "lastModified": 1764262818,
+        "narHash": "sha256-Z7mvx4XUr548VDUS6UVdIaLX5m/sM+928IvSnv+UFVM=",
         "owner": "sotormd",
         "repo": "neovim",
-        "rev": "0800f9a28da29554f7b529854a8f5bd3f57c66a1",
+        "rev": "8b084e9f87bda32d7a9826337f6fe0fbe0cae304",
         "type": "github"
       },
       "original": {

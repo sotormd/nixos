@@ -9,7 +9,7 @@
         }
 
         .center-dock, .left-dock {
-          background: #${colors.bg1};
+          background: #${colors.eww.bg1};
           border-radius: 7px;
           margin: 5px;
           margin-top: 0px;
@@ -23,20 +23,20 @@
             min-width: 20px;
             min-height: 20px;
             font-family: "${colors.fonts.monospace}";
-            border-top: 3px solid #${colors.bg1};
-            border-bottom: 3px solid #${colors.bg1};
+            border-top: 3px solid #${colors.eww.bg1};
+            border-bottom: 3px solid #${colors.eww.bg1};
             margin-top: 0px;
             margin-bottom: 0px;
             margin-left: 10px;
             margin-right: 10px;
-            color: #${colors.blue2};
+            color: #${colors.eww.dock.active};
 
             &.focused {
-              border-bottom: 3px solid #${colors.blue2};
+              border-bottom: 3px solid #${colors.eww.dock.active};
             }
 
             &.empty {
-              color: #${colors.bg3};
+              color: #${colors.eww.dock.unfocused};
             }
           }
 
@@ -70,11 +70,11 @@
         .widget {
           border-radius: 7px;
           margin: 5px;
-          background: #${colors.bg1};
+          background: #${colors.eww.bg1};
         }
 
         .calendar {
-          color: #${colors.fg0};
+          color: #${colors.eww.calendar.unfocused};
           font-size: 9pt;
           font-weight: 500;
           font-family: "${colors.fonts.normal}";
@@ -87,8 +87,8 @@
               font-size: 14pt;
               font-weight: bold;
               .day-cell {
-                background: #${colors.purple};
-                color: #${colors.bg1};
+                background: #${colors.eww.calendar.accent};
+                color: #${colors.eww.calendar.focused};
                 &:nth-child(1) {
                   border-radius: 7px 0px 0px 7px;
                 }
@@ -117,7 +117,7 @@
               min-height: 25px;
               .line {
                 margin: 0 16px;
-                border-top: 6px solid #${colors.bg3};
+                border-top: 6px solid #${colors.eww.bg3};
               }
             }
           }
@@ -134,32 +134,32 @@
             }
 
             &.other-month {
-              color: #${colors.bg3};
+              color: #${colors.eww.bg3};
             }
             &.today {
-              background: #${colors.purple};
-              color: #${colors.bg1};
+              background: #${colors.eww.calendar.accent};
+              color: #${colors.eww.bg1};
             }
           }
         }
 
         .today-button {
-          color: #${colors.purple};
+          color: #${colors.eww.calendar.accent};
           border-radius: 6px;
           font-size: 2.5em;
           padding-top: 5px;
-          background: #${colors.bg1};
+          background: #${colors.eww.bg1};
           padding: 3px;
           margin: 3px;
         }
 
         .year-next:hover, .year-prev:hover, .month-prev:hover, .month-next:hover, .fortune-refresh:hover {
-          background: #${colors.bg2};
+          background: #${colors.eww.bg2};
           border-radius: 7px;
         }
 
         .year-next:active, .year-prev:active, .month-prev:active, .month-next:active, .fortune-refresh:active {
-          background: #${colors.bg3};
+          background: #${colors.eww.bg3};
           border-radius: 7px;
         }
 
@@ -176,44 +176,44 @@
         }
 
         .start-box {
-          background: #${colors.bg1};
+          background: #${colors.eww.bg1};
           border-radius : 7px;
         }
 
         .leave-widget-box {
-          border: 5px solid #${colors.bg1};
+          border: 5px solid #${colors.eww.bg1};
         }
 
         .start-inner-box, .leave-widget-box {
-          background: #${colors.bg0};
+          background: #${colors.eww.bg0};
           border-radius: 7px;
           padding: 10px;
           margin: 5px;
         }
 
         .uptime {
-          color: #${colors.purple};
+          color: #${colors.eww.start.uptime};
           font-weight: 700;
         }
 
         .host {
-          color: #${colors.blue2};
+          color: #${colors.eww.start.host};
           font-weight: 900;
           font-size: 2em;
         }
 
         .leave-box {
-          color: #${colors.red};
+          color: #${colors.eww.start.leave};
           font-size: 2em;
           border-radius: 7px;
         }
 
         .leave-box:hover {
-          background: #${colors.bg1};
+          background: #${colors.eww.bg1};
         }
 
         .leave-box:active {
-          background: #${colors.bg2};
+          background: #${colors.eww.bg2};
         }
 
         .lock, .poweroff {
@@ -233,7 +233,7 @@
         }
 
         .system-box-cpu, .system-box-ram, .system-box-zfs {
-          background-color: #${colors.bg0};
+          background-color: #${colors.eww.bg0};
           border: none;
           border-radius: 7px;
           padding: 14px 18px 14px 18px;
@@ -253,14 +253,14 @@
         }
 
         .system-circle {
-          background-color: #${colors.bg1};
+          background-color: #${colors.eww.bg1};
           border: none;
           border-radius: 100%;
           padding: 0px;
         }
 
         .system-circle-text {
-          background-color: #${colors.bg2};
+          background-color: #${colors.eww.bg2};
           border: none;
           border-radius: 100%;
           padding: 40px;
@@ -269,9 +269,9 @@
         }
 
         .system-text {
-          background-color: #${colors.bg2};
-          border: 1px solid #${colors.bg3};
-          color: #${colors.blue2};
+          background-color: #${colors.eww.bg2};
+          border: 1px solid #${colors.eww.bg3};
+          color: #${colors.eww.start.system.text};
           border-radius: 16px;
           font-size : 1em;
           padding: 0px 8px 0px 8px;
@@ -280,26 +280,26 @@
         }
 
         .system-circle-cpu {
-          color: #${colors.orange};
+          color: #${colors.eww.start.system.cpu};
         }
 
         .system-circle-ram {
-          color: #${colors.yellow};
+          color: #${colors.eww.start.system.ram};
         }
 
         .system-circle-zfs {
-          color: #${colors.green};
+          color: #${colors.eww.start.system.zfs};
         }
 
         .fortune {
-          color: #${colors.blue2};
+          color: #${colors.eww.start.fortune};
           font-weight: 700;
         }
 
         .fortune-refresh {
           border-radius: 7px;
           font-size: 2em;
-          color: #${colors.blue2};
+          color: #${colors.eww.start.fortune};
         }
 
         .fortune-refresh-inner {
@@ -320,14 +320,14 @@
         }
 
         .song {
-          color: #${colors.blue0};
+          color: #${colors.eww.start.music.title};
           font-size : 16px;
           font-weight : bold;
           margin-top: 10px;
         }
 
         .artist {
-          color: #${colors.blue2};
+          color: #${colors.eww.start.music.artist};
           font-size : 12px;
           font-weight : 600;
         }
@@ -341,23 +341,23 @@
           border-radius: 40px;
         }
         .btn_prev:hover, .btn_play:hover, .btn_next:hover {
-          background-color: #${colors.bg1};
+          background-color: #${colors.eww.bg1};
         }
         .btn_prev:active, .btn_play:active, .btn_next:active {
-          background-color: #${colors.bg2};
+          background-color: #${colors.eww.bg2};
         }
         .btn_prev {
-          color: #${colors.yellow};
+          color: #${colors.eww.start.music.skip};
           font-size : 32px;
           font-weight : normal;
         }
         .btn_play {
-          color: #${colors.green};
+          color: #${colors.eww.start.music.play};
           font-size : 48px;
           font-weight : bold;
         }
         .btn_next {
-          color: #${colors.yellow};
+          color: #${colors.eww.start.music.skip};
           font-size : 32px;
           font-weight : normal;
         }
@@ -365,12 +365,12 @@
         .music_bar scale trough highlight {
           all: unset;
           border-radius: 2px;
-          background-color: #${colors.purple};
+          background-color: #${colors.eww.start.music.slider};
         }
         .music_bar scale trough {
           all: unset;
           border-radius: 2px;
-          background-color: #${colors.bg3};
+          background-color: #${colors.eww.bg3};
           min-height: 10px;
           min-width: 310px;
         }
@@ -386,7 +386,7 @@
       .lyrics-line {
         border: none;
         background: none;
-        color: #${colors.blue0};
+        color: #${colors.eww.start.music.lyrics};
         font-size: 10pt;
         font-weight: 700;
         margin: 2px 0;

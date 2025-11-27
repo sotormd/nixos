@@ -15,29 +15,39 @@
       /*****----- Global Properties -----*****/
       * {
           font:                        "${colors.fonts.normal} 11";
-          border-colour:               #${colors.blue2};
-          handle-colour:               #${colors.blue2};
-          background-colour:           #${colors.bg3};
-          foreground-colour:           #${colors.fg0};
-          alternate-background:        #${colors.bg2};
-          normal-background:           #${colors.bg3};
-          normal-foreground:           #${colors.fg0};
-          urgent-background:           #${colors.yellow};
-          urgent-foreground:           #${colors.bg3};
-          active-background:           #${colors.green};
-          active-foreground:           #${colors.bg3};
-          selected-normal-background:  #${colors.blue2};
-          selected-normal-foreground:  #${colors.bg3};
-          selected-urgent-background:  #${colors.green};
-          selected-urgent-foreground:  #${colors.bg3};
-          selected-active-background:  #${colors.yellow};
-          selected-active-foreground:  #${colors.bg3};
-          alternate-normal-background: #${colors.bg3};
-          alternate-normal-foreground: #${colors.fg0};
-          alternate-urgent-background: #${colors.yellow};
-          alternate-urgent-foreground: #${colors.bg3};
-          alternate-active-background: #${colors.green};
-          alternate-active-foreground: #${colors.bg3};
+
+          border-colour:               #${colors.rofi.border};
+          handle-colour:               #${colors.rofi.handle};
+          background-colour:           #${colors.rofi.bgs.normal};
+          foreground-colour:           #${colors.rofi.fgs.normal};
+          alternate-background:        #${colors.rofi.bgs.alternate};
+
+          normal-background:           #${colors.rofi.bgs.normal};
+          normal-foreground:           #${colors.rofi.fgs.normal};
+
+          urgent-background:           #${colors.rofi.bgs.urgent};
+          urgent-foreground:           #${colors.rofi.fgs.urgent};
+
+          active-background:           #${colors.rofi.bgs.active};
+          active-foreground:           #${colors.rofi.fgs.active};
+
+          selected-normal-background:  #${colors.rofi.selectedBgs.normal};
+          selected-normal-foreground:  #${colors.rofi.selectedFgs.normal};
+
+          selected-urgent-background:  #${colors.rofi.selectedBgs.urgent};
+          selected-urgent-foreground:  #${colors.rofi.selectedFgs.urgent};
+
+          selected-active-background:  #${colors.rofi.selectedBgs.active};
+          selected-active-foreground:  #${colors.rofi.selectedFgs.active};
+
+          alternate-normal-background: #${colors.rofi.alternateBgs.normal};
+          alternate-normal-foreground: #${colors.rofi.alternateFgs.normal};
+
+          alternate-urgent-background: #${colors.rofi.alternateBgs.urgent};
+          alternate-urgent-foreground: #${colors.rofi.alternateFgs.urgent};
+
+          alternate-active-background: #${colors.rofi.alternateBgs.active};
+          alternate-active-foreground: #${colors.rofi.alternateFgs.active};
       }
 
       /*****----- Main Window -----*****/
