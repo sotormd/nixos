@@ -16,14 +16,14 @@
 
       #mode {
         font-style: italic;
-        color: #${colors.blue2};
+        color: #${colors.waybar.mode.text};
         margin-left: 5px;
       }
 
       #workspaces {
         all: unset;
-        border: solid 3px #${colors.blue2};
-        color: #${colors.blue2};
+        border: solid 3px #${colors.waybar.workspaces.border};
+        color: #${colors.waybar.workspaces.text};
       }
 
       #workspaces,
@@ -81,7 +81,7 @@
       }
 
       #workspaces button:hover {
-        background-color: #${colors.bg3};
+        background-color: #${colors.waybar.workspaces.hover};
       }
 
       #workspaces button.focused {
@@ -90,19 +90,19 @@
 
       @keyframes background-switch {
         0% {
-          background: linear-gradient(45deg, #${colors.blue0}, #${colors.blue1}, #${colors.blue2}, #${colors.blue3}, #${colors.blue0}, #${colors.blue1}, #${colors.blue2}, #${colors.blue3});
+          background: linear-gradient(45deg, #${colors.waybar.animation.a}, #${colors.waybar.animation.b}, #${colors.waybar.animation.c}, #${colors.waybar.animation.d}, #${colors.waybar.animation.e}, #${colors.waybar.animation.f}, #${colors.waybar.animation.g}, #${colors.waybar.animation.h});
         }
         25% {
-          background: linear-gradient(45deg, #${colors.blue3}, #${colors.blue0}, #${colors.blue1}, #${colors.blue2}, #${colors.blue3}, #${colors.blue0}, #${colors.blue1}, #${colors.blue2});
+          background: linear-gradient(45deg, #${colors.waybar.animation.h}, #${colors.waybar.animation.a}, #${colors.waybar.animation.b}, #${colors.waybar.animation.c}, #${colors.waybar.animation.d}, #${colors.waybar.animation.e}, #${colors.waybar.animation.f}, #${colors.waybar.animation.g});
         }
         50% {
-          background: linear-gradient(45deg, #${colors.blue2}, #${colors.blue3}, #${colors.blue0}, #${colors.blue1}, #${colors.blue2}, #${colors.blue3}, #${colors.blue0}, #${colors.blue1});
+          background: linear-gradient(45deg, #${colors.waybar.animation.g}, #${colors.waybar.animation.h}, #${colors.waybar.animation.a}, #${colors.waybar.animation.b}, #${colors.waybar.animation.c}, #${colors.waybar.animation.d}, #${colors.waybar.animation.e}, #${colors.waybar.animation.f});
         }
         75% {
-          background: linear-gradient(45deg, #${colors.blue1}, #${colors.blue2}, #${colors.blue3}, #${colors.blue0}, #${colors.blue1}, #${colors.blue2}, #${colors.blue3}, #${colors.blue0});
+          background: linear-gradient(45deg, #${colors.waybar.animation.f}, #${colors.waybar.animation.g}, #${colors.waybar.animation.h}, #${colors.waybar.animation.a}, #${colors.waybar.animation.b}, #${colors.waybar.animation.c}, #${colors.waybar.animation.d}, #${colors.waybar.animation.e});
         }
         100% {
-          background: linear-gradient(45deg, #${colors.blue0}, #${colors.blue1}, #${colors.blue2}, #${colors.blue3}, #${colors.blue0}, #${colors.blue1}, #${colors.blue2}, #${colors.blue3});
+          background: linear-gradient(45deg, #${colors.waybar.animation.e}, #${colors.waybar.animation.f}, #${colors.waybar.animation.g}, #${colors.waybar.animation.h}, #${colors.waybar.animation.a}, #${colors.waybar.animation.b}, #${colors.waybar.animation.c}, #${colors.waybar.animation.d});
         }
       }
 
@@ -127,29 +127,29 @@
       #pulseaudio,
       #battery,
       #clock {
-        color: #${colors.bg1};
+        color: #${colors.waybar.modules.text};
       }
 
       #idle_inhibitor,
       .userns-enabled, .userns-disabled {
-        background-color: #${colors.red};
+        background-color: #${colors.waybar.util.bg};
       }
 
       #network {
-        background-color: #${colors.orange};
+        background-color: #${colors.waybar.network.bg};
       }
 
       #pulseaudio {
-        background-color: #${colors.yellow};
+        background-color: #${colors.waybar.audio.bg};
       }
 
       #battery {
-        background-color: #${colors.green};
-        color: #${colors.bg1};
+        background-color: #${colors.waybar.battery.bg};
+        color: #${colors.waybar.modules.text};
       }
 
       #clock {
-        background-color: #${colors.purple};
+        background-color: #${colors.waybar.clock.bg};
       }
     '';
     destination = "/style.css";
