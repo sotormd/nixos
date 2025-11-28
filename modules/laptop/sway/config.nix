@@ -30,12 +30,12 @@ let
       mouse_warping output
       workspace_layout default
       workspace_auto_back_and_forth no
-      client.focused ${colors.blue2} ${colors.bg0} ${colors.fg0} ${colors.blue2} ${colors.blue2}
-      client.focused_inactive ${colors.bg3} ${colors.bg0} ${colors.fg0} ${colors.bg3} ${colors.bg3}
-      client.unfocused ${colors.bg3} ${colors.bg0} ${colors.fg0} ${colors.bg3} ${colors.bg3}
-      client.urgent ${colors.yellow} ${colors.bg0} ${colors.fg0} ${colors.yellow} ${colors.yellow}
+      client.focused ${colors.sway.focused.border} ${colors.sway.focused.background} ${colors.sway.focused.text} ${colors.sway.focused.indicator} ${colors.sway.focused.childBorder}
+      client.focused_inactive ${colors.sway.focusedInactive.border} ${colors.sway.focusedInactive.background} ${colors.sway.focusedInactive.text} ${colors.sway.focusedInactive.indicator} ${colors.sway.focusedInactive.childBorder}
+      client.unfocused ${colors.sway.unfocused.border} ${colors.sway.unfocused.background} ${colors.sway.unfocused.text} ${colors.sway.unfocused.indicator} ${colors.sway.unfocused.childBorder}
+      client.urgent ${colors.sway.urgent.border} ${colors.sway.urgent.background} ${colors.sway.urgent.text} ${colors.sway.urgent.indicator} ${colors.sway.urgent.childBorder}
+      client.background ${colors.sway.background}
       client.placeholder #000000 #0c0c0c #ffffff #000000 #0c0c0c
-      client.background ${colors.bg0}
 
       bindsym Mod4+0 exec ${pkgs.swayfx}/bin/swaymsg workspace $(${pkgs.swayfx}/bin/swaymsg -t get_outputs | ${pkgs.jq}/bin/jq -r '.[] | select(.focused) | .name | if . == "${vars.outputs.monitor}" then "1" elif . == "${vars.outputs.laptop}" then "0" else "unknown" end')10
       bindsym Mod4+1 exec ${pkgs.swayfx}/bin/swaymsg workspace $(${pkgs.swayfx}/bin/swaymsg -t get_outputs | ${pkgs.jq}/bin/jq -r '.[] | select(.focused) | .name | if . == "${vars.outputs.monitor}" then "1" elif . == "${vars.outputs.laptop}" then "0" else "unknown" end')1

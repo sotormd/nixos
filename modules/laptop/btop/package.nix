@@ -1,10 +1,10 @@
-{ pkgs, ... }:
+{ colors, pkgs, ... }:
 
 let
   config = pkgs.writeTextFile {
     name = "btop.conf";
     text = ''
-      color_theme = "nord"
+      color_theme = "${colors.btop}"
     '';
     destination = "/btop.conf";
   };

@@ -21,42 +21,42 @@ let
       indicator-radius=200
       indicator-thickness=7
 
-      inside-color=${colors.bg1}00
-      inside-clear-color=${colors.yellow}00
-      inside-ver-color=${colors.blue2}00
-      inside-wrong-color=${colors.red}00
-      inside-caps-lock-color=${colors.bg0}00
+      inside-color=00000000
+      inside-clear-color=00000000
+      inside-ver-color=00000000
+      inside-wrong-color=00000000
+      inside-caps-lock-color=00000000
 
-      ring-color=${colors.bg1}00
-      ring-clear-color=${colors.yellow}
-      ring-ver-color=${colors.blue2}
-      ring-wrong-color=${colors.red}
-      ring-caps-lock-color=${colors.bg0}00
+      ring-color=00000000
+      ring-clear-color=${colors.swaylock.clear}
+      ring-ver-color=${colors.swaylock.verifying}
+      ring-wrong-color=${colors.swaylock.wrong}
+      ring-caps-lock-color=00000000
 
-      line-color=${colors.bg0}00
-      line-clear-color=${colors.bg0}00
-      line-ver-color=${colors.bg0}00
-      line-wrong-color=${colors.bg0}00
-      line-caps-lock-color=${colors.bg0}00
+      line-color=00000000
+      line-clear-color=00000000
+      line-ver-color=00000000
+      line-wrong-color=00000000
+      line-caps-lock-color=00000000
       line-uses-inside
       line-uses-ring
 
-      layout-bg-color=${colors.bg0}00
-      layout-border-color=${colors.bg0}00
-      layout-text-color=${colors.bg0}00
+      layout-bg-color=00000000
+      layout-border-color=00000000
+      layout-text-color=00000000
 
-      text-color=${colors.bg1}00
-      text-clear-color=${colors.bg1}00
-      text-ver-color=${colors.bg1}00
-      text-wrong-color=${colors.bg1}00
-      text-caps-lock-color=${colors.yellow}00
+      text-color=00000000
+      text-clear-color=00000000
+      text-ver-color=00000000
+      text-wrong-color=00000000
+      text-caps-lock-color=00000000
 
-      key-hl-color=${colors.blue2}00
-      bs-hl-color=${colors.yellow}00
-      caps-lock-key-hl-color=${colors.bg0}00
-      caps-lock-bs-hl-color=${colors.bg0}00
+      key-hl-color=00000000
+      bs-hl-color=00000000
+      caps-lock-key-hl-color=00000000
+      caps-lock-bs-hl-color=00000000
 
-      separator-color=${colors.bg0}00
+      separator-color=00000000
     '';
     destination = "/config";
   };
