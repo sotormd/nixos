@@ -29,7 +29,7 @@ let
       set statusbar-bg               "#${colors.zathura.statusbar.bg}"
       set statusbar-fg               "#${colors.zathura.statusbar.fg}"
 
-      set highlight-color            "#${colors.zathura.highlight}"
+      set highlight-color            "${colors.zathura.highlight}"
 
       set default-bg                 "#${colors.zathura.default.bg}"
       set default-fg                 "#${colors.zathura.default.fg}"
