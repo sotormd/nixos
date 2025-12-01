@@ -1,19 +1,3 @@
-<!--toc:start-->
-
-- [`laptop` role](#laptop-role)
-- [Contents](#contents)
-- [Setup](#setup)
-  - [Obtaining a Live NixOS Image](#obtaining-a-live-nixos-image)
-  - [Preparing the Device](#preparing-the-device)
-  - [Partitioning Disks](#partitioning-disks)
-  - [Installing NixOS](#installing-nixos)
-    - [Environment variables](#environment-variables)
-  - [Setting up Secure Boot](#setting-up-secure-boot)
-  - [Setting up Impermanence](#setting-up-impermanence)
-- [Usage](#usage)
-
-<!--toc:end-->
-
 # `laptop` role
 
 Personal laptop configuration.
