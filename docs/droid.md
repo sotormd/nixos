@@ -1,4 +1,4 @@
-# `droid` Setup
+# `droid` role
 
 [nix-on-droid](https://github.com/nix-community/nix-on-droid) configuration
 

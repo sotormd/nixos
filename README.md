@@ -23,7 +23,7 @@ See [Features](#features) for all features.
 # Contents
 
 1. [Features](#features)
-2. [Setup](#setup)
+2. [Setup & Usage](#setup-usage)
 3. [Images](#images)
 4. [nixos: Flake Helper](#nixos-flake-helper)
 
@@ -79,19 +79,19 @@ See [Features](#features) for all features.
 | clipboard                     | `cliphist`                                               |
 | screenshots                   | `grimshot`                                               |
 
-# Setup
+# Setup & Usage
 
 1. `laptop` role: Laptop configuration
 
-   [Setup docs](./docs/laptop.md)
+   [Docs](./docs/laptop.md)
 
 2. `server` role: Headless home server configuration
 
-   [Setup docs](./docs/server.md)
+   [Docs](./docs/server.md)
 
 3. `droid` role: nix-on-droid configuration
 
-   [Setup docs](./docs/droid.md)
+   [Docs](./docs/droid.md)
 
 # Images
 
