@@ -1,3 +1,19 @@
+<!--toc:start-->
+
+- [`laptop` role](#laptop-role)
+- [Contents](#contents)
+- [Setup](#setup)
+  - [Obtaining a Live NixOS Image](#obtaining-a-live-nixos-image)
+  - [Preparing the Device](#preparing-the-device)
+  - [Partitioning Disks](#partitioning-disks)
+  - [Installing NixOS](#installing-nixos)
+    - [Environment variables](#environment-variables)
+  - [Setting up Secure Boot](#setting-up-secure-boot)
+  - [Setting up Impermanence](#setting-up-impermanence)
+- [Usage](#usage)
+
+<!--toc:end-->
+
 # `laptop` role
 
 Personal laptop configuration.
@@ -393,9 +409,54 @@ Ensure all variables and secrets are properly defined.
 
 Using the `laptop` role.
 
+- [Using the Sway Desktop](#using-the-sway-desktop)
+  - [Logging In](#logging-in)
+  - [Basic Motions](#basic-motions)
+  - [Launching Apps](#launching-apps)
+  - [Additional Keybinds](#additional-keybinds)
+  - [Modes](#modes)
+    - [Resize](#resize)
+    - [Leave](#leave)
+    - [Screenshot](#screenshot)
+  - [Top panel, waybar](#top-panel-waybar)
+    - [workspaces Module](#workspaces-module)
+    - [playerctl Module](#playerctl-module)
+    - [mode Module](#mode-module)
+    - [title Module](#title-module)
+    - [idle_inhibitor Module](#idleinhibitor-module)
+    - [userns Module](#userns-module)
+    - [network Module](#network-module)
+    - [audio Module](#audio-module)
+    - [battery Module](#battery-module)
+    - [clock Module](#clock-module)
+  - [Widgets, eww](#widgets-eww)
+    - [Dock widget](#dock-widget)
+    - [Start widget](#start-widget)
+    - [Calendar widget](#calendar-widget)
+    - [Leave widget](#leave-widget)
+  - [Launcher, rofi](#launcher-rofi)
+    - [run](#run)
+    - [workspace switcher](#workspace-switcher)
+    - [clipboard history](#clipboard-history)
+  - [Wallpapers](#wallpapers)
+  - [Colors & Theming](#colors--theming)
+- [System Maintenance](#system-maintenance)
+- [Adding External Disks](#adding-external-disks)
+  - [Unencrypted Disks (device.mount)](#unencrypted-disks-devicemount)
+    - [Example](#example)
+  - [LUKS-Encrypted Disks (device.luks)](#luks-encrypted-disks-deviceluks)
+    - [Example](#example)
+    - [What happens automatically](#what-happens-automatically)
+  - [hdparm Configuration (device.hdparm)](#hdparm-configuration-devicehdparm)
+    - [Example](#example)
+    - [What the system generates](#what-the-system-generates)
+  - [Summary](#summary)
+
 ## Using the Sway Desktop
 
 The full sway config lives [here](../modules/laptop/sway/config.nix).
+
+![sway desktop](./screenshots/nixos.gif)
 
 ### Logging In
 
@@ -516,7 +577,7 @@ Enter leave mode by using `$mod+Escape`
 | Poweroff | `u`     |
 | Reboot   | `r`     |
 
-Entering leave mode also opens the eww [`leave`](#leave-widget) widget.
+Entering leave mode also opens the eww [leave](#leave-widget) widget.
 
 #### Screenshot
 

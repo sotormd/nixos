@@ -23,7 +23,7 @@ See [Features](#features) for all features.
 # Contents
 
 1. [Features](#features)
-2. [Setup & Usage](#setup-usage)
+2. [Setup & Usage](#setup--usage)
 3. [Images](#images)
 4. [nixos: Flake Helper](#nixos-flake-helper)
 
