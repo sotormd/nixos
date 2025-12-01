@@ -1,20 +1,31 @@
-# `laptop` Setup
+# `laptop` role
+
+Personal laptop configuration.
+
+# Contents
+
+[Setup](#setup)
+
+1. [Obtaining a Live NixOS Image](#obtaining-a-live-nixos-image)
+2. [Preparing the Device](#preparing-the-device)
+3. [Partitioning Disks](#partitioning-disks)
+4. [Installing NixOS](#installing-nixos)
+5. [Setting up Secure Boot](#setting-up-secure-boot)
+6. [Setting up Impermanence](#setting-up-impermanence)
+
+[Usage](#usage)
+
+1. [Using the Sway desktop](#using-the-sway-desktop)
+2. [System maintenance](#system-maintenance)
+3. [Adding external disks](#adding-external-disks)
+
+# Setup
 
 Bootstrap process for the `laptop` role.
 
 **The configuration expects a particular disk setup (covered below).**
 
-# Contents
-
-1. [Obtaining a live NixOS image](#1-obtaining-a-live-nixos-image)
-2. [Preparing the device](#2-preparing-the-device)
-3. [Partitioning disks](#3-partitioning-disks)
-4. [Installing NixOS](#4-installing-nixos)
-5. [Setting up Secure Boot](#5-setting-up-secure-boot)
-6. [Setting up impermanence](#6-setting-up-impermanence)
-7. [Adding external disks](#7-adding-external-disks)
-
-## 1. Obtaining a live NixOS image.
+## Obtaining a Live NixOS Image
 
 1. Get a live NixOS image that has experimental features `flakes` and
    `nix-command` enabled.
@@ -35,7 +46,7 @@ Bootstrap process for the `laptop` role.
 2. Write the generated image to a removable medium (eg. a usb stick) using `dd`
    or any equivalent tool.
 
-## 2. Preparing the device.
+## Preparing the Device
 
 1. Disable secure boot for installation. It can be enabled later.
 
@@ -45,7 +56,7 @@ Bootstrap process for the `laptop` role.
    export NIXOS_ROLE=laptop
    ```
 
-## 3. Partitioning disks.
+## Partitioning Disks
 
 > **disko:** This flake doesn't use disko keeping dual booting in mind.
 
@@ -179,7 +190,7 @@ Bootstrap process for the `laptop` role.
 
 </details>
 
-## 4. Installing NixOS.
+## Installing NixOS
 
 1. Set basic environment variables.
 
@@ -233,7 +244,7 @@ Bootstrap process for the `laptop` role.
 
    You should be able to log in to the sway desktop and use the `nixos` command.
 
-### Environment variables.
+### Environment variables
 
 You _can_ set all variables and secrets while bootstrapping using these
 environment variables.
@@ -292,7 +303,7 @@ Ensure all variables and secrets are properly defined.
 
 </details>
 
-## 5. Setting up Secure Boot
+## Setting up Secure Boot
 
 > WARNING: Secure Boot for NixOS is under active development. Make sure you read
 > lanzaboote documentation before proceeding.
@@ -353,7 +364,7 @@ Ensure all variables and secrets are properly defined.
    bootctl status
    ```
 
-## 6. Setting up impermanence.
+## Setting up Impermanence
 
 > This section assumes Secure Boot is set up and keys are available at
 > `/var/lib/sbctl`.
@@ -378,7 +389,412 @@ Ensure all variables and secrets are properly defined.
    nixos switch
    ```
 
-## **7. Adding External Disks**
+# Usage
+
+Using the `laptop` role.
+
+## Using the Sway Desktop
+
+The full sway config lives [here](../modules/laptop/sway/config.nix).
+
+### Logging In
+
+Logging in to `tty1` will drop you into the `sway` desktop.
+
+This is possible due to this line in the login shell configuration:
+
+```bash
+if [ -z "$WAYLAND_DISPLAY" ] && [ -n "$XDG_VTNR" ] && [ "$XDG_VTNR" -eq 1 ]; then
+    exec sway
+fi
+```
+
+Logging in to any other `tty` will drop you into the default shell, `bash`.
+
+### Basic Motions
+
+The basic motions are identical to the default `i3` / `sway` motions.
+
+Note: `$mod` is `Mod4` (the `Super` / `Windows` key).
+
+| Action                                           | Keybind                             |
+| ------------------------------------------------ | ----------------------------------- |
+| Focus left container                             | `$mod+Left` / `$mod+h`              |
+| Focus right container                            | `$mod+Right` / `$mod+l`             |
+| Focus up container                               | `$mod+Up` / `$mod+k`                |
+| Focus down container                             | `$mod+Down` / `$mod+j`              |
+| Move container left                              | `$mod+Shift+Left` / `$mod+Shift+h`  |
+| Move container right                             | `$mod+Shift+Right` / `$mod+Shift+l` |
+| Move container up                                | `$mod+Shift+Up` / `$mod+Shift+k`    |
+| Move container down                              | `$mod+Shift+Down` / `$mod+Shift+j`  |
+| Go to workspace `1..10`                          | `$mod+1..0`                         |
+| Move container to workspace `1..10`              | `$mod+Shift+1..0`                   |
+| Go to next workspace                             | `$mod+PgDown`                       |
+| Go to previous workspace                         | `$mod+PgUp`                         |
+| Fetch containers from scratchpad                 | `$mod+Minus`                        |
+| Move container to scratchpad                     | `$mod+Shift+Minus`                  |
+| Toggle focus between floating / tiled containers | `$mod+Space`                        |
+| Toggle floating / tiled                          | `$mod+Shift+Space`                  |
+| Close current container                          | `$mod+Shift+q`                      |
+| Split vertical                                   | `$mod+v`                            |
+| Split horizontal                                 | `$mod+b`                            |
+| Toggle split layout                              | `$mod+e`                            |
+| Tabbed layout                                    | `$mod+w`                            |
+| Stacking layout                                  | `$mod+s`                            |
+| Fullscreen                                       | `$mod+f`                            |
+| Focus parent                                     | `$mod+a`                            |
+
+Workspaces can also be changed using the `rofi` launcher, see
+[workspace switcher](#workspace-switcher).
+
+### Launching Apps
+
+| Action                 | Keybind          |
+| ---------------------- | ---------------- |
+| Launch terminal `foot` | `$mod+Return`    |
+| Launch browser `brave` | `$mod+backslash` |
+| Launch launcher `rofi` | `$mod+d`         |
+
+The `rofi` launcher has several other uses, see:
+[Launcher, rofi](#launcher-rofi)
+
+### Additional Keybinds
+
+| Action              | Keybind                 |
+| ------------------- | ----------------------- |
+| Play / Pause media  | `XF86AudioPlay`         |
+| Stop media          | `$mod+XF86AudioPlay`    |
+| Next media          | `XF86AudioNext`         |
+| Previous media      | `XF86AudioPrev`         |
+| Mute audio          | `XF86AudioMute`         |
+| Increase volume     | `XF86AudioRaiseVolume`  |
+| Decrease volume     | `XF86AudioLowerVolume`  |
+| Increase brightness | `XF86MonBrightnessUp`   |
+| Decrease brightness | `XF86MonBrightnessDown` |
+| Transluscent window | `$mod+t`                |
+| Opaque window       | `$mod+o`                |
+
+All media commands are dispatched via `playerctl`.
+
+All audio commands are dispatched via `wpctl` and applied to the default sink.
+
+leftrightness commands are dispatched via `brightnessctl`.
+
+The `volume` and `brightness` commands are wrappers which display a `dunst`
+notification with a bar indicator.
+
+The media, audio and brightness can also be controlled via waybar:
+
+- Media: [playerctl Module](#playerctl-module)
+- Audio: [audio Module](#audio-module)
+- Brightness: [battery Module](#battery-module)
+
+### Modes
+
+Return to normal mode from any other mode by using `Escape` / `Return`.
+
+#### Resize
+
+Enter resize mode by using `$mod+r`
+
+| Action        | Keybind       |
+| ------------- | ------------- |
+| shrink height | `Up` / `k`    |
+| shrink width  | `Left` / `h`  |
+| grow height   | `Down` / `j`  |
+| grow width    | `Right` / `l` |
+
+#### Leave
+
+Enter leave mode by using `$mod+Escape`
+
+| Action   | Keybind |
+| -------- | ------- |
+| Lock     | `l`     |
+| Logout   | `x`     |
+| Suspend  | `s`     |
+| Poweroff | `u`     |
+| Reboot   | `r`     |
+
+Entering leave mode also opens the eww [`leave`](#leave-widget) widget.
+
+#### Screenshot
+
+Enter screenshot mode by using `$mod+PrintScreen`
+
+| Action       | Keybind |
+| ------------ | ------- |
+| copy area    | `ca`    |
+| save area    | `sa`    |
+| copy window  | `cw`    |
+| save window  | `sw`    |
+| copy screen  | `cs`    |
+| save screen  | `ss`    |
+| color picker | `p`     |
+
+You can also use `$mod+Shift+s` in normal mode to copy area.
+
+All screenshot commands are dispatched via `grimshot`.
+
+The color picker copies the hex code to the clipboard.
+
+### Top panel, waybar
+
+The full waybar config lives [here](../modules/laptop/waybar/config.nix).
+
+Styling options live [here](../modules/laptop/waybar/style.nix).
+
+#### workspaces Module
+
+Shows workspaces.
+
+| Action          | Bind       |
+| --------------- | ---------- |
+| Go to workspace | Left click |
+
+Current workspace is highlighted in bold.
+
+#### playerctl Module
+
+Shows currently playing track.
+
+| Action           | Bind         |
+| ---------------- | ------------ |
+| Play / pause     | Left click   |
+| Stop             | Right click  |
+| Next             | Scroll up    |
+| Previous         | Scroll down  |
+| Toggle animation | Middle click |
+
+#### mode Module
+
+Shows current mode.
+
+Nothing is shown for normal mode.
+
+#### title Module
+
+Shows title of current container.
+
+#### idle_inhibitor Module
+
+| Action                                      | Bind       |
+| ------------------------------------------- | ---------- |
+| Toggle inhibiting automatic session locking | Left click |
+
+#### userns Module
+
+| Action                                    | Bind       |
+| ----------------------------------------- | ---------- |
+| Toggle `kernel.unprivileged_userns_clone` | Left click |
+
+#### network Module
+
+Shows current connection status / band / ssid name.
+
+| Action                  | Bind         |
+| ----------------------- | ------------ |
+| Toggle band / ssid view | Left click   |
+| Reassociate             | Right click  |
+| Disconnect              | Middle click |
+
+#### audio Module
+
+Shows current volume.
+
+| Action               | Bind        |
+| -------------------- | ----------- |
+| Toggle muting        | Left click  |
+| Launch `pavucontrol` | Right click |
+| Increase volume      | Scroll up   |
+| Decrease volume      | Scroll down |
+
+#### battery Module
+
+Shows current battery percentage / remaining time.
+
+| Action                        | Bind        |
+| ----------------------------- | ----------- |
+| Toggle percentage / time view | Left click  |
+| Increase brightness           | Scroll up   |
+| Decrease brightness           | Scroll down |
+
+#### clock Module
+
+Shows current time.
+
+| Action                                   | Bind       |
+| ---------------------------------------- | ---------- |
+| Open [calendar](#calendar-widget) widget | Left click |
+
+### Widgets, eww
+
+The full eww config lives [here](../modules/laptop/eww/config.nix).
+
+Styling options live [here](../modules/laptop/eww/style.nix).
+
+Scripts used in the widgets live [here](../modules/laptop/eww/scripts.nix).
+
+#### Dock widget
+
+Toggle dock visibility using `$mod+Tab`.
+
+![eww dock](./screenshots/eww-dock.png)
+
+The icons represent apps. Each icon can have three states:
+
+| State       | Icon Appearance     | Description              |
+| ----------- | ------------------- | ------------------------ |
+| `empty`     | Grey                | No window open           |
+| `unfocused` | Blue                | At least one window open |
+| `focused`   | Blue with underline | Currently focused window |
+
+The following actions can be done on an `empty` icon:
+
+| Action     | Bind       |
+| ---------- | ---------- |
+| Launch app | Left click |
+
+The following actions can be done on an `unfocused` icon:
+
+| Action                 | Bind       |
+| ---------------------- | ---------- |
+| Focus last used window | Left click |
+
+The following actions can be done on a `focused` icon:
+
+| Action                         | Bind         |
+| ------------------------------ | ------------ |
+| Toggle floating / tiled mode   | Left click   |
+| Send to scratchpad             | Right click  |
+| Close current window           | Middle click |
+| Focus through all open windows | Scroll       |
+
+The configuration for the dock, including pinned icons are defined
+[here](../modules/laptop/eww/scripts.nix).
+
+Use the `eww-dock-init` command to reload the dock scripts.
+
+#### Start widget
+
+Toggle start widget visibility using `$mod+grave`.
+
+![eww start](./screenshots/eww-start.png)
+
+Included modules:
+
+- username
+- hostname
+- uptime
+- cpu usage
+- memory usage
+- zfs usage
+- playerctl controls
+- lyrics
+- fortune
+- leave commands
+
+#### Calendar widget
+
+Open by left clicking on the waybar [clock](#clock-module) module.
+
+![eww calendar](./screenshots/eww-calendar.png)
+
+Use the arrows or scroll to change the month / year.
+
+Current day is highlighted in purple.
+
+Click on the purple calendar icon or use the `eww-cal-init` command to reload
+calendar scripts.
+
+#### Leave widget
+
+The leave widget opens on entering [leave](#leave) mode.
+
+The leave widget closes on returning to normal mode.
+
+![eww leave](./screenshots/eww-leave.png)
+
+Instead of using the keybinds of leave mode, you can click on the buttons on
+this widget instead.
+
+### Launcher, rofi
+
+The full rofi config lives [here](../modules/laptop/rofi/config.nix).
+
+Styling options live [here](../modules/laptop/rofi/style.nix).
+
+#### run
+
+Launch using `$mod+d`.
+
+![rofi run](./screenshots/rofi-run.png)
+
+#### workspace switcher
+
+Launch using `$mod+g` for focusing a workspace.
+
+Launch using `$mod+Shift+g` for moving current container to a workspace.
+
+![rofi workspace switcher](./screenshots/rofi-workspace-switcher.png)
+
+#### clipboard history
+
+Launch using `$mod+c`.
+
+![rofi clipboard history](./screenshots/rofi-clipboard-history.png)
+
+Shows complete clipboard history using `cliphist`.
+
+Select an item to copy it to the clipboard.
+
+Along with the traditional keybinds, you can use `wl-copy` or `wl-paste` to add
+things to / paste things from the clipboard.
+
+### Wallpapers
+
+To change the current wallpaper, change the `outputs.wallpaper` and
+`outputs.lockscreen` variables.
+
+```bash
+nixos edit vars
+```
+
+Any wallpaper from [wallpapers](https://github.com/sotormd/wallpapers) can be
+used.
+
+For example to use `wallpapers/nord/building.png`, the variable should be set to
+`"nord.building"`.
+
+To use your own wallpapers, change the `wallpapers` input in
+[flake.nix](../flake.nix) to a flake that exposes similar outputs.
+
+### Colors & Theming
+
+By default, the Nord palette is used.
+
+All colors and theming options are defined in
+[colors](https://github.com/sotormd/colors).
+
+To use a different colorscheme, change the `colors` input in
+[flake.nix](../flake.nix).
+
+Examples:
+
+| Colorscheme | Input URL                                              |
+| ----------- | ------------------------------------------------------ |
+| nord        | `github:sotormd/colors` / `github:sotormd/colors/nord` |
+| gruvbox     | `github:sotormd/colors/gruvbox`                        |
+
+To use your own colorscheme, change the input to a flake that exposes similar
+outputs.
+
+## System Maintenance
+
+See [scripts.md](./scripts.md) for detailed instructions on using the `nixos`
+command for system maintenance.
+
+## Adding External Disks
 
 External disks - whether **unencrypted**, **LUKS-encrypted**, or **requiring
 hdparm tweaks** - can be configured declaratively through `vars.nix`.
@@ -391,14 +807,14 @@ nixos edit vars
 
 All configuration happens under the `device.*` sections.
 
-### **Unencrypted Disks (device.mount)**
+### Unencrypted Disks (device.mount)
 
 Use `device.mount` to configure _plain, unencrypted_ filesystems.
 
 Each attribute key is the mount point, and the value describes the underlying
 block device.
 
-#### **Example**
+#### Example
 
 ```nix
 device.mount = {
@@ -421,7 +837,7 @@ device.mount = {
 These are translated directly into `fileSystems` entries during system
 generation.
 
-### **LUKS-Encrypted Disks (device.luks)**
+### LUKS-Encrypted Disks (device.luks)
 
 Use `device.luks` to define encrypted volumes that unlock using a keyfile.
 
@@ -432,7 +848,7 @@ Each entry requires:
 - `mount` - where the decrypted mapper device should mount
 - `fs` - filesystem inside the LUKS container (`ext4`, `xfs`, etc.)
 
-#### **Example**
+#### Example
 
 ```nix
 device.luks = {
@@ -452,7 +868,7 @@ device.luks = {
 };
 ```
 
-#### **What happens automatically**
+#### What happens automatically
 
 For each entry:
 
@@ -471,14 +887,14 @@ For each entry:
    };
    ```
 
-### **hdparm Configuration (device.hdparm)**
+### hdparm Configuration (device.hdparm)
 
 Use `device.hdparm` to disable aggressive head-parking or alter disk power
 behavior for HDDs.
 
 This accepts a **list of disk IDs** (as used in `/dev/disk/by-id`).
 
-#### **Example**
+#### Example
 
 ```nix
 device.hdparm = [
@@ -487,7 +903,7 @@ device.hdparm = [
 ];
 ```
 
-#### **What the system generates**
+#### What the system generates
 
 One systemd service per disk:
 
@@ -505,7 +921,7 @@ hdparm -B 254 -S 0 /dev/disk/by-id/<id>
 
 This prevents aggressive head parking and increases drive longevity.
 
-### **Summary**
+### Summary
 
 | Feature               | Config Location | Description                              |
 | --------------------- | --------------- | ---------------------------------------- |
