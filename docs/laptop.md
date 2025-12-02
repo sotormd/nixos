@@ -523,7 +523,7 @@ All media commands are dispatched via `playerctl`.
 
 All audio commands are dispatched via `wpctl` and applied to the default sink.
 
-leftrightness commands are dispatched via `brightnessctl`.
+All brightness commands are dispatched via `brightnessctl`.
 
 The `volume` and `brightness` commands are wrappers which display a `dunst`
 notification with a bar indicator.
@@ -591,6 +591,8 @@ Styling options live [here](../modules/laptop/waybar/style.nix).
 
 #### workspaces Module
 
+![waybar workspaces](./screenshots/waybar-workspaces.png)
+
 Shows workspaces.
 
 | Action          | Bind       |
@@ -600,6 +602,8 @@ Shows workspaces.
 Current workspace is highlighted in bold.
 
 #### playerctl Module
+
+![waybar playerctl](./screenshots/waybar-playerctl.png)
 
 Shows currently playing track.
 
@@ -623,17 +627,23 @@ Shows title of current container.
 
 #### idle_inhibitor Module
 
+![waybar idle](./screenshots/waybar-idle.png)
+
 | Action                                      | Bind       |
 | ------------------------------------------- | ---------- |
 | Toggle inhibiting automatic session locking | Left click |
 
 #### userns Module
 
+![waybar userns](./screenshots/waybar-userns.png)
+
 | Action                                    | Bind       |
 | ----------------------------------------- | ---------- |
 | Toggle `kernel.unprivileged_userns_clone` | Left click |
 
 #### network Module
+
+![waybar network](./screenshots/waybar-network.png)
 
 Shows current connection status / band / ssid name.
 
@@ -644,6 +654,8 @@ Shows current connection status / band / ssid name.
 | Disconnect              | Middle click |
 
 #### audio Module
+
+![waybar audio](./screenshots/waybar-audio.png)
 
 Shows current volume.
 
@@ -656,6 +668,8 @@ Shows current volume.
 
 #### battery Module
 
+![waybar battery](./waybar-battery.png)
+
 Shows current battery percentage / remaining time.
 
 | Action                        | Bind        |
@@ -665,6 +679,8 @@ Shows current battery percentage / remaining time.
 | Decrease brightness           | Scroll down |
 
 #### clock Module
+
+![waybar clock](./screenshots/waybar-clock.png)
 
 Shows current time.
 
