@@ -18,7 +18,7 @@ Personal laptop configuration.
 1. [Using the Sway desktop](#using-the-sway-desktop)
 2. [System Maintenance](#system-maintenance)
 3. [Adding External Disks](#adding-external-disks)
-4. [Security](#security)
+4. [Security & Privacy](#security--privacy)
 5. [Browsers](#browsers)
 6. [Virtualisation & Containers](#virtualisation--containers)
 
@@ -109,7 +109,7 @@ Bootstrap process for the `laptop` role.
 3. Format boot partition.
 
    ```bash
-   sudo mkfs.vfat $BOOT
+   sudo mkfs.vfat -F 32 -n BOOT $BOOT
    ```
 
 4. Enable swap.
@@ -476,7 +476,7 @@ The `rofi` launcher has several other uses, see:
 | Decrease volume     | `XF86AudioLowerVolume`  |
 | Increase brightness | `XF86MonBrightnessUp`   |
 | Decrease brightness | `XF86MonBrightnessDown` |
-| Transluscent window | `$mod+t`                |
+| Translucent window  | `$mod+t`                |
 | Opaque window       | `$mod+o`                |
 
 All media commands are dispatched via `playerctl`.
@@ -952,7 +952,7 @@ This prevents aggressive head parking and increases drive longevity.
 | **Encrypted (LUKS)**  | `device.luks`   | Creates crypttab entries + mapper mounts |
 | **hdparm tuning**     | `device.hdparm` | Generates systemd services per drive     |
 
-## Security
+## Security & Privacy
 
 Several security and privacy oriented decisions were made while writing the
 included modules.
@@ -970,6 +970,16 @@ by default. This configuration can be found
 
 Only the `server` role has ports open, based on the running services. The server
 configuration can be found [here](../modules/server/network/firewall.nix).
+
+### Encryption
+
+LUKS encryption with a passphrase is used on the root partition.
+
+### Secure Boot
+
+Secure boot is enabled using the
+[lanzaboote](https://github.com/nix-community/lanzaboote) project, ensuring that
+only signed modules are loaded.
 
 ### Auditing
 
@@ -1095,6 +1105,9 @@ brave
 The web app for `spotify` is also installed, and more web apps can be added
 [here](../modules/laptop/brave/webapps.nix). The web apps also run under
 firejail.
+
+The browser also comes with these
+[extensions](../modules/laptop/brave/extensions.nix) to preserve privacy.
 
 Note that the `~/.config/BraveSoftware/Brave-Browser/` directory is persisted by
 impermanence so all state is persisted across reboots.
