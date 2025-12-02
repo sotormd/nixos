@@ -1107,7 +1107,8 @@ The web app for `spotify` is also installed, and more web apps can be added
 firejail.
 
 The browser also comes with these
-[extensions](../modules/laptop/brave/extensions.nix) to preserve privacy.
+[extensions](../modules/laptop/brave/extensions.nix) to preserve privacy and
+improve usability.
 
 Note that the `~/.config/BraveSoftware/Brave-Browser/` directory is persisted by
 impermanence so all state is persisted across reboots.
