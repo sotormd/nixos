@@ -6,6 +6,8 @@
 
     ./jitterentropy.nix
 
+    ./journal.nix
+
     ./kernel.nix
 
     ./luks.nix
