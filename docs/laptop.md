@@ -396,49 +396,6 @@ Ensure all variables and secrets are properly defined.
 
 Using the `laptop` role.
 
-- [Using the Sway Desktop](#using-the-sway-desktop)
-  - [Logging In](#logging-in)
-  - [Basic Motions](#basic-motions)
-  - [Launching Apps](#launching-apps)
-  - [Additional Keybinds](#additional-keybinds)
-  - [Modes](#modes)
-    - [Resize](#resize)
-    - [Leave](#leave)
-    - [Screenshot](#screenshot)
-  - [Top panel, waybar](#top-panel-waybar)
-    - [workspaces Module](#workspaces-module)
-    - [playerctl Module](#playerctl-module)
-    - [mode Module](#mode-module)
-    - [title Module](#title-module)
-    - [idle_inhibitor Module](#idleinhibitor-module)
-    - [userns Module](#userns-module)
-    - [network Module](#network-module)
-    - [audio Module](#audio-module)
-    - [battery Module](#battery-module)
-    - [clock Module](#clock-module)
-  - [Widgets, eww](#widgets-eww)
-    - [Dock widget](#dock-widget)
-    - [Start widget](#start-widget)
-    - [Calendar widget](#calendar-widget)
-    - [Leave widget](#leave-widget)
-  - [Launcher, rofi](#launcher-rofi)
-    - [run](#run)
-    - [workspace switcher](#workspace-switcher)
-    - [clipboard history](#clipboard-history)
-  - [Wallpapers](#wallpapers)
-  - [Colors & Theming](#colors--theming)
-- [System Maintenance](#system-maintenance)
-- [Adding External Disks](#adding-external-disks)
-  - [Unencrypted Disks (device.mount)](#unencrypted-disks-devicemount)
-    - [Example](#example)
-  - [LUKS-Encrypted Disks (device.luks)](#luks-encrypted-disks-deviceluks)
-    - [Example](#example)
-    - [What happens automatically](#what-happens-automatically)
-  - [hdparm Configuration (device.hdparm)](#hdparm-configuration-devicehdparm)
-    - [Example](#example)
-    - [What the system generates](#what-the-system-generates)
-  - [Summary](#summary)
-
 ## Using the Sway Desktop
 
 The full sway config lives [here](../modules/laptop/sway/config.nix).
@@ -856,9 +813,9 @@ outputs.
 ## System Maintenance
 
 Routine tasks such as updating the flake, switching configurations,
-garbage-collecting, repairing the Nix store, and editing secrets are handled
-through the unified `nixos` helper script. See [scripts.md](./scripts.md) for
-the full command reference and workflow examples.
+garbage-collecting, repairing the Nix store, and editing variables & secrets are
+handled through the unified `nixos` helper script. See
+[scripts.md](./scripts.md) for the full command reference and workflow examples.
 
 ## Adding External Disks
 
@@ -1002,6 +959,9 @@ included modules.
 
 This section is a non-exhaustive list of such decisions.
 
+Note that several privacy features depend on the `server` role, so disabling
+`network.server.enable` in the variables file will rob you of these benefits.
+
 ### Firewall
 
 The NixOS firewall is used with all ports closed, and all interfaces untrusted
@@ -1113,8 +1073,11 @@ persistance.
 This ensures that only the required files and directories persist across
 reboots.
 
+This is accomplished by rolling back the `rpool/root` and `rpool/home` datasets
+to their blank snapshots every boot.
+
 The impermanence configuration, including the list of persisted directories can
-be found [here](../modules/laptop/impermanence/)
+be found [here](../modules/laptop/impermanence/).
 
 ## Browsers
 
