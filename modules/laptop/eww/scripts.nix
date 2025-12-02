@@ -247,75 +247,7 @@ let
 
   dockClientsJson = pkgs.writeTextFile {
     name = "dock-clients.json";
-    text = ''
-      {
-        "known_clients": {
-            "brave-browser": {
-                "exec": "brave",
-                "symbol": ""
-            },
-            "foot": {
-                "exec": "foot -D ~",
-                "symbol": ""
-            },
-            "Thunar": {
-                "exec": "Thunar ~",
-                "symbol": ""
-            },
-            "codium": {
-                "exec": "codium",
-                "symbol": ""
-            },
-            "org.inkscape.Inkscape": {
-                "exec": "inkscape",
-                "symbol": ""
-            },
-            "brave-open.spotify.com__-Default": {
-                "exec": "spotify",
-                "symbol": ""
-            },
-            "auto-cpufreq": {
-                "symbol": ""
-            },
-            ".virt-manager-wrapped": {
-                "symbol": ""
-            },
-            "org.pulseaudio.pavucontrol": {
-                "symbol": "󰡀"
-            },
-            "org.pwmt.zathura": {
-                "symbol": ""
-            },
-            "mousepad": {
-                "exec": "mousepad",
-                "symbol": "󱩼"
-            },
-            "swayimg": {
-                "symbol": "󰋩"
-            },
-            "mpv": {
-                "symbol": ""
-            },
-            "firefox": {
-                "symbol": "󰈹"
-            },
-            "Tor Browser": {
-                "symbol": ""
-            },
-            "org.gnome.FileRoller": {
-                "symbol": "󰗄"
-            }
-        },
-        "pinned_clients": [
-            "brave-browser",
-            "brave-open.spotify.com__-Default",
-            "foot",
-            "org.inkscape.Inkscape",
-            "Thunar",
-            "mousepad"
-        ]
-      }
-    '';
+    text = builtins.readFile ./dock-clients.json;
     destination = "/dock-clients.json";
   };
 

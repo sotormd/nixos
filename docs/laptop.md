@@ -692,7 +692,7 @@ The following actions can be done on a `focused` icon:
 | Focus through all open windows | Scroll       |
 
 The configuration for the dock, including pinned icons are defined
-[here](../modules/laptop/eww/scripts.nix).
+[here](../modules/laptop/eww/dock-clients.json).
 
 Use the `eww-dock-init` command to reload the dock scripts.
 
