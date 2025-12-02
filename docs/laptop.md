@@ -668,7 +668,7 @@ Shows current volume.
 
 #### battery Module
 
-![waybar battery](./waybar-battery.png)
+![waybar battery](./screenshots/waybar-battery.png)
 
 Shows current battery percentage / remaining time.
 
