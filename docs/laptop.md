@@ -16,8 +16,11 @@ Personal laptop configuration.
 [Usage](#usage)
 
 1. [Using the Sway desktop](#using-the-sway-desktop)
-2. [System maintenance](#system-maintenance)
-3. [Adding external disks](#adding-external-disks)
+2. [System Maintenance](#system-maintenance)
+3. [Adding External Disks](#adding-external-disks)
+4. [Security](#security)
+5. [Browsers](#browsers)
+6. [Virtualisation & Containers](#virtualisation--containers)
 
 # Setup
 
@@ -852,8 +855,10 @@ outputs.
 
 ## System Maintenance
 
-See [scripts.md](./scripts.md) for detailed instructions on using the `nixos`
-command for system maintenance.
+Routine tasks such as updating the flake, switching configurations,
+garbage-collecting, repairing the Nix store, and editing secrets are handled
+through the unified `nixos` helper script. See [scripts.md](./scripts.md) for
+the full command reference and workflow examples.
 
 ## Adding External Disks
 
@@ -989,3 +994,214 @@ This prevents aggressive head parking and increases drive longevity.
 | **Unencrypted mount** | `device.mount`  | Direct filesystem mounts                 |
 | **Encrypted (LUKS)**  | `device.luks`   | Creates crypttab entries + mapper mounts |
 | **hdparm tuning**     | `device.hdparm` | Generates systemd services per drive     |
+
+## Security
+
+Several security and privacy oriented decisions were made while writing the
+included modules.
+
+This section is a non-exhaustive list of such decisions.
+
+### Firewall
+
+The NixOS firewall is used with all ports closed, and all interfaces untrusted
+by default. This configuration can be found
+[here](../modules/common/network/firewall.nix).
+
+Only the `server` role has ports open, based on the running services. The server
+configuration can be found [here](../modules/server/network/firewall.nix).
+
+### Auditing
+
+The Linux auditing subsystem is enabled and rules have been set, following some
+STIGs.
+
+The full list of rules can be found [here](../modules/common/audit/).
+
+### Firejail
+
+The firejail SUID sandbox is used to sandbox the [browsers](#browsers).
+
+All the firejail wrappers are run with `--nonewprivs` to mitigate
+vulnerabilities arising from firejail using SUID.
+
+### Kernel
+
+The `linux-hardened` kernel is used.
+
+Several [kernel parameters](../modules/common/boot/params.nix),
+[sysctl options](../modules/common/boot/sysctl.nix) and
+[module blacklists](../modules/common/boot/blacklist.nix) are put in place to
+ensure better baseline security.
+
+These options are heavily based on
+[this](https://madaidans-insecurities.github.io/guides/linux-hardening.html)
+article by Madaidan's Insecurities.
+
+### Nix Package Manager
+
+The Nix package manager is set to download only cryptographically signed
+binaries.
+
+Furthermore, only members of the `wheel` group can use the Nix package manager.
+
+### DNS
+
+The `laptop` role uses the Unbound DNS server installed on the `server` role.
+
+The hardened DNS server configuration lives
+[here](../modules/server/unbound/settings.nix).
+
+The fallback DNS server is Cloudflare's `1.1.1.1` and `1.0.0.1`.
+
+### Search Engine
+
+The `laptop` role uses the SearXNG metasearch engine installed on the `server`
+role via the Brave Browser.
+
+This preserves user privacy while ensuring good quality results.
+
+The list of search engines that SearXNG uses by default live
+[here](../modules/server/searxng/engines.nix).
+
+The fallback search engine is `DuckDuckGo`.
+
+### Passwords & Secrets
+
+The `laptop` role uses the Vaultwarden password manager installed on the
+`server` role via the Bitwarden extension on the Brave Browser.
+
+Secrets related to the NixOS system are stored securely by
+[sops-nix](http://github.com/Mic92/sops-nix).
+
+### SSH
+
+The ssh daemon is disabled on the `laptop` role.
+
+On the `server` role, it uses a hardened configuration that lives
+[here](../modules/server/ssh/).
+
+The server ssh port that the laptop accesses is set in the variables file under
+`network.server.ssh.port`. To edit the variables file:
+
+```bash
+nixos edit vars
+```
+
+### Anonymity
+
+#### I2P
+
+The included `i2p-browser` allows users to browse the
+[I2P](https://geti2p.net/en/) network.
+
+The included bittorrent client on the `server` role, also uses the I2P network.
+
+#### Tor
+
+The included `tor-browser` allows users to browse the
+[Tor](https://www.torproject.org/) network.
+
+The included `oniux` executable allows for kernel level tor isolation for any
+linux app.
+
+### Impermanence
+
+The `laptop` role uses zfs snapshots and bind mounts to ensure opt-in
+persistance.
+
+This ensures that only the required files and directories persist across
+reboots.
+
+The impermanence configuration, including the list of persisted directories can
+be found [here](../modules/laptop/impermanence/)
+
+## Browsers
+
+Two web browsers, `brave` and `i2p-browser` are included.
+
+### Brave
+
+The Brave browser can be launched using the shortcut `$mod+backslash` or by
+executing the firejail wrapper:
+
+```bash
+brave
+```
+
+The web app for `spotify` is also installed, and more web apps can be added
+[here](../modules/laptop/brave/webapps.nix). The web apps also run under
+firejail.
+
+Note that the `~/.config/BraveSoftware/Brave-Browser/` directory is persisted by
+impermanence so all state is persisted across reboots.
+
+The included brave browser is heavily policied via chromium policies. The full
+list of policies live [here](../modules/laptop/brave/policies.nix). The policies
+include options to disable several anti-features, particularly those related to
+crypto and web3.
+
+The included brave browser also strips out any telemetry by setting initial
+preferences and local state files. The initial preferences live
+[here](../modules/laptop/brave/preferences.nix) and the local state lives
+[here](../modules/laptop/brave/state.nix).
+
+The `brave` executable provided is a firejail wrapper which uses `--nonewprivs`
+to mitigate possible SUID vulnerabilities.
+
+Note that to run the brave browser, you will have to enable unprivileged user
+namespaces, which is disabled by default. It can be enabled by setting the
+`kernel.unprivileged_userns_clone` sysctl to `1` or via the waybar
+[userns](#userns-module) module.
+
+Using the brave browser without enabling unprivileged user namespaces is
+possible, but requires a workaround. The brave browser uses the chromium
+namespaces sandbox by default, you can check by visiting `brave://sandbox`. If
+unprvileged user namespaces are disabled, then brave will fall back to using the
+chromium SUID sandbox.
+
+However, firejail doesn't allow using the chromium SUID sandbox from within a
+firejail sandbox. So you must run brave outside of firejail. See
+[here](../modules/laptop/brave/sandbox.nix) for instructions. This however is
+not recommended unless you absolutely have to avoid unprivileged user
+namespaces.
+
+### i2p-browser
+
+The i2p-browser can be launched by executing the firejail wrapper:
+
+```bash
+i2p-browser
+```
+
+The i2p-browser is just the Firefox browser with several configuration settings
+to allow browsing the I2P network. The additional configuration options can be
+found [here](../modules/laptop/i2p-browser/profile.nix) and policies
+[here](../modules/laptop/i2p-browser/policies.nix).
+
+The i2p-browser uses the I2P HTTP Proxy from `network.server.i2p.port` in
+`vars.nix`. To edit variables:
+
+```bash
+nixos edit vars
+```
+
+The included `i2p-browser` executable is a firejail wrapper which uses
+`--nonewprivs` to mitigate possible SUID vulnerabilities.
+
+## Virtualisation & Containers
+
+Virtual machines can be created using QEMU/KVM through `virt-manager`.
+
+`distrobox` allows for using other distributions under rootless containers on
+the NixOS host system.
+
+Notes:
+
+- Created virtual machines and containers are lost on reboot, since impermanence
+  does not persist these directories. To persist across reboots, store these
+  under `/persist` or add these directories to the impermanence setup.
+- `distrobox` requires the use of unprivileged user namespaces, which is
+  disabled by default. It can be enabled by setting the
+  `kernel.unprivileged_userns_clone` sysctl to `1` or via the waybar
+  [userns](#userns-module) module.
