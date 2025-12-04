@@ -18,7 +18,7 @@ let
 
       image=${backgrounds.lockscreen}
 
-      indicator-radius=100
+      indicator-radius=90
       indicator-thickness=7
 
       inside-color=00000000
