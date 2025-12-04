@@ -51,8 +51,8 @@ let
       text-wrong-color=00000000
       text-caps-lock-color=00000000
 
-      key-hl-color=00000000
-      bs-hl-color=00000000
+      key-hl-color=${colors.swaylock.verifying}
+      bs-hl-color=${colors.swaylock.clear}
       caps-lock-key-hl-color=00000000
       caps-lock-bs-hl-color=00000000
 
