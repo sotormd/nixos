@@ -140,7 +140,7 @@
               inherit inputs;
               inherit lib;
               inherit vars;
-              inherit (colors.lib) colors;
+              inherit (homepage.lib) makeHomepage;
             };
             modules = [
 
