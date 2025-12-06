@@ -15,8 +15,8 @@ Personal laptop configuration.
 
 [Usage](#usage)
 
-1. [Using the Sway desktop](#using-the-sway-desktop)
-2. [System Maintenance](#system-maintenance)
+1. [System Maintenance](#system-maintenance)
+2. [Using the Sway desktop](#using-the-sway-desktop)
 3. [Adding External Disks](#adding-external-disks)
 4. [Browsers](#browsers)
 5. [Virtualisation & Containers](#virtualisation--containers)
@@ -396,6 +396,21 @@ Ensure all variables and secrets are properly defined.
 # Usage
 
 Using the `laptop` role.
+
+## System Maintenance
+
+Routine tasks such as updating the flake, switching configurations,
+garbage-collecting, repairing the Nix store, and editing variables & secrets are
+handled through the unified `nixos` helper script.
+
+To see all commands:
+
+```bash
+nixos help
+```
+
+See [scripts.md](./scripts.md) for the full command reference and workflow
+examples.
 
 ## Using the Sway Desktop
 
@@ -811,21 +826,6 @@ Examples:
 To use your own colorscheme, change the input to a flake that exposes similar
 outputs.
 
-## System Maintenance
-
-Routine tasks such as updating the flake, switching configurations,
-garbage-collecting, repairing the Nix store, and editing variables & secrets are
-handled through the unified `nixos` helper script.
-
-To see all commands:
-
-```bash
-nixos help
-```
-
-See [scripts.md](./scripts.md) for the full command reference and workflow
-examples.
-
 ## Adding External Disks
 
 External disks - whether **unencrypted**, **LUKS-encrypted**, or **requiring
@@ -1094,6 +1094,9 @@ Note that several privacy features depend on the `server` role, so disabling
 
 LUKS encryption with a passphrase is used on the root partition, as covered in
 the [Partitioning Disks](#partitioning-disks) section.
+
+Furthermore, LUKS encrypted external disks can be added easily. See
+[Adding External Disks](#adding-external-disks).
 
 ## Secure Boot
 

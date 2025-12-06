@@ -35,7 +35,4 @@
     # users
     ./users
   ];
-
-  # do not change
-  system.stateVersion = "24.05";
 }

@@ -1,7 +1,7 @@
 {
   imports = [
     # nix package manager configuration
-    ../../modules/common/nix
+    ../common/nix
 
     # list of packages
     ./packages.nix

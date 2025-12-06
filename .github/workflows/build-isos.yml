@@ -52,6 +52,17 @@ jobs:
           cp "$GNOME_SRC" "$GNOME_DST"
 
       # -----------------------------------
+      # Build SDCard Image
+      # -----------------------------------
+      - name: Build sdcard image
+        run: |
+          nix build github:sotormd/nixos#nixosConfigurations.imageSDCard.config.system.build.sdImage
+
+          SD_SRC=$(echo result/sd-image/*.img.zst)
+          SD_DST="nixos-sdcard-${{ steps.ts.outputs.ts }}.img.zst"
+          cp "$SD_SRC" "$SD_DST"
+      
+      # -----------------------------------
       # Upload Artifacts
       # -----------------------------------
       - name: Upload minimal ISO
@@ -65,3 +76,9 @@ jobs:
         with:
           name: nixos-gnome
           path: nixos-gnome-${{ steps.ts.outputs.ts }}.iso
+
+      - name: Upload sdcard image
+        uses: actions/upload-artifact@v4
+        with:
+          name: nixos-sdcard
+          path: nixos-sdcard-${{ steps.ts.outputs.ts }}.img.zst
