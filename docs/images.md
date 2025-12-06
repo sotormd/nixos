@@ -6,6 +6,10 @@ Two images are offered for `x86_64-linux` architectures:
 
 2. `gnome`: NixOS with the GNOME desktop environment.
 
+One image is offered for `aarch64-linux` architectures:
+
+1. `sdcard`: NixOS for sdcard targets.
+
 These images have experimental features `flakes` and `nix-command` enabled.
 
 The images include several useful packages for installation, recovery, etc.
@@ -28,7 +32,7 @@ github actions
    -o /tmp/minimal-image
    ```
 
-   The resultant image will be available inside `/tmp/minimal-image/iso`.
+   The resultant image will be available inside `/tmp/minimal-image/iso/`.
 
 2. `gnome` image
 
@@ -39,4 +43,12 @@ github actions
    -o /tmp/gnome-image
    ```
 
-   The resultant image will be available inside `/tmp/gnome-image/iso`.
+   The resultant image will be available inside `/tmp/gnome-image/iso/`.
+
+3. `sdcard` image
+
+   ```bash
+   nix build github:sotormd/nixos#nixosConfigurations.imageSDCard.config.system.build.sdImage
+   ```
+
+   The resultant image will be available inside `./result/sd-image/`.

@@ -26,6 +26,4 @@
   environment.motd = ''
     nix-on-droid
   '';
-
-  system.stateVersion = "24.05";
 }

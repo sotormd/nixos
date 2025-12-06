@@ -1,198 +1,113 @@
-# `server` Setup
+# `server` role
+
+Personal home-server configuration.
 
 **Intended for Raspberry Pi hosts using the NixOS aarch64 sd card image.**
 
 # Contents
 
-1. [Obtaining a NixOS image](#1-obtaining-a-nixos-image)
-2. [First boot](#2-first-boot)
-3. [Applying configuration](#3-applying-configuration)
-4. [Further setup](#4-further-setup)
-5. [Adding external disks](#5-adding-external-disks)
+[Setup](#setup)
 
-## 1. Obtaining a NixOS image.
+1. [Obtaining a NixOS Image](#obtaining-a-nixos-image)
+2. [Applying Configuration](#applying-configuration)
 
-1. Get a NixOS aarch64 image from
-   [here](https://hydra.nixos.org/job/nixos/trunk-combined/nixos.sd_image.aarch64-linux/).
+[Usage](#usage)
 
-2. Verify the checksum of the image.
+1. [System Maintenance](#system-maintenance)
+2. [Services](#services)
+3. [Adding External Disks](#adding-external-disks)
 
-   ```console
-   $ echo "cba2... nixos-...iso" | sha256sum --check
+[Security & Privacy](#security--privacy)
+
+# Setup
+
+Bootstrap process for the `server` role.
+
+## Obtaining a NixOS Image
+
+1. Get a NixOS sd-card image that has experimental features `flakes` and
+   `nix-command` enabled.
+
+   One such images is included in this flake. To use the included image:
+
+   ```bash
+   nix build github:sotormd/nixos#nixosConfigurations.imageSDCard.config.system.build.sdImage
    ```
 
-3. Flash this image onto an SD card after decompressing it.
+   The generated image will be available under `./result/sd-image/`.
 
-## 2. First boot.
+   For more information, see [images.md](./images.md).
 
-1. Boot into the SD card. You should be logged in automatically as user `nixos`.
+2. Write the generated image to a sd-card using `dd` or any equivalent tool.
 
-2. Optional: disable annoying dmesg messages.
+## Applying Configuration
 
-   ```console
-   $ sudo dmesg -n 1
+1. Boot into the newly created sd-card image on the target device.
+
+2. Set basic environment variables.
+
+   ```bash
+   export NIXOS_ROLE=server
+   export NIXOS_DIR=/nixos
    ```
 
-3. Generate config.
+3. Clone the flake.
 
-   ```console
-   $ sudo nixos-generate-config
+   ```bash
+   nix run github:sotormd/nixos#init -- clone
    ```
 
-4. Edit the configuration for first rebuild.
+   The flake will be cloned to `$NIXOS_DIR`.
 
-   `/etc/nixos/configuration.nix`
-   ```nix
-   {
-   # rest of the config
-   # ...
+4. Initialize variables & secrets.
 
-       # enable flakes
-       nix.settings.experimental-features = [ "nix-command" "flakes" ];
-
-       # allow using nmtui
-       networking.networkmanager.enable = true;
-
-       # easier to set these up now
-       networking.hostName = "Foo";
-       time.timeZone = "Continent/City";
-
-       # set up a user
-       users.users.Bar = {
-           isNormalUser = true;
-           extraGroups = [ "wheel" ];
-           group = "Bar";
-
-           # for installation only
-           password = "test";
-       };
-       users.groups.Bar = {};
-
-   # ...
-   # rest of the config
-   }
+   ```bash
+   nix run github:sotormd/nixos#init -- vars
+   nix run github:sotormd/nixos#init -- sops
    ```
 
-5. Connect to the internet.
+   Variables and secrets can be configured through environment variables while
+   bootstrapping, see [this](#environment-variables) list for all available
+   environment variables.
 
-   ```console
-   $ nmtui
+5. Edit variables & secrets.
+
+   ```bash
+   nix run github:sotormd/nixos#init -- vars edit
+   nix run github:sotormd/nixos#init -- sops edit
    ```
 
-6. Ensure internet connection.
+   Ensure all variables and secrets are properly defined.
 
-   ```console
-   $ ping archlinux.org
+6. Switch to the new configuration.
+
+   ```bash
+   $NIXOS_DIR/scripts/nixos switch
    ```
 
-7. Rebuild the configuration and reboot.
+7. Reboot.
 
-   ```console
-   $ sudo nixos-rebuild switch
-   $ sudo reboot
+   ```bash
+   sudo reboot
    ```
 
-## 3. Applying configuration.
+   Once you log in with your new username and password, you should be able to
+   use the `nixos` command.
 
-1. Once booted into the new installation, log in as the new user and set up
-   basic environment variables.
+### Environment Variables
 
-   ```console
-   $ export NIXOS_DIR=/nixos
-   $ export NIXOS_ROLE=server
-   ```
+You _can_ set all variables and secrets while bootstrapping using these
+environment variables.
 
-   See [this](#environment-variables) section for all variables.
+This is useful if you have a `.env` file you wish to export environment
+variables from.
 
-2. Clone this repository.
+Otherwise, it is simpler to edit the variables and secrets files like mentioned
+in step 4.
 
-   ```console
-   $ sudo mkdir -p $NIXOS_DIR
-   $ sudo chown Bar: $NIXOS_DIR
-   $ nix shell nixpkgs#git --command git clone https://github.com/sotormd/nixos $NIXOS_DIR
-   ```
+<details>
 
-3. Initialize variables.
-
-   First, check `sudo blkid` output to find the root partition partuuid.
-
-   ```console
-   $ export VARS_DEVICE_ROOT=2178694e-02
-   $ export VARS_USER_EMAIL=Bar@domain.com
-   $ export VARS_NETWORK_SSID=BarsNetwork
-   $ export VARS_NETWORK_GATEWAY=10.0.0.1
-   $ export VARS_NETWORK_IP=10.0.0.20
-   $ export VARS_NETWORK_RANGE=10.0.0.0/24
-   $ export VARS_NETWORK_SSH_KEY=AAAA...
-   $ $NIXOS_DIR/scripts/nixos init vars
-   ```
-
-   See [this](#environment-variables) section for all variables.
-
-4. Initialize secrets.
-
-   ```console
-   $ export SECRETS_DUCKDNS_TOKEN=aaa...
-   $ $NIXOS_DIR/scripts/nixos init sops
-   ```
-
-   It is possible to configure through environment variables.
-
-   See [this](#environment-variables) section for all variables.
-
-5. Edit variables/secrets.
-
-   To ensure all variables are set, edit the variables file.
-
-   ```console
-   $ $NIXOS_DIR/scripts/nixos edit vars
-   ```
-
-   To ensure all secrets are set, edit the secrets file.
-
-   ```console
-   $ nix shell nixpkgs#sops nixpkgs#gnupg --command $NIXOS_DIR/scripts/nixos edit sops
-   ```
-
-6. Switch to the new configuration for the first time.
-
-   ```console
-   $ nix shell nixpkgs#git --command $NIXOS_DIR/scripts/nixos switch
-   ```
-
-7. Reboot the system.
-
-   ```console
-   $ sudo reboot
-   ```
-
-   If everything goes well, you should be able to log in with your new username
-   and password.
-
-8. Check that the `$NIXOS_DIR` and `$NIXOS_ROLE` environment variables are set.
-
-   ```console
-   $ nixos
-   ```
-
-   You should see a directory tree of `$NIXOS_DIR` (in this case, of `/nixos`).
-
-9. Enable services.
-
-   Enable required services by setting `network.<service>.enable = true;` in
-   `vars.nix`.
-   ```console
-   $ nixos edit vars
-   ```
-
-   Switch to the new configuration.
-   ```console
-   $ nixos switch
-   ```
-
-### Environment variables.
-
-Full list of possible environment variables:
+<summary>Click to expand: full list of possible environment variables</summary>
 
 | Name                                      | Explanation                                        | Default                                           | Example                              |
 | ----------------------------------------- | -------------------------------------------------- | ------------------------------------------------- | ------------------------------------ |
@@ -236,21 +151,86 @@ Full list of possible environment variables:
 | `SECRETS_DUCKDNS_TOKEN`                   | DuckDNS API token.                                 | -                                                 | `"aaa..."`                           |
 | `SECRETS_SEARXNG_KEY`                     | SearXNG secret key.                                | (randomly generated)                              | `"bbb..."`                           |
 
-Ensure all relevant variables are defined in the `$NIXOS_DIR/vars/vars.nix` and
-secrets in `$NIXOS_DIR/vars/secrets.yaml`.
+Ensure all variables and secrets are properly defined.
 
-## 4. Further setup.
+</details>
 
-#### 1. nginx
+# Usage
+
+Using the `server` role.
+
+## System Maintenance
+
+Routine tasks such as updating the flake, switching configurations,
+garbage-collecting, repairing the Nix store, and editing variables & secrets are
+handled through the unified `nixos` helper script.
+
+To see all commands:
+
+```bash
+nixos help
+```
+
+See [scripts.md](./scripts.md) for the full command reference and workflow
+examples.
+
+## Services
+
+Services can be enabled / disabled / configured in the variables file. To edit
+the variables file:
+
+```bash
+nixos edit vars
+```
+
+### SSH
+
+sshd secure shell daemon.
+
+Exposes one port to `vars.network.range`: `vars.network.ssh.port`.
+
+Trusted public keys are defined in `vars.network.ssh.keys`.
+
+The hardened configuration can be found
+[here](../modules/server/ssh/settings.nix).
+
+### Unbound
+
+Unbound is a recursive validating DNS server.
+
+Enabled using `vars.network.unbound.`
+
+Exposes two ports to `vars.network.range`: `53/tcp` `53/udp`.
+
+The hardened configuration can be found
+[here](../modules/server/unbound/settings.nix).
+
+### nginx
+
+Nginx is a web server and reverse proxy.
+
+Enabled using `vars.network.nginx.enable`.
+
+Exposes one port to `vars.network.range`: `443`.
+
+#### Domain
 
 The nginx web server is hosted at `https://<your-duckdns-domain>`.
 
-It attempts to fetch a Let's Encrypt certificate with a DNS-01 challenge using
-your duckdns domain.
+The DuckDNS domain is declared using `vars.network.duckdns.domain`.
 
-Reverse proxy:
+It attempts to fetch a Let's Encrypt HTTPS certificate with a DNS-01 challenge
+using your duckdns domain.
 
-|                |                       |                             |
+#### Reverse Proxy
+
+The root of the web server returns a
+[homepage](https://github.com/sotormd/homepage) with links to all the services'
+reverse proxy pages.
+
+Reverse proxy is set up for the following services, if enabled:
+
+| Location       | Name                  | Description                 |
 | -------------- | --------------------- | --------------------------- |
 | `/searxng`     | SearXNG               | Search engine               |
 | `/vaultwarden` | Vaultwarden web vault | Password manager            |
@@ -258,34 +238,89 @@ Reverse proxy:
 | `/qbt`         | qBittorrent webui     | Bittorrent client           |
 | `/jellyfin`    | Jellyfin              | Media server                |
 
-#### 2. qBittorrent
+### SearXNG
+
+SearXNG is a fast, private metasearch engine.
+
+Enabled using `vars.network.searxng.enable`.
+
+Doesn't expose any ports since it uses `uwsgi`.
+
+The full list of enabled search engines can be found
+[here](../modules/server/searxng/engines.nix).
+
+### Vaultwarden
+
+Vaultwarden is a password manager.
+
+Enabled using `vars.network.vaultwarden.enable`.
+
+Exposes one port to the loopback interface: `vars.network.vaultwarden.port`.
+
+Data directory is declared by `vars.network.vaultwarden.data`.
+
+### I2PD
+
+I2PD is a router for the I2P network.
+
+Enabled using `vars.network.i2pd.enable`.
+
+Exposes one port to the loopback interface: `vars.network.i2pd.webconsole.port`.
+
+Exposes one port to `vars.network.range`: `vars.network.i2pd.httpProxy.port`.
+
+### qBittorrent
+
+qBittorrent-nox is a web interface for the qBittorrent bittorrent client.
+
+Enabled using `vars.network.qbt.enable`.
+
+Exposes one port to the loopback interface: `vars.network.qbt.port`.
+
+Data directory is declared by `vars.network.qbt.data`.
+
+#### Initial Setup
 
 qBittorrent will initially start with username `admin` and a random password.
 Check the service status for the password.
 
-```console
-$ systemctl status qbt
+```bash
+systemctl status qbt
 ```
 
 Then, in the web ui `https://<your-duckdns-domain>/qbt` under
 `Tools > Options > WebUI > Authentication` set a username and password.
 
-#### 3. Jellyfin
+#### Categories
+
+Two categories, `Movies` and `TV`, are created by default.
+
+### Jellyfin
+
+Jellyfin is a media server.
+
+Enabled using `vars.network.jellyfin.enable`.
+
+Exposes one port to the loopback interface: `vars.network.jellyfin.port`.
+
+#### Initial Setup
 
 Access the web interface at `https://<your-duckdns-domain>/jellyfin` and follow
 the wizard to set up your user and library.
 
-##### Disabling media playback
+#### Disabling media playback
 
 If using only the `Download` and/or `Copy Stream URL` options, you can disable
 media playback by disallowing it for your user.
 
-Access the web interface at `https://<your-duckdns-domain>/jellyfin`, uncheck
-`Allow media playback` under
-`Dashboard > Users > <your-user> > Profile > Media Playback` and click `Save` at
-the end of the page.
+1. Access the web interface at `https://<your-duckdns-domain>/jellyfin`
 
-## **5. Adding External Disks**
+2. Uncheck `Allow media playback` under
+   `Dashboard > Users > <your-user> > Profile > Media Playback`.
+
+3. Click `Save` at the end of the page.
+
+## Adding External Disks
 
 External disks - whether **unencrypted**, **LUKS-encrypted**, or **requiring
 hdparm tweaks** - can be configured declaratively through `vars.nix`.
@@ -298,14 +333,14 @@ nixos edit vars
 
 All configuration happens under the `device.*` sections.
 
-### **Unencrypted Disks (device.mount)**
+### Unencrypted Disks (device.mount)
 
 Use `device.mount` to configure _plain, unencrypted_ filesystems.
 
 Each attribute key is the mount point, and the value describes the underlying
 block device.
 
-#### **Example**
+#### Example
 
 ```nix
 device.mount = {
@@ -328,7 +363,7 @@ device.mount = {
 These are translated directly into `fileSystems` entries during system
 generation.
 
-### **LUKS-Encrypted Disks (device.luks)**
+### LUKS-Encrypted Disks (device.luks)
 
 Use `device.luks` to define encrypted volumes that unlock using a keyfile.
 
@@ -339,7 +374,7 @@ Each entry requires:
 - `mount` - where the decrypted mapper device should mount
 - `fs` - filesystem inside the LUKS container (`ext4`, `xfs`, etc.)
 
-#### **Example**
+#### Example
 
 ```nix
 device.luks = {
@@ -359,7 +394,7 @@ device.luks = {
 };
 ```
 
-#### **What happens automatically**
+#### What happens automatically
 
 For each entry:
 
@@ -378,14 +413,14 @@ For each entry:
    };
    ```
 
-### **hdparm Configuration (device.hdparm)**
+### hdparm Configuration (device.hdparm)
 
 Use `device.hdparm` to disable aggressive head-parking or alter disk power
 behavior for HDDs.
 
 This accepts a **list of disk IDs** (as used in `/dev/disk/by-id`).
 
-#### **Example**
+#### Example
 
 ```nix
 device.hdparm = [
@@ -394,7 +429,7 @@ device.hdparm = [
 ];
 ```
 
-#### **What the system generates**
+#### What the system generates
 
 One systemd service per disk:
 
@@ -412,10 +447,133 @@ hdparm -B 254 -S 0 /dev/disk/by-id/<id>
 
 This prevents aggressive head parking and increases drive longevity.
 
-### **Summary**
+### Summary
 
 | Feature               | Config Location | Description                              |
 | --------------------- | --------------- | ---------------------------------------- |
 | **Unencrypted mount** | `device.mount`  | Direct filesystem mounts                 |
 | **Encrypted (LUKS)**  | `device.luks`   | Creates crypttab entries + mapper mounts |
 | **hdparm tuning**     | `device.hdparm` | Generates systemd services per drive     |
+
+# Security & Privacy
+
+Several security and privacy oriented decisions were made while writing the
+included modules.
+
+This section is a non-exhaustive list of such decisions.
+
+## Encryption
+
+LUKS encrypted external disks can be added easily. See
+[Adding External Disks](#adding-external-disks).
+
+## Kernel
+
+The `linux-hardened` kernel is used.
+
+Several [kernel parameters](../modules/common/boot/params.nix),
+[sysctl options](../modules/common/boot/sysctl.nix) and
+[module blacklists](../modules/common/boot/blacklist.nix) are put in place to
+ensure better baseline security.
+
+These options are heavily based on
+[this](https://madaidans-insecurities.github.io/guides/linux-hardening.html)
+article by Madaidan's Insecurities.
+
+## Auditing
+
+The Linux auditing subsystem is enabled and rules have been set, following some
+reasonable STIGs.
+
+The full list of rules can be found [here](../modules/common/audit/).
+
+## Firewall
+
+The NixOS firewall is used with all ports closed, and all interfaces untrusted
+by default. This configuration can be found
+[here](../modules/common/network/firewall.nix).
+
+Ports are opened based on the running services.
+
+The server firewall configuration can be found
+[here](../modules/server/network/firewall.nix).
+
+While most ports open internally to be used by the [nginx](#nginx) reverse
+proxy, two ports are opened to `vars.network.range`:
+
+1. `vars.network.ssh.port`: For SSH
+
+2. `vars.network.i2pd.httpProxy.port`: For I2P HTTP Proxy
+
+So, it is recommended to change these ports from the default.
+
+Also, `vars.network.range` can be set in the variables file. To edit the
+variables file:
+
+```bash
+nixos edit vars
+```
+
+Since this value is a CIDR, it can be used to allow specific IPs only. For
+example, setting it to `192.168.0.98/31` allows for two IPs: `192.168.0.98` and
+`192.168.0.99`.
+
+## Nix Package Manager
+
+The Nix package manager is set to download only cryptographically signed
+binaries.
+
+Furthermore, only members of the `wheel` group can use the Nix package manager.
+
+## Passwords & Secrets
+
+The Vaultwarden password manager is installed and can be used to store passwords
+and other secrets securely.
+
+See [Vaultwarden](#vaultwarden) for more details.
+
+Secrets related to the NixOS system are stored securely by
+[sops-nix](http://github.com/Mic92/sops-nix) using GPG keys.
+
+To edit sops-nix secrets:
+
+```bash
+nixos edit sops
+```
+
+These secrets are available under `/run/secrets` after system activation and are
+stored encrypted in the world-readable `/nix/store`.
+
+These secrets are not tracked by git.
+
+## DNS
+
+The Unbound recursive DNS server is installed and can be used to make private
+DNS queries with DNSSEC.
+
+See [Unbound](#unbound) for more details.
+
+The fallback DNS servers are Cloudflare's `1.1.1.1` and `1.0.0.1`.
+
+## Search Engine
+
+The SearXNG metasearch engine is installed and can be used to make private
+search queries.
+
+See [SearXNG](#searxng) for more details.
+
+## SSH
+
+The SSH daemon is installed and uses hardened settings.
+
+See [SSH](#ssh) for more details.
+
+## I2P
+
+The i2pd router is installed and can be used to use the
+[I2P](https://geti2p.net/en/) network.
+
+See [I2PD](#i2pd) for more details.
+
+The included bittorrent client, [qBittorrent](#qbittorrent), also uses the I2P
+network.

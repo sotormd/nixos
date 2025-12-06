@@ -108,61 +108,77 @@
           vars = import ./vars/vars.nix;
         in
         {
-          # laptop configuration
-          nixosConfigurations.laptop = nixpkgs.lib.nixosSystem {
-            specialArgs = {
-              inherit inputs;
-              inherit lib;
-              inherit vars;
-              inherit neovim;
-              inherit (colors.lib) colors;
-              inherit (wallpapers.lib) wallpapers;
-              inherit (homepage.lib) makeHomepage;
+          nixosConfigurations = {
+
+            # laptop configuration
+            laptop = nixpkgs.lib.nixosSystem {
+              specialArgs = {
+                inherit inputs;
+                inherit lib;
+                inherit vars;
+                inherit neovim;
+                inherit (colors.lib) colors;
+                inherit (wallpapers.lib) wallpapers;
+                inherit (homepage.lib) makeHomepage;
+              };
+              modules = [
+
+                (import ./hosts { role = "laptop"; })
+
+                hjem.nixosModules.default
+
+                sops-nix.nixosModules.sops
+
+                lanzaboote.nixosModules.lanzaboote
+
+                hosts.nixosModule
+
+              ];
             };
-            modules = [
 
-              ./hosts/laptop.nix
+            # server configuration
+            server = nixpkgs.lib.nixosSystem {
+              specialArgs = {
+                inherit inputs;
+                inherit lib;
+                inherit vars;
+                inherit (homepage.lib) makeHomepage;
+              };
+              modules = [
 
-              hjem.nixosModules.default
+                (import ./hosts { role = "server"; })
 
-              sops-nix.nixosModules.sops
+                sops-nix.nixosModules.sops
 
-              lanzaboote.nixosModules.lanzaboote
+                hosts.nixosModule
 
-              hosts.nixosModule
-
-            ];
-          };
-
-          # server configuration
-          nixosConfigurations.server = nixpkgs.lib.nixosSystem {
-            specialArgs = {
-              inherit inputs;
-              inherit lib;
-              inherit vars;
-              inherit (homepage.lib) makeHomepage;
+              ];
             };
-            modules = [
 
-              ./hosts/server.nix
+            # gnome image
+            imageGnome = nixpkgs.lib.nixosSystem {
+              specialArgs = { inherit inputs; };
+              modules = [
+                (import ./hosts { role = "imageGnome"; })
+              ];
+            };
 
-              sops-nix.nixosModules.sops
+            # minimal image
+            imageMinimal = nixpkgs.lib.nixosSystem {
+              specialArgs = { inherit inputs; };
+              modules = [
+                (import ./hosts { role = "imageMinimal"; })
+              ];
+            };
 
-              hosts.nixosModule
+            # sd card image
+            imageSDCard = nixpkgs.lib.nixosSystem {
+              specialArgs = { inherit inputs; };
+              modules = [
+                (import ./hosts { role = "imageSDCard"; })
+              ];
+            };
 
-            ];
-          };
-
-          # gnome image
-          nixosConfigurations.imageGnome = nixpkgs.lib.nixosSystem {
-            specialArgs = { inherit inputs; };
-            modules = [ ./hosts/imageGnome.nix ];
-          };
-
-          # minimal image
-          nixosConfigurations.imageMinimal = nixpkgs.lib.nixosSystem {
-            specialArgs = { inherit inputs; };
-            modules = [ ./hosts/imageMinimal.nix ];
           };
 
           # nix-on-droid configuration
@@ -172,7 +188,7 @@
               inherit (colors.lib) colors;
             };
             pkgs = import nixpkgs { system = "aarch64-linux"; };
-            modules = [ ./hosts/droid.nix ];
+            modules = [ (import ./hosts { role = "droid"; }) ];
           };
         };
     };

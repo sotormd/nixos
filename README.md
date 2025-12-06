@@ -95,8 +95,8 @@ See [Features](#features) for all features.
 
 # Images
 
-Two images: `minimal` and `gnome` are included (for installation, recovery,
-etc.)
+Three images: `minimal`, `gnome` and `sdcard` are included (for installation,
+recovery, etc.)
 
 These images have experimental features `flakes` and `nix-command` enabled.
 

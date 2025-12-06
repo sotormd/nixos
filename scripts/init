@@ -26,9 +26,9 @@ PERSIST_DIR="${NIXOS_ROOT_MOUNT}/persist"
 PERSIST_DIR_ROOT="$PERSIST_DIR/root"
 PERSIST_DIR_HOME="$PERSIST_DIR_ROOT/home/$USER"
 
-#################
-# HWARDWARE INIT
-#################
+################
+# HARDWARE INIT
+################
 
 if [ "$1" == "hardware" ]; then
 
@@ -188,8 +188,8 @@ elif [ "$1" == "disks" ]; then
 
 elif [ "$1" == "clone" ]; then
 
-    if ! [ "$ROLE" == "laptop" ]; then
-        echo "Error: unexpected role $ROLE" >&2
+    if ! [[ "$NIXOS_ROLE" =~ ^(server|laptop)$ ]]; then
+        echo "Error: unexpected role $NIXOS_ROLE" >&2
         exit 1
     fi
 
@@ -208,13 +208,6 @@ elif [ "$1" == "vars" ]; then
         exit 0
     fi
 
-    : "${BOOT:?Please set BOOT (e.g. /dev/disk/by-partuuid/xxx)}"
-    echo "BOOT=$BOOT"
-    : "${SWAP:?Please set SWAP (e.g. /dev/disk/by-partuuid/xxx)}"
-    echo "SWAP=$SWAP"
-    : "${ROOT:?Please set ROOT (e.g. /dev/disk/by-partuuid/xxx)}"
-    echo "ROOT=$ROOT"
-
     mkdir -p $VARS_DIR
 
     if [ -f "$VARS" ] && [[ "$2" != "replace" ]]; then
@@ -226,6 +219,13 @@ elif [ "$1" == "vars" ]; then
     fi
 
     if [ "$ROLE" == "laptop" ]; then
+
+        : "${BOOT:?Please set BOOT (e.g. /dev/disk/by-partuuid/xxx)}"
+        echo "BOOT=$BOOT"
+        : "${SWAP:?Please set SWAP (e.g. /dev/disk/by-partuuid/xxx)}"
+        echo "SWAP=$SWAP"
+        : "${ROOT:?Please set ROOT (e.g. /dev/disk/by-partuuid/xxx)}"
+        echo "ROOT=$ROOT"
 
         # check environment variables for vars
         if [ -z "$VARS_DEVICE_HOSTNAME" ]; then
