@@ -973,7 +973,8 @@ configuration can be found [here](../modules/server/network/firewall.nix).
 
 ### Encryption
 
-LUKS encryption with a passphrase is used on the root partition.
+LUKS encryption with a passphrase is used on the root partition, as covered in
+the [Partitioning Disks](#partitioning-disks) section.
 
 ### Secure Boot
 
@@ -981,10 +982,13 @@ Secure boot is enabled using the
 [lanzaboote](https://github.com/nix-community/lanzaboote) project, ensuring that
 only signed modules are loaded.
 
+See the [Setting up Secure Boot](#setting-up-secure-boot) section for setup
+instructions.
+
 ### Auditing
 
 The Linux auditing subsystem is enabled and rules have been set, following some
-STIGs.
+reasonable STIGs.
 
 The full list of rules can be found [here](../modules/common/audit/).
 
@@ -1022,7 +1026,7 @@ The `laptop` role uses the Unbound DNS server installed on the `server` role.
 The hardened DNS server configuration lives
 [here](../modules/server/unbound/settings.nix).
 
-The fallback DNS server is Cloudflare's `1.1.1.1` and `1.0.0.1`.
+The fallback DNS servers are Cloudflare's `1.1.1.1` and `1.0.0.1`.
 
 ### Search Engine
 
@@ -1038,11 +1042,22 @@ The fallback search engine is `DuckDuckGo`.
 
 ### Passwords & Secrets
 
-The `laptop` role uses the Vaultwarden password manager installed on the
-`server` role via the Bitwarden extension on the Brave Browser.
+The `laptop` role uses the Vaultwarden password manager (installed on the
+`server` role) via the Bitwarden extension on the Brave Browser.
 
 Secrets related to the NixOS system are stored securely by
-[sops-nix](http://github.com/Mic92/sops-nix).
+[sops-nix](http://github.com/Mic92/sops-nix) using GPG keys.
+
+To edit sops-nix secrets:
+
+```bash
+nixos edit sops
+```
+
+These secrets are available to under `/run/secrets` after system activation and
+are stored encrypted in the world-readable `/nix/store`.
+
+These secrets are not tracked by git.
 
 ### SSH
 
