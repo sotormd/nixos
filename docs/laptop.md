@@ -18,9 +18,10 @@ Personal laptop configuration.
 1. [Using the Sway desktop](#using-the-sway-desktop)
 2. [System Maintenance](#system-maintenance)
 3. [Adding External Disks](#adding-external-disks)
-4. [Security & Privacy](#security--privacy)
-5. [Browsers](#browsers)
-6. [Virtualisation & Containers](#virtualisation--containers)
+4. [Browsers](#browsers)
+5. [Virtualisation & Containers](#virtualisation--containers)
+
+[Security & Privacy](#security--privacy)
 
 # Setup
 
@@ -814,8 +815,16 @@ outputs.
 
 Routine tasks such as updating the flake, switching configurations,
 garbage-collecting, repairing the Nix store, and editing variables & secrets are
-handled through the unified `nixos` helper script. See
-[scripts.md](./scripts.md) for the full command reference and workflow examples.
+handled through the unified `nixos` helper script.
+
+To see all commands:
+
+```bash
+nixos help
+```
+
+See [scripts.md](./scripts.md) for the full command reference and workflow
+examples.
 
 ## Adding External Disks
 
@@ -952,158 +961,6 @@ This prevents aggressive head parking and increases drive longevity.
 | **Encrypted (LUKS)**  | `device.luks`   | Creates crypttab entries + mapper mounts |
 | **hdparm tuning**     | `device.hdparm` | Generates systemd services per drive     |
 
-## Security & Privacy
-
-Several security and privacy oriented decisions were made while writing the
-included modules.
-
-This section is a non-exhaustive list of such decisions.
-
-Note that several privacy features depend on the `server` role, so disabling
-`network.server.enable` in the variables file will rob you of these benefits.
-
-### Firewall
-
-The NixOS firewall is used with all ports closed, and all interfaces untrusted
-by default. This configuration can be found
-[here](../modules/common/network/firewall.nix).
-
-Only the `server` role has ports open, based on the running services. The server
-configuration can be found [here](../modules/server/network/firewall.nix).
-
-### Encryption
-
-LUKS encryption with a passphrase is used on the root partition, as covered in
-the [Partitioning Disks](#partitioning-disks) section.
-
-### Secure Boot
-
-Secure boot is enabled using the
-[lanzaboote](https://github.com/nix-community/lanzaboote) project, ensuring that
-only signed modules are loaded.
-
-See the [Setting up Secure Boot](#setting-up-secure-boot) section for setup
-instructions.
-
-### Auditing
-
-The Linux auditing subsystem is enabled and rules have been set, following some
-reasonable STIGs.
-
-The full list of rules can be found [here](../modules/common/audit/).
-
-### Firejail
-
-The firejail SUID sandbox is used to sandbox the [browsers](#browsers).
-
-All the firejail wrappers are run with `--nonewprivs` to mitigate
-vulnerabilities arising from firejail using SUID.
-
-### Kernel
-
-The `linux-hardened` kernel is used.
-
-Several [kernel parameters](../modules/common/boot/params.nix),
-[sysctl options](../modules/common/boot/sysctl.nix) and
-[module blacklists](../modules/common/boot/blacklist.nix) are put in place to
-ensure better baseline security.
-
-These options are heavily based on
-[this](https://madaidans-insecurities.github.io/guides/linux-hardening.html)
-article by Madaidan's Insecurities.
-
-### Nix Package Manager
-
-The Nix package manager is set to download only cryptographically signed
-binaries.
-
-Furthermore, only members of the `wheel` group can use the Nix package manager.
-
-### DNS
-
-The `laptop` role uses the Unbound DNS server installed on the `server` role.
-
-The hardened DNS server configuration lives
-[here](../modules/server/unbound/settings.nix).
-
-The fallback DNS servers are Cloudflare's `1.1.1.1` and `1.0.0.1`.
-
-### Search Engine
-
-The `laptop` role uses the SearXNG metasearch engine installed on the `server`
-role via the Brave Browser.
-
-This preserves user privacy while ensuring good quality results.
-
-The list of search engines that SearXNG uses by default live
-[here](../modules/server/searxng/engines.nix).
-
-The fallback search engine is `DuckDuckGo`.
-
-### Passwords & Secrets
-
-The `laptop` role uses the Vaultwarden password manager (installed on the
-`server` role) via the Bitwarden extension on the Brave Browser.
-
-Secrets related to the NixOS system are stored securely by
-[sops-nix](http://github.com/Mic92/sops-nix) using GPG keys.
-
-To edit sops-nix secrets:
-
-```bash
-nixos edit sops
-```
-
-These secrets are available under `/run/secrets` after system activation and are
-stored encrypted in the world-readable `/nix/store`.
-
-These secrets are not tracked by git.
-
-### SSH
-
-The ssh daemon is disabled on the `laptop` role.
-
-On the `server` role, it uses a hardened configuration that lives
-[here](../modules/server/ssh/).
-
-The server ssh port that the laptop accesses is set in the variables file under
-`network.server.ssh.port`. To edit the variables file:
-
-```bash
-nixos edit vars
-```
-
-### Anonymity
-
-#### I2P
-
-The included `i2p-browser` allows users to browse the
-[I2P](https://geti2p.net/en/) network.
-
-The included bittorrent client on the `server` role, also uses the I2P network.
-
-#### Tor
-
-The included `tor-browser` allows users to browse the
-[Tor](https://www.torproject.org/) network.
-
-The included `oniux` executable allows for kernel level tor isolation for any
-linux app.
-
-### Impermanence
-
-The `laptop` role uses zfs snapshots and bind mounts to ensure opt-in
-persistance.
-
-This ensures that only the required files and directories persist across
-reboots.
-
-This is accomplished by rolling back the `rpool/root` and `rpool/home` datasets
-to their blank snapshots every boot.
-
-The impermanence configuration, including the list of persisted directories can
-be found [here](../modules/laptop/impermanence/).
-
 ## Browsers
 
 Two web browsers, `brave` and `i2p-browser` are included.
@@ -1222,3 +1079,155 @@ This way, you can manage snapshots using ZFS as well:
 sudo zfs snapshot rpool/vm-example-disk@snap1
 sudo zfs rollback rpool/vm-example-disk@snap1
 ```
+
+# Security & Privacy
+
+Several security and privacy oriented decisions were made while writing the
+included modules.
+
+This section is a non-exhaustive list of such decisions.
+
+Note that several privacy features depend on the `server` role, so disabling
+`network.server.enable` in the variables file will rob you of these benefits.
+
+## Encryption
+
+LUKS encryption with a passphrase is used on the root partition, as covered in
+the [Partitioning Disks](#partitioning-disks) section.
+
+## Secure Boot
+
+Secure boot is enabled using the
+[lanzaboote](https://github.com/nix-community/lanzaboote) project, ensuring that
+only signed modules are loaded.
+
+See the [Setting up Secure Boot](#setting-up-secure-boot) section for setup
+instructions.
+
+## Impermanence
+
+The `laptop` role uses zfs snapshots and bind mounts to ensure opt-in
+persistance.
+
+This ensures that only the required files and directories persist across
+reboots.
+
+This is accomplished by rolling back the `rpool/root` and `rpool/home` datasets
+to their blank snapshots every boot.
+
+The impermanence configuration, including the list of persisted directories can
+be found [here](../modules/laptop/impermanence/).
+
+## Kernel
+
+The `linux-hardened` kernel is used.
+
+Several [kernel parameters](../modules/common/boot/params.nix),
+[sysctl options](../modules/common/boot/sysctl.nix) and
+[module blacklists](../modules/common/boot/blacklist.nix) are put in place to
+ensure better baseline security.
+
+These options are heavily based on
+[this](https://madaidans-insecurities.github.io/guides/linux-hardening.html)
+article by Madaidan's Insecurities.
+
+## Auditing
+
+The Linux auditing subsystem is enabled and rules have been set, following some
+reasonable STIGs.
+
+The full list of rules can be found [here](../modules/common/audit/).
+
+## Firewall
+
+The NixOS firewall is used with all ports closed, and all interfaces untrusted
+by default. This configuration can be found
+[here](../modules/common/network/firewall.nix).
+
+Only the `server` role has ports open, based on the running services. The server
+configuration can be found [here](../modules/server/network/firewall.nix).
+
+## Firejail
+
+The firejail SUID sandbox is used to sandbox the [browsers](#browsers).
+
+All the firejail wrappers are run with `--nonewprivs` to mitigate
+vulnerabilities arising from firejail using SUID.
+
+## Nix Package Manager
+
+The Nix package manager is set to download only cryptographically signed
+binaries.
+
+Furthermore, only members of the `wheel` group can use the Nix package manager.
+
+## Passwords & Secrets
+
+The `laptop` role uses the Vaultwarden password manager (installed on the
+`server` role) via the Bitwarden extension on the Brave Browser.
+
+Secrets related to the NixOS system are stored securely by
+[sops-nix](http://github.com/Mic92/sops-nix) using GPG keys.
+
+To edit sops-nix secrets:
+
+```bash
+nixos edit sops
+```
+
+These secrets are available under `/run/secrets` after system activation and are
+stored encrypted in the world-readable `/nix/store`.
+
+These secrets are not tracked by git.
+
+## DNS
+
+The `laptop` role uses the Unbound DNS server installed on the `server` role.
+
+The hardened DNS server configuration lives
+[here](../modules/server/unbound/settings.nix).
+
+The fallback DNS servers are Cloudflare's `1.1.1.1` and `1.0.0.1`.
+
+## Search Engine
+
+The `laptop` role uses the SearXNG metasearch engine installed on the `server`
+role via the Brave Browser.
+
+This preserves user privacy while ensuring good quality results.
+
+The list of search engines that SearXNG uses by default live
+[here](../modules/server/searxng/engines.nix).
+
+The fallback search engine is `DuckDuckGo`.
+
+## SSH
+
+The ssh daemon is disabled on the `laptop` role.
+
+On the `server` role, it uses a hardened configuration that lives
+[here](../modules/server/ssh/).
+
+The server ssh port that the laptop accesses is set in the variables file under
+`network.server.ssh.port`. To edit the variables file:
+
+```bash
+nixos edit vars
+```
+
+## Anonymity
+
+### I2P
+
+The included `i2p-browser` allows users to browse the
+[I2P](https://geti2p.net/en/) network.
+
+The included bittorrent client on the `server` role, also uses the I2P network.
+
+### Tor
+
+The included `tor-browser` allows users to browse the
+[Tor](https://www.torproject.org/) network.
+
+The included `oniux` executable allows for kernel level tor isolation for any
+linux app.
