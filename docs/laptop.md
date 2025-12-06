@@ -1054,8 +1054,8 @@ To edit sops-nix secrets:
 nixos edit sops
 ```
 
-These secrets are available to under `/run/secrets` after system activation and
-are stored encrypted in the world-readable `/nix/store`.
+These secrets are available under `/run/secrets` after system activation and are
+stored encrypted in the world-readable `/nix/store`.
 
 These secrets are not tracked by git.
 
