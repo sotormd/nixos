@@ -28,7 +28,10 @@ jobs:
       # -----------------------------------------------------
       - name: Build sdcard image
         run: |
-          nix build github:sotormd/nixos#nixosConfigurations.imageSDCard.config.system.build.sdImage
+          nix build \
+            --extra-platforms aarch64-linux \
+            --option system aarch64-linux \
+            github:sotormd/nixos#nixosConfigurations.imageSDCard.config.system.build.sdImage
 
           SD_SRC=$(echo result/sd-image/*.img.zst)
           SD_DST="nixos-sdcard-${{ steps.ts.outputs.ts }}.img.zst"
