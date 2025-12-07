@@ -83,15 +83,15 @@ See [Features](#features) for all features.
 
 1. `laptop` role: Laptop configuration
 
-   [Docs](./docs/laptop.md)
+   [Setup & Usage Documentation](./docs/laptop.md)
 
 2. `server` role: Headless home server configuration
 
-   [Docs](./docs/server.md)
+   [Setup & Usage Documentation](./docs/server.md)
 
 3. `droid` role: nix-on-droid configuration
 
-   [Docs](./docs/droid.md)
+   [Setup & Usage Documentation](./docs/droid.md)
 
 # Images
 
