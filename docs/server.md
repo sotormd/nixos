@@ -495,6 +495,9 @@ The NixOS firewall is used with all ports closed, and all interfaces untrusted
 by default. This configuration can be found
 [here](../modules/common/network/firewall.nix).
 
+The firewall uses `iptables` (*`iptables-nft`) with the modern `nf_tables`
+backend.
+
 Ports are opened based on the running services.
 
 The server firewall configuration can be found

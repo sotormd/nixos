@@ -72,6 +72,7 @@ See [images](./docs/images.md) for more details.
 | filesystem                    | `zfs`                                                    |
 | networking                    | `wpa_supplicant`                                         |
 | dns                           | `unbound`                                                |
+| firewall                      | `iptables (nf_tables)`                                   |
 | audio                         | `pipewire`                                               |
 | web server                    | `nginx`                                                  |
 | media server                  | `jellyfin`                                               |
