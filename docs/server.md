@@ -265,7 +265,9 @@ I2PD is a router for the I2P network.
 
 Enabled using `vars.network.i2pd.enable`.
 
-Exposes one port to the loopback interface: `vars.network.i2pd.webconsole.port`.
+Exposes three ports to the loopback interface:
+`vars.network.i2pd.webconsole.port` `vars.network.i2pd.socksProxy.port`
+`vars.network.i2pd.sam.port`.
 
 Exposes one port to `vars.network.range`: `vars.network.i2pd.httpProxy.port`.
 
