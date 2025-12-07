@@ -29,6 +29,7 @@ github actions
    nix run nixpkgs#nixos-generators -- \
    --format iso \
    --flake github:sotormd/nixos#imageMinimal \
+   --disk-size 2G
    -o /tmp/minimal-image
    ```
 
@@ -40,6 +41,7 @@ github actions
    nix run nixpkgs#nixos-generators -- \
    --format iso \
    --flake github:sotormd/nixos#imageGnome \
+   --disk-size 2G
    -o /tmp/gnome-image
    ```
 

@@ -31,6 +31,7 @@ jobs:
           nix run nixpkgs#nixos-generators -- \
             --format iso \
             --flake github:sotormd/nixos#imageMinimal \
+            --disk-size 2G
             -o /tmp/minimal-image
 
           MIN_SRC=$(echo /tmp/minimal-image/iso/*.iso)
@@ -45,6 +46,7 @@ jobs:
           nix run nixpkgs#nixos-generators -- \
             --format iso \
             --flake github:sotormd/nixos#imageGnome \
+            --disk-size 2G
             -o /tmp/gnome-image
 
           GNOME_SRC=$(echo /tmp/gnome-image/iso/*.iso)
