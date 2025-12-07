@@ -21,6 +21,10 @@ As with all NixOS installation images, the username for the live session is
 
 1. `minimal` image
 
+   If you do not wish to build this image, you can get one from the
+   [Github Actions](https://github.com/sotormd/nixos/actions/workflows/build-minimal-iso.yml)
+   build artifacts.
+
    ```bash
    nix run nixpkgs#nixos-generators -- \
    --format iso \
@@ -31,6 +35,10 @@ As with all NixOS installation images, the username for the live session is
    The resultant image will be available inside `/tmp/minimal-image/iso/`.
 
 2. `gnome` image
+
+   If you do not wish to build this image, you can get one from the
+   [Github Actions](https://github.com/sotormd/nixos/actions/workflows/build-gnome-iso.yml)
+   build artifacts.
 
    ```bash
    nix run nixpkgs#nixos-generators -- \
