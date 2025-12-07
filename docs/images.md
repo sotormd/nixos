@@ -19,10 +19,6 @@ As with all NixOS installation images, the username for the live session is
 
 # Usage
 
-If you do not wish to build them yourself, you can use the images built using
-github actions
-[here](https://github.com/sotormd/nixos/actions/workflows/build-isos.yml).
-
 1. `minimal` image
 
    ```bash
