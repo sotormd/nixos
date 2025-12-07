@@ -19,7 +19,7 @@ cat <<EOF
 ${bold}${blue}NixOS Flake Helper${reset}
 ==================
 
-${bold}${underline}Usage:${reset}
+${bold}${underline}Usage${reset}
   ${green}nixos${reset} [${cyan}command${reset}] [${yellow}args${reset}]
 
 ${dim}When run with no command, equivalent to:${reset}
@@ -30,7 +30,6 @@ the command is dispatched to \$NIXOS_DIR.${reset}
   ${magenta}\$ nixos vi modules/common/firewall.nix${reset}
 
 ${bold}${underline}Commands${reset}
---------
 
 ${bold}${yellow}  test${reset}
   ${dim}roles:${reset} laptop, server
