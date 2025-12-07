@@ -43,6 +43,9 @@ See [Features](#features) for all features.
 
 # Images
 
+[![Build Minimal ISO](https://github.com/sotormd/nixos/actions/workflows/build-minimal-iso.yml/badge.svg)](https://github.com/sotormd/nixos/actions/workflows/build-minimal-iso.yml)
+[![Build GNOME ISO](https://github.com/sotormd/nixos/actions/workflows/build-gnome-iso.yml/badge.svg)](https://github.com/sotormd/nixos/actions/workflows/build-gnome-iso.yml)
+
 Three images: `minimal`, `gnome` and `sdcard` are included (for installation,
 recovery, etc.)
 
