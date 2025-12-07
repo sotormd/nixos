@@ -22,10 +22,33 @@ See [Features](#features) for all features.
 
 # Contents
 
-1. [Features](#features)
-2. [Setup & Usage](#setup--usage)
-3. [Images](#images)
+1. [Setup & Usage](#setup--usage)
+2. [Images](#images)
+3. [Features](#features)
 4. [nixos: Flake Helper](#nixos-flake-helper)
+
+# Setup & Usage
+
+1. `laptop` role: Laptop configuration
+
+   [Setup & Usage Documentation](./docs/laptop.md)
+
+2. `server` role: Headless home server configuration
+
+   [Setup & Usage Documentation](./docs/server.md)
+
+3. `droid` role: nix-on-droid configuration
+
+   [Setup & Usage Documentation](./docs/droid.md)
+
+# Images
+
+Three images: `minimal`, `gnome` and `sdcard` are included (for installation,
+recovery, etc.)
+
+These images have experimental features `flakes` and `nix-command` enabled.
+
+See [images](./docs/images.md) for more details.
 
 # Features
 
@@ -78,29 +101,6 @@ See [Features](#features) for all features.
 | resource monitor              | `btop` `htop`                                            |
 | clipboard                     | `cliphist`                                               |
 | screenshots                   | `grimshot`                                               |
-
-# Setup & Usage
-
-1. `laptop` role: Laptop configuration
-
-   [Setup & Usage Documentation](./docs/laptop.md)
-
-2. `server` role: Headless home server configuration
-
-   [Setup & Usage Documentation](./docs/server.md)
-
-3. `droid` role: nix-on-droid configuration
-
-   [Setup & Usage Documentation](./docs/droid.md)
-
-# Images
-
-Three images: `minimal`, `gnome` and `sdcard` are included (for installation,
-recovery, etc.)
-
-These images have experimental features `flakes` and `nix-command` enabled.
-
-See [images](./docs/images.md) for more details.
 
 # `nixos` Flake Helper
 
