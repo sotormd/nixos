@@ -10,11 +10,11 @@
     "mymemory translated".disabled = true;
 
     # general > web
-    "brave".disabled = false;
     "duckduckgo".disabled = false;
     "google".disabled = false;
 
     "bing".disabled = true;
+    "brave".disabled = true;
     "qwant".disabled = true;
     "startpage".disabled = true;
     "wiby".disabled = true;
