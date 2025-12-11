@@ -94,10 +94,10 @@ Bootstrap process for the `laptop` role.
 
    ```bash
    export NIXOS_DISKS_DRY_RUN=false
-   nix run github:sotormd/nixos#init -- disks boot
-   nix run github:sotormd/nixos#init -- disks swap
-   nix run github:sotormd/nixos#init -- disks root
-   nix run github:sotormd/nixos#init -- disks mount
+   nix run github:sotormd/nixos -- init disks boot
+   nix run github:sotormd/nixos -- init disks swap
+   nix run github:sotormd/nixos -- init disks root
+   nix run github:sotormd/nixos -- init disks mount
    ```
 
    Or alternatively, format and mount the partitions manually by following
@@ -206,7 +206,7 @@ Bootstrap process for the `laptop` role.
 2. Clone this flake.
 
    ```bash
-   nix run github:sotormd/nixos#init -- clone
+   nix run github:sotormd/nixos -- init clone
    ```
 
    The flake will be cloned to `$NIXOS_ROOT_MOUNT$NIXOS_DIR`.
@@ -214,8 +214,8 @@ Bootstrap process for the `laptop` role.
 3. Initialize variables and secrets.
 
    ```bash
-   nix run github:sotormd/nixos#init -- vars
-   nix run github:sotormd/nixos#init -- sops
+   nix run github:sotormd/nixos -- init vars
+   nix run github:sotormd/nixos -- init sops
    ```
 
    Variables and secrets can be configured through environment variables while
@@ -225,8 +225,8 @@ Bootstrap process for the `laptop` role.
 4. Edit variables and secrets.
 
    ```bash
-   nix run github:sotormd/nixos#init -- vars edit
-   nix run github:sotormd/nixos#init -- sops edit
+   nix run github:sotormd/nixos -- init vars edit
+   nix run github:sotormd/nixos -- init sops edit
    ```
 
    Make sure all variables and secrets are properly defined.
@@ -234,7 +234,7 @@ Bootstrap process for the `laptop` role.
 5. Install NixOS
 
    ```bash
-   nix run github:sotormd/nixos#init -- install
+   nix run github:sotormd/nixos -- init install
    ```
 
 6. Finish installation.

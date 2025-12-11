@@ -33,6 +33,12 @@ so running
 nix run $NIXOS_DIR -- switch
 ```
 
+or
+
+```bash
+nix run github:sotormd/nixos -- switch
+```
+
 is equivalent to
 
 ```bash
