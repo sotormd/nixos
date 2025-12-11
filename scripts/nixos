@@ -19,16 +19,22 @@ fi
 
 set -e
 
-DIR=$NIXOS_DIR
-ROLE=$NIXOS_ROLE
+DIR="$NIXOS_DIR"
+ROLE="$NIXOS_ROLE"
+
+if [ -z "$NIXOS_SCRIPTS_DIR" ]; then
+    SCRIPTS="$DIR/scripts"
+else
+    SCRIPTS="$NIXOS_SCRIPTS_DIR"
+fi
 
 # print directory tree when run with no arguments
 if [ $# -eq 0 ]; then
         cmd=("tree" "$DIR" "--filesfirst")
 
 # run scripts
-elif [ -f "$DIR/scripts/$1" ]; then
-	cmd=("$DIR/scripts/$1" "${@:2}")
+elif [ -f "$SCRIPTS/$1" ]; then
+	cmd=("$SCRIPTS/$1" "${@:2}")
 
 # run commands
 else
