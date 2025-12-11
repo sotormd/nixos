@@ -54,7 +54,7 @@ Bootstrap process for the `server` role.
 3. Clone the flake.
 
    ```bash
-   nix run github:sotormd/nixos#init -- clone
+   nix run github:sotormd/nixos -- init clone
    ```
 
    The flake will be cloned to `$NIXOS_DIR`.
@@ -62,8 +62,8 @@ Bootstrap process for the `server` role.
 4. Initialize variables & secrets.
 
    ```bash
-   nix run github:sotormd/nixos#init -- vars
-   nix run github:sotormd/nixos#init -- sops
+   nix run github:sotormd/nixos -- init vars
+   nix run github:sotormd/nixos -- init sops
    ```
 
    Variables and secrets can be configured through environment variables while
@@ -73,8 +73,8 @@ Bootstrap process for the `server` role.
 5. Edit variables & secrets.
 
    ```bash
-   nix run github:sotormd/nixos#init -- vars edit
-   nix run github:sotormd/nixos#init -- sops edit
+   nix run github:sotormd/nixos -- init vars edit
+   nix run github:sotormd/nixos -- init sops edit
    ```
 
    Ensure all variables and secrets are properly defined.
@@ -82,7 +82,7 @@ Bootstrap process for the `server` role.
 6. Switch to the new configuration.
 
    ```bash
-   $NIXOS_DIR/scripts/nixos switch
+   nix run github:sotormd/nixos -- switch
    ```
 
 7. Reboot.

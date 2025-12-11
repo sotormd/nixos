@@ -86,20 +86,9 @@
           # scripts as a package
           packages.default =
             let
-              nixosScript = builtins.readFile ./scripts/nixos;
+              nixos = import ./modules/common/scripts/bin.nix { inherit pkgs; };
             in
-            pkgs.writeShellScriptBin "nixos-from-flake" nixosScript;
-
-          # for initial setup
-          packages.init =
-            let
-              initScriptFile = ./scripts/init;
-            in
-            pkgs.writeShellScriptBin "init-from-flake" ''
-              #! ${pkgs.runtimeShell}
-
-              ${initScriptFile} "$@"
-            '';
+            nixos.nixosWrapper;
         };
 
       flake =

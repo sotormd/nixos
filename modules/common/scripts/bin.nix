@@ -1,4 +1,4 @@
-{ pkgs, vars, ... }:
+{ pkgs, ... }:
 
 let
   scriptNames = [
@@ -6,6 +6,8 @@ let
     "switch"
     "commit"
     "update"
+    "purge"
+    "edit"
     "perms"
     "format"
     "repair"
@@ -31,7 +33,8 @@ let
   };
 
   nixosScriptRaw = pkgs.writeShellScriptBin "nixos" (builtins.readFile ../../../scripts/nixos);
-
+in
+{
   nixosWrapper = pkgs.writeShellScriptBin "nixos" ''
     #! ${pkgs.runtimeShell}
 
@@ -39,9 +42,4 @@ let
 
     ${nixosScriptRaw}/bin/nixos "$@"
   '';
-in
-{
-  users.users.${vars.user.name}.packages = [
-    nixosWrapper
-  ];
 }
