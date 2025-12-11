@@ -24,8 +24,8 @@ See [Features](#features) for all features.
 
 1. [Setup & Usage](#setup--usage)
 2. [Images](#images)
-3. [Features](#features)
-4. [nixos: Flake Helper](#nixos-flake-helper)
+3. [nixos: Flake Helper](#nixos-flake-helper)
+4. [Features](#features)
 
 # Setup & Usage
 
@@ -53,6 +53,21 @@ recovery, etc.)
 These images have experimental features `flakes` and `nix-command` enabled.
 
 See [images](./docs/images.md) for more details.
+
+# `nixos` Flake Helper
+
+Routine tasks such as updating the flake, switching configurations,
+garbage-collecting, repairing the Nix store, and editing variables & secrets are
+handled through the unified `nixos` helper script.
+
+To see all commands:
+
+```bash
+nixos help
+```
+
+See [scripts](./docs/scripts.md) for the full command reference and workflow
+examples.
 
 # Features
 
@@ -106,18 +121,3 @@ See [images](./docs/images.md) for more details.
 | resource monitor              | `btop` `htop`                                            |
 | clipboard                     | `cliphist`                                               |
 | screenshots                   | `grimshot`                                               |
-
-# `nixos` Flake Helper
-
-Routine tasks such as updating the flake, switching configurations,
-garbage-collecting, repairing the Nix store, and editing variables & secrets are
-handled through the unified `nixos` helper script.
-
-To see all commands:
-
-```bash
-nixos help
-```
-
-See [scripts](./scripts.md) for the full command reference and workflow
-examples.
