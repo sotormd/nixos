@@ -2,6 +2,7 @@
 
 [![Build Minimal ISO](https://github.com/sotormd/nixos/actions/workflows/build-minimal-iso.yml/badge.svg)](https://github.com/sotormd/nixos/actions/workflows/build-minimal-iso.yml)
 [![Build GNOME ISO](https://github.com/sotormd/nixos/actions/workflows/build-gnome-iso.yml/badge.svg)](https://github.com/sotormd/nixos/actions/workflows/build-gnome-iso.yml)
+[![Build SD Image](https://github.com/sotormd/nixos/actions/workflows/build-sdcard-image.yml/badge.svg)](https://github.com/sotormd/nixos/actions/workflows/build-sdcard-image.yml)
 
 Two images are offered for `x86_64-linux` architectures:
 
@@ -53,6 +54,10 @@ As with all NixOS installation images, the username for the live session is
    The resultant image will be available inside `/tmp/gnome-image/iso/`.
 
 3. `sdcard` image
+
+   If you do not wish to build this image, you can get one from the
+   [Github Actions](https://github.com/sotormd/nixos/actions/workflows/build-sdcard-image.yml)
+   build artifacts.
 
    ```bash
    nix build github:sotormd/nixos#nixosConfigurations.imageSDCard.config.system.build.sdImage
