@@ -45,7 +45,7 @@ jobs:
           nix build github:sotormd/nixos#nixosConfigurations.imageSDCard.config.system.build.sdImage
 
           # Find the produced image (.img or .img.zst)
-          SRC=$(echo result/*.img*)
+          SRC=$(echo result/sd-image/*.img*)
 
           # Output file
           DST="nixos-sdcard-${{ steps.ts.outputs.ts }}.img"
