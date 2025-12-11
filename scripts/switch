@@ -1,10 +1,16 @@
 #! /usr/bin/env bash
 
+if [ -z "$NIXOS_SCRIPTS_DIR" ]; then
+    SCRIPTS="$DIR/scripts"
+else
+    SCRIPTS="$NIXOS_SCRIPTS_DIR"
+fi
+
 set -e
 
 (
     cd $NIXOS_DIR
-    scripts/format
+    $SCRIPTS/format
     git add .
     if [ "$NIXOS_ROLE" == "laptop" ]; then
         GIT_PAGER=cat git diff HEAD -- ':!vars/vars.nix' ':!vars/secrets.yaml' ':!.sops.yaml'

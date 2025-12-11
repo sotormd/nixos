@@ -7,6 +7,12 @@ if [ "$NIXOS_ROLE" != "laptop" ]; then
     exit 1
 fi
 
+if [ -z "$NIXOS_SCRIPTS_DIR" ]; then
+    SCRIPTS="$DIR/scripts"
+else
+    SCRIPTS="$NIXOS_SCRIPTS_DIR"
+fi
+
 message=""
 
 while [[ "$#" -gt 0 ]]; do
@@ -25,8 +31,8 @@ done
 
 (
     cd $NIXOS_DIR
-    scripts/format
-    scripts/perms
+    $SCRIPTS/format
+    $SCRIPTS/perms
     git add .
     GIT_PAGER=cat git diff HEAD -- ':!vars/vars.nix' ':!vars/secrets.yaml' ':!.sops.yaml'
 
