@@ -1,0 +1,63 @@
+name: Build SD Image
+
+on:
+  push:
+    paths:
+      - 'modules/images/**'
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      # -----------------------------------
+      # Checkout repo
+      # -----------------------------------
+      - uses: actions/checkout@v4
+
+      # -----------------------------------
+      # Enable QEMU for aarch64
+      # -----------------------------------
+      - uses: docker/setup-qemu-action@v3
+
+      # -----------------------------------
+      # Install Nix (with aarch64 support)
+      # -----------------------------------
+      - uses: DeterminateSystems/nix-installer-action@main
+        with:
+          extra-conf: |
+            extra-platforms = aarch64-linux
+
+      # -----------------------------------
+      # Generate timestamp
+      # -----------------------------------
+      - name: Generate timestamp
+        id: ts
+        run: echo "ts=$(date +%s)" >> $GITHUB_OUTPUT
+
+      # -----------------------------------
+      # Build SD card image
+      # -----------------------------------
+      - name: Build SD Card Image
+        run: |
+          # Build the SD image
+          nix build github:sotormd/nixos#nixosConfigurations.imageSDCard.config.system.build.sdImage
+
+          # Find the produced image (.img or .img.zst)
+          SRC=$(echo result/*.img*)
+
+          # Output file
+          DST="nixos-sdcard-${{ steps.ts.outputs.ts }}.img"
+
+          # Copy with new name
+          cp "$SRC" "$DST"
+
+      # -----------------------------------
+      # Upload artifact
+      # -----------------------------------
+      - name: Upload SD Card Image
+        uses: actions/upload-artifact@v4
+        with:
+          name: nixos-sdcard
+          path: nixos-sdcard-${{ steps.ts.outputs.ts }}.img
