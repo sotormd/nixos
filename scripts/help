@@ -23,7 +23,7 @@ ${bold}${underline}Usage${reset}
   ${green}nixos${reset} [${cyan}command${reset}] [${yellow}args${reset}]
 
 ${dim}When run with no command, equivalent to:${reset}
-  ${magenta}\$ nixos tree -I .git -I .local --filesfirst${reset}
+  ${magenta}\$ nixos tree --filesfirst${reset}
 
 ${dim}When run with a command not mentioned below,
 the command is dispatched to \$NIXOS_DIR.${reset}
@@ -52,13 +52,13 @@ ${bold}${yellow}  commit${reset}
     Switch to and commit the current configuration.
     Creates a boot entry and a Git commit.
 
-${bold}${yellow}  update${reset}
+${bold}${yellow}  update [inputs...]${reset}
   ${dim}roles:${reset} laptop, server
 
     ${green}\$ nixos update${reset}
     Update flake inputs in flake.lock.
     Equivalent to:
-      ${magenta}\$ nixos nix flake update${reset}
+      ${magenta}\$ nixos nix flake update [inputs]${reset}
 
 ${bold}${yellow}  format${reset}
   ${dim}roles:${reset} laptop, server

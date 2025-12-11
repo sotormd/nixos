@@ -109,33 +109,15 @@ See [images](./docs/images.md) for more details.
 
 # `nixos` Flake Helper
 
-Usage:
+Routine tasks such as updating the flake, switching configurations,
+garbage-collecting, repairing the Nix store, and editing variables & secrets are
+handled through the unified `nixos` helper script.
 
-`$ nixos [command] [args]`
+To see all commands:
 
-When run with **no command**, equivalent to:
+```bash
+nixos help
+```
 
-`$ nixos tree -I .git -I .local --filesfirst`
-
-When run with a command not listed below, the command is dispatched to
-`$NIXOS_DIR`:
-
-`$ nixos vi modules/common/firewall.nix`
-
-## Commands
-
-| Command             | `laptop` | `server` | Description                                                                                                     |
-| ------------------- | -------- | -------- | --------------------------------------------------------------------------------------------------------------- |
-| `test`              | ✔        | ✔        | <br>`$ nixos test` <br>Test the current configuration. Does **not** create a boot entry.                        |
-| `switch`            | ✔        | ✔        | <br>`$ nixos switch` <br>Switch to the current configuration. Creates a boot entry.                             |
-| `commit`            | ✔        | ✘        | <br>`$ nixos commit` <br>Switch to and commit the current configuration. Creates a boot entry and a Git commit. |
-| `update`            | ✔        | ✔        | <br>`$ nixos update` <br>Update flake inputs in `flake.lock`.                                                   |
-| `format`            | ✔        | ✔        | <br>`$ nixos format` <br>Format the flake using nixfmt.                                                         |
-| `perms`             | ✔        | ✔        | <br>`$ nixos perms` <br>Apply correct permissions to all files in the flake.                                    |
-| `purge`             | ✔        | ✔        | <br>`$ nixos purge` <br>Garbage collect old generations.                                                        |
-| `repair`            | ✔        | ✔        | <br>`$ nixos repair` <br>Attempt to repair the nix store.                                                       |
-| `edit <vars\|sops>` | ✔        | ✔        | <br>`$ nixos edit vars` <br>Edit variables file. <br><br>`$ nixos edit sops` <br>Edit sops-nix secrets.         |
-| `serverpush <path>` | ✔        | ✘        | <br>`$ nixos serverpush /nixos` <br>Push the flake to `server:/nixos`.                                          |
-| `help`              | ✔        | ✔        | <br>`$ nixos help` <br>Show this message and exit.                                                              |
-
-See [scripts](./docs/scripts.md) for some detailed examples.
+See [scripts](./scripts.md) for the full command reference and workflow
+examples.
