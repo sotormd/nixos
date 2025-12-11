@@ -8,7 +8,7 @@ if [ "$NIXOS_ROLE" != "laptop" ]; then
 fi
 
 if [ -z "$NIXOS_SCRIPTS_DIR" ]; then
-    SCRIPTS="$DIR/scripts"
+    SCRIPTS="$NIXOS_DIR/scripts"
 else
     SCRIPTS="$NIXOS_SCRIPTS_DIR"
 fi
