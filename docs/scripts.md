@@ -377,7 +377,7 @@ $ nixos switch
 It is _generally_ safe to pipe into and out of the included scripts:
 
 ```bash
-no | nixos test > /tmp/nixos-git-diff-output.txt
+yes n | nixos test > /tmp/nixos-git-diff-output.txt
 ```
 
 All the included scripts were written assuming that they will be called from the
