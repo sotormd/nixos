@@ -10,9 +10,13 @@
 
     home = "/home/${vars.user.name}";
     createHome = true;
+
+    uid = 1000;
   };
 
   users.groups = {
-    "${vars.user.name}" = { };
+    "${vars.user.name}" = {
+      gid = 1000;
+    };
   };
 }
