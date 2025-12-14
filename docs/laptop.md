@@ -54,7 +54,21 @@ Bootstrap process for the `laptop` role.
 
 1. Disable secure boot for installation. It can be enabled later.
 
-2. Boot into the live NixOS image and set the role.
+2. Boot into the live NixOS image.
+
+3. Connect to the internet.
+
+   ```bash
+   nmtui
+   ```
+
+4. Ensure a working internet connection.
+
+   ```bash
+   ping archlinux.org
+   ```
+
+5. Set the role.
 
    ```bash
    export NIXOS_ROLE=laptop
