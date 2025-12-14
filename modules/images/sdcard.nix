@@ -13,9 +13,21 @@
 
   nixpkgs.hostPlatform.system = "aarch64-linux";
 
+  users.users.root.initialHashedPassword = "";
+
   users.users.nixos = {
     isNormalUser = true;
     initialHashedPassword = "";
-    extraGroups = [ "wheel" ];
+    extraGroups = [
+      "wheel"
+      "networkmanager"
+    ];
   };
+
+  security.sudo = {
+    enable = true;
+    wheelNeedsPassword = false;
+  };
+
+  networking.networkmanager.enable = true;
 }
