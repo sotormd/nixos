@@ -12,4 +12,10 @@
   ];
 
   nixpkgs.hostPlatform.system = "aarch64-linux";
+
+  users.users.nixos = {
+    isNormalUser = true;
+    initialHashedPassword = "";
+    extraGroups = [ "wheel" ];
+  };
 }
