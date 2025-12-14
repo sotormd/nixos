@@ -586,10 +586,10 @@ Shows currently playing track.
 | Action           | Bind         |
 | ---------------- | ------------ |
 | Play / pause     | Left click   |
-| Stop             | Right click  |
+| Stop             | Middle click |
 | Next             | Scroll up    |
 | Previous         | Scroll down  |
-| Toggle animation | Middle click |
+| Toggle animation | Right click  |
 
 #### mode Module
 
