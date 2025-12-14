@@ -61,7 +61,9 @@ if [[ "$1" =~ ^(commit|format|init|perms|purge|switch|test|update)$ ]]; then
 fi
 
 (
-	cd $DIR || exit 1
+    if [ "$1" != "init" ]; then
+    	cd $DIR || exit 1
+    fi
 	"${cmd[@]}"
 )
 
