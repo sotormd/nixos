@@ -52,8 +52,8 @@
             "interval": 1,
             "max-length": 70,
             "on-click": "${pkgs.playerctl}/bin/playerctl play-pause",
-            "on-click-middle": "FILE=\"/tmp/waybar-noanimation\"\n\nif [ -e \"$FILE\" ]; then\n  rm \"$FILE\"\nelse\n  touch \"$FILE\"\nfi\n",
-            "on-click-right": "${pkgs.playerctl}/bin/playerctl stop",
+            "on-click-right": "FILE=\"/tmp/waybar-noanimation\"\n\nif [ -e \"$FILE\" ]; then\n  rm \"$FILE\"\nelse\n  touch \"$FILE\"\nfi\n",
+            "on-click-middle": "${pkgs.playerctl}/bin/playerctl stop",
             "on-scroll-down": "${pkgs.playerctl}/bin/playerctl previous",
             "on-scroll-up": "${pkgs.playerctl}/bin/playerctl next",
             "return-type": "json"
