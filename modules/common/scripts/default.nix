@@ -5,6 +5,8 @@ let
 in
 {
   imports = [
+    ./dir.nix
+
     ./env.nix
   ];
 
