@@ -42,19 +42,22 @@ else
 fi
 
 if [[ "$1" =~ ^(commit|format|init|perms|purge|switch|test|update)$ ]]; then
-
     # ensure there is only one instance running
     LOCKFILE="/tmp/nixos-script.lock"
-    if [ -e "$LOCKFILE" ]; then
-        echo "Error: Another instance of the script is running." >&2
+
+    # open lockfile on fd 9
+    exec 9>"$LOCKFILE" || {
+        echo "Error: cannot open lockfile $LOCKFILE" >&2
+        exit 1
+    }
+
+    # acquire exclusive non-blocking lock
+    if ! flock -n 9; then
+        echo "Error: another instance of the script is running." >&2
         exit 1
     fi
 
-    # create lockfile
-    touch "$LOCKFILE"
-
-    # ensure deletion of lockfile on exit
-    trap 'rm -f "$LOCKFILE"' EXIT
+    # lock is automatically released when fd 9 is closed on exit
 fi
 
 (
