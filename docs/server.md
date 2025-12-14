@@ -9,7 +9,8 @@ Personal home-server configuration.
 [Setup](#setup)
 
 1. [Obtaining a NixOS Image](#obtaining-a-nixos-image)
-2. [Applying Configuration](#applying-configuration)
+2. [Preparing the Device](#preparing-the-device)
+3. [Applying Configuration](#applying-configuration)
 
 [Usage](#usage)
 
@@ -40,18 +41,32 @@ Bootstrap process for the `server` role.
 
 2. Write the generated image to a sd-card using `dd` or any equivalent tool.
 
-## Applying Configuration
+## Preparing the Device
 
 1. Boot into the newly created sd-card image on the target device.
 
-2. Set basic environment variables.
+2. Connect to the internet.
+
+   ```bash
+   nmtui
+   ```
+
+3. Ensure a working internet connection.
+
+   ```bash
+   ping archlinux.org
+   ```
+
+## Applying Configuration
+
+1. Set basic environment variables.
 
    ```bash
    export NIXOS_ROLE=server
    export NIXOS_DIR=/nixos
    ```
 
-3. Clone the flake.
+2. Clone the flake.
 
    ```bash
    nix run github:sotormd/nixos -- init clone
@@ -59,7 +74,7 @@ Bootstrap process for the `server` role.
 
    The flake will be cloned to `$NIXOS_DIR`.
 
-4. Initialize variables & secrets.
+3. Initialize variables & secrets.
 
    ```bash
    nix run github:sotormd/nixos -- init vars
@@ -70,7 +85,7 @@ Bootstrap process for the `server` role.
    bootstrapping, see [this](#environment-variables) list for all available
    environment variables.
 
-5. Edit variables & secrets.
+4. Edit variables & secrets.
 
    ```bash
    nix run github:sotormd/nixos -- init vars edit
@@ -79,13 +94,13 @@ Bootstrap process for the `server` role.
 
    Ensure all variables and secrets are properly defined.
 
-6. Switch to the new configuration.
+5. Switch to the new configuration.
 
    ```bash
    nix run github:sotormd/nixos -- switch
    ```
 
-7. Reboot.
+6. Reboot.
 
    ```bash
    sudo reboot
