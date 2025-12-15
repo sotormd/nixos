@@ -6,11 +6,16 @@ Personal home-server configuration.
 
 # Contents
 
-[Setup](#setup)
+[Standalone Setup](#standalone-setup)
 
 1. [Obtaining a NixOS Image](#obtaining-a-nixos-image)
 2. [Preparing the Device](#preparing-the-device)
 3. [Applying Configuration](#applying-configuration)
+
+[Remote Setup From `laptop`](#remote-setup-from-laptop)
+
+1. [Obtaining a NixOS Image](#obtaining-a-nixos-image-1)
+2. [Installing NixOS](#installing-nixos)
 
 [Usage](#usage)
 
@@ -20,7 +25,7 @@ Personal home-server configuration.
 
 [Security & Privacy](#security--privacy)
 
-# Setup
+# Standalone Setup
 
 Bootstrap process for the `server` role.
 
@@ -32,7 +37,7 @@ Bootstrap process for the `server` role.
    One such images is included in this flake. To use the included image:
 
    ```bash
-   nix build github:sotormd/nixos#nixosConfigurations.imageSDCard.config.system.build.sdImage
+   nix build github:sotormd/nixos#nixosConfigurations.imageSD.config.system.build.sdImage
    ```
 
    The generated image will be available under `./result/sd-image/`.
@@ -169,6 +174,12 @@ in step 4.
 Ensure all variables and secrets are properly defined.
 
 </details>
+
+# Remote Setup From `laptop`
+
+## Obtaining a NixOS Image
+
+## Installing NixOS
 
 # Usage
 
