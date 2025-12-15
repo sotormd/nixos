@@ -11,7 +11,7 @@ Two images are offered for `x86_64-linux` architectures:
 
 One image is offered for `aarch64-linux` architectures:
 
-1. `sdcard`: NixOS for sdcard targets.
+1. `sdcard`: NixOS for sdcard targets (intended for raspberry-pi 4b).
 
 These images have experimental features `flakes` and `nix-command` enabled.
 
@@ -55,7 +55,23 @@ As with all NixOS installation images, the username for the live session is
 3. `sdcard` image
 
    ```bash
-   nix build github:sotormd/nixos#nixosConfigurations.imageSDCard.config.system.build.sdImage
+   nix build github:sotormd/nixos#nixosConfigurations.imageSD.config.system.build.sdImage
    ```
 
    The resultant image will be available inside `./result/sd-image/`.
+
+   To build an image for a remote install:
+
+   ```bash
+   export SSH_KEY="AAAA..."
+   export WIFI_SSID="myNetwork"
+   export WIFI_PSK="correct-horse-battery-staple"
+   export WIFI_GATEWAY=10.0.0.0
+   export WIFI_IP=10.0.0.100
+   nix build github:sotormd/nixos#nixosConfigurations.imageSDRemote.config.system.build.sdImage --impure
+   ```
+
+   > `--impure` is needed to access environment variables
+
+   Change the environment variables for your environment. The resultant image
+   will be available inside `./result/sd-image`.

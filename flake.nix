@@ -161,10 +161,18 @@
             };
 
             # sd card image
-            imageSDCard = nixpkgs.lib.nixosSystem {
+            imageSD = nixpkgs.lib.nixosSystem {
               specialArgs = { inherit inputs; };
               modules = [
-                (import ./hosts { role = "imageSDCard"; })
+                (import ./hosts { role = "imageSD"; })
+              ];
+            };
+
+            # sd card remote setup image
+            imageSDRemote = nixpkgs.lib.nixosSystem {
+              specialArgs = { inherit inputs; };
+              modules = [
+                (import ./hosts { role = "imageSDRemote"; })
               ];
             };
 
