@@ -4,7 +4,7 @@ let
   musicSh = pkgs.writeTextFile {
     name = "music.sh";
     text = ''
-      #! /usr/bin/env bash
+#!/usr/bin/env bash
 
       COVER="/tmp/.music_cover.jpg"
       DEFAULT_COVER="images/music.png"
@@ -109,7 +109,7 @@ let
   calSh = pkgs.writeTextFile {
     name = "cal.sh";
     text = ''
-      #! /usr/bin/env ${pkgs.bash}/bin/bash
+#!/usr/bin/env ${pkgs.bash}/bin/bash
 
       (while (true) do
           ${calPy}/cal.py
@@ -123,7 +123,7 @@ let
   doCalendarAction = pkgs.writeTextFile {
     name = "do-calendar-action";
     text = ''
-      #!/usr/bin/env ${pkgs.bash}/bin/bash
+#!/usr/bin/env ${pkgs.bash}/bin/bash
 
       if [[ -z "$1" ]]; then
           echo You did not specify an action
@@ -184,7 +184,7 @@ let
   calPy = pkgs.writeTextFile {
     name = "cal.py";
     text = ''
-      #!/usr/bin/env ${pkgs.python3}/bin/python3
+#!/usr/bin/env ${pkgs.python3}/bin/python3
 
       import json, os, subprocess
       from datetime import datetime, timedelta, date
@@ -254,7 +254,7 @@ let
   lyricsPy = pkgs.writeTextFile {
     name = "lyrics.py";
     text = ''
-      #! /usr/bin/env ${pkgs.python3.withPackages (ps: with ps; [ syncedlyrics ])}/bin/python3
+#!/usr/bin/env ${pkgs.python3.withPackages (ps: with ps; [ syncedlyrics ])}/bin/python3
 
       import os
       import re
@@ -355,7 +355,7 @@ let
   dockPy = pkgs.writeTextFile {
     name = "dock.py";
     text = ''
-      #! /usr/bin/env ${pkgs.python3.withPackages (ps: with ps; [ i3ipc ])}/bin/python3
+#!/usr/bin/env ${pkgs.python3.withPackages (ps: with ps; [ i3ipc ])}/bin/python3
 
       import os
       import sys

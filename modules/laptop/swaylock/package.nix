@@ -20,7 +20,7 @@ let
 in
 {
   swaylock = pkgs.writeShellScriptBin "swaylock" ''
-    #! ${pkgs.runtimeShell}
+    #!/usr/bin/env ${pkgs.runtimeShell}
 
     ${pkgs.swaylock}/bin/swaylock --config ${config.configDir}/config "$@"
   '';

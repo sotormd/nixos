@@ -6,7 +6,7 @@ let
 in
 {
   waybar = pkgs.writeShellScriptBin "waybar" ''
-    #! ${pkgs.runtimeShell}
+    #!/usr/bin/env ${pkgs.runtimeShell}
 
     ${pkgs.waybar}/bin/waybar --config ${config.config}/config --style ${style.style}/style.css "$@"
   '';

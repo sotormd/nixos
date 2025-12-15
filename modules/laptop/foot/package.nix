@@ -10,7 +10,7 @@ let
 in
 {
   foot = pkgs.writeShellScriptBin "foot" ''
-    #! ${pkgs.runtimeShell}
+    #!/usr/bin/env ${pkgs.runtimeShell}
 
     FOCUSED_OUT="$(${pkgs.swayfx}/bin/swaymsg -t get_outputs -r | ${pkgs.jq}/bin/jq -r '.[] | select(.focused == true).name')"
 

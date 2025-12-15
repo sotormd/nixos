@@ -36,7 +36,7 @@ let
 in
 {
   nixosWrapper = pkgs.writeShellScriptBin "nixos" ''
-    #! ${pkgs.runtimeShell}
+    #!/usr/bin/env ${pkgs.runtimeShell}
 
     export NIXOS_SCRIPTS_DIR=${scriptsDir}
 
