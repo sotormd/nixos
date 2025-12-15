@@ -60,7 +60,7 @@ As with all NixOS installation images, the username for the live session is
 
    The resultant image will be available inside `./result/sd-image/`.
 
-   To build an image for a remote install:
+   To build an image for a wireless remote install:
 
    ```bash
    export SSH_KEY="AAAA..."
@@ -73,5 +73,6 @@ As with all NixOS installation images, the username for the live session is
 
    > `--impure` is needed to access environment variables
 
-   Change the environment variables for your environment. The resultant image
-   will be available inside `./result/sd-image`.
+   Change the environment variables for your environment.
+
+   The resultant image will be available inside `./result/sd-image`.
