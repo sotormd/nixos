@@ -2,7 +2,7 @@
 
 let
   volume = pkgs.writeShellScriptBin "volume" ''
-    #! ${pkgs.runtimeShell}
+    #!/usr/bin/env ${pkgs.runtimeShell}
 
     # change this to +5% or -5% when binding keys
     change="$1"
@@ -18,7 +18,7 @@ let
   '';
 
   brightness = pkgs.writeShellScriptBin "brightness" ''
-    #! ${pkgs.runtimeShell}
+    #!/usr/bin/env ${pkgs.runtimeShell}
 
     change="$1"
 

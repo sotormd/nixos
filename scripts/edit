@@ -1,4 +1,4 @@
-#! /usr/bin/env bash
+#!/usr/bin/env bash
 
 DIR=$NIXOS_DIR
 ROLE=$NIXOS_ROLE

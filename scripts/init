@@ -1,4 +1,4 @@
-#! /usr/bin/env bash
+#!/usr/bin/env bash
 
 if [ -z "$NIXOS_ROOT_MOUNT" ]; then
     NIXOS_ROOT_MOUNT=""

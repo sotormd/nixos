@@ -5,7 +5,7 @@ let
 in
 {
   rofi = pkgs.writeShellScriptBin "rofi" ''
-    #! ${pkgs.runtimeShell}
+    #!/usr/bin/env ${pkgs.runtimeShell}
 
     ${pkgs.rofi}/bin/rofi -config ${config.config}/config.rasi "$@"
   '';

@@ -2,7 +2,7 @@
 
 let
   jellyfinSetup = pkgs.writeShellScript "jellyfin-setup" ''
-        #! /usr/bin/env bash
+#!/usr/bin/env bash
 
         if [ ! -f '/var/lib/jellyfin/config/network.xml' ]; then
           mkdir -p /var/lib/jellyfin/config

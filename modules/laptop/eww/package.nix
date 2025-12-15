@@ -11,19 +11,19 @@ let
 in
 {
   eww = pkgs.writeShellScriptBin "eww" ''
-    #! ${pkgs.runtimeShell}
+    #!/usr/bin/env ${pkgs.runtimeShell}
 
     ${pkgs.eww}/bin/eww --config ${config.configDir} "$@"
   '';
 
   eww-cal-init = pkgs.writeShellScriptBin "eww-cal-init" ''
-    #! ${pkgs.runtimeShell}
+    #!/usr/bin/env ${pkgs.runtimeShell}
 
     ${scripts.scriptsDir}/cal.sh
   '';
 
   eww-dock-init = pkgs.writeShellScriptBin "eww-dock-init" ''
-    #! ${pkgs.runtimeShell}
+    #!/usr/bin/env ${pkgs.runtimeShell}
 
     ${scripts.scriptsDir}/dock.py
   '';

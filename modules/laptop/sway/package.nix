@@ -20,7 +20,7 @@ let
 in
 {
   sway = pkgs.writeShellScriptBin "sway" ''
-    #! ${pkgs.runtimeShell}
+    #!/usr/bin/env ${pkgs.runtimeShell}
 
     ${pkgs.swayfx}/bin/sway --config ${config.configDir}/config "$@"
   '';

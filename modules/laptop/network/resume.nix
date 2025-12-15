@@ -10,7 +10,7 @@
       User = "root";
       Group = "root";
       ExecStart = pkgs.writeShellScript "restore-route" ''
-        #! /usr/bin/env bash
+#!/usr/bin/env bash
         set -euo pipefail
 
         iface=${vars.network.interface}

@@ -16,7 +16,7 @@
       ExecStartPre =
         let
           setupScript = pkgs.writeShellScript "qbt-setup" ''
-                        #! ${pkgs.bash}/bin/bash
+                        #!/usr/bin/env ${pkgs.bash}/bin/bash
 
                         # create the data directory
                         mkdir -p '${vars.network.qbt.data}'
