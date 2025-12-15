@@ -317,6 +317,9 @@ $ which nixos
 This allows using `nixos` without installing every individual script as a
 package.
 
+The included commands are loaded into the wrapper package's environment
+[here](../modules/common/scripts/bin.nix).
+
 `nixos` runs all commands in the `$NIXOS_DIR`, like so:
 
 ```bash
@@ -344,9 +347,6 @@ command in three places:
    ```
 
    `nixos` runs `$NIXOS_DIR/scripts/switch`
-
-   This means that you can add your own scripts to `$NIXOS_DIR/scripts/` and use
-   them through `nixos`.
 
 3. Any other command provided
 
@@ -387,10 +387,7 @@ yes n | nixos test > /tmp/nixos-git-diff-output.txt
 ```
 
 All the included scripts were written assuming that they will be called from the
-`nixos` wrapper, and not executed directly. The only exception is
-`$NIXOS_DIR/scripts/init` which is used while bootstrapping the `laptop` and
-`server` roles, and so is exposed as a flake output (see respective role
-documentation for more details).
+`nixos` wrapper, and not executed directly.
 
 Additionally, there is no need to use `sudo` for any of the included scripts;
 the scripts will use `sudo` to elevate privileges when required.

@@ -6,16 +6,11 @@ Personal home-server configuration.
 
 # Contents
 
-[Standalone Setup](#standalone-setup)
+[Setup](#setup)
 
 1. [Obtaining a NixOS Image](#obtaining-a-nixos-image)
 2. [Preparing the Device](#preparing-the-device)
 3. [Applying Configuration](#applying-configuration)
-
-[Remote Setup From `laptop`](#remote-setup-from-laptop)
-
-1. [Obtaining a NixOS Image](#obtaining-a-nixos-image-1)
-2. [Installing NixOS](#installing-nixos)
 
 [Usage](#usage)
 
@@ -25,7 +20,7 @@ Personal home-server configuration.
 
 [Security & Privacy](#security--privacy)
 
-# Standalone Setup
+# Setup
 
 Bootstrap process for the `server` role.
 
@@ -62,12 +57,17 @@ Bootstrap process for the `server` role.
    ping archlinux.org
    ```
 
-## Applying Configuration
-
-1. Set basic environment variables.
+4. Set the role.
 
    ```bash
    export NIXOS_ROLE=server
+   ```
+
+## Applying Configuration
+
+1. Set the directory to install the flake.
+
+   ```bash
    export NIXOS_DIR=/nixos
    ```
 
@@ -174,12 +174,6 @@ in step 4.
 Ensure all variables and secrets are properly defined.
 
 </details>
-
-# Remote Setup From `laptop`
-
-## Obtaining a NixOS Image
-
-## Installing NixOS
 
 # Usage
 
