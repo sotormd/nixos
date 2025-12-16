@@ -195,7 +195,7 @@ elif [ "$1" == "clone" ]; then
 
     sudo mkdir -p $DIR
     sudo git clone https://github.com/sotormd/nixos $DIR
-    sudo chown 1000:1000 -R $DIR
+    sudo chown nixos: -R $DIR
 
 ############
 # VARS INIT
