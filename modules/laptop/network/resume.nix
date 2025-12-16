@@ -10,21 +10,21 @@
       User = "root";
       Group = "root";
       ExecStart = pkgs.writeShellScript "restore-route" ''
-#!/usr/bin/env bash
-        set -euo pipefail
+        #!/usr/bin/env bash
+                set -euo pipefail
 
-        iface=${vars.network.interface}
-        gw=${vars.network.gateway}
+                iface=${vars.network.interface}
+                gw=${vars.network.gateway}
 
-        # Wait for carrier
-        for i in {1..30}; do
-          if [ "$(cat /sys/class/net/$iface/carrier 2>/dev/null)" = "1" ]; then
-            break
-          fi
-          sleep 1
-        done
+                # Wait for carrier
+                for i in {1..30}; do
+                  if [ "$(cat /sys/class/net/$iface/carrier 2>/dev/null)" = "1" ]; then
+                    break
+                  fi
+                  sleep 1
+                done
 
-        ${pkgs.iproute2}/bin/ip route replace default via "$gw" dev "$iface"
+                ${pkgs.iproute2}/bin/ip route replace default via "$gw" dev "$iface"
       '';
     };
   };
