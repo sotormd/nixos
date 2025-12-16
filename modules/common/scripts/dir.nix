@@ -7,6 +7,9 @@ let
         NIXOS_DIR=${vars.nixosDirectory}
         USER=${vars.user.name}
 
+        # chown directory
+        ${pkgs.coreutils}/bin/chown $USER: -R $NIXOS_DIR
+
         # chown everything except .git
         ${pkgs.findutils}/bin/find "$NIXOS_DIR" \
           -path "$NIXOS_DIR/.git" -prune -o \
