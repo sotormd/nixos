@@ -674,6 +674,10 @@ EOF
             VARS_NETWORK_JELLYFIN_PORT="8096"
         fi
 
+        if [ -z "$VARS_NETWORK_JELLYFIN_DATA" ]; then
+            VARS_NETWORK_JELLYFIN_DATA="/var/lib/jellyfin"
+        fi
+
         # create vars file
         cat > $VARS <<EOF
 {
@@ -850,6 +854,9 @@ EOF
 
   # jellyfin (loopback) port
   network.jellyfin.port = $VARS_NETWORK_JELLYFIN_PORT;
+
+  # jellyfin data directory
+  network.jellyfin.data = "$VARS_NETWORK_JELLYFIN_DATA";
 }
 EOF
 

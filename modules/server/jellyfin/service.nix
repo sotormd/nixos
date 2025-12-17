@@ -4,9 +4,9 @@ let
   jellyfinSetup = pkgs.writeShellScript "jellyfin-setup" ''
         #!/usr/bin/env bash
 
-        if [ ! -f '/var/lib/jellyfin/config/network.xml' ]; then
-          mkdir -p /var/lib/jellyfin/config
-          cat > '/var/lib/jellyfin/config/network.xml' <<EOF
+        if [ ! -f '${vars.network.jellyfin.data}/config/network.xml' ]; then
+          mkdir -p "${vars.network.jellyfin.data}/config"
+          cat > '${vars.network.jellyfin.data}/config/network.xml' <<EOF
     <?xml version="1.0" encoding="utf-8"?>
     <NetworkConfiguration xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
       <BaseUrl>/jellyfin</BaseUrl>
@@ -38,7 +38,7 @@ let
     EOF
         fi
 
-        chown jellyfin:jellyfin -R /var/lib/jellyfin
+        chown jellyfin:jellyfin -R ${vars.network.jellyfin.data}
   '';
 in
 {
@@ -50,5 +50,13 @@ in
       Type = "oneshot";
       ExecStart = "${jellyfinSetup}";
     };
+  };
+
+  fileSystems."/var/lib/jellyfin" = {
+    device = "${vars.network.jellyfin.data}";
+    options = [
+      "bind"
+      "nofail"
+    ];
   };
 }

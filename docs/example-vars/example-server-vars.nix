@@ -181,4 +181,7 @@
 
   # jellyfin (loopback) port
   network.jellyfin.port = 8096;
+
+  # jellyfin data directory
+  network.jellyfin.data = "/mnt/samsung/jellyfin";
 }
