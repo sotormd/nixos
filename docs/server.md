@@ -37,6 +37,8 @@ Bootstrap process for the `server` role.
 
    The generated image will be available under `./result/sd-image/`.
 
+   There is also a remote image for wireless installs over SSH.
+
    For more information, see [images.md](./images.md).
 
 2. Write the generated image to a sd-card using `dd` or any equivalent tool.
