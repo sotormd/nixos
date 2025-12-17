@@ -168,6 +168,7 @@ in step 4.
 | `VARS_NETWORK_QBT_PORT`                   | qBittorrent webui (loopback) port.                 | `"8080"`                                          | `"20006"`                            |
 | `VARS_NETWORK_JELLYFIN_ENABLE`            | Enable Jellyfin.                                   | `"false"`                                         | `"true"`                             |
 | `VARS_NETWORK_JELLYFIN_PORT`              | Jellyfin web (loopback) port.                      | `"8096"`                                          | `"20007"`                            |
+| `VARS_NETWORK_JEYLLYFIN_DATA`             | Jellyfin data directory.                           | `"/var/lib/jellyfin"`                             | `"/mnt/drive/jellyfin"`              |
 | `SECRETS_HASHED_PASSWORD`                 | Hashed user password.                              | `$(mkpasswd -m yescrypt)`                         | -                                    |
 | `SECRETS_PSK`                             | PSK for the network.                               | (user input)                                      | `"supersecretpsk"`                   |
 | `SECRETS_DUCKDNS_TOKEN`                   | DuckDNS API token.                                 | -                                                 | `"aaa..."`                           |
@@ -326,6 +327,8 @@ Jellyfin is a media server.
 Enabled using `vars.network.jellyfin.enable`.
 
 Exposes one port to the loopback interface: `vars.network.jellyfin.port`.
+
+Data directory is declared by `vars.network.jellyfin.data`.
 
 #### Initial Setup
 
