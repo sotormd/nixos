@@ -15,7 +15,6 @@ let
 in
 {
   i2pBrowser = pkgs.writeShellScriptBin "i2p-browser" ''
-    #!/usr/bin/env ${pkgs.runtimeShell}
     set -euo pipefail
 
     baseProfile="${profile.i2pProfile}"

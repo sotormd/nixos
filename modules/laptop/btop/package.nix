@@ -16,8 +16,6 @@ let
 in
 {
   btop = pkgs.writeShellScriptBin "btop" ''
-    #!/usr/bin/env ${pkgs.runtimeShell}
-
     ${pkgs.btop}/bin/btop --config ${configDir}/btop.conf "$@"
   '';
 }

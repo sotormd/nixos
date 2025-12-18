@@ -10,8 +10,6 @@ let
 in
 {
   dunst = pkgs.writeShellScriptBin "dunst" ''
-    #!/usr/bin/env ${pkgs.runtimeShell}
-
     ${pkgs.dunst}/bin/dunst -config ${configuration.configDir}/dunstrc "$@"
   '';
 }
