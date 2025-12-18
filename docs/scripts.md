@@ -2,7 +2,9 @@
 
 Usage:
 
-`nixos [command] [args]`
+```bash
+nixos [command] [args]
+```
 
 To get a basic overview of available commands:
 
