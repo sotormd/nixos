@@ -7,7 +7,7 @@
 
 let
   type = builtins.elemAt (lib.splitString "." vars.outputs.lockscreen) 1;
-  interval = builtins.elemAt (lib.choose (type == "today") "1d" "1h") 0;
+  interval = builtins.elemAt (lib.choose (type == "today") "1d" "12h") 0;
 
   wallpaper = import ../sway/backgrounds.nix { inherit config lib vars; };
 in
@@ -21,7 +21,4 @@ in
     fallback = wallpaper.wallpaper;
     inherit type interval;
   };
-
-  systemd.services.xkcd-wall.serviceConfig.User = vars.user.name;
-  systemd.services.xkcd-wall.serviceConfig.Group = vars.user.name;
 }

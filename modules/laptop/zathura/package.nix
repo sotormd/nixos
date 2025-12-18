@@ -5,8 +5,6 @@ let
 in
 {
   zathura = pkgs.writeShellScriptBin "zathura" ''
-    #!/usr/bin/env ${pkgs.runtimeShell}
-
     ${pkgs.zathura}/bin/zathura --config-dir=${configuration.configDir} "$@"
   '';
 }
