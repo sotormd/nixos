@@ -679,11 +679,11 @@
     },
     "wallpapers": {
       "locked": {
-        "lastModified": 1766030608,
-        "narHash": "sha256-lFPk60yRrnfz9JnzLyb1UtXVCTSx6nO+LQkD8Qklvtc=",
+        "lastModified": 1766046455,
+        "narHash": "sha256-qh0qy7NmWh4z2myD+E+1LCETV+2yWF4W6RaNDv5Sals=",
         "owner": "sotormd",
         "repo": "wallpapers",
-        "rev": "a6708a95926105fd1fad1f7b6c27ca06cb59e0a4",
+        "rev": "0f353537e9f2ca32150f34885015151c30ffdf47",
         "type": "github"
       },
       "original": {
@@ -702,11 +702,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1766053127,
-        "narHash": "sha256-JMDNDX53AEyGun7E/55B+UZ7NYMU/K6tjicq3FIh+Ds=",
+        "lastModified": 1766056913,
+        "narHash": "sha256-tKdvO57PSdE+olSiu1E74zOSziZ81v+/OCGeLyUAg3E=",
         "owner": "sotormd",
         "repo": "xkcd-wall",
-        "rev": "cc8f5b1936c454170c71bdeaeecff366a24963ce",
+        "rev": "4a8888dfb27a45bac247284c2fed9d4cbcbaea59",
         "type": "github"
       },
       "original": {

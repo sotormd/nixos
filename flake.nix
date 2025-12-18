@@ -50,7 +50,7 @@
     };
 
     xkcd = {
-      url = "path:/home/vrm/Projects/xkcd-wall";
+      url = "github:sotormd/xkcd-wall";
       inputs.nixpkgs.follows = "nixpkgs";
       inputs.wallpapers.follows = "wallpapers";
     };
