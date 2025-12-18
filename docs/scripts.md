@@ -1,5 +1,26 @@
 # scripts
 
+This document covers all included scripts (except `init`, which is covered in
+the role documentation).
+
+# Contents
+
+1. [Overview](#overview)
+2. [Updating the Lockfile](#updating-the-lockfile)
+3. [Testing a New Configuration](#testing-a-new-configuration)
+4. [Switching to a New Configuration](#switching-to-a-new-configuration)
+5. [Committing a New Configuration](#committing-a-new-configuration)
+6. [Format the Flake](#format-the-flake)
+7. [Fix Flake Permissions](#fix-flake-permissions)
+8. [Garbage Collect](#garbage-collect)
+9. [Repair the Nix Store](#repair-the-nix-store)
+10. [Push Local Changes to server](#push-local-changes-to-server)
+11. [Edit variables / secrets](#edit-variables--secrets)
+12. [Miscellaneous](#miscellaneous)
+13. [Implementation Details](#implementation-details)
+
+# Overview
+
 Usage:
 
 ```bash
@@ -47,9 +68,6 @@ is equivalent to
 nixos switch
 ```
 
-This document covers all included scripts (except `init`, which is covered in
-the role documentation).
-
 Brief overview of commands:
 
 | Command              | `laptop` | `server` | Description                                                                                                   |
@@ -65,21 +83,6 @@ Brief overview of commands:
 | `edit <vars\|sops>`  | ✔        | ✔        | <br>`nixos edit vars` <br>Edit variables file. <br><br>`nixos edit sops` <br>Edit sops-nix secrets.           |
 | `serverpush <path>`  | ✔        | ✘        | <br>`nixos serverpush /nixos` <br>Push the flake to `server:/nixos`.                                          |
 | `help`               | ✔        | ✔        | <br>`nixos help` <br>Show this message and exit.                                                              |
-
-# Contents
-
-1. [Updating the Lockfile](#updating-the-lockfile)
-2. [Testing a New Configuration](#testing-a-new-configuration)
-3. [Switching to a New Configuration](#switching-to-a-new-configuration)
-4. [Committing a New Configuration](#committing-a-new-configuration)
-5. [Format the Flake](#format-the-flake)
-6. [Fix Flake Permissions](#fix-flake-permissions)
-7. [Garbage Collect](#garbage-collect)
-8. [Repair the Nix Store](#repair-the-nix-store)
-9. [Push Local Changes to server](#push-local-changes-to-server)
-10. [Edit variables / secrets](#edit-variables--secrets)
-11. [Miscellaneous](#miscellaneous)
-12. [Implementation Details](#implementation-details)
 
 # Updating the Lockfile
 
