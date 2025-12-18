@@ -541,7 +541,8 @@
         "nix-on-droid": "nix-on-droid",
         "nixpkgs": "nixpkgs_2",
         "sops-nix": "sops-nix",
-        "wallpapers": "wallpapers"
+        "wallpapers": "wallpapers",
+        "xkcd": "xkcd"
       }
     },
     "rust-overlay": {
@@ -688,6 +689,29 @@
       "original": {
         "owner": "sotormd",
         "repo": "wallpapers",
+        "type": "github"
+      }
+    },
+    "xkcd": {
+      "inputs": {
+        "nixpkgs": [
+          "nixpkgs"
+        ],
+        "wallpapers": [
+          "wallpapers"
+        ]
+      },
+      "locked": {
+        "lastModified": 1766053127,
+        "narHash": "sha256-JMDNDX53AEyGun7E/55B+UZ7NYMU/K6tjicq3FIh+Ds=",
+        "owner": "sotormd",
+        "repo": "xkcd-wall",
+        "rev": "cc8f5b1936c454170c71bdeaeecff366a24963ce",
+        "type": "github"
+      },
+      "original": {
+        "owner": "sotormd",
+        "repo": "xkcd-wall",
         "type": "github"
       }
     }

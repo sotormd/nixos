@@ -49,6 +49,12 @@
       url = "github:sotormd/wallpapers";
     };
 
+    xkcd = {
+      url = "github:sotormd/xkcd-wall";
+      inputs.nixpkgs.follows = "nixpkgs";
+      inputs.wallpapers.follows = "wallpapers";
+    };
+
     homepage = {
       url = "github:sotormd/homepage";
       inputs.colors.follows = "colors";
@@ -104,9 +110,11 @@
 
                 inputs.hosts.nixosModule
 
+                inputs.colors.nixosModules.colors
+
                 inputs.wallpapers.nixosModules.wallpapers
 
-                inputs.colors.nixosModules.colors
+                inputs.xkcd.nixosModules.xkcd
 
               ];
             };
