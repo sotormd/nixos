@@ -167,10 +167,15 @@
           nixOnDroidConfigurations.default = inputs.nix-on-droid.lib.nixOnDroidConfiguration {
             extraSpecialArgs = {
               inherit inputs;
-              inherit (inputs.colors.lib) colors;
             };
             pkgs = import inputs.nixpkgs { system = "aarch64-linux"; };
-            modules = [ (import ./hosts { role = "droid"; }) ];
+            modules = [
+
+              (import ./hosts { role = "droid"; })
+
+              inputs.colors.nixosModules.colors
+
+            ];
           };
         };
     };
