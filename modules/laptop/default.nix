@@ -1,10 +1,26 @@
-{ lib, vars, ... }:
+{
+  inputs,
+  lib,
+  vars,
+  ...
+}:
 
 {
   imports = lib.concatMap (x: x) [
     [
       # assertions - ensure no tomfoolery
       ./assertions.nix
+
+      # nixos modules
+      inputs.hjem.nixosModules.default
+
+      inputs.lanzaboote.nixosModules.lanzaboote
+
+      inputs.colors.nixosModules.colors
+
+      inputs.wallpapers.nixosModules.wallpapers
+
+      inputs.xkcd.nixosModules.xkcd
 
       # MODULES - sorted alphabetically
 

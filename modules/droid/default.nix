@@ -1,5 +1,10 @@
+{ inputs, ... }:
+
 {
   imports = [
+    # nixos modules
+    inputs.colors.nixosModules.colors
+
     # MODULES - sorted alphabetically
 
     # terminal colors
