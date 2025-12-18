@@ -1,8 +1,7 @@
 {
+  config,
   lib,
   pkgs,
-  colors,
-  wallpapers,
   vars,
   ...
 }:
@@ -10,10 +9,9 @@
 let
   package = import ./package.nix {
     inherit
+      config
       lib
       pkgs
-      colors
-      wallpapers
       vars
       ;
   };

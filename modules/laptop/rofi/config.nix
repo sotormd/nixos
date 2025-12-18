@@ -1,7 +1,7 @@
-{ pkgs, colors, ... }:
+{ config, pkgs, ... }:
 
 let
-  style = import ./style.nix { inherit pkgs colors; };
+  style = import ./style.nix { inherit config pkgs; };
 in
 {
   config = pkgs.writeTextFile {

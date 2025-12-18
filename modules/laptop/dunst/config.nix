@@ -1,27 +1,27 @@
 {
+  config,
   pkgs,
-  colors,
   vars,
   ...
 }:
 
 let
-  config = pkgs.writeTextFile {
+  configuration = pkgs.writeTextFile {
     name = "dunstrc";
     text = ''
       [global]
-      background="#${colors.dunst.bg}"
+      background="#${config.colors.dunst.bg}"
       corner_radius=7
-      font="${colors.fonts.normal} 9"
-      frame_color="#${colors.dunst.normal}"
+      font="${config.colors.fonts.normal} 9"
+      frame_color="#${config.colors.dunst.normal}"
       gap_size=5
       monitor=${vars.outputs.monitor}
       offset="5x5"
       origin="top-right"
-      highlight="#${colors.dunst.normal}"
+      highlight="#${config.colors.dunst.normal}"
 
       [urgency_critical]
-      frame_color="#${colors.dunst.urgent}"
+      frame_color="#${config.colors.dunst.urgent}"
     '';
     destination = "/dunstrc";
   };
@@ -29,6 +29,6 @@ in
 {
   configDir = pkgs.symlinkJoin {
     name = "dunst";
-    paths = [ config ];
+    paths = [ configuration ];
   };
 }

@@ -1,13 +1,13 @@
 {
+  inputs,
   lib,
   pkgs,
   vars,
-  makeHomepage,
   ...
 }:
 
 let
-  homepageText = makeHomepage {
+  homepageText = inputs.homepage.lib.makeHomepage {
     layout = [
       (lib.concatMap (x: x) [
         (lib.optional vars.network.searxng.enable {

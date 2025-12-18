@@ -1,19 +1,19 @@
 {
+  config,
   pkgs,
-  colors,
   vars,
   ...
 }:
 
 let
-  config = import ./config.nix { inherit pkgs colors vars; };
+  configuration = import ./config.nix { inherit config pkgs vars; };
   scripts = import ./scripts.nix { inherit pkgs; };
 in
 {
   eww = pkgs.writeShellScriptBin "eww" ''
     #!/usr/bin/env ${pkgs.runtimeShell}
 
-    ${pkgs.eww}/bin/eww --config ${config.configDir} "$@"
+    ${pkgs.eww}/bin/eww --config ${configuration.configDir} "$@"
   '';
 
   eww-cal-init = pkgs.writeShellScriptBin "eww-cal-init" ''

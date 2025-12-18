@@ -1,12 +1,12 @@
-{ pkgs, colors, ... }:
+{ config, pkgs, ... }:
 
 let
-  config = import ./config.nix { inherit pkgs colors; };
+  configuration = import ./config.nix { inherit config pkgs; };
 in
 {
   zathura = pkgs.writeShellScriptBin "zathura" ''
     #!/usr/bin/env ${pkgs.runtimeShell}
 
-    ${pkgs.zathura}/bin/zathura --config-dir=${config.configDir} "$@"
+    ${pkgs.zathura}/bin/zathura --config-dir=${configuration.configDir} "$@"
   '';
 }

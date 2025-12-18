@@ -1,17 +1,17 @@
 {
+  config,
   pkgs,
-  colors,
   vars,
   ...
 }:
 
 let
-  style = import ./style.nix { inherit pkgs colors; };
+  style = import ./style.nix { inherit config pkgs; };
   scripts = import ./scripts.nix { inherit pkgs; };
 
   COVER_TEXT = "\${COVER}";
 
-  config = pkgs.writeTextFile {
+  configuration = pkgs.writeTextFile {
     name = "eww.yuck";
     text = ''
       (defvar dock-items-json "[]")
@@ -393,7 +393,7 @@ in
   configDir = pkgs.symlinkJoin {
     name = "eww";
     paths = [
-      config
+      configuration
       style.style
     ];
   };

@@ -56,22 +56,8 @@
   };
 
   outputs =
-    {
-      self,
-      nixpkgs,
-      flake-parts,
-      hjem,
-      sops-nix,
-      lanzaboote,
-      nix-on-droid,
-      hosts,
-      neovim,
-      colors,
-      wallpapers,
-      homepage,
-      ...
-    }@inputs:
-    flake-parts.lib.mkFlake { inherit inputs; } {
+    inputs:
+    inputs.flake-parts.lib.mkFlake { inherit inputs; } {
       systems = [
         "x86_64-linux"
         "aarch64-linux"
@@ -93,59 +79,58 @@
 
       flake =
         let
-          lib = nixpkgs.lib // (import ./lib { });
+          lib = inputs.nixpkgs.lib // (import ./lib { });
           vars = import ./vars/vars.nix;
         in
         {
           nixosConfigurations = {
 
             # laptop configuration
-            laptop = nixpkgs.lib.nixosSystem {
+            laptop = inputs.nixpkgs.lib.nixosSystem {
               specialArgs = {
                 inherit inputs;
                 inherit lib;
                 inherit vars;
-                inherit neovim;
-                inherit (colors.lib) colors;
-                inherit (wallpapers.lib) wallpapers;
-                inherit (homepage.lib) makeHomepage;
               };
               modules = [
 
                 (import ./hosts { role = "laptop"; })
 
-                hjem.nixosModules.default
+                inputs.hjem.nixosModules.default
 
-                sops-nix.nixosModules.sops
+                inputs.sops-nix.nixosModules.sops
 
-                lanzaboote.nixosModules.lanzaboote
+                inputs.lanzaboote.nixosModules.lanzaboote
 
-                hosts.nixosModule
+                inputs.hosts.nixosModule
+
+                inputs.wallpapers.nixosModules.wallpapers
+
+                inputs.colors.nixosModules.colors
 
               ];
             };
 
             # server configuration
-            server = nixpkgs.lib.nixosSystem {
+            server = inputs.nixpkgs.lib.nixosSystem {
               specialArgs = {
                 inherit inputs;
                 inherit lib;
                 inherit vars;
-                inherit (homepage.lib) makeHomepage;
               };
               modules = [
 
                 (import ./hosts { role = "server"; })
 
-                sops-nix.nixosModules.sops
+                inputs.sops-nix.nixosModules.sops
 
-                hosts.nixosModule
+                inputs.hosts.nixosModule
 
               ];
             };
 
             # gnome image
-            imageGnome = nixpkgs.lib.nixosSystem {
+            imageGnome = inputs.nixpkgs.lib.nixosSystem {
               specialArgs = { inherit inputs; };
               modules = [
                 (import ./hosts { role = "imageGnome"; })
@@ -153,7 +138,7 @@
             };
 
             # minimal image
-            imageMinimal = nixpkgs.lib.nixosSystem {
+            imageMinimal = inputs.nixpkgs.lib.nixosSystem {
               specialArgs = { inherit inputs; };
               modules = [
                 (import ./hosts { role = "imageMinimal"; })
@@ -161,7 +146,7 @@
             };
 
             # sd card image
-            imageSD = nixpkgs.lib.nixosSystem {
+            imageSD = inputs.nixpkgs.lib.nixosSystem {
               specialArgs = { inherit inputs; };
               modules = [
                 (import ./hosts { role = "imageSD"; })
@@ -169,7 +154,7 @@
             };
 
             # sd card remote setup image
-            imageSDRemote = nixpkgs.lib.nixosSystem {
+            imageSDRemote = inputs.nixpkgs.lib.nixosSystem {
               specialArgs = { inherit inputs; };
               modules = [
                 (import ./hosts { role = "imageSDRemote"; })
@@ -179,12 +164,12 @@
           };
 
           # nix-on-droid configuration
-          nixOnDroidConfigurations.default = nix-on-droid.lib.nixOnDroidConfiguration {
+          nixOnDroidConfigurations.default = inputs.nix-on-droid.lib.nixOnDroidConfiguration {
             extraSpecialArgs = {
               inherit inputs;
-              inherit (colors.lib) colors;
+              inherit (inputs.colors.lib) colors;
             };
-            pkgs = import nixpkgs { system = "aarch64-linux"; };
+            pkgs = import inputs.nixpkgs { system = "aarch64-linux"; };
             modules = [ (import ./hosts { role = "droid"; }) ];
           };
         };

@@ -1,19 +1,18 @@
 {
+  config,
   lib,
   pkgs,
-  colors,
-  wallpapers,
   vars,
   ...
 }:
 
 let
-  backgrounds = import ./backgrounds.nix { inherit lib wallpapers vars; };
+  backgrounds = import ./backgrounds.nix { inherit config lib vars; };
 
-  config = pkgs.writeTextFile {
+  configuration = pkgs.writeTextFile {
     name = "config";
     text = ''
-      font=${colors.fonts.normal}
+      font=${config.colors.fonts.normal}
       font-size=16
 
       image=${backgrounds.lockscreen}
@@ -28,9 +27,9 @@ let
       inside-caps-lock-color=00000000
 
       ring-color=00000000
-      ring-clear-color=${colors.swaylock.clear}
-      ring-ver-color=${colors.swaylock.verifying}
-      ring-wrong-color=${colors.swaylock.wrong}
+      ring-clear-color=${config.colors.swaylock.clear}
+      ring-ver-color=${config.colors.swaylock.verifying}
+      ring-wrong-color=${config.colors.swaylock.wrong}
       ring-caps-lock-color=00000000
 
       line-color=00000000
@@ -51,8 +50,8 @@ let
       text-wrong-color=00000000
       text-caps-lock-color=00000000
 
-      key-hl-color=${colors.swaylock.verifying}
-      bs-hl-color=${colors.swaylock.clear}
+      key-hl-color=${config.colors.swaylock.verifying}
+      bs-hl-color=${config.colors.swaylock.clear}
       caps-lock-key-hl-color=00000000
       caps-lock-bs-hl-color=00000000
 
@@ -64,6 +63,6 @@ in
 {
   configDir = pkgs.symlinkJoin {
     name = "swaylock";
-    paths = [ config ];
+    paths = [ configuration ];
   };
 }

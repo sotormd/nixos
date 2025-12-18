@@ -1,19 +1,17 @@
 {
+  config,
   lib,
   pkgs,
-  colors,
-  wallpapers,
   vars,
   ...
 }:
 
 let
-  config = import ./config.nix {
+  configuration = import ./config.nix {
     inherit
+      config
       lib
       pkgs
-      colors
-      wallpapers
       vars
       ;
   };
@@ -22,6 +20,6 @@ in
   sway = pkgs.writeShellScriptBin "sway" ''
     #!/usr/bin/env ${pkgs.runtimeShell}
 
-    ${pkgs.swayfx}/bin/sway --config ${config.configDir}/config "$@"
+    ${pkgs.swayfx}/bin/sway --config ${configuration.configDir}/config "$@"
   '';
 }

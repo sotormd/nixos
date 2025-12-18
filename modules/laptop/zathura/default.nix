@@ -1,12 +1,12 @@
 {
+  config,
   pkgs,
-  colors,
   vars,
   ...
 }:
 
 let
-  package = import ./package.nix { inherit pkgs colors; };
+  package = import ./package.nix { inherit config pkgs; };
 in
 {
   imports = [ ./desktop.nix ];
