@@ -70,54 +70,54 @@ examples.
 
 # Features & Tooling
 
-| Category                      | Stack                                                     |
-| ----------------------------- | --------------------------------------------------------- |
-| distro                        | `NixOS`                                                   |
-| packages                      | `nixos-unstable`                                          |
-| package manager               | `lix`                                                     |
-| shell                         | `bash`                                                    |
-| kernel                        | `linux-hardened`                                          |
-| bootloader                    | `systemd-boot`, `uboot`                                   |
-| secure boot                   | `lanzaboote`                                              |
-| filesystem                    | `zfs`                                                     |
-| impermanence                  | ZFS snapshots, bind mounts                                |
-| ~ symlinks                    | `hjem`                                                    |
-| dotfiles                      | custom wrappers                                           |
-| auditing                      | `auditd`                                                  |
-| secrets                       | `sops`, `sops-nix`                                        |
-| sandboxing                    | `firejail`                                                |
-| firewall                      | `iptables (nf_tables)`                                    |
-| anonymity                     | `i2pd`, `oniux`, `tor-browser`                            |
-| networking                    | `wpa_supplicant`                                          |
-| DNS                           | `unbound`                                                 |
-| display server                | `wayland`                                                 |
-| compositor                    | `swayfx`                                                  |
-| bar                           | `waybar`                                                  |
-| widgets                       | `eww`                                                     |
-| launcher                      | `rofi`                                                    |
-| notifications                 | `dunst`                                                   |
-| terminal emulator             | `foot`                                                    |
-| file manager                  | `thunar`                                                  |
-| audio                         | `pipewire`                                                |
-| media player                  | `mpv`                                                     |
-| pdf reader                    | `zathura`                                                 |
-| image viewer                  | `swayimg`                                                 |
-| vector graphics editor        | `inkscape`                                                |
-| screenshots                   | `grimshot`                                                |
-| clipboard                     | `cliphist`                                                |
-| browser                       | `brave`                                                   |
-| web server                    | `nginx`                                                   |
-| homepage                      | [`homepage`](https://github.com/sotormd/homepage)         |
-| search engine                 | `searxng`                                                 |
-| media server                  | `jellyfin`                                                |
-| bittorrent                    | `qbittorrent-nox`                                         |
-| passwords                     | `vaultwarden`                                             |
-| text editor                   | [`neovim`](https://github.com/sotormd/neovim), `mousepad` |
-| version control               | `git`                                                     |
-| development                   | `rust`, `python`, `go`, `haskell`                         |
-| virtualization                | `qemu`, `virt-manager`, `distrobox`                       |
-| optimizations                 | `auto-cpufreq`, `tlp`, `powertop`                         |
-| resource monitor              | `btop`, `htop`                                            |
-| android                       | `nix-on-droid`                                            |
-| themes, icons, cursors, fonts | [`colors`](https://github.com/sotormd/colors)             |
-| wallpapers                    | [`wallpapers`](https://github.com/sotormd/wallpapers)     |
+| Category                      | Stack                                                                                                      |
+| ----------------------------- | ---------------------------------------------------------------------------------------------------------- |
+| distro                        | `NixOS`                                                                                                    |
+| packages                      | `nixos-unstable`                                                                                           |
+| package manager               | `lix`                                                                                                      |
+| shell                         | `bash`                                                                                                     |
+| kernel                        | `linux-hardened`                                                                                           |
+| bootloader                    | `systemd-boot`, `uboot`                                                                                    |
+| secure boot                   | `lanzaboote`                                                                                               |
+| filesystem                    | `zfs`                                                                                                      |
+| impermanence                  | ZFS snapshots, bind mounts                                                                                 |
+| ~ symlinks                    | `hjem`                                                                                                     |
+| dotfiles                      | custom wrappers                                                                                            |
+| auditing                      | `auditd`                                                                                                   |
+| secrets                       | `sops`, `sops-nix`                                                                                         |
+| sandboxing                    | `firejail`                                                                                                 |
+| firewall                      | `iptables (nf_tables)`                                                                                     |
+| anonymity                     | `i2pd`, `oniux`, `tor-browser`                                                                             |
+| networking                    | `wpa_supplicant`                                                                                           |
+| DNS                           | `unbound`                                                                                                  |
+| display server                | `wayland`                                                                                                  |
+| compositor                    | `swayfx`                                                                                                   |
+| bar                           | `waybar`                                                                                                   |
+| widgets                       | `eww`                                                                                                      |
+| launcher                      | `rofi`                                                                                                     |
+| notifications                 | `dunst`                                                                                                    |
+| terminal emulator             | `foot`                                                                                                     |
+| file manager                  | `thunar`                                                                                                   |
+| audio                         | `pipewire`                                                                                                 |
+| media player                  | `mpv`                                                                                                      |
+| pdf reader                    | `zathura`                                                                                                  |
+| image viewer                  | `swayimg`                                                                                                  |
+| vector graphics editor        | `inkscape`                                                                                                 |
+| screenshots                   | `grimshot`                                                                                                 |
+| clipboard                     | `cliphist`                                                                                                 |
+| browser                       | `brave`                                                                                                    |
+| web server                    | `nginx`                                                                                                    |
+| homepage                      | [`homepage`](https://github.com/sotormd/homepage)                                                          |
+| search engine                 | `searxng`                                                                                                  |
+| media server                  | `jellyfin`                                                                                                 |
+| bittorrent                    | `qbittorrent-nox`                                                                                          |
+| passwords                     | `vaultwarden`                                                                                              |
+| text editor                   | [`neovim`](https://github.com/sotormd/neovim), `mousepad`                                                  |
+| version control               | `git`                                                                                                      |
+| development                   | `rust`, `python`, `go`, `haskell`                                                                          |
+| virtualization                | `qemu`, `virt-manager`, `distrobox`                                                                        |
+| optimizations                 | `auto-cpufreq`, `tlp`, `powertop`                                                                          |
+| resource monitor              | `btop`, `htop`                                                                                             |
+| android                       | `nix-on-droid`                                                                                             |
+| themes, icons, cursors, fonts | [`colors`](https://github.com/sotormd/colors)                                                              |
+| wallpapers                    | [`wallpapers`](https://github.com/sotormd/wallpapers), [`xkcd-wall`](https://github.com/sotormd/xkcd-wall) |

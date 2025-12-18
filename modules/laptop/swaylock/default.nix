@@ -17,8 +17,12 @@ let
   };
 in
 {
-  imports = [
-    ./settings.nix
+  imports = lib.concatMap (x: x) [
+    [
+      ./settings.nix
+    ]
+
+    (lib.optional (builtins.substring 0 4 vars.outputs.lockscreen == "xkcd") ./xkcd.nix)
   ];
 
   users.users.${vars.user.name}.packages = [ package.swaylock ];

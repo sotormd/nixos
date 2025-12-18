@@ -312,8 +312,8 @@ in step 4.
 | `VARS_NETWORK_SERVER_I2P_PORT`    | Server I2P HTTP proxy port.                        | `"4444"`                                          | `"23001"`                            |
 | `VARS_OUTPUTS_LAPTOP`             | Identifier for laptop screen.                      | `"eDP-1"`                                         | `"eDP-1"`                            |
 | `VARS_OUTPUTS_MONITOR`            | Identifier for monitor screen.                     | `"HDMI-A-1"`                                      | `"HDMI-A-1"`                         |
-| `VARS_OUTPUTS_WALLPAPER`          | Wallpaper name.                                    | `"nord.mario"`                                    | `"nord.nixos"`                       |
-| `VARS_OUTPUTS_LOCKSCREEN`         | Lockscreen wallpaper name.                         | `"nord.files"`                                    | `"nord.nixos"`                       |
+| `VARS_OUTPUTS_WALLPAPER`          | Wallpaper name.                                    | `"nord.building"`                                 | `"nord.nixos"`                       |
+| `VARS_OUTPUTS_LOCKSCREEN`         | Lockscreen wallpaper name.                         | `"xkcd.random"`                                   | `"nord.nixos"`                       |
 | `SECRETS_HASHED_PASSWORD`         | Hashed user password.                              | `$(mkpasswd -m yescrypt)`                         | -                                    |
 | `SECRETS_PSK`                     | PSK for the network.                               | (user input)                                      | `"supersecretpsk"`                   |
 
@@ -787,13 +787,9 @@ Launch using `$mod+g` for focusing a workspace.
 
 Launch using `$mod+Shift+g` for moving current container to a workspace.
 
-![rofi workspace switcher](./screenshots/rofi-workspace-switcher.png)
-
 #### clipboard history
 
 Launch using `$mod+c`.
-
-![rofi clipboard history](./screenshots/rofi-clipboard-history.png)
 
 Shows complete clipboard history using `cliphist`.
 
@@ -819,6 +815,11 @@ For example to use `wallpapers/nord/building.png`, the variable should be set to
 
 To use your own wallpapers, change the `wallpapers` input in
 [flake.nix](../flake.nix) to a flake that exposes similar outputs.
+
+The `output.lockscreen` can also be one of `xkcd.today` or `xkcd.random` for
+xkcd comics.
+
+See [xkcd-wall](https://github.com/sotormd/xkcd-wall) for more information.
 
 ### Colors & Theming
 
