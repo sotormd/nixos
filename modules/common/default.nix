@@ -1,5 +1,12 @@
+{ inputs, ... }:
+
 {
   imports = [
+    # nixos modules
+    inputs.sops-nix.nixosModules.sops
+
+    inputs.hosts.nixosModule
+
     # MODULES - sorted alphabetically
 
     # linux audit subsystem
