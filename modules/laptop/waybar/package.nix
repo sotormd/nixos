@@ -1,13 +1,13 @@
-{ pkgs, colors, ... }:
+{ config, pkgs, ... }:
 
 let
-  config = import ./config.nix { inherit pkgs; };
-  style = import ./style.nix { inherit pkgs colors; };
+  configuration = import ./config.nix { inherit pkgs; };
+  style = import ./style.nix { inherit config pkgs; };
 in
 {
   waybar = pkgs.writeShellScriptBin "waybar" ''
     #!/usr/bin/env ${pkgs.runtimeShell}
 
-    ${pkgs.waybar}/bin/waybar --config ${config.config}/config --style ${style.style}/style.css "$@"
+    ${pkgs.waybar}/bin/waybar --config ${configuration.config}/config --style ${style.style}/style.css "$@"
   '';
 }

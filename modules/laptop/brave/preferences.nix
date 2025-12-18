@@ -1,4 +1,4 @@
-{ colors, pkgs, ... }:
+{ config, pkgs, ... }:
 
 let
   initialPreferences = {
@@ -112,10 +112,10 @@ let
 
     # fonts
     webkit.webprefs.fonts = {
-      fixed.Zyyy = "${colors.fonts.monospace}";
-      sansserif.Zyyy = "${colors.fonts.sansserif}";
-      serif.Zyyy = "${colors.fonts.serif}";
-      standard.Zyyy = "${colors.fonts.normal}";
+      fixed.Zyyy = "${config.colors.fonts.monospace}";
+      sansserif.Zyyy = "${config.colors.fonts.sansserif}";
+      serif.Zyyy = "${config.colors.fonts.serif}";
+      standard.Zyyy = "${config.colors.fonts.normal}";
     };
 
     #####################

@@ -1,12 +1,12 @@
 {
+  config,
   pkgs,
-  colors,
   vars,
   ...
 }:
 
 let
-  config = import ./config.nix { inherit pkgs colors; };
+  configuration = import ./config.nix { inherit config pkgs; };
 in
 {
   foot = pkgs.writeShellScriptBin "foot" ''
@@ -20,6 +20,6 @@ in
       SIZE=10
     fi
 
-    ${pkgs.foot}/bin/foot --config=${config.configDir}/foot.ini --font "${colors.fonts.monospace}:size=$SIZE" "$@"
+    ${pkgs.foot}/bin/foot --config=${configuration.configDir}/foot.ini --font "${config.colors.fonts.monospace}:size=$SIZE" "$@"
   '';
 }

@@ -1,4 +1,4 @@
-{ pkgs, colors, ... }:
+{ config, pkgs, ... }:
 
 {
   style = pkgs.writeTextFile {
@@ -14,40 +14,40 @@
 
       /*****----- Global Properties -----*****/
       * {
-          font:                        "${colors.fonts.normal} 11";
+          font:                        "${config.colors.fonts.normal} 11";
 
-          border-colour:               #${colors.rofi.border};
-          handle-colour:               #${colors.rofi.handle};
-          background-colour:           #${colors.rofi.bgs.normal};
-          foreground-colour:           #${colors.rofi.fgs.normal};
-          alternate-background:        #${colors.rofi.bgs.alternate};
+          border-colour:               #${config.colors.rofi.border};
+          handle-colour:               #${config.colors.rofi.handle};
+          background-colour:           #${config.colors.rofi.bgs.normal};
+          foreground-colour:           #${config.colors.rofi.fgs.normal};
+          alternate-background:        #${config.colors.rofi.bgs.alternate};
 
-          normal-background:           #${colors.rofi.bgs.normal};
-          normal-foreground:           #${colors.rofi.fgs.normal};
+          normal-background:           #${config.colors.rofi.bgs.normal};
+          normal-foreground:           #${config.colors.rofi.fgs.normal};
 
-          urgent-background:           #${colors.rofi.bgs.urgent};
-          urgent-foreground:           #${colors.rofi.fgs.urgent};
+          urgent-background:           #${config.colors.rofi.bgs.urgent};
+          urgent-foreground:           #${config.colors.rofi.fgs.urgent};
 
-          active-background:           #${colors.rofi.bgs.active};
-          active-foreground:           #${colors.rofi.fgs.active};
+          active-background:           #${config.colors.rofi.bgs.active};
+          active-foreground:           #${config.colors.rofi.fgs.active};
 
-          selected-normal-background:  #${colors.rofi.selectedBgs.normal};
-          selected-normal-foreground:  #${colors.rofi.selectedFgs.normal};
+          selected-normal-background:  #${config.colors.rofi.selectedBgs.normal};
+          selected-normal-foreground:  #${config.colors.rofi.selectedFgs.normal};
 
-          selected-urgent-background:  #${colors.rofi.selectedBgs.urgent};
-          selected-urgent-foreground:  #${colors.rofi.selectedFgs.urgent};
+          selected-urgent-background:  #${config.colors.rofi.selectedBgs.urgent};
+          selected-urgent-foreground:  #${config.colors.rofi.selectedFgs.urgent};
 
-          selected-active-background:  #${colors.rofi.selectedBgs.active};
-          selected-active-foreground:  #${colors.rofi.selectedFgs.active};
+          selected-active-background:  #${config.colors.rofi.selectedBgs.active};
+          selected-active-foreground:  #${config.colors.rofi.selectedFgs.active};
 
-          alternate-normal-background: #${colors.rofi.alternateBgs.normal};
-          alternate-normal-foreground: #${colors.rofi.alternateFgs.normal};
+          alternate-normal-background: #${config.colors.rofi.alternateBgs.normal};
+          alternate-normal-foreground: #${config.colors.rofi.alternateFgs.normal};
 
-          alternate-urgent-background: #${colors.rofi.alternateBgs.urgent};
-          alternate-urgent-foreground: #${colors.rofi.alternateFgs.urgent};
+          alternate-urgent-background: #${config.colors.rofi.alternateBgs.urgent};
+          alternate-urgent-foreground: #${config.colors.rofi.alternateFgs.urgent};
 
-          alternate-active-background: #${colors.rofi.alternateBgs.active};
-          alternate-active-foreground: #${colors.rofi.alternateFgs.active};
+          alternate-active-background: #${config.colors.rofi.alternateBgs.active};
+          alternate-active-foreground: #${config.colors.rofi.alternateFgs.active};
       }
 
       /*****----- Main Window -----*****/

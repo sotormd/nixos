@@ -1,12 +1,12 @@
 {
+  config,
   pkgs,
-  colors,
   vars,
   ...
 }:
 
 let
-  package = import ./package.nix { inherit pkgs colors vars; };
+  package = import ./package.nix { inherit config pkgs vars; };
 in
 {
   programs.firejail.wrappedBinaries.i2p-browser = {

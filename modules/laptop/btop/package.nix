@@ -1,17 +1,17 @@
-{ colors, pkgs, ... }:
+{ config, pkgs, ... }:
 
 let
-  config = pkgs.writeTextFile {
+  configuration = pkgs.writeTextFile {
     name = "btop.conf";
     text = ''
-      color_theme = "${colors.btop}"
+      color_theme = "${config.colors.btop}"
     '';
     destination = "/btop.conf";
   };
 
   configDir = pkgs.symlinkJoin {
     name = "btop";
-    paths = [ config ];
+    paths = [ configuration ];
   };
 in
 {

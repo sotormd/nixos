@@ -2,11 +2,11 @@
   "nodes": {
     "colors": {
       "locked": {
-        "lastModified": 1764606722,
-        "narHash": "sha256-JCsYio/0x9HGdzCs7My9+pNXx0cxJAfXT2rXxA62f8k=",
+        "lastModified": 1766032378,
+        "narHash": "sha256-Ii2w8TlikIITf52H8ZCkQWWXW1est6QaIJG9v/clx6A=",
         "owner": "sotormd",
         "repo": "colors",
-        "rev": "8cb13fd07f67cf99ff92e6ec15935ff2ad007977",
+        "rev": "571f5e0ce1af8c77bec80baf5fb8deebd7a9b234",
         "type": "github"
       },
       "original": {
@@ -678,11 +678,11 @@
     },
     "wallpapers": {
       "locked": {
-        "lastModified": 1761239917,
-        "narHash": "sha256-hVtsaaLLQFn5OScFP0CqXWrpoTJfI+5NpbpRYNlUFLY=",
+        "lastModified": 1766030608,
+        "narHash": "sha256-lFPk60yRrnfz9JnzLyb1UtXVCTSx6nO+LQkD8Qklvtc=",
         "owner": "sotormd",
         "repo": "wallpapers",
-        "rev": "940443abe3acd432b82a090dc9eba61c37b0a394",
+        "rev": "a6708a95926105fd1fad1f7b6c27ca06cb59e0a4",
         "type": "github"
       },
       "original": {

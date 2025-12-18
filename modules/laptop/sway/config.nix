@@ -1,25 +1,24 @@
 {
+  config,
   lib,
   pkgs,
-  colors,
-  wallpapers,
   vars,
   ...
 }:
 
 let
-  backgrounds = import ./backgrounds.nix { inherit lib wallpapers vars; };
+  backgrounds = import ./backgrounds.nix { inherit config lib vars; };
 
-  config = pkgs.writeTextFile {
+  configuration = pkgs.writeTextFile {
     name = "config";
     text = ''
-      exec ${pkgs.dconf}/bin/dconf write /org/gnome/desktop/interface/font-name "'${colors.fonts.normal} 10'"
-      exec ${pkgs.dconf}/bin/dconf write /org/gnome/desktop/interface/icon-theme "'${colors.gtk.icons.name}'"
-      exec ${pkgs.dconf}/bin/dconf write /org/gnome/desktop/interface/gtk-theme "'${colors.gtk.theme.name}'"
+      exec ${pkgs.dconf}/bin/dconf write /org/gnome/desktop/interface/font-name "'${config.colors.fonts.normal} 10'"
+      exec ${pkgs.dconf}/bin/dconf write /org/gnome/desktop/interface/icon-theme "'${config.colors.gtk.icons.name}'"
+      exec ${pkgs.dconf}/bin/dconf write /org/gnome/desktop/interface/gtk-theme "'${config.colors.gtk.theme.name}'"
       exec ${pkgs.dconf}/bin/dconf write /org/gnome/desktop/interface/color-scheme "'prefer-dark'"
       exec ${pkgs.dconf}/bin/dconf write /org/gnome/desktop/wm/preferences/button-layout "':'"
 
-      font pango:${colors.fonts.normal} 8.000000
+      font pango:${config.colors.fonts.normal} 8.000000
       floating_modifier Mod4
       default_border pixel 3
       default_floating_border normal 2
@@ -30,11 +29,11 @@ let
       mouse_warping output
       workspace_layout default
       workspace_auto_back_and_forth no
-      client.focused ${colors.sway.focused.border} ${colors.sway.focused.background} ${colors.sway.focused.text} ${colors.sway.focused.indicator} ${colors.sway.focused.childBorder}
-      client.focused_inactive ${colors.sway.focusedInactive.border} ${colors.sway.focusedInactive.background} ${colors.sway.focusedInactive.text} ${colors.sway.focusedInactive.indicator} ${colors.sway.focusedInactive.childBorder}
-      client.unfocused ${colors.sway.unfocused.border} ${colors.sway.unfocused.background} ${colors.sway.unfocused.text} ${colors.sway.unfocused.indicator} ${colors.sway.unfocused.childBorder}
-      client.urgent ${colors.sway.urgent.border} ${colors.sway.urgent.background} ${colors.sway.urgent.text} ${colors.sway.urgent.indicator} ${colors.sway.urgent.childBorder}
-      client.background ${colors.sway.background}
+      client.focused ${config.colors.sway.focused.border} ${config.colors.sway.focused.background} ${config.colors.sway.focused.text} ${config.colors.sway.focused.indicator} ${config.colors.sway.focused.childBorder}
+      client.focused_inactive ${config.colors.sway.focusedInactive.border} ${config.colors.sway.focusedInactive.background} ${config.colors.sway.focusedInactive.text} ${config.colors.sway.focusedInactive.indicator} ${config.colors.sway.focusedInactive.childBorder}
+      client.unfocused ${config.colors.sway.unfocused.border} ${config.colors.sway.unfocused.background} ${config.colors.sway.unfocused.text} ${config.colors.sway.unfocused.indicator} ${config.colors.sway.unfocused.childBorder}
+      client.urgent ${config.colors.sway.urgent.border} ${config.colors.sway.urgent.background} ${config.colors.sway.urgent.text} ${config.colors.sway.urgent.indicator} ${config.colors.sway.urgent.childBorder}
+      client.background ${config.colors.sway.background}
       client.placeholder #000000 #0c0c0c #ffffff #000000 #0c0c0c
 
       bindsym Mod4+0 exec ${pkgs.swayfx}/bin/swaymsg workspace $(${pkgs.swayfx}/bin/swaymsg -t get_outputs | ${pkgs.jq}/bin/jq -r '.[] | select(.focused) | .name | if . == "${vars.outputs.monitor}" then "1" elif . == "${vars.outputs.laptop}" then "0" else "unknown" end')10
@@ -244,6 +243,6 @@ in
 {
   configDir = pkgs.symlinkJoin {
     name = "sway";
-    paths = [ config ];
+    paths = [ configuration ];
   };
 }

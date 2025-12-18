@@ -1,6 +1,6 @@
 {
+  config,
   pkgs,
-  colors,
   vars,
   ...
 }:
@@ -40,8 +40,8 @@ let
 
       user_pref("browser.tabs.inTitlebar", 0);
       user_pref("font.default.x-western", "sans-serif");
-      user_pref("font.name.sans-serif.x-western", "${colors.fonts.normal}");
-      user_pref("font.name.serif.x-western", "${colors.fonts.normal}");
+      user_pref("font.name.sans-serif.x-western", "${config.colors.fonts.normal}");
+      user_pref("font.name.serif.x-western", "${config.colors.fonts.normal}");
       user_pref("toolkit.legacyUserProfileCustomizations.stylesheets", true);
 
       user_pref("media.peerconnection.enabled", false);
@@ -76,7 +76,7 @@ let
       #sidebar-button { display: none !important; }
 
       #urlbar-input { padding-left: 20px !important; }
-      #urlbar, #searchbar .searchbar-textbox { font-family: ${colors.fonts.normal} !important; }
+      #urlbar, #searchbar .searchbar-textbox { font-family: ${config.colors.fonts.normal} !important; }
 
       /* Hide tab strip and related UI */
       #TabsToolbar {

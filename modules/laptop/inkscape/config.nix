@@ -1,6 +1,6 @@
 {
+  config,
   pkgs,
-  colors,
   vars,
   ...
 }:
@@ -105,11 +105,11 @@
            id="template">
           <group
              id="base"
-             pagecolor="#${colors.bg0}"
-             deskcolor="#${colors.bg0}"
+             pagecolor="#${config.colors.bg0}"
+             deskcolor="#${config.colors.bg0}"
              pageopacity="0"
              pagecheckerboard="0"
-             bordercolor="#${colors.bg3}"
+             bordercolor="#${config.colors.bg3}"
              borderopacity="1"
              objecttolerance="10.0"
              gridtolerance="10.0"
@@ -1111,8 +1111,8 @@
         <group
            id="theme"
            defaultPreferDarkTheme="0"
-           defaultIconTheme="${colors.gtk.icons.name}"
-           defaultGtkTheme="${colors.gtk.theme.name}"
+           defaultIconTheme="${config.colors.gtk.icons.name}"
+           defaultGtkTheme="${config.colors.gtk.theme.name}"
            narrowSpinButton="1"
            preferDarkTheme="1"
            darkTheme="1"

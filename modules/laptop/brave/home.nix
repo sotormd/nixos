@@ -1,7 +1,7 @@
 {
+  inputs,
   lib,
   vars,
-  makeHomepage,
   ...
 }:
 
@@ -118,7 +118,7 @@ let
     ]
   ];
 
-  homepageHtml = makeHomepage {
+  homepageHtml = inputs.homepage.lib.makeHomepage {
     inherit layout;
     n = 5;
   };
