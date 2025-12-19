@@ -13,10 +13,12 @@
     "bing".disabled = false;
     "duckduckgo".disabled = false;
     "google".disabled = false;
+    "startpage".disabled = false;
+    "yahoo".disabled = false;
+    "yandex".disabled = false;
 
     "brave".disabled = true;
     "qwant".disabled = true;
-    "startpage".disabled = true;
     "wiby".disabled = true;
     "seznam".disabled = true;
     "mojeek".disabled = true;
@@ -26,7 +28,6 @@
     "presearch videos".disabled = true;
     "goo".disabled = true;
     "naver".disabled = true;
-    "yahoo".disabled = true;
 
     # general > wikimedia
     "wikibooks".disabled = true;
