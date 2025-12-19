@@ -15,7 +15,6 @@
     "google".disabled = false;
     "startpage".disabled = false;
     "yahoo".disabled = false;
-    "yandex".disabled = false;
 
     "brave".disabled = true;
     "qwant".disabled = true;
@@ -54,6 +53,7 @@
     "tineye".disabled = true;
     "wolframalpha".disabled = true;
     "yacy".disabled = true;
+    "yandex".disabled = true;
     "yep".disabled = true;
     "bpb".disabled = true;
     "tagesschau".disabled = true;
