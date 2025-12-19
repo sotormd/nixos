@@ -18,6 +18,33 @@ Nix-specific features:
 - nixos flake helper [cli](#nixos-flake-helper)
 - flake enabled [images](#images)
 
+Desktop features:
+
+- 100% wayland, no xorg or xwayland
+- [swayfx](https://github.com/WillPower3309/swayfx) compositor
+- [waybar](https://github.com/Alexays/Waybar) top panel with several useful
+  modules
+- [eww](https://github.com/elkowar/eww) widgets for bottom dock, dashboard,
+  calendar, etc
+- nvf-powered [neovim](https://github.com/sotormd/neovim) configuration
+- theming and colors with [colors](https://github.com/sotormd/colors)
+- declarative browser homepage with
+  [homepage](https://github.com/sotormd/homepage)
+- declarative wallpapers with
+  [wallpapers](https://github.com/sotormd/wallpapers)
+- xkcd lockscreen wallpapers with
+  [xkcd-wall](https://github.com/sotormd/xkcd-wall)
+
+Services features:
+
+- [unbound](https://github.com/NLnetLabs/unbound) dns server
+- [nginx](https://nginx.org/en/) web server & reverse proxy
+- acme for [Let's Encrypt](https://letsencrypt.org/) certificates
+- [searxng](https://github.com/searxng/searxng) search engine
+- [vaultwarden](https://github.com/dani-garcia/vaultwarden) password manager
+- [i2pd](https://github.com/PurpleI2P/i2pd) I2P router
+- [jellyfin](https://jellyfin.org/) media server
+
 See [Features](#features--tooling) for all features.
 
 # Contents
@@ -107,6 +134,7 @@ examples.
 | clipboard                     | `cliphist`                                                                                                 |
 | browser                       | `brave`                                                                                                    |
 | web server                    | `nginx`                                                                                                    |
+| certificates                  | `acme`                                                                                                     |
 | homepage                      | [`homepage`](https://github.com/sotormd/homepage)                                                          |
 | search engine                 | `searxng`                                                                                                  |
 | media server                  | `jellyfin`                                                                                                 |
