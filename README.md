@@ -47,13 +47,6 @@ Services features:
 
 See [Features](#features--tooling) for all features.
 
-# Contents
-
-1. [Setup & Usage](#setup--usage)
-2. [Images](#images)
-3. [nixos: Flake Helper](#nixos-flake-helper)
-4. [Features & Tooling](#features--tooling)
-
 # Setup & Usage
 
 1. `laptop` role: Laptop configuration
