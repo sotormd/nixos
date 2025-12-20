@@ -1,6 +1,3 @@
 {
-  imports = [
-    ../modules/images/sdcard.nix
-    ../modules/images/ssh.nix
-  ];
+  imports = [ ../modules/images/sdremote.nix ];
 }
