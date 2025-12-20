@@ -13,5 +13,7 @@
     ./ld.nix
 
     ./lix.nix
+
+    ./unfree.nix
   ];
 }
