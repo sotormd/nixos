@@ -1,7 +1,14 @@
-{ pkgs, vars, ... }:
+{
+  inputs,
+  pkgs,
+  vars,
+  ...
+}:
 
 {
   imports = [
+    inputs.sops-nix.nixosModules.sops
+
     ./gpg.nix
 
     ./secrets.nix
