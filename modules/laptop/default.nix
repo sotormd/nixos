@@ -62,6 +62,9 @@
       # networking
       ./network
 
+      # nomad mode
+      ./nomad
+
       # packages
       ./packages
 
@@ -82,6 +85,9 @@
 
       # thunar file manager
       ./thunar
+
+      # the onion router
+      ./tor
 
       # users
       ./users

@@ -20,6 +20,7 @@ Personal laptop configuration.
 3. [Adding External Disks](#adding-external-disks)
 4. [Browsers](#browsers)
 5. [Virtualisation & Containers](#virtualisation--containers)
+6. [Nomad Mode](#nomad-mode)
 
 [Security & Privacy](#security--privacy)
 
@@ -1095,6 +1096,28 @@ sudo zfs snapshot rpool/vm-example-disk@snap1
 sudo zfs rollback rpool/vm-example-disk@snap1
 ```
 
+## Nomad Mode
+
+Nomad Mode refers to the specialisation `gnome`, which sets up an environment
+ideal for usage away from home, in unreliable conditions.
+
+Notable changes from default `laptop` config:
+
+- sway window manager replaced by full GNOME desktop environment
+- wpa_supplicant replaced by NetworkManager
+- unbound from `server` replaced by cloudflare DNS
+- `kernel.unprivileged_userns_clone` set to 1 by default
+- librewolf browser is installed
+
+Nomad Mode can be used by booting into the `gnome` specialisation from the boot
+menu.
+
+> **Does this clutter my device?** No, all GNOME-specific things (except some
+> logs) are thrown out by impermanence.
+
+The base configuration for nomads is [here](../modules/laptop/nomad/default.nix)
+and that for the GNOME desktop is [here](../modules/laptop/nomad/gnome.nix).
+
 # Security & Privacy
 
 Several security and privacy oriented decisions were made while writing the
@@ -1247,8 +1270,13 @@ The included bittorrent client on the `server` role, also uses the I2P network.
 
 ### Tor
 
-The included `tor-browser` allows users to browse the
-[Tor](https://www.torproject.org/) network.
-
 The included `oniux` executable allows for kernel level tor isolation for any
 linux app.
+
+DO NOT use `oniux` to wrap browsers, use the `tor-browser` instead.
+
+The `tor-browser` is not installed by default, but can be used by:
+
+```bash
+nix shell nixpkgs#tor-browser --command tor-browser
+```
