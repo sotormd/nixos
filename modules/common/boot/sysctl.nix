@@ -36,7 +36,7 @@
     "kernel.yama.ptrace_scope" = lib.mkForce "3";
 
     # disable unprivileged user namespaces
-    "kernel.unprivileged_userns_clone" = lib.mkForce "0";
+    "kernel.unprivileged_userns_clone" = lib.mkDefault "0";
 
     # disable function tracing
     "kernel.ftrace_enabled" = lib.mkForce "0";

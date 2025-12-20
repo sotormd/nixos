@@ -1,4 +1,9 @@
-{ pkgs, vars, ... }:
+{
+  inputs,
+  pkgs,
+  vars,
+  ...
+}:
 
 {
   # set of packages to appear in user environment
@@ -14,5 +19,8 @@
 
     # wayland clipboard
     wl-clipboard
+
+    # text editor
+    inputs.neovim.packages.x86_64-linux.default
   ];
 }

@@ -6,6 +6,8 @@
 }:
 
 {
+  imports = [ inputs.hjem.nixosModules.default ];
+
   hjem.users.${vars.user.name} = {
     enable = true;
     user = vars.user.name;

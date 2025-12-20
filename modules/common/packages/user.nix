@@ -9,8 +9,9 @@
     # resource monitor
     htop
 
-    # text editor
+    # text editors
     nano
+    vim
 
     # fast incremental file transfer utility
     rsync
@@ -18,4 +19,6 @@
     # list contents of directories in a tree-like format
     tree
   ];
+
+  environment.sessionVariables.EDITOR = "vi";
 }

@@ -12,10 +12,6 @@
       ./assertions.nix
 
       # nixos modules
-      inputs.hjem.nixosModules.default
-
-      inputs.lanzaboote.nixosModules.lanzaboote
-
       inputs.colors.nixosModules.colors
 
       inputs.wallpapers.nixosModules.wallpapers
@@ -62,9 +58,6 @@
 
       # mpv media player
       ./mpv
-
-      # neovim text editor
-      ./neovim
 
       # networking
       ./network
