@@ -7,7 +7,5 @@
     ./resume.nix
 
     ./timesyncd.nix
-
-    ./tor.nix
   ];
 }
