@@ -227,7 +227,7 @@ let
 
       xwayland disable
       corner_radius 5
-      for_window [app_id=".*"] opacity 0.9
+      for_window [app_id=".*"] opacity 1
       blur enable
       blur_radius 2
       blur_passes 2
