@@ -107,7 +107,7 @@ examples.
 | secrets                       | `sops`, `sops-nix`                                                                                         |
 | sandboxing                    | `firejail`                                                                                                 |
 | firewall                      | `iptables (nf_tables)`                                                                                     |
-| anonymity                     | `i2pd`, `oniux`, `tor-browser`                                                                             |
+| anonymity                     | `i2pd`, `oniux`                                                                                            |
 | networking                    | `wpa_supplicant`                                                                                           |
 | DNS                           | `unbound`                                                                                                  |
 | display server                | `wayland`                                                                                                  |

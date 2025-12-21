@@ -1118,6 +1118,8 @@ menu.
 The base configuration for nomads is [here](../modules/laptop/nomad/default.nix)
 and that for the GNOME desktop is [here](../modules/laptop/nomad/gnome.nix).
 
+You can not use the `nixos` script from within the nomad specialisation.
+
 # Security & Privacy
 
 Several security and privacy oriented decisions were made while writing the
