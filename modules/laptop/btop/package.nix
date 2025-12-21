@@ -1,21 +1,21 @@
 { config, pkgs, ... }:
 
 let
-  configuration = pkgs.writeTextFile {
-    name = "btop.conf";
-    text = ''
-      color_theme = "${config.colors.btop}"
-    '';
-    destination = "/btop.conf";
-  };
+  configuration = import ./config.nix { inherit config pkgs; };
 
-  configDir = pkgs.symlinkJoin {
-    name = "btop";
-    paths = [ configuration ];
-  };
+  btopWrapped = pkgs.writeShellScriptBin "btop" ''
+    ${pkgs.btop}/bin/btop --config ${configuration.configDir}/btop.conf "$@"
+  '';
 in
 {
-  btop = pkgs.writeShellScriptBin "btop" ''
-    ${pkgs.btop}/bin/btop --config ${configDir}/btop.conf "$@"
-  '';
+  btop = pkgs.symlinkJoin {
+    name = "btop";
+    paths = [ pkgs.btop ];
+
+    # replace the btop binary with our wrapper
+    postBuild = ''
+      rm -f $out/bin/btop
+      ln -s ${btopWrapped}/bin/btop $out/bin/btop
+    '';
+  };
 }

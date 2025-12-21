@@ -15,9 +15,7 @@ let
       vars
       ;
   };
-in
-{
-  swaylock = pkgs.writeShellScriptBin "swaylock" (
+  swaylockWrapped = pkgs.writeShellScriptBin "swaylock" (
     lib.concatStringsSep "\n" (
       lib.concatMap (x: x) [
         [ ''${pkgs.swaylock}/bin/swaylock --config ${configuration.configDir}/config "$@"'' ]
@@ -27,4 +25,16 @@ in
       ]
     )
   );
+in
+{
+  swaylock = pkgs.symlinkJoin {
+    name = "swaylock";
+    paths = [ pkgs.swaylock ];
+
+    # replace the swaylock binary with our wrapper
+    postBuild = ''
+      rm -f $out/bin/swaylock
+      ln -s ${swaylockWrapped}/bin/swaylock $out/bin/swaylock
+    '';
+  };
 }
