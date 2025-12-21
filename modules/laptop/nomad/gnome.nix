@@ -5,5 +5,7 @@
   services.desktopManager.gnome.extraGSettingsOverrides = ''
     [org.gnome.shell]
     welcome-dialog-last-shown-version='9999999999'
+    [org.gnome.desktop.interface]
+    color-scheme='prefer-dark'
   '';
 }
