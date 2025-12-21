@@ -8,9 +8,8 @@
 let
   configuration = import ./config.nix { inherit config pkgs vars; };
   scripts = import ./scripts.nix { inherit pkgs; };
-in
-{
-  eww = pkgs.writeShellScriptBin "eww" ''
+
+  ewwWrapped = pkgs.writeShellScriptBin "eww" ''
     ${pkgs.eww}/bin/eww --config ${configuration.configDir} "$@"
   '';
 
@@ -21,4 +20,21 @@ in
   eww-dock-init = pkgs.writeShellScriptBin "eww-dock-init" ''
     ${scripts.scriptsDir}/dock.py
   '';
+in
+{
+  eww = pkgs.symlinkJoin {
+    name = "eww";
+    paths = [
+      pkgs.eww
+      eww-cal-init
+      eww-dock-init
+    ];
+
+    # replace the eww binary with our wrapper
+    postBuild = ''
+      rm -f $out/bin/eww
+      ln -s ${ewwWrapped}/bin/eww $out/bin/eww
+    '';
+  };
+
 }
