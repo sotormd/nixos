@@ -101,25 +101,32 @@
 
               modules = [ (import ./hosts { inherit role; }) ];
             };
+
+          mkMachine =
+            role:
+            mkHost {
+              inherit role;
+              withVars = true;
+            };
+
+          mkImage =
+            role:
+            mkHost {
+              role = "image${role}";
+              withVars = false;
+            };
         in
         {
           nixosConfigurations = {
             # machines
-            laptop = mkHost {
-              role = "laptop";
-              withVars = true;
-            };
-
-            server = mkHost {
-              role = "server";
-              withVars = true;
-            };
+            laptop = mkMachine "laptop";
+            server = mkMachine "server";
 
             # images
-            imageGnome = mkHost { role = "imageGnome"; };
-            imageMinimal = mkHost { role = "imageMinimal"; };
-            imageSD = mkHost { role = "imageSD"; };
-            imageSDRemote = mkHost { role = "imageSDRemote"; };
+            imageGnome = mkImage "Gnome";
+            imageMinimal = mkImage "Minimal";
+            imageSD = mkImage "SD";
+            imageSDRemote = mkImage "SDRemote";
           };
 
           # nix-on-droid
