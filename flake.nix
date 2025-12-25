@@ -87,57 +87,42 @@
         let
           lib = inputs.nixpkgs.lib // (import ./lib { });
           vars = import ./vars/vars.nix;
+
+          mkHost =
+            {
+              role,
+              withVars ? false,
+            }:
+            inputs.nixpkgs.lib.nixosSystem {
+              specialArgs = {
+                inherit inputs;
+              }
+              // lib.optionalAttrs withVars { inherit lib vars; };
+
+              modules = [ (import ./hosts { inherit role; }) ];
+            };
         in
         {
           nixosConfigurations = {
-
-            # laptop configuration
-            laptop = inputs.nixpkgs.lib.nixosSystem {
-              specialArgs = {
-                inherit inputs;
-                inherit lib;
-                inherit vars;
-              };
-              modules = [ (import ./hosts { role = "laptop"; }) ];
+            # machines
+            laptop = mkHost {
+              role = "laptop";
+              withVars = true;
             };
 
-            # server configuration
-            server = inputs.nixpkgs.lib.nixosSystem {
-              specialArgs = {
-                inherit inputs;
-                inherit lib;
-                inherit vars;
-              };
-              modules = [ (import ./hosts { role = "server"; }) ];
+            server = mkHost {
+              role = "server";
+              withVars = true;
             };
 
-            # gnome image
-            imageGnome = inputs.nixpkgs.lib.nixosSystem {
-              specialArgs = { inherit inputs; };
-              modules = [ (import ./hosts { role = "imageGnome"; }) ];
-            };
-
-            # minimal image
-            imageMinimal = inputs.nixpkgs.lib.nixosSystem {
-              specialArgs = { inherit inputs; };
-              modules = [ (import ./hosts { role = "imageMinimal"; }) ];
-            };
-
-            # sd card image
-            imageSD = inputs.nixpkgs.lib.nixosSystem {
-              specialArgs = { inherit inputs; };
-              modules = [ (import ./hosts { role = "imageSD"; }) ];
-            };
-
-            # sd card remote setup image
-            imageSDRemote = inputs.nixpkgs.lib.nixosSystem {
-              specialArgs = { inherit inputs; };
-              modules = [ (import ./hosts { role = "imageSDRemote"; }) ];
-            };
-
+            # images
+            imageGnome = mkHost { role = "imageGnome"; };
+            imageMinimal = mkHost { role = "imageMinimal"; };
+            imageSD = mkHost { role = "imageSD"; };
+            imageSDRemote = mkHost { role = "imageSDRemote"; };
           };
 
-          # nix-on-droid configuration
+          # nix-on-droid
           nixOnDroidConfigurations.default = inputs.nix-on-droid.lib.nixOnDroidConfiguration {
             extraSpecialArgs = { inherit inputs; };
             pkgs = import inputs.nixpkgs { system = "aarch64-linux"; };
