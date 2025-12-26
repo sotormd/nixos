@@ -26,6 +26,10 @@ Desktop features:
   modules
 - [eww](https://github.com/elkowar/eww) widgets for bottom dock, dashboard,
   calendar, etc
+- [rofi](https://github.com/davatorium/rofi) menu for launchers, clipboard
+  history, workspace switchers, etc.
+- [Brave](https://github.com/brave/brave-browser/) browser with tight policies
+  to ensure security and protect user privacy.
 - nvf-powered [neovim](https://github.com/sotormd/neovim) configuration
 - theming and colors with [colors](https://github.com/sotormd/colors)
 - declarative browser homepage with
