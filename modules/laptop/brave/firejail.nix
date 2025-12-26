@@ -7,6 +7,24 @@
 }:
 
 let
+  firejailArgs = [
+    "--nonewprivs"
+    "--whitelist=/home/${vars.user.name}/.local/share/home.html"
+
+    "--caps.drop=all"
+
+    "--nodvd"
+    "--nogroups"
+    "--noprinters"
+    "--noroot"
+    "--nou2f"
+
+    "--private-cache"
+    "--private-cwd"
+    "--private-dev"
+    "--private-etc=chromium,brave,resolv.conf"
+  ];
+
   package = import ./package.nix { inherit pkgs config colors; };
   webappsFile = import ./webapps.nix;
 
@@ -27,18 +45,12 @@ in
     brave = {
       executable = "${package.customBrave}/bin/brave";
       profile = "${pkgs.firejail}/etc/firejail/brave.profile";
-      extraArgs = [
-        "--nonewprivs"
-        "--whitelist=/home/${vars.user.name}/.local/share/home.html"
-      ];
+      extraArgs = firejailArgs;
     };
   }
   // builtins.mapAttrs (name: script: {
     executable = "${script}/bin/${name}";
     profile = "${pkgs.firejail}/etc/firejail/brave.profile";
-    extraArgs = [
-      "--nonewprivs"
-      "--whitelist=/home/${vars.user.name}/.local/share/home.html"
-    ];
+    extraArgs = firejailArgs;
   }) webappScripts;
 }
