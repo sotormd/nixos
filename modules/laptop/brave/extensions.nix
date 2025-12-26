@@ -10,7 +10,7 @@ in
   ];
 
   programs.chromium.extraOpts = {
-    "3rdparty"."extensions"."cjpalhdlnbpafiamejdnhcphjbkeiagm".policy = {
+    "3rdparty"."extensions"."cjpalhdlnbpafiamejdnhcphjbkeiagm" = {
       adminSettings = uBlockConf;
     };
   };
