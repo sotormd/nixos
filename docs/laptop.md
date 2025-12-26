@@ -1020,12 +1020,6 @@ improve usability.
 
 uBlock Origin is also configured further via chromium policies.
 
-Additional extension keybinds, **apart from the defaults**:
-
-| Action         | Bind                               |
-| -------------- | ---------------------------------- |
-| `ctrl+shift+a` | toggle darkreader for current page |
-
 #### Sandbox
 
 The `brave` executable provided is a firejail wrapper which uses `--nonewprivs`
