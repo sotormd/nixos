@@ -983,6 +983,8 @@ Two web browsers, `brave` and `i2p-browser` are included.
 
 ### Brave
 
+#### Launching
+
 The Brave browser can be launched using the shortcut `$mod+backslash` or by
 executing the firejail wrapper:
 
@@ -990,13 +992,7 @@ executing the firejail wrapper:
 brave
 ```
 
-The web app for `spotify` is also installed, and more web apps can be added
-[here](../modules/laptop/brave/webapps.nix). The web apps also run under
-firejail.
-
-The browser also comes with these
-[extensions](../modules/laptop/brave/extensions.nix) to preserve privacy and
-improve usability.
+#### Configuration
 
 Note that the `~/.config/BraveSoftware/Brave-Browser/` directory is persisted by
 impermanence so all state is persisted across reboots.
@@ -1011,8 +1007,30 @@ preferences and local state files. The initial preferences live
 [here](../modules/laptop/brave/preferences.nix) and the local state lives
 [here](../modules/laptop/brave/state.nix).
 
+#### Extensions
+
+The browser also comes with these
+[extensions](../modules/laptop/brave/extensions.nix) to preserve privacy and
+improve usability.
+
+- uBlock Origin
+- Darkreader
+- Bitwarden
+- Vimium
+
+uBlock Origin is also configured further via chromium policies.
+
+Additional extension keybinds, **apart from the defaults**:
+
+| Action         | Bind                               |
+| -------------- | ---------------------------------- |
+| `ctrl+shift+a` | toggle darkreader for current page |
+
+#### Sandbox
+
 The `brave` executable provided is a firejail wrapper which uses `--nonewprivs`
-to mitigate possible SUID vulnerabilities.
+to mitigate possible SUID vulnerabilities. All flags can be seen
+[here](../modules/laptop/brave/firejail.nix).
 
 Note that to run the brave browser, you will have to enable unprivileged user
 namespaces, which is disabled by default. It can be enabled by setting the
@@ -1030,6 +1048,12 @@ firejail sandbox. So you must run brave outside of firejail. See
 [here](../modules/laptop/brave/sandbox.nix) for instructions. This however is
 not recommended unless you absolutely have to avoid unprivileged user
 namespaces.
+
+#### WebApps
+
+The web app for `spotify` is also installed, and more web apps can be added
+[here](../modules/laptop/brave/webapps.nix). The web apps also run under
+firejail.
 
 ### i2p-browser
 
@@ -1052,7 +1076,8 @@ nixos edit vars
 ```
 
 The included `i2p-browser` executable is a firejail wrapper which uses
-`--nonewprivs` to mitigate possible SUID vulnerabilities.
+`--nonewprivs` to mitigate possible SUID vulnerabilities. All flags can be seen
+[here](../modules/laptop/i2p-browser/firejail.nix).
 
 ## Virtualisation & Containers
 
