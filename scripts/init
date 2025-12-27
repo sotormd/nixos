@@ -353,7 +353,7 @@ elif [ "$1" == "vars" ]; then
         fi
 
     	if [ -z "$VARS_OUTPUTS_WALLPAPER" ]; then
-            VARS_OUTPUTS_WALLPAPER="nord.building"
+            VARS_OUTPUTS_WALLPAPER="nord.moonmower"
         fi
 
 	    if [ -z "$VARS_OUTPUTS_LOCKSCREEN" ]; then
