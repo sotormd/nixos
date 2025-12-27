@@ -313,7 +313,7 @@ in step 4.
 | `VARS_NETWORK_SERVER_I2P_PORT`    | Server I2P HTTP proxy port.                        | `"4444"`                                          | `"23001"`                            |
 | `VARS_OUTPUTS_LAPTOP`             | Identifier for laptop screen.                      | `"eDP-1"`                                         | `"eDP-1"`                            |
 | `VARS_OUTPUTS_MONITOR`            | Identifier for monitor screen.                     | `"HDMI-A-1"`                                      | `"HDMI-A-1"`                         |
-| `VARS_OUTPUTS_WALLPAPER`          | Wallpaper name.                                    | `"nord.building"`                                 | `"nord.nixos"`                       |
+| `VARS_OUTPUTS_WALLPAPER`          | Wallpaper name.                                    | `"nord.moonmower"`                                | `"nord.nixos"`                       |
 | `VARS_OUTPUTS_LOCKSCREEN`         | Lockscreen wallpaper name.                         | `"xkcd.random"`                                   | `"nord.nixos"`                       |
 | `SECRETS_HASHED_PASSWORD`         | Hashed user password.                              | `$(mkpasswd -m yescrypt)`                         | -                                    |
 | `SECRETS_PSK`                     | PSK for the network.                               | (user input)                                      | `"supersecretpsk"`                   |
