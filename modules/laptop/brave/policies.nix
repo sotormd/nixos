@@ -36,6 +36,14 @@
     BraveWalletDisabled = true;
     BraveVPNDisabled = true;
     BraveAIChatEnabled = false;
+    BraveNewsDisabled = true;
+    BraveTalkDisabled = true;
+    BraveSpeedreaderEnabled = false;
+    BraveWaybackMachineEnabled = false;
+    BraveP3AEnabled = false;
+    BraveStatsPingEnabled = false;
+    BraveWebDiscoveryEnabled = false;
+    BravePlaylistEnabled = false;
 
     # search engine
     DefaultSearchProviderEnabled = true;
