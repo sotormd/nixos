@@ -2,7 +2,7 @@
 
 ~~slighly overengineered~~ NixOS configuration flake for multiple hosts.
 
-![nixos](./docs/screenshots/nixos.gif)
+![nixos](./docs/screenshots/nord.gif)
 
 Nix-specific features:
 
