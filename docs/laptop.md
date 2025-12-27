@@ -431,7 +431,7 @@ examples.
 
 The full sway config lives [here](../modules/laptop/sway/config.nix).
 
-![sway desktop](./screenshots/nixos.gif)
+![sway desktop](./screenshots/nord.gif)
 
 ### Logging In
 
