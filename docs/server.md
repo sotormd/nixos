@@ -29,7 +29,7 @@ Bootstrap process for the `server` role.
 1. Get a NixOS sd-card image that has experimental features `flakes` and
    `nix-command` enabled.
 
-   One such images is included in this flake. To use the included image:
+   One such image is included in this flake. To use the included image:
 
    ```bash
    nix build github:sotormd/nixos#nixosConfigurations.imageSD.config.system.build.sdImage
@@ -168,7 +168,7 @@ in step 4.
 | `VARS_NETWORK_QBT_PORT`                   | qBittorrent webui (loopback) port.                 | `"8080"`                                          | `"20006"`                            |
 | `VARS_NETWORK_JELLYFIN_ENABLE`            | Enable Jellyfin.                                   | `"false"`                                         | `"true"`                             |
 | `VARS_NETWORK_JELLYFIN_PORT`              | Jellyfin web (loopback) port.                      | `"8096"`                                          | `"20007"`                            |
-| `VARS_NETWORK_JEYLLYFIN_DATA`             | Jellyfin data directory.                           | `"/var/lib/jellyfin"`                             | `"/mnt/drive/jellyfin"`              |
+| `VARS_NETWORK_JELLYFIN_DATA`              | Jellyfin data directory.                           | `"/var/lib/jellyfin"`                             | `"/mnt/drive/jellyfin"`              |
 | `SECRETS_HASHED_PASSWORD`                 | Hashed user password.                              | `$(mkpasswd -m yescrypt)`                         | -                                    |
 | `SECRETS_PSK`                             | PSK for the network.                               | (user input)                                      | `"supersecretpsk"`                   |
 | `SECRETS_DUCKDNS_TOKEN`                   | DuckDNS API token.                                 | -                                                 | `"aaa..."`                           |
