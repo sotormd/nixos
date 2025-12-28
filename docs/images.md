@@ -3,7 +3,7 @@
 [![Build Minimal ISO](https://github.com/sotormd/nixos/actions/workflows/build-minimal-iso.yml/badge.svg)](https://github.com/sotormd/nixos/actions/workflows/build-minimal-iso.yml)
 [![Build GNOME ISO](https://github.com/sotormd/nixos/actions/workflows/build-gnome-iso.yml/badge.svg)](https://github.com/sotormd/nixos/actions/workflows/build-gnome-iso.yml)
 
-Two images are offered for `x86_64-linux` architectures:
+Two images are offered for the `x86_64-linux` architecture:
 
 1. `minimal`: A minimal NixOS environment.
 
