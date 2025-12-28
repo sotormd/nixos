@@ -9,7 +9,7 @@ Two images are offered for the `x86_64-linux` architecture:
 
 2. `gnome`: NixOS with the GNOME desktop environment.
 
-One image is offered for `aarch64-linux` architectures:
+One image is offered for the `aarch64-linux` architecture:
 
 1. `sdcard`: NixOS for sdcard targets (intended for raspberry-pi 4b).
 
