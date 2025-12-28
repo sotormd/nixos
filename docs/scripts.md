@@ -177,7 +177,7 @@ nixos commit -m "docs: update scripts.md"
 If a message is not mentioned with the `-m` flag, the `$EDITOR` will be opened
 to ask the user for a git commit message.
 
-Comparision among `test`, `switch` and `commit`:
+Comparison among `test`, `switch` and `commit`:
 
 | Command  | Activate new configuration | Create boot entry | Format flake | Fix perms | Create git commit |
 | -------- | -------------------------- | ----------------- | ------------ | --------- | ----------------- |
@@ -301,7 +301,7 @@ nixos cat flake.nix | wl-copy
 
 Open an editor in the flake directory
 
-```
+```bash
 nixos vi .
 ```
 
