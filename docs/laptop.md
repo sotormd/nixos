@@ -19,8 +19,9 @@ Personal laptop configuration.
 2. [Using the Sway desktop](#using-the-sway-desktop)
 3. [Adding External Disks](#adding-external-disks)
 4. [Browsers](#browsers)
-5. [Virtualisation & Containers](#virtualisation--containers)
-6. [Nomad Mode](#nomad-mode)
+5. [Other Applications](#other-applications)
+6. [Virtualisation & Containers](#virtualisation--containers)
+7. [Nomad Mode](#nomad-mode)
 
 [Security & Privacy](#security--privacy)
 
@@ -1072,6 +1073,35 @@ nixos edit vars
 The included `i2p-browser` executable is a firejail wrapper which uses
 `--nonewprivs` to mitigate possible SUID vulnerabilities. All flags can be seen
 [here](../modules/laptop/i2p-browser/firejail.nix).
+
+## Other Applications
+
+### swayimg
+
+Simple image viewer for wayland.
+
+### mpv
+
+Media player supporting a wide variety of file formats.
+
+You can also stream content from the Jellyfin media server installed on the
+`server` role, by using the `Copy Stream URL` functionality.
+
+### zathura
+
+PDF viewer with vim-like keybinds.
+
+### Thunar
+
+File manager from the XFCE desktop environment.
+
+### mousepad
+
+Text editor from the XFCE desktop environment.
+
+### file-roller
+
+Archive manager from the GNOME desktop environment.
 
 ## Virtualisation & Containers
 
