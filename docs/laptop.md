@@ -1103,6 +1103,10 @@ Text editor from the XFCE desktop environment.
 
 Archive manager from the GNOME desktop environment.
 
+### Inkscape
+
+Scalable vector graphics editor.
+
 ## Virtualisation & Containers
 
 Virtual machines can be created using QEMU/KVM through `virt-manager`.
