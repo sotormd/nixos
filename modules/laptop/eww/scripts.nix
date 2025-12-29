@@ -10,8 +10,15 @@ let
       DEFAULT_COVER="images/music.png"
 
       STATUS=$(${pkgs.playerctl}/bin/playerctl status)
-      TITLE=$(${pkgs.playerctl}/bin/playerctl metadata title | sed -E 's/ -.*//; s/\(.*\)//g; s/\[.*\]//g; s/^[[:space:]]*//; s/[[:space:]]*$//; s/&/\&amp;/g; s/</\&lt;/g; s/>/\&gt;/g; s/"/\\"/g')
-      ARTISTS=$(${pkgs.playerctl}/bin/playerctl metadata artist | awk -F',' '{print $1 ", " $2}' | sed -E 's/^[[:space:]]*//; s/[[:space:]]*$//; s/, *$//; s/&/\&amp;/g; s/</\&lt;/g; s/>/\&gt;/g; s/"/\\"/g')
+      TITLE=$(
+        ${pkgs.playerctl}/bin/playerctl metadata title |
+        sed -E 's/ -.*//; s/\(.*\)//g; s/\[.*\]//g; s/^[[:space:]]*//; s/[[:space:]]*$//'
+      )
+      ARTISTS=$(
+        ${pkgs.playerctl}/bin/playerctl metadata artist |
+        awk -F',' '{print $1 ", " $2}' |
+        sed -E 's/^[[:space:]]*//; s/[[:space:]]*$//; s/, *$//'
+      )
 
       ## Get status
       get_status() {
