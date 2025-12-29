@@ -1076,6 +1076,18 @@ The included `i2p-browser` executable is a firejail wrapper which uses
 
 ## Other Applications
 
+### foot
+
+Terminal emulator for wayland.
+
+### Thunar
+
+File manager from the XFCE desktop environment.
+
+### mousepad
+
+Text editor from the XFCE desktop environment.
+
 ### swayimg
 
 Simple image viewer for wayland.
@@ -1091,21 +1103,13 @@ You can also stream content from the Jellyfin media server installed on the
 
 PDF viewer with vim-like keybinds.
 
-### Thunar
+### Inkscape
 
-File manager from the XFCE desktop environment.
-
-### mousepad
-
-Text editor from the XFCE desktop environment.
+Scalable vector graphics editor.
 
 ### file-roller
 
 Archive manager from the GNOME desktop environment.
-
-### Inkscape
-
-Scalable vector graphics editor.
 
 ## Virtualisation & Containers
 
