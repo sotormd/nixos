@@ -1,4 +1,4 @@
-###########################################################################
+###############################################################################################################
 # The following ports are required:
 #
 # 1. sshd: secure shell daemon
@@ -19,7 +19,7 @@
 # 4. i2pd: invisible internet protocol daemon
 #
 #    LAN ports: vars.network.i2pd.httpProxy.port
-#    lo  ports: vars.network.i2pd.sam.port vars.network.i2pd.socksProxy.port vars.network.webconsole.port
+#    lo  ports: vars.network.i2pd.sam.port, vars.network.i2pd.socksProxy.port, vars.network.webconsole.port
 #
 # 5. qbittorrent: bittorrent client
 #
@@ -36,7 +36,7 @@
 #    LAN ports: 443
 #    lo  ports: -
 #
-###########################################################################
+###############################################################################################################
 
 { lib, vars, ... }:
 
