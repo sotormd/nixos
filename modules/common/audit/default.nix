@@ -1,8 +1,16 @@
 {
   imports = [
-    ./accounts.nix
+    ./cleanup.nix
+
+    ./identity.nix
+
+    ./kexec.nix
 
     ./logins.nix
+
+    ./memaccess.nix
+
+    ./paths.nix
 
     ./privileges.nix
 
