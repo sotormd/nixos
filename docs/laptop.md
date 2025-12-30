@@ -136,7 +136,7 @@ Bootstrap process for the `laptop` role.
    sudo swapon $SWAP
    ```
 
-5. Enable `LUKS` encryption.
+5. Enable LUKS encryption.
 
    ```bash
    sudo cryptsetup luksFormat $ROOT
@@ -145,7 +145,7 @@ Bootstrap process for the `laptop` role.
 
    The partition should be available at `/dev/mapper/root` now.
 
-6. Create `ZFS` pools.
+6. Create ZFS pools.
 
    ```bash
    sudo zpool create \
@@ -168,7 +168,7 @@ Bootstrap process for the `laptop` role.
    | mountpoint  | none     | Prevents automatic mounting of zpool, useful for NixOS.                                                    |
    | ashift      | 12       | Sets the sector size to **4K (2^12)**, optimal for modern storage devices (SSDs and advanced format HDDs). |
 
-7. Create `ZFS` datasets.
+7. Create ZFS datasets.
 
    ```bash
    sudo zfs create rpool/root -o mountpoint=legacy
@@ -193,7 +193,7 @@ Bootstrap process for the `laptop` role.
    sudo zfs snapshot rpool/home@blank
    ```
 
-10. Mount `ZFS` datasets.
+10. Mount ZFS datasets.
 
     ```bash
     sudo mkdir -p /mnt && sudo mount rpool/root /mnt -t zfs
@@ -741,7 +741,7 @@ Included modules:
 - uptime
 - cpu usage
 - memory usage
-- zfs usage
+- ZFS usage
 - playerctl controls
 - lyrics
 - fortune
@@ -1128,7 +1128,7 @@ Notes:
   `kernel.unprivileged_userns_clone` sysctl to `1` or via the waybar
   [userns](#userns-module) module.
 
-An alternative to creating persistent VM disks is to use zfs ZVOLs to store
+An alternative to creating persistent VM disks is to use ZFS ZVOLs to store
 them.
 
 For example, to create a 1TB ZVOL:
@@ -1206,7 +1206,7 @@ instructions.
 
 ## Impermanence
 
-The `laptop` role uses zfs snapshots and bind mounts to ensure opt-in
+The `laptop` role uses ZFS snapshots and bind mounts to ensure opt-in
 persistance.
 
 This ensures that only the required files and directories persist across

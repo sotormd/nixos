@@ -6,17 +6,17 @@
 
 Nix-specific features:
 
-- completely reproducible, pure evaluation
-- dotfiles managed using wrappers implemented from basic nixpkgs functions
-- symlinks in ~ managed using [hjem](https://github.com/feel-co/hjem)
-- secrets managed using [sops-nix](https://github.com/Mic92/sops-nix)
-- secure boot using [lanzaboote](https://github.com/nix-community/lanzaboote)
-- impermanence using zfs snapshots and bind mounts
-- package management using [lix](https://lix.systems)
-- android environment using
+- Completely reproducible, pure evaluation
+- Dotfiles managed using wrappers implemented from basic nixpkgs functions
+- Symlinks in ~ managed using [hjem](https://github.com/feel-co/hjem)
+- Secrets managed using [sops-nix](https://github.com/Mic92/sops-nix)
+- Secure boot using [lanzaboote](https://github.com/nix-community/lanzaboote)
+- Impermanence using ZFS snapshots and bind mounts
+- Package management using [lix](https://lix.systems)
+- Android environment using
   [nix-on-droid](https://github.com/nix-community/nix-on-droid)
-- nixos flake helper [cli](#nixos-flake-helper)
-- flake enabled [images](#images)
+- Flake helper [cli](#nixos-flake-helper)
+- Flake-enabled installation [images](#images)
 
 Desktop features:
 
@@ -30,13 +30,13 @@ Desktop features:
   history, workspace switchers, etc.
 - [Brave](https://github.com/brave/brave-browser/) browser with tight policies
   to ensure security and protect user privacy.
-- nvf-powered [neovim](https://github.com/sotormd/neovim) configuration
-- theming and colors with [colors](https://github.com/sotormd/colors)
-- declarative browser homepage with
+- NVF-powered [neovim](https://github.com/sotormd/neovim) configuration
+- Theming and colors with [colors](https://github.com/sotormd/colors)
+- Declarative browser homepage with
   [homepage](https://github.com/sotormd/homepage)
-- declarative wallpapers with
+- Declarative wallpapers with
   [wallpapers](https://github.com/sotormd/wallpapers)
-- xkcd lockscreen wallpapers with
+- XKCD lockscreen wallpapers with
   [xkcd-wall](https://github.com/sotormd/xkcd-wall)
 
 Services features:
