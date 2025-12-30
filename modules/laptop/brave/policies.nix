@@ -45,6 +45,12 @@
     BraveWebDiscoveryEnabled = false;
     BravePlaylistEnabled = false;
 
+    # useful brave features
+    BraveDeAmpEnabled = true;
+    BraveDebouncingEnabled = true;
+    BraveReduceLanguageEnabled = true;
+    DefaultBraveFingerprintingV2Setting = 3;
+
     # search engine
     DefaultSearchProviderEnabled = true;
 
