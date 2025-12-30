@@ -120,6 +120,10 @@
     # set safebrowsing to standard
     SafeBrowsingProtectionLevel = 1;
 
+    # each site in a different process
+    # mitigate spectre-like sidechannel attacks
+    SitePerProcess = true;
+
     # disable chrome dino
     AllowDinosaurEasterEgg = false;
 
