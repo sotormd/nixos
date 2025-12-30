@@ -8,8 +8,5 @@
     "-w /etc/gshadow -p wa -k identity"
     "-w /etc/group -p wa -k identity"
     "-w /etc/security/opasswd -p wa -k identity"
-
-    "-w /etc/sudoers.d -p wa -k identity"
-    "-w /etc/login.defs -p wa -k identity"
   ];
 }
