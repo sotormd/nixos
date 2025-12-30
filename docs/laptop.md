@@ -1096,9 +1096,6 @@ Simple image viewer for wayland.
 
 Media player supporting a wide variety of file formats.
 
-You can also stream content from the Jellyfin media server installed on the
-`server` role, by using the `Copy Stream URL` functionality.
-
 ### zathura
 
 PDF viewer with vim-like keybinds.
