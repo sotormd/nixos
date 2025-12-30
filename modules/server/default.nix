@@ -8,6 +8,9 @@
 
       # MODULES - sorted alphabetically
 
+      # linux audit subsystem
+      ./audit
+
       # bootloader, kernel parameters, sysctl options
       ./boot
 

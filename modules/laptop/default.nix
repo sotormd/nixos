@@ -23,6 +23,9 @@
       # audio with pipewire
       ./audio
 
+      # linux audit subsystem
+      ./audit
+
       # secureboot, plymouth, sysctl options, etc
       ./boot
 
