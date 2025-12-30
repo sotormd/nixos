@@ -21,6 +21,16 @@
     "kvm-amd"
   ];
 
+  boot.kernelParams = [
+    # disable password timeout for luks devices
+    "luks.options=timeout=0"
+    "rd.luks.options=timeout=0"
+
+    # assume root device is already there
+    # do not wait for it to appear
+    "rootflags=x-systemd.device-timeout=0"
+  ];
+
   fileSystems."/boot" = {
     device = "/dev/disk/by-partuuid/${vars.device.boot}";
     fsType = "vfat";
