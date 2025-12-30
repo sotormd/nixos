@@ -2,7 +2,7 @@
   imports = [
     ./alsa.nix
 
-    # ./jack.nix
+    ./jack.nix
 
     ./pipewire.nix
 
