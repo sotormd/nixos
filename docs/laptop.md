@@ -291,19 +291,19 @@ in step 3.
 | `VARS_DEVICE_POWERTOP_ENABLE`     | Enable `powertop`.                                 | `"false"`                                         | `"true"`                             |
 | `VARS_DEVICE_TLP_ENABLE`          | Enable `tlp`.                                      | `"false"`                                         | `"true"`                             |
 | `VARS_USER_NAME`                  | Username.                                          | `$USER`                                           | `"Bar"`                              |
-| `VARS_USER_EMAIL`                 | Email used for git commits.                        | -                                                 | `"Bar@domain.com"`                   |
+| `VARS_USER_EMAIL`                 | Email used for git commits.                        | `"$USER@nixos"`                                   | `"Bar@domain.com"`                   |
 | `VARS_USER_GITHUB_KEYFILE`        | Github SSH identity key.                           | `"id_ed25519_github"`                             | `"id_rsa_github"`                    |
 | `VARS_I18N_TIMEZONE`              | Timezone.                                          | `$(timedatectl show --property=Timezone --value)` | `"Europe/Berlin"`                    |
 | `VARS_I18N_KEYBOARD`              | Keyboard layout.                                   | `"us"`                                            | `"us"`                               |
 | `VARS_I18N_LOCALE`                | Locale.                                            | `"en_US.UTF-8"`                                   | `"de_DE.UTF-8"`                      |
 | `VARS_NETWORK_INTERFACE`          | Wireless network interface.                        | `"wlp1s0"`                                        | `"wlan0"`                            |
-| `VARS_NETWORK_SSID`               | Wireless network ssid.                             | -                                                 | `"net20"`                            |
+| `VARS_NETWORK_SSID`               | Wireless network ssid.                             | `"net"`                                           | `"net20"`                            |
 | `VARS_NETWORK_GATEWAY`            | Wireless network gateway.                          | `"192.168.0.1"`                                   | `"10.0.0.0"`                         |
-| `VARS_NETWORK_IP`                 | Static local IP address.                           | -                                                 | `"10.0.0.3"`                         |
+| `VARS_NETWORK_IP`                 | Static local IP address.                           | `"192.168.0.100"`                                 | `"10.0.0.3"`                         |
 | `VARS_NETWORK_WPA3_ENABLE`        | Enable SAE (dragonfly) authentication.             | `"true"`                                          | `"false"`                            |
-| `VARS_NETWORK_SERVER_ENABLE`      | Enable server-dependant features.                  | `"true"`                                          | `"false"`                            |
-| `VARS_NETWORK_SERVER_IP`          | Static local server IP address.                    | -                                                 | `"10.0.0.5"`                         |
-| `VARS_NETWORK_SERVER_DOMAIN`      | Server domain.                                     | -                                                 | `"myserver.domain.com"`              |
+| `VARS_NETWORK_SERVER_ENABLE`      | Enable server-dependant features.                  | `"false"`                                         | `"false"`                            |
+| `VARS_NETWORK_SERVER_IP`          | Static local server IP address.                    | `"192.168.0.200"`                                 | `"10.0.0.5"`                         |
+| `VARS_NETWORK_SERVER_DOMAIN`      | Server domain.                                     | `"bars-server.duckdns.org"`                       | `"myserver.domain.com"`              |
 | `VARS_NETWORK_SERVER_SSH_PORT`    | Server SSH port.                                   | `"22"`                                            | `"20000"`                            |
 | `VARS_NETWORK_SERVER_SSH_KEYFILE` | Server SSH identity key.                           | `"id_ed25519_server"`                             | `"id_rsa"`                           |
 | `VARS_NETWORK_SERVER_I2P_PORT`    | Server I2P HTTP proxy port.                        | `"4444"`                                          | `"23001"`                            |

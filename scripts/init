@@ -281,7 +281,7 @@ elif [ "$1" == "vars" ]; then
         fi
 
         if [ -z "$VARS_USER_EMAIL" ]; then
-            VARS_USER_EMAIL=""
+            VARS_USER_EMAIL="$USER@nixos"
         fi
 
         if [ -z "$VARS_USER_GITHUB_KEYFILE" ]; then
@@ -305,7 +305,7 @@ elif [ "$1" == "vars" ]; then
         fi
 
         if [ -z "$VARS_NETWORK_SSID" ]; then
-            VARS_NETWORK_SSID=""
+            VARS_NETWORK_SSID="net"
         fi
 
         if [ -z "$VARS_NETWORK_GATEWAY" ]; then
@@ -313,7 +313,7 @@ elif [ "$1" == "vars" ]; then
         fi
 
         if [ -z "$VARS_NETWORK_IP" ]; then
-            VARS_NETWORK_IP=""
+            VARS_NETWORK_IP="192.168.0.100"
         fi
 
     	if [ -z "$VARS_NETWORK_WPA3_ENABLE" ]; then
@@ -321,15 +321,15 @@ elif [ "$1" == "vars" ]; then
         fi
 
         if [ -z "$VARS_NETWORK_SERVER_ENABLE" ]; then
-            VARS_NETWORK_SERVER_ENABLE="true"
+            VARS_NETWORK_SERVER_ENABLE="false"
         fi
 
         if [ -z "$VARS_NETWORK_SERVER_IP" ]; then
-            VARS_NETWORK_SERVER_IP=""
+            VARS_NETWORK_SERVER_IP="192.168.0.200"
         fi
 
         if [ -z "$VARS_NETWORK_SERVER_DOMAIN" ]; then
-            VARS_NETWORK_SERVER_DOMAIN=""
+            VARS_NETWORK_SERVER_DOMAIN="bars-server.duckdns.org"
         fi
 
         if [ -z "$VARS_NETWORK_SERVER_SSH_PORT" ]; then
@@ -559,7 +559,7 @@ EOF
         fi
 
         if [ -z "$VARS_USER_EMAIL" ]; then
-            VARS_USER_EMAIL=""
+            VARS_USER_EMAIL="$USER@nixos"
         fi
 
         if [ -z "$VARS_I18N_TIMEZONE" ]; then
@@ -579,7 +579,7 @@ EOF
         fi
 
         if [ -z "$VARS_NETWORK_SSID" ]; then
-            VARS_NETWORK_SSID=""
+            VARS_NETWORK_SSID="net"
         fi
 
         if [ -z "$VARS_NETWORK_GATEWAY" ]; then
@@ -591,7 +591,7 @@ EOF
         fi
 
         if [ -z "$VARS_NETWORK_IP" ]; then
-            VARS_NETWORK_IP=""
+            VARS_NETWORK_IP="192.168.0.200"
         fi
 
 	    if [ -z "$VARS_NETWORK_WPA3_ENABLE" ]; then
