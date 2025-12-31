@@ -59,21 +59,16 @@ Bootstrap process for the `server` role.
    ping archlinux.org
    ```
 
-4. Set the role.
+4. Set basic environment variables required by the installer.
 
    ```bash
    export NIXOS_ROLE=server
+   export NIXOS_DIR=/nixos
    ```
 
 ## Applying Configuration
 
-1. Set the directory to install the flake.
-
-   ```bash
-   export NIXOS_DIR=/nixos
-   ```
-
-2. Clone the flake.
+1. Clone the flake.
 
    ```bash
    nix run github:sotormd/nixos -- init clone
@@ -81,7 +76,7 @@ Bootstrap process for the `server` role.
 
    The flake will be cloned to `$NIXOS_DIR`.
 
-3. Initialize variables & secrets.
+2. Initialize variables & secrets.
 
    ```bash
    nix run github:sotormd/nixos -- init vars
@@ -92,7 +87,7 @@ Bootstrap process for the `server` role.
    bootstrapping, see [this](#environment-variables) list for all available
    environment variables.
 
-4. Edit variables & secrets.
+3. Edit variables & secrets.
 
    ```bash
    nix run github:sotormd/nixos -- init vars edit
@@ -101,13 +96,13 @@ Bootstrap process for the `server` role.
 
    Ensure all variables and secrets are properly defined.
 
-5. Switch to the new configuration.
+4. Switch to the new configuration.
 
    ```bash
    nix run github:sotormd/nixos -- switch
    ```
 
-6. Reboot.
+5. Reboot.
 
    ```bash
    sudo reboot
@@ -125,7 +120,7 @@ This is useful if you have a `.env` file you wish to export environment
 variables from.
 
 Otherwise, it is simpler to edit the variables and secrets files like mentioned
-in step 4.
+in step 3.
 
 <details>
 
