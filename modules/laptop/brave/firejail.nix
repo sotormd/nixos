@@ -22,7 +22,7 @@ let
     "--private-cache"
     "--private-cwd"
     "--private-dev"
-    "--private-etc=chromium,brave,resolv.conf"
+    "--private-etc=chromium,brave,resolv.conf,hosts"
   ];
 
   package = import ./package.nix { inherit pkgs config colors; };
