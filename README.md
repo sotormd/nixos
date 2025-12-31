@@ -43,11 +43,11 @@ Services features:
 
 - [unbound](https://github.com/NLnetLabs/unbound) dns server
 - [nginx](https://nginx.org/en/) web server & reverse proxy
-- acme for [Let's Encrypt](https://letsencrypt.org/) certificates
-- [searxng](https://github.com/searxng/searxng) search engine
-- [vaultwarden](https://github.com/dani-garcia/vaultwarden) password manager
+- ACME for [Let's Encrypt](https://letsencrypt.org/) certificates
+- [SearXNG](https://github.com/searxng/searxng) search engine
+- [Vaultwarden](https://github.com/dani-garcia/vaultwarden) password manager
 - [i2pd](https://github.com/PurpleI2P/i2pd) I2P router
-- [jellyfin](https://jellyfin.org/) media server
+- [Jellyfin](https://jellyfin.org/) media server
 
 See [Features](#features--tooling) for all features.
 
