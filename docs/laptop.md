@@ -70,10 +70,12 @@ Bootstrap process for the `laptop` role.
    ping archlinux.org
    ```
 
-5. Set the role.
+5. Set basic environment variables required by the installer.
 
    ```bash
    export NIXOS_ROLE=laptop
+   export NIXOS_DIR=/persist/nixos
+   export NIXOS_ROOT_MOUNT=/mnt
    ```
 
 ## Partitioning Disks
@@ -212,14 +214,7 @@ Bootstrap process for the `laptop` role.
 
 ## Installing NixOS
 
-1. Set basic environment variables.
-
-   ```bash
-   export NIXOS_ROOT_MOUNT=/mnt
-   export NIXOS_DIR=/persist/nixos
-   ```
-
-2. Clone this flake.
+1. Clone this flake.
 
    ```bash
    nix run github:sotormd/nixos -- init clone
@@ -227,7 +222,7 @@ Bootstrap process for the `laptop` role.
 
    The flake will be cloned to `$NIXOS_ROOT_MOUNT$NIXOS_DIR`.
 
-3. Initialize variables and secrets.
+2. Initialize variables and secrets.
 
    ```bash
    nix run github:sotormd/nixos -- init vars
@@ -238,7 +233,7 @@ Bootstrap process for the `laptop` role.
    bootstrapping, see [this](#environment-variables) list for all available
    environment variables.
 
-4. Edit variables and secrets.
+3. Edit variables and secrets.
 
    ```bash
    nix run github:sotormd/nixos -- init vars edit
@@ -247,13 +242,13 @@ Bootstrap process for the `laptop` role.
 
    Make sure all variables and secrets are properly defined.
 
-5. Install NixOS
+4. Install NixOS
 
    ```bash
    nix run github:sotormd/nixos -- init install
    ```
 
-6. Finish installation.
+5. Finish installation.
 
    ```bash
    sudo reboot
@@ -273,7 +268,7 @@ This is useful if you have a `.env` file you wish to export environment
 variables from.
 
 Otherwise, it is simpler to edit the variables and secrets files like mentioned
-in step 4.
+in step 3.
 
 <details>
 
