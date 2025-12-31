@@ -21,12 +21,12 @@ Nix-specific features:
 Desktop features:
 
 - 100% wayland, no xorg or xwayland
-- [swayfx](https://github.com/WillPower3309/swayfx) compositor
-- [waybar](https://github.com/Alexays/Waybar) top panel with several useful
+- [SwayFX](https://github.com/WillPower3309/swayfx) compositor
+- [Waybar](https://github.com/Alexays/Waybar) top panel with several useful
   modules
-- [eww](https://github.com/elkowar/eww) widgets for bottom dock, dashboard,
+- [Eww](https://github.com/elkowar/eww) widgets for bottom dock, dashboard,
   calendar, etc
-- [rofi](https://github.com/davatorium/rofi) menu for launchers, clipboard
+- [Rofi](https://github.com/davatorium/rofi) menu for launchers, clipboard
   history, workspace switchers, etc.
 - [Brave](https://github.com/brave/brave-browser/) browser with tight policies
   to ensure security and protect user privacy.
@@ -41,8 +41,8 @@ Desktop features:
 
 Services features:
 
-- [unbound](https://github.com/NLnetLabs/unbound) dns server
-- [nginx](https://nginx.org/en/) web server & reverse proxy
+- [Unbound](https://github.com/NLnetLabs/unbound) dns server
+- [NGINX](https://github.com/nginx/nginx) web server & reverse proxy
 - ACME for [Let's Encrypt](https://letsencrypt.org/) certificates
 - [SearXNG](https://github.com/searxng/searxng) search engine
 - [Vaultwarden](https://github.com/dani-garcia/vaultwarden) password manager
