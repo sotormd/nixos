@@ -355,7 +355,7 @@ Ensure all variables and secrets are properly defined.
    Verify `sbctl verify` output.
 
    ```bash
-   nix shell nixpkgs#sbctl --command sudo sbctl verify
+   sbctl verify
    ```
    It is expected that `bzImage.efi` files are not signed.
 
