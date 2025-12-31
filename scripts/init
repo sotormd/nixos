@@ -329,7 +329,7 @@ elif [ "$1" == "vars" ]; then
         fi
 
         if [ -z "$VARS_NETWORK_SERVER_DOMAIN" ]; then
-            VARS_NETWORK_SERVER_DOMAIN="bars-server.duckdns.org"
+            VARS_NETWORK_SERVER_DOMAIN="nixos-server.duckdns.org"
         fi
 
         if [ -z "$VARS_NETWORK_SERVER_SSH_PORT" ]; then

@@ -303,7 +303,7 @@ in step 3.
 | `VARS_NETWORK_WPA3_ENABLE`        | Enable SAE (dragonfly) authentication.             | `"true"`                                          | `"false"`                            |
 | `VARS_NETWORK_SERVER_ENABLE`      | Enable server-dependant features.                  | `"false"`                                         | `"false"`                            |
 | `VARS_NETWORK_SERVER_IP`          | Static local server IP address.                    | `"192.168.0.200"`                                 | `"10.0.0.5"`                         |
-| `VARS_NETWORK_SERVER_DOMAIN`      | Server domain.                                     | `"bars-server.duckdns.org"`                       | `"myserver.domain.com"`              |
+| `VARS_NETWORK_SERVER_DOMAIN`      | Server domain.                                     | `"nixos-server.duckdns.org"`                      | `"myserver.domain.com"`              |
 | `VARS_NETWORK_SERVER_SSH_PORT`    | Server SSH port.                                   | `"22"`                                            | `"20000"`                            |
 | `VARS_NETWORK_SERVER_SSH_KEYFILE` | Server SSH identity key.                           | `"id_ed25519_server"`                             | `"id_rsa"`                           |
 | `VARS_NETWORK_SERVER_I2P_PORT`    | Server I2P HTTP proxy port.                        | `"4444"`                                          | `"23001"`                            |
