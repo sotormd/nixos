@@ -1187,6 +1187,8 @@ the [Partitioning Disks](#partitioning-disks) section.
 Furthermore, LUKS encrypted external disks can be added easily. See
 [Adding External Disks](#adding-external-disks).
 
+Random encryption is also enabled for the swap partition.
+
 ## Secure Boot
 
 Secure boot is enabled using the
@@ -1229,6 +1231,16 @@ The Linux auditing subsystem is enabled and rules have been set, following some
 reasonable STIGs.
 
 The full list of rules can be found [here](../modules/common/audit/).
+
+## Users
+
+There is a single main user who is part of the `wheel` group.
+
+The root account is disabled.
+
+`sudo` is used to run commands as root.
+
+The `sudo` configuration can be found [here](../modules/common/users/sudo.nix).
 
 ## Firewall
 
