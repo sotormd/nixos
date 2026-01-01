@@ -509,6 +509,16 @@ reasonable STIGs.
 
 The full list of rules can be found [here](../modules/common/audit/).
 
+## Users
+
+There is a single main user who is part of the `wheel` group.
+
+The root account is disabled.
+
+`sudo` is used to run commands as root.
+
+The `sudo` configuration can be found [here](../modules/common/users/sudo.nix).
+
 ## Firewall
 
 The NixOS firewall is used with all ports closed, and all interfaces untrusted
