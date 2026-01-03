@@ -1,7 +1,11 @@
 {
   imports = [
-    ./home.nix
+    ./bind-home.nix
 
-    ./root.nix
+    ./bind-root.nix
+
+    ./rollback-home.nix
+
+    ./rollback-root.nix
   ];
 }
