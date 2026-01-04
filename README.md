@@ -4,7 +4,7 @@
 
 ![nixos](./docs/screenshots/nord.gif)
 
-[Why do I not use _X_](/docs/why-not-x.md)
+[Why do I not use <insert popular library>](/docs/why-not-x.md)
 
 Nix-specific features:
 

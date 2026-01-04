@@ -1,4 +1,4 @@
-# why do I not use _X_?
+# why do I not use <insert popular library>?
 
 This flake is by no means a collection of modules that exemplify "best
 practices", and it does not aim to be one.
