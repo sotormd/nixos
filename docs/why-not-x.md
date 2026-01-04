@@ -20,7 +20,7 @@ decisions for MY personal setup.
 
 [link](https://github.com/nix-community/home-manager)
 
-in favor of:
+in favor of: wrappers, hjem
 
 home-manager is a collection of modules which implement several features that
 make it easy to interact with a user's `$HOME`.
@@ -88,6 +88,8 @@ The three primary features are:
 
 [example link](https://github.com/lassulus/wrappers)
 
+in favor of: `nixpkgs` functions
+
 A wrapper library aims to make the creation and configuration of wrappers easy
 and friendly.
 
@@ -112,6 +114,8 @@ idiomatic in `nixpkgs` itself.
 
 [link](https://github.com/nix-community/impermanence)
 
+in favor of: zfs snapshots and bind mounts
+
 Impermanence provides the `environment.persistence` and `home.persistence`
 options that make it easy to set up ephemeral directories on NixOS.
 
@@ -123,6 +127,8 @@ the `fileSystems` blocks.
 
 [link](https://github.com/nix-community/stylix)
 
+in favor of: my own config
+
 Stylix aims to make ricing easy, by providing modules that automagically apply
 eyecandy configuration for you in a "just works" way.
 
@@ -132,6 +138,8 @@ freedom, rather than using someone else's glorified attr set.
 ## disko
 
 [link](https://github.com/nix-community/disko)
+
+in favor of: my own init scripts
 
 Disko aims to make disk partitioning and formatting declarative.
 
@@ -153,6 +161,8 @@ I believe I can do best by maintaining my own init scripts.
 ## agenix
 
 [link](https://github.com/ryantm/agenix)
+
+in favor of: sops-nix
 
 I use [sops-nix](https://github.com/Mic92/sops-nix), because it doesn't force
 age keys upon me.
