@@ -85,7 +85,7 @@
 
       flake =
         let
-          lib = inputs.nixpkgs.lib // (import ./lib { inherit (inputs.nixpkgs) lib; });
+          lib = inputs.nixpkgs.lib // (import ./lib);
           vars = import ./vars/vars.nix;
 
           mkHost =

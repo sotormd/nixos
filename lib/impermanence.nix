@@ -1,8 +1,6 @@
-{ lib, ... }:
-
 rec {
   persistMount = source: destination: {
-    fileSystems.${destination} = {
+    ${destination} = {
       device = source;
       options = [
         "bind"
@@ -11,7 +9,7 @@ rec {
     };
   };
 
-  persistDirs =
-    root: dirs:
-    builtins.foldl' (acc: dir: lib.recursiveUpdate acc (persistMount "${root}${dir}" dir)) { } dirs;
+  persistDirs = root: dirs: {
+    fileSystems = builtins.foldl' (acc: dir: acc // persistMount "${root}${dir}" dir) { } dirs;
+  };
 }
