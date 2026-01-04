@@ -4,6 +4,8 @@
 
 ![nixos](./docs/screenshots/nord.gif)
 
+[Why do I not use _X_](/docs/why-not-x.md)
+
 Nix-specific features:
 
 - Completely reproducible, pure evaluation
