@@ -15,6 +15,7 @@ decisions for MY personal setup.
 - [stylix](#stylix)
 - [disko](#disko)
 - [agenix](#agenix)
+- [nh](#nh)
 
 ## home-manager
 
@@ -168,3 +169,9 @@ I use [sops-nix](https://github.com/Mic92/sops-nix), because it doesn't force
 age keys upon me.
 
 PSA: using GPG instead of age for encryption is worse in almost every case.
+
+## nh
+
+[nh](https://github.com/nix-community/nh)
+
+I maintain my own scripts.
