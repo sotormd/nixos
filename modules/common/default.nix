@@ -34,6 +34,9 @@
     # sops-nix secrets management
     ./sops
 
+    # superuser do
+    ./sudo
+
     # users
     ./users
   ];

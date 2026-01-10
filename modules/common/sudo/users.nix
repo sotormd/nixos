@@ -1,7 +1,4 @@
 {
-  # enable sudo
-  security.sudo.enable = true;
-
   # require password for members of wheel group
   security.sudo.wheelNeedsPassword = true;
 

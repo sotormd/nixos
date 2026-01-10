@@ -10,8 +10,6 @@
 
     ./prompt.nix
 
-    ./sudo.nix
-
     ./xdg.nix
   ];
 }
