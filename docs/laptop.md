@@ -1147,25 +1147,24 @@ sudo zfs rollback rpool/vm-example-disk@snap1
 
 ## Nomad Mode
 
-Nomad Mode refers to the specialisation `gnome`, which sets up an environment
-ideal for usage away from home, in unreliable conditions.
+Nomad Mode refers to specialisations which set up an environment ideal for usage
+away from home, in unreliable conditions.
 
 Notable changes from default `laptop` config:
 
-- sway window manager replaced by full GNOME desktop environment
+- sway window manager replaced by full GNOME/XFCE desktop environment
 - wpa_supplicant replaced by NetworkManager
 - unbound from `server` replaced by cloudflare DNS
 - `kernel.unprivileged_userns_clone` set to 1 by default
 - librewolf browser is installed
 
-Nomad Mode can be used by booting into the `gnome` specialisation from the boot
-menu.
+Nomad Mode can be used by booting into the `gnome` or `xfce` specialisations
+from the boot menu.
 
-> **Does this clutter my device?** No, all GNOME-specific things (except some
-> logs) are thrown out by impermanence.
+> **Does this clutter my device?** No, all GNOME/XFCE-specific things (except
+> some logs) are thrown out by impermanence.
 
 The base configuration for nomads is [here](../modules/laptop/nomad/default.nix)
-and that for the GNOME desktop is [here](../modules/laptop/nomad/gnome.nix).
 
 You can not use the `nixos` script from within the nomad specialisation.
 

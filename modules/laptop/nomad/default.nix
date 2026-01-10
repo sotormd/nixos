@@ -8,6 +8,7 @@
 let
   desktops = [
     "gnome"
+    "xfce"
   ];
 
   mkSpec = desktop: {
