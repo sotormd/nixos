@@ -14,8 +14,8 @@
 
     ./lix.nix
 
-    ./system.nix
+    ./nixpkgs.nix
 
-    ./unfree.nix
+    ./system.nix
   ];
 }
