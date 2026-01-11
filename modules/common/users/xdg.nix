@@ -1,6 +1,7 @@
 { lib, ... }:
 
 {
+  # we don't want these directories
   environment.sessionVariables = {
     XDG_DESKTOP_DIR = null;
     XDG_DOCUMENTS_DIR = lib.mkDefault null;

@@ -1,4 +1,10 @@
 {
+  # cool bash prompt
+  # looks like this:
+  #
+  # nixos ~ λ
+  #
+  # but in green
   programs.bash.promptInit = ''
     # Only set prompt if terminal supports it
     if [ "$TERM" != "dumb" ] || [ -n "$INSIDE_EMACS" ]; then
