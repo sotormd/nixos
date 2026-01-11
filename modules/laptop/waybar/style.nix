@@ -24,6 +24,7 @@
         all: unset;
         border: solid 3px #${config.colors.waybar.workspaces.border};
         color: #${config.colors.waybar.workspaces.text};
+        background: #${config.colors.bg0};
       }
 
       #workspaces,
