@@ -9,6 +9,7 @@
 {
   imports = [ (modulesPath + "/installer/scan/not-detected.nix") ];
 
+  # kernel modules you probably need
   boot.initrd.availableKernelModules = [
     "nvme"
     "xhci_pci"
@@ -17,6 +18,7 @@
     "sd_mod"
   ];
 
+  # for kvm on amd devices
   boot.kernelModules = [
     "kvm-amd"
   ];
@@ -31,6 +33,7 @@
     "rootflags=x-systemd.device-timeout=0"
   ];
 
+  # boot partition
   fileSystems."/boot" = {
     device = "/dev/disk/by-partuuid/${vars.device.boot}";
     fsType = "vfat";
@@ -40,6 +43,7 @@
     ];
   };
 
+  # swap partition with random encryption
   swapDevices = [
     {
       device = "/dev/disk/by-partuuid/${vars.device.swap}";
@@ -47,6 +51,7 @@
     }
   ];
 
+  # main root partition
   boot.initrd.luks.devices = {
     root = {
       device = "/dev/disk/by-partuuid/${vars.device.root}";

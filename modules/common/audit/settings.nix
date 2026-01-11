@@ -1,4 +1,6 @@
 {
+  # prevent auditd logs from
+  # getting absurdly large
   environment.etc."audit/auditd.conf" = {
     text = ''
       log_file = /var/log/audit/audit.log

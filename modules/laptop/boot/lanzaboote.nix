@@ -7,6 +7,8 @@
 }:
 
 {
+  # secure boot for nixos
+
   imports = [ inputs.lanzaboote.nixosModules.lanzaboote ];
 
   users.users.${vars.user.name}.packages = [ pkgs.sbctl ];

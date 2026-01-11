@@ -1,6 +1,8 @@
 { config, vars, ... }:
 
 {
+  # configuration for the main user and their group
+
   users.users."${vars.user.name}" = {
     isNormalUser = true;
     hashedPasswordFile = config.sops.secrets.hashedPassword.path;

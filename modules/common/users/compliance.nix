@@ -1,6 +1,14 @@
 { pkgs, ... }:
 
 {
+  # hardening options that don't make any real difference
+  # kept for compliance with various STIGs
+
+  # they don't matter on this setup because
+  # our password hash is stored in sops files
+  # these options make sense only when setting passwords
+  # imperatively using the passwd(1) command
+
   environment.etc."login.defs".text = pkgs.lib.mkForce ''
     PASS_MAX_DAYS 60
     PASS_MIN_DAYS 1

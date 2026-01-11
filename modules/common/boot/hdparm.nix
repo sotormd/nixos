@@ -3,6 +3,9 @@
 let
   disks = vars.device.hdparm;
 
+  # build one service per disk
+  # to prevent aggressive head-parking
+  # see docs/laptop.md or docs/server.md
   hdparmServices = builtins.listToAttrs (
     builtins.genList (i: {
       name = "hdparm-${toString i}";
