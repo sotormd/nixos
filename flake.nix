@@ -62,7 +62,7 @@
   };
 
   outputs =
-    inputs:
+    { self, ... }@inputs:
     inputs.flake-parts.lib.mkFlake { inherit inputs; } {
       systems = [
         "x86_64-linux"
@@ -96,6 +96,7 @@
             inputs.nixpkgs.lib.nixosSystem {
               specialArgs = {
                 inherit inputs;
+                inherit self;
               }
               // lib.optionalAttrs withVars { inherit lib vars; };
 
