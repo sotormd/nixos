@@ -1,8 +1,11 @@
-# NixOS Configuration Flake
-
-~~slighly overengineered~~ NixOS configuration flake for multiple hosts.
+<p align="center" style="display: flex; align-items: center; justify-content: center; gap: 10px;">
+  <h1 align="center">NixOS Configuration Flake</h1>
+  <h6 align="center"><a href="#setup--usage">Setup & Usage<a>  |  <a href="#images">Images</a>  |  <a href="nixos-flake-helper">CLI</a>  |  <a href="#features--tooling">Features & Tooling</a></h6>
+</p>
 
 ![nixos](./docs/screenshots/nord.gif)
+
+~~slighly overengineered~~ NixOS configuration flake for multiple hosts
 
 [Why do I not use some popular libraries?](/docs/why-not-x.md)
 
