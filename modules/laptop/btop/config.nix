@@ -3,9 +3,11 @@
 let
   configuration = pkgs.writeTextFile {
     name = "btop.conf";
-    text = ''
-      color_theme = "${config.colors.btop}"
-    '';
+    text = builtins.readFile (
+      pkgs.replaceVars ./config/btop.conf {
+        color = "${config.colors.btop}";
+      }
+    );
     destination = "/btop.conf";
   };
 in
