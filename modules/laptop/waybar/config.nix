@@ -1,6 +1,10 @@
 { pkgs, ... }:
 
+let
+  scripts = import ./scripts.nix { inherit pkgs; };
+in
 {
+
   config = pkgs.writeTextFile {
     name = "config";
     text = ''
@@ -41,18 +45,18 @@
             "tooltip": false
           },
           "custom/namespaces": {
-            "exec": "STATUS=$(sysctl -n kernel.unprivileged_userns_clone)\n\nif [ \"$STATUS\" = \"1\" ]; then\n  echo \"{\\\"text\\\": \\\"<span size='12000'>󰆦</span>\\\", \\\"class\\\": \\\"userns-enabled\\\"}\"\nelse\n  echo \"{\\\"text\\\": \\\"<span size='12000'>󱐜</span>\\\", \\\"class\\\": \\\"userns-disabled\\\"}\"\nfi\n",
+            "exec": "${scripts.scriptsDir}/namespaces-status.sh",
             "interval": 1,
-            "on-click": "KEY=\"kernel.unprivileged_userns_clone\"\ncurrent_value=$(sysctl -n \"$KEY\" 2>/dev/null)\n\nif [[ $? -ne 0 ]]; then\n    notify-send -u critical \"Namespaces\" \"Error: $KEY not supported\"\n    exit 1\nfi\n\nif [[ \"$current_value\" == \"1\" ]]; then\n    pkexec sysctl -w \"$KEY=0\" >/dev/null\nelse\n    pkexec sysctl -w \"$KEY=1\" >/dev/null\nfi\n",
+            "on-click": "${scripts.scriptsDir}/namespaces-toggle.sh",
             "return-type": "json",
             "tooltip": false
           },
           "custom/playerctl": {
-            "exec": "STATUS=$(${pkgs.playerctl}/bin/playerctl status)\nTITLE=$(${pkgs.playerctl}/bin/playerctl metadata title | sed -E 's/ -.*//; s/\\(.*\\)//g; s/\\[.*\\]//g; s/^[[:space:]]*//; s/[[:space:]]*$//; s/&/\\&amp;/g; s/</\\&lt;/g; s/>/\\&gt;/g; s/\"/\\\\\"/g')\nARTISTS=$(${pkgs.playerctl}/bin/playerctl metadata artist | awk -F',' '{print $1 \", \" $2}' | sed -E 's/^[[:space:]]*//; s/[[:space:]]*$//; s/, *$//; s/&/\\&amp;/g; s/</\\&lt;/g; s/>/\\&gt;/g; s/\"/\\\\\"/g')\n\nif [[ -e /tmp/waybar-noanimation ]]; then\n  PLAYING_CLASS=\"playerctl-playing-noanimation\"\nelse\n  PLAYING_CLASS=\"playerctl-playing\"\nfi\n\nif [ -z \"$TITLE\" ] || [[ \"$TITLE\" == \"Advertisement\" ]]; then\n  echo \"{\\\"text\\\": \\\"\\\", \\\"class\\\": \\\"playerctl-stopped\\\"}\"\nelif [[ \"$STATUS\" == \"Playing\" ]]; then\n  echo \"{\\\"text\\\": \\\"<span size='10000'></span> $TITLE - $ARTISTS\\\", \\\"class\\\": \\\"$PLAYING_CLASS\\\"}\"\nelse\n  echo \"{\\\"text\\\": \\\"<span size='10000'></span> $TITLE - $ARTISTS\\\", \\\"class\\\": \\\"playerctl-paused\\\"}\"\nfi\n",
+            "exec": "${scripts.scriptsDir}/playerctl.sh",
             "interval": 1,
             "max-length": 70,
             "on-click": "${pkgs.playerctl}/bin/playerctl play-pause",
-            "on-click-right": "FILE=\"/tmp/waybar-noanimation\"\n\nif [ -e \"$FILE\" ]; then\n  rm \"$FILE\"\nelse\n  touch \"$FILE\"\nfi\n",
+            "on-click-right": "${scripts.scriptsDir}/animation.sh",
             "on-click-middle": "${pkgs.playerctl}/bin/playerctl stop",
             "on-scroll-down": "${pkgs.playerctl}/bin/playerctl previous",
             "on-scroll-up": "${pkgs.playerctl}/bin/playerctl next",
