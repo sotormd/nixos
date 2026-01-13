@@ -1,0 +1,39 @@
+set notification-error-bg      "#@notificationErrorBg@"
+set notification-error-fg      "#@notificationErrorFg@"
+set notification-warning-bg    "#@notificationWarningBg@"
+set notification-warning-fg    "#@notificationWarningFg@"
+set notification-bg            "#@notificationNormalBg@"
+set notification-fg            "#@notificationNormalFg@"
+
+set completion-bg              "#@completionBg@"
+set completion-fg              "#@completionFg@"
+set completion-group-bg        "#@completionGroupBg@"
+set completion-group-fg        "#@completionGroupFg@"
+set completion-highlight-bg    "#@completionHighlightBg@"
+set completion-highlight-fg    "#@completionHighlightFg@"
+
+set index-bg                   "#@indexBg@"
+set index-fg                   "#@indexFg@"
+set index-active-bg            "#@indexActiveBg@"
+set index-active-fg            "#@indexActiveFg@"
+
+set inputbar-bg                "#@inputbarBg@"
+set inputbar-fg                "#@inputbarFg@"
+
+set statusbar-bg               "#@statusbarBg@"
+set statusbar-fg               "#@statusbarFg@"
+
+set highlight-color            "@highlight@"
+
+set default-bg                 "#@defaultBg@"
+set default-fg                 "#@defaultFg@"
+
+set render-loading             "true"
+set render-loading-bg          "#@renderLoadingBg@"
+set render-loading-fg          "#@renderLoadingFg@"
+
+set recolor-lightcolor         "#@recolorLight@"
+set recolor-darkcolor          "#@recolorDark@"
+set recolor                    "true"
+
+set font "@fontsMonospace@"
