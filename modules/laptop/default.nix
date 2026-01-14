@@ -1,111 +1,104 @@
-{
-  inputs,
-  lib,
-  vars,
-  ...
-}:
+{ inputs, ... }:
 
 {
-  imports = lib.concatMap (x: x) [
-    [
-      # assertions - ensure no tomfoolery
-      ./assertions.nix
+  imports = [
+    # assertions - ensure no tomfoolery
+    ./assertions.nix
 
-      # nixos modules
-      inputs.colors.nixosModules.colors
+    # nixos modules
+    inputs.colors.nixosModules.colors
 
-      inputs.wallpapers.nixosModules.wallpapers
+    inputs.wallpapers.nixosModules.wallpapers
 
-      inputs.xkcd.nixosModules.xkcd
+    inputs.xkcd.nixosModules.xkcd
 
-      # MODULES - sorted alphabetically
+    # MODULES - sorted alphabetically
 
-      # audio with pipewire
-      ./audio
+    # audio with pipewire
+    ./audio
 
-      # secureboot, plymouth, sysctl options, etc
-      ./boot
+    # secureboot, plymouth, sysctl options, etc
+    ./boot
 
-      # brave web browser
-      ./brave
+    # brave web browser
+    ./brave
 
-      # btop system resources monitor
-      ./btop
+    # btop system resources monitor
+    ./btop
 
-      # cpu frequency optimizations, power management
-      ./cpu
+    # cpu frequency optimizations, power management
+    ./cpu
 
-      # development tools
-      ./dev
+    # development tools
+    ./dev
 
-      # dunst notification daemon
-      ./dunst
+    # dunst notification daemon
+    ./dunst
 
-      # eww wm-agnostic widgets
-      ./eww
+    # eww wm-agnostic widgets
+    ./eww
 
-      # foot terminal emulator
-      ./foot
+    # foot terminal emulator
+    ./foot
 
-      # gtk theming
-      ./gtk
-
-      # inkscape vector graphics editor
-      ./inkscape
-
-      # mousepad text editor
-      ./mousepad
-
-      # mpv media player
-      ./mpv
-
-      # networking
-      ./network
-
-      # nomad mode
-      ./nomad
-
-      # packages
-      ./packages
-
-      # rofi launcher
-      ./rofi
-
-      # sops-nix secrets management
-      ./sops
-
-      # secure shell
-      ./ssh
-
-      # sway wayland compositor
-      ./sway
-
-      # swaylock session locker
-      ./swaylock
-
-      # thunar file manager
-      ./thunar
-
-      # the onion router
-      ./tor
-
-      # users
-      ./users
-
-      # virtualisation with qemu, distrobox, etc
-      ./virtualization
-
-      # waybar wayland panel
-      ./waybar
-
-      # zathura pdf reader
-      ./zathura
-    ]
+    # gtk theming
+    ./gtk
 
     # browse the i2p network
-    (lib.optional vars.network.server.enable ./i2p-browser)
+    ./i2p-browser
 
     # ephemerality
-    (lib.optional vars.device.impermanence.enable ./impermanence)
+    ./impermanence
+
+    # inkscape vector graphics editor
+    ./inkscape
+
+    # mousepad text editor
+    ./mousepad
+
+    # mpv media player
+    ./mpv
+
+    # networking
+    ./network
+
+    # nomad mode
+    ./nomad
+
+    # packages
+    ./packages
+
+    # rofi launcher
+    ./rofi
+
+    # sops-nix secrets management
+    ./sops
+
+    # secure shell
+    ./ssh
+
+    # sway wayland compositor
+    ./sway
+
+    # swaylock session locker
+    ./swaylock
+
+    # thunar file manager
+    ./thunar
+
+    # the onion router
+    ./tor
+
+    # users
+    ./users
+
+    # virtualisation with qemu, distrobox, etc
+    ./virtualization
+
+    # waybar wayland panel
+    ./waybar
+
+    # zathura pdf reader
+    ./zathura
   ];
 }

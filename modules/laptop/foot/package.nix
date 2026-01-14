@@ -1,16 +1,11 @@
-{
-  config,
-  pkgs,
-  vars,
-  ...
-}:
+{ config, pkgs, ... }:
 
 let
   configuration = import ./config.nix { inherit config pkgs; };
   footWrapped = pkgs.writeShellScriptBin "foot" ''
     FOCUSED_OUT="$(${pkgs.swayfx}/bin/swaymsg -t get_outputs -r | ${pkgs.jq}/bin/jq -r '.[] | select(.focused == true).name')"
 
-    if [ "$FOCUSED_OUT" = "${vars.outputs.laptop}" ]; then
+    if [ "$FOCUSED_OUT" = "${config.vars.outputs.laptop}" ]; then
       SIZE=7
     else
       SIZE=10

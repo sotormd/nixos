@@ -1,4 +1,4 @@
-{ pkgs, vars, ... }:
+{ config, pkgs, ... }:
 
 let
   package = import ./bin.nix { inherit pkgs; };
@@ -10,5 +10,5 @@ in
     ./env.nix
   ];
 
-  users.users.${vars.user.name}.packages = [ package.nixosWrapper ];
+  users.users.${config.vars.user.name}.packages = [ package.nixosWrapper ];
 }

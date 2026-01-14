@@ -86,7 +86,7 @@
       flake =
         let
           lib = inputs.nixpkgs.lib // (import ./lib);
-          vars = import ./vars/vars.nix;
+          legacyVars = import ./vars/vars.nix;
 
           mkHost =
             {
@@ -98,7 +98,7 @@
                 inherit inputs;
                 inherit self;
               }
-              // lib.optionalAttrs withVars { inherit lib vars; };
+              // lib.optionalAttrs withVars { inherit lib legacyVars; };
 
               modules = [ (import ./hosts { inherit role; }) ];
             };

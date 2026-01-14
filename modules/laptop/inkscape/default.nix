@@ -1,9 +1,9 @@
-{ pkgs, vars, ... }:
+{ config, pkgs, ... }:
 
 {
   imports = [
     ./config.nix
   ];
 
-  users.users.${vars.user.name}.packages = [ pkgs.inkscape ];
+  users.users.${config.vars.user.name}.packages = [ pkgs.inkscape ];
 }

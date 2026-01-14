@@ -1,5 +1,5 @@
-{ pkgs, vars, ... }:
+{ config, pkgs, ... }:
 
 {
-  users.users.${vars.user.name}.packages = [ pkgs.oniux ];
+  users.users.${config.vars.user.name}.packages = [ pkgs.oniux ];
 }

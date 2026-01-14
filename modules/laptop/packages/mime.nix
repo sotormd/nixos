@@ -1,4 +1,4 @@
-{ vars, ... }:
+{ config, ... }:
 
 {
   xdg.mime.enable = true;
@@ -43,7 +43,7 @@
     "application/x-7z-compressed" = "org.gnome.FileRoller.desktop";
   };
 
-  hjem.users.${vars.user.name}.files = {
+  hjem.users.${config.vars.user.name}.files = {
     ".local/share/applications/mimeapps.list".text = ''
       [Default Applications]
       image/png=swayimg.desktop

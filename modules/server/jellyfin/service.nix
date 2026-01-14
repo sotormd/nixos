@@ -1,20 +1,25 @@
-{ pkgs, vars, ... }:
+{
+  config,
+  lib,
+  pkgs,
+  ...
+}:
 
 let
   jellyfinSetup = pkgs.writeShellScript "jellyfin-setup" ''
         #!/usr/bin/env bash
 
-        if [ ! -f '${vars.network.jellyfin.data}/config/network.xml' ]; then
-          mkdir -p "${vars.network.jellyfin.data}/config"
-          cat > '${vars.network.jellyfin.data}/config/network.xml' <<EOF
+        if [ ! -f '${config.vars.network.jellyfin.data}/config/network.xml' ]; then
+          mkdir -p "${config.vars.network.jellyfin.data}/config"
+          cat > '${config.vars.network.jellyfin.data}/config/network.xml' <<EOF
     <?xml version="1.0" encoding="utf-8"?>
     <NetworkConfiguration xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
       <BaseUrl>/jellyfin</BaseUrl>
       <EnableHttps>false</EnableHttps>
       <RequireHttps>false</RequireHttps>
-      <InternalHttpPort>${toString vars.network.jellyfin.port}</InternalHttpPort>
+      <InternalHttpPort>${toString config.vars.network.jellyfin.port}</InternalHttpPort>
       <InternalHttpsPort>8920</InternalHttpsPort>
-      <PublicHttpPort>${toString vars.network.jellyfin.port}</PublicHttpPort>
+      <PublicHttpPort>${toString config.vars.network.jellyfin.port}</PublicHttpPort>
       <PublicHttpsPort>8920</PublicHttpsPort>
       <AutoDiscovery>false</AutoDiscovery>
       <EnableUPnP>false</EnableUPnP>
@@ -38,25 +43,27 @@ let
     EOF
         fi
 
-        chown jellyfin:jellyfin -R ${vars.network.jellyfin.data}
+        chown jellyfin:jellyfin -R ${config.vars.network.jellyfin.data}
   '';
 in
 {
-  systemd.services.jellyfin-setup = {
-    enable = true;
-    before = [ "jellyfin.service" ];
-    wantedBy = [ "multi-user.target" ];
-    serviceConfig = {
-      Type = "oneshot";
-      ExecStart = "${jellyfinSetup}";
+  config = lib.mkIf config.vars.network.jellyfin.enable {
+    systemd.services.jellyfin-setup = {
+      enable = true;
+      before = [ "jellyfin.service" ];
+      wantedBy = [ "multi-user.target" ];
+      serviceConfig = {
+        Type = "oneshot";
+        ExecStart = "${jellyfinSetup}";
+      };
     };
-  };
 
-  fileSystems."/var/lib/jellyfin" = {
-    device = "${vars.network.jellyfin.data}";
-    options = [
-      "bind"
-      "nofail"
-    ];
+    fileSystems."/var/lib/jellyfin" = {
+      device = "${config.vars.network.jellyfin.data}";
+      options = [
+        "bind"
+        "nofail"
+      ];
+    };
   };
 }

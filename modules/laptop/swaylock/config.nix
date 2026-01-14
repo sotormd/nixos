@@ -2,12 +2,11 @@
   config,
   lib,
   pkgs,
-  vars,
   ...
 }:
 
 let
-  backgrounds = import ./backgrounds.nix { inherit config lib vars; };
+  backgrounds = import ./backgrounds.nix { inherit config lib; };
 
   configuration = pkgs.writeTextFile {
     name = "config";

@@ -1,11 +1,11 @@
-{ vars, pkgs, ... }:
+{ config, pkgs, ... }:
 
 let
   script = pkgs.writeShellScript "nixos-dir-perms" ''
     #!/usr/bin/env bash
 
-        NIXOS_DIR=${vars.nixosDirectory}
-        USER=${vars.user.name}
+        NIXOS_DIR=${config.vars.nixosDirectory}
+        USER=${config.vars.user.name}
 
         # chown directory
         ${pkgs.coreutils}/bin/chown $USER: -R $NIXOS_DIR

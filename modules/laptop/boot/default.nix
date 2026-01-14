@@ -1,19 +1,15 @@
-{ lib, vars, ... }:
-
 {
-  imports = lib.concatMap (x: x) [
-    [
-      ./emulation.nix
+  imports = [
+    ./emulation.nix
 
-      ./hw.nix
+    ./hw.nix
 
-      ./loader.nix
+    ./lanzaboote.nix
 
-      ./sysctl.nix
-    ]
+    ./loader.nix
 
-    (lib.optional vars.device.secureboot.enable ./lanzaboote.nix)
+    ./plymouth.nix
 
-    (lib.optional vars.device.plymouth.enable ./plytmouth.nix)
+    ./sysctl.nix
   ];
 }

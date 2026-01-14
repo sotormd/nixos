@@ -1,6 +1,6 @@
-{ vars, ... }:
+{ config, ... }:
 
 {
   # hostname
-  networking.hostName = vars.device.hostName;
+  networking.hostName = config.vars.device.hostName;
 }

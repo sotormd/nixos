@@ -1,12 +1,7 @@
-{
-  config,
-  pkgs,
-  vars,
-  ...
-}:
+{ config, pkgs, ... }:
 
 {
-  hjem.users.${vars.user.name} = {
+  hjem.users.${config.vars.user.name} = {
     files.".config/inkscape/preferences.xml".text = ''
       <?xml version="1.0" encoding="UTF-8" standalone="no"?>
       <inkscape

@@ -1,15 +1,13 @@
 {
-  pkgs,
   config,
-  colors,
-  vars,
+  pkgs,
   ...
 }:
 
 let
   firejailArgs = [
     "--nonewprivs"
-    "--whitelist=/home/${vars.user.name}/.local/share/home.html"
+    "--whitelist=/home/${config.vars.user.name}/.local/share/home.html"
 
     "--caps.drop=all"
 
@@ -25,7 +23,7 @@ let
     "--private-etc=chromium,brave,resolv.conf,hosts"
   ];
 
-  package = import ./package.nix { inherit pkgs config colors; };
+  package = import ./package.nix { inherit pkgs config; };
   webappsFile = import ./webapps.nix;
 
   webappTemplateScript =

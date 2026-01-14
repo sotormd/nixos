@@ -1,17 +1,17 @@
 {
+  config,
   inputs,
   pkgs,
-  vars,
   ...
 }:
 
 {
   imports = [ inputs.hjem.nixosModules.default ];
 
-  hjem.users.${vars.user.name} = {
+  hjem.users.${config.vars.user.name} = {
     enable = true;
-    user = vars.user.name;
-    directory = "/home/${vars.user.name}";
+    user = config.vars.user.name;
+    directory = "/home/${config.vars.user.name}";
     clobberFiles = true;
   };
 

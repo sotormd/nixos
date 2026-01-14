@@ -1,7 +1,7 @@
-{ config, vars, ... }:
+{ config, ... }:
 
 {
-  hjem.users.${vars.user.name} = {
+  hjem.users.${config.vars.user.name} = {
     files.".config/Mousepad/settings.conf".text = ''
       [org/xfce/mousepad/preferences/window]
       menubar-visible=false

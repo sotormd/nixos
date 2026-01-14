@@ -1,15 +1,15 @@
 {
   config,
   pkgs,
-  vars,
+  lib,
   ...
 }:
 
 let
-  package = import ./package.nix { inherit config pkgs vars; };
+  package = import ./package.nix { inherit config pkgs; };
 in
 {
-  programs.firejail.wrappedBinaries.i2p-browser = {
+  programs.firejail.wrappedBinaries.i2p-browser = lib.mkIf config.vars.network.server.enable {
     executable = "${package.i2pBrowser}/bin/i2p-browser";
     profile = "${pkgs.firejail}/etc/firejail/firefox.profile";
     extraArgs = [

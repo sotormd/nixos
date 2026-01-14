@@ -2,7 +2,6 @@
   config,
   lib,
   pkgs,
-  vars,
   ...
 }:
 
@@ -12,7 +11,6 @@ let
       config
       lib
       pkgs
-      vars
       ;
   };
   swayWrapped = pkgs.writeShellScriptBin "sway" ''

@@ -2,7 +2,6 @@
   config,
   lib,
   pkgs,
-  vars,
   ...
 }:
 
@@ -12,7 +11,6 @@ let
       config
       lib
       pkgs
-      vars
       ;
   };
 in
@@ -23,5 +21,5 @@ in
     ./start.nix
   ];
 
-  users.users.${vars.user.name}.packages = [ package.sway ];
+  users.users.${config.vars.user.name}.packages = [ package.sway ];
 }

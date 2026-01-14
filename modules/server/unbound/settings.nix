@@ -1,4 +1,4 @@
-{ vars, ... }:
+{ config, ... }:
 
 {
   services.unbound.settings.server = {
@@ -53,15 +53,15 @@
     use-caps-for-id = "yes";
 
     # enforce privacy of local ip range
-    private-address = vars.network.range;
+    private-address = config.vars.network.range;
 
     # access control
-    access-control = [ "${vars.network.range} allow" ];
+    access-control = [ "${config.vars.network.range} allow" ];
 
     # nginx web server
     local-data = [
       ''
-        "${vars.network.duckdns.domain}. IN A ${vars.network.ip}"
+        "${config.vars.network.duckdns.domain}. IN A ${config.vars.network.ip}"
       ''
     ];
   };

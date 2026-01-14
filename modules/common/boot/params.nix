@@ -1,10 +1,10 @@
-{ vars, ... }:
+{ config, ... }:
 
 {
   # linux kernel parameters
   boot.kernelParams = [
     # systemd machine id
-    "systemd.machine_id=${vars.device.machineId}"
+    "systemd.machine_id=${config.vars.device.machineId}"
 
     # disables merging of slabs of similar sizes
     # sometines, vulnerable slabs may be merged with safe ones

@@ -1,8 +1,8 @@
-{ pkgs, vars, ... }:
+{ config, pkgs, ... }:
 
 {
   # set of packages to appear in user environment
-  users.users.${vars.user.name}.packages = with pkgs; [
+  users.users.${config.vars.user.name}.packages = with pkgs; [
     # version control
     git
 

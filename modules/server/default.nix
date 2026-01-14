@@ -1,48 +1,44 @@
-{ lib, vars, ... }:
-
 {
-  imports = lib.concatMap (x: x) [
-    [
-      # assertions - ensure no tomfoolery
-      ./assertions.nix
+  imports = [
+    # assertions - ensure no tomfoolery
+    ./assertions.nix
 
-      # MODULES - sorted alphabetically
+    # MODULES - sorted alphabetically
 
-      # bootloader, kernel parameters, sysctl options
-      ./boot
-
-      # networking
-      ./network
-
-      # packages
-      ./packages
-
-      # sops-nix secrets management
-      ./sops
-
-      # secure shell
-      ./ssh
-    ]
+    # bootloader, kernel parameters, sysctl options
+    ./boot
 
     # invisible internet protocol daemon
-    (lib.optional vars.network.i2pd.enable ./i2pd)
+    ./i2pd
 
     # jellyfin media server
-    (lib.optional vars.network.jellyfin.enable ./jellyfin)
+    ./jellyfin
+
+    # networking
+    ./network
 
     # nginx web server
-    (lib.optional vars.network.nginx.enable ./nginx)
+    ./nginx
+
+    # packages
+    ./packages
 
     # qbittorrent torrent client
-    (lib.optional vars.network.qbt.enable ./qbt)
+    ./qbt
+
+    # sops-nix secrets management
+    ./sops
+
+    # secure shell
+    ./ssh
 
     # searxng metasearch engine
-    (lib.optional vars.network.searxng.enable ./searxng)
+    ./searxng
 
     # unbound validating recursive dns server
-    (lib.optional vars.network.unbound.enable ./unbound)
+    ./unbound
 
     # vaultwarden password manager
-    (lib.optional vars.network.vaultwarden.enable ./vaultwarden)
+    ./vaultwarden
   ];
 }

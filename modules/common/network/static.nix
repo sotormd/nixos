@@ -1,4 +1,4 @@
-{ vars, ... }:
+{ config, ... }:
 
 {
   # disable dhcp
@@ -6,10 +6,10 @@
   networking.useDHCP = false;
 
   # set static ip
-  networking.defaultGateway = vars.network.gateway;
-  networking.interfaces."${vars.network.interface}".ipv4.addresses = [
+  networking.defaultGateway = config.vars.network.gateway;
+  networking.interfaces."${config.vars.network.interface}".ipv4.addresses = [
     {
-      address = vars.network.ip;
+      address = config.vars.network.ip;
       prefixLength = 24;
     }
   ];

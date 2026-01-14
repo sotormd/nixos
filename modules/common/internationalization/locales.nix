@@ -1,18 +1,18 @@
-{ vars, ... }:
+{ config, ... }:
 
 {
   # locales
-  i18n.defaultLocale = vars.i18n.locale;
+  i18n.defaultLocale = config.vars.i18n.locale;
 
   i18n.extraLocaleSettings = {
-    LC_ADDRESS = vars.i18n.locale;
-    LC_IDENTIFICATION = vars.i18n.locale;
-    LC_MEASUREMENT = vars.i18n.locale;
-    LC_MONETARY = vars.i18n.locale;
-    LC_NAME = vars.i18n.locale;
-    LC_NUMERIC = vars.i18n.locale;
-    LC_PAPER = vars.i18n.locale;
-    LC_TELEPHONE = vars.i18n.locale;
-    LC_TIME = vars.i18n.locale;
+    LC_ADDRESS = config.vars.i18n.locale;
+    LC_IDENTIFICATION = config.vars.i18n.locale;
+    LC_MEASUREMENT = config.vars.i18n.locale;
+    LC_MONETARY = config.vars.i18n.locale;
+    LC_NAME = config.vars.i18n.locale;
+    LC_NUMERIC = config.vars.i18n.locale;
+    LC_PAPER = config.vars.i18n.locale;
+    LC_TELEPHONE = config.vars.i18n.locale;
+    LC_TIME = config.vars.i18n.locale;
   };
 }

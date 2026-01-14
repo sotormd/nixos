@@ -1,4 +1,4 @@
-{ config, vars, ... }:
+{ config, ... }:
 
 {
   # wpa_supplicant and wpa_cli
@@ -8,9 +8,9 @@
   # configure a connection
   networking.wireless.secretsFile = config.sops.secrets.network.path;
   networking.wireless.networks = {
-    "${vars.network.ssid}" = {
+    "${config.vars.network.ssid}" = {
       pskRaw = "ext:psk";
     };
   };
-  networking.wireless.interfaces = [ vars.network.interface ];
+  networking.wireless.interfaces = [ config.vars.network.interface ];
 }

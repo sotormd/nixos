@@ -1,4 +1,4 @@
-{ pkgs, vars, ... }:
+{ config, pkgs, ... }:
 
 {
   systemd.services.restore-default-route = {
@@ -13,8 +13,8 @@
         #!/usr/bin/env bash
                 set -euo pipefail
 
-                iface=${vars.network.interface}
-                gw=${vars.network.gateway}
+                iface=${config.vars.network.interface}
+                gw=${config.vars.network.gateway}
 
                 # Wait for carrier
                 for i in {1..30}; do

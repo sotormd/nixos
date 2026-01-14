@@ -1,3 +1,5 @@
+{ config, lib, ... }:
+
 {
-  powerManagement.powertop.enable = true;
+  powerManagement.powertop.enable = config.vars.device.powertop.enable;
 }

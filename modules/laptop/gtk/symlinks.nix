@@ -1,7 +1,7 @@
-{ config, vars, ... }:
+{ config, ... }:
 
 {
-  hjem.users.${vars.user.name}.files = {
+  hjem.users.${config.vars.user.name}.files = {
     ".gtkrc-2.0".text = ''
       gtk-cursor-theme-name = "${config.colors.gtk.cursor.name}"
       gtk-cursor-theme-size = 1

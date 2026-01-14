@@ -1,9 +1,9 @@
-{ vars, ... }:
+{ config, ... }:
 
 {
   # keyboard layout
   services.xserver.xkb = {
-    layout = vars.i18n.keyboard;
+    layout = config.vars.i18n.keyboard;
     variant = "";
   };
 }

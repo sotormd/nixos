@@ -1,6 +1,6 @@
-{ vars, ... }:
+{ config, ... }:
 
 {
   # timezone
-  time.timeZone = vars.i18n.timeZone;
+  time.timeZone = config.vars.i18n.timeZone;
 }
