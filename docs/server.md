@@ -252,7 +252,7 @@ Reverse proxy is set up for the following services, if enabled:
 | -------------- | --------------------- | --------------------------- |
 | `/searxng`     | SearXNG               | Search engine               |
 | `/vaultwarden` | Vaultwarden web vault | Password manager            |
-| `/i2pd`        | I2PD web console      | Invisible Internel Protocol |
+| `/i2pd`        | I2PD web console      | Invisible Internet Protocol |
 | `/qbt`         | qBittorrent webui     | Bittorrent client           |
 | `/jellyfin`    | Jellyfin              | Media server                |
 
