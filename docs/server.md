@@ -542,12 +542,7 @@ proxy, two ports are opened to `vars.network.range`:
 
 So, it is recommended to change these ports from the default.
 
-Also, `vars.network.range` can be set in the variables file. To edit the
-variables file:
-
-```bash
-nixos edit vars
-```
+The `vars.network.range` can be set in the variables file.
 
 Since this value is a CIDR, it can be used to allow specific IPs only. For
 example, setting it to `192.168.0.98/31` allows for two IPs: `192.168.0.98` and
