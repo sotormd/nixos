@@ -294,7 +294,7 @@ let
                      (eventbox
                        :class "leave-box"
                        :cursor "hand2"
-                       :onclick "${pkgs.swaylock}/bin/swaylock &"
+                       :onclick "swaylock &"
                        (box :class "lock" "󰌾"))
                      (eventbox
                        :class "leave-box"
@@ -328,7 +328,7 @@ let
                    (eventbox
                      :class "leave-box"
                      :cursor "hand2"
-                     :onclick "eww close leavewindow; ${pkgs.swayfx}/bin/swaymsg mode default; ${pkgs.swaylock}/bin/swaylock &"
+                     :onclick "eww close leavewindow; ${pkgs.swayfx}/bin/swaymsg mode default; swaylock &"
                      (box :class "lock" "󰌾"))
                    (eventbox
                      :class "leave-box"

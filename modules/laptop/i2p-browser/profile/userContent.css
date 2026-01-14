@@ -1,6 +1,0 @@
-@-moz-document url("about:newtab"), url("about:home") {
-  :root[lwt-newtab-brighttext] {
-    --newtab-background-color: #@colorDark@ !important;
-  }
-}
-
