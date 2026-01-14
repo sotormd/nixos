@@ -12,13 +12,6 @@ let
     executable = true;
   };
 
-  muteScript = pkgs.writeTextFile {
-    name = "mute.sh";
-    text = builtins.readFile ./scripts/mute.sh;
-    destination = "/mute.sh";
-    executable = true;
-  };
-
   animationScript = pkgs.writeTextFile {
     name = "animation.sh";
     text = builtins.readFile ./scripts/animation.sh;
@@ -45,7 +38,6 @@ in
     name = "waybar-scripts";
     paths = [
       playerctlScript
-      muteScript
       animationScript
       namespacesStatusScript
       namespacesToggleScript
