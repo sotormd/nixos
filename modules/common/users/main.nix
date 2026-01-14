@@ -1,20 +1,20 @@
-{ config, vars, ... }:
+{ config, ... }:
 
 {
   # configuration for the main user and their group
 
-  users.users."${vars.user.name}" = {
+  users.users."${config.vars.user.name}" = {
     isNormalUser = true;
     hashedPasswordFile = config.sops.secrets.hashedPassword.path;
 
-    group = vars.user.name;
+    group = config.vars.user.name;
     extraGroups = [ "wheel" ];
 
-    home = "/home/${vars.user.name}";
+    home = "/home/${config.vars.user.name}";
     createHome = true;
   };
 
   users.groups = {
-    "${vars.user.name}" = { };
+    "${config.vars.user.name}" = { };
   };
 }

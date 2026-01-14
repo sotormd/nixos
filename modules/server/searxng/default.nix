@@ -1,4 +1,4 @@
-{ pkgs, ... }:
+{ config, pkgs, ... }:
 
 {
   imports = [
@@ -11,6 +11,6 @@
     ./uwsgi.nix
   ];
 
-  services.searx.enable = true;
+  services.searx.enable = config.vars.network.searxng.enable;
   services.searx.package = pkgs.searxng;
 }

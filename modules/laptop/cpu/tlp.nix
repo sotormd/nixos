@@ -1,5 +1,7 @@
+{ config, lib, ... }:
+
 {
-  services.tlp = {
+  services.tlp = lib.mkIf config.vars.device.tlp.enable {
     enable = true;
     settings = {
       CPU_SCALING_GOVERNOR_ON_AC = "powersave";

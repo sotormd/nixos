@@ -1,41 +1,41 @@
 {
+  config,
   inputs,
   lib,
-  vars,
   ...
 }:
 
 let
   layout = lib.concatMap (x: x) [
-    (lib.optional vars.network.server.enable [
+    (lib.optional config.vars.network.server.enable [
       {
         short = "sx";
         full = "searxng";
-        url = "https://${vars.network.server.domain}/searxng/";
+        url = "https://${config.vars.network.server.domain}/searxng/";
       }
       {
         short = "vw";
         full = "vaultwarden";
-        url = "https://${vars.network.server.domain}/vaultwarden/";
+        url = "https://${config.vars.network.server.domain}/vaultwarden/";
       }
       {
         short = "ip";
         full = "i2pd";
-        url = "https://${vars.network.server.domain}/i2pd/";
+        url = "https://${config.vars.network.server.domain}/i2pd/";
       }
       {
         short = "qb";
         full = "qbittorrent";
-        url = "https://${vars.network.server.domain}/qbt/";
+        url = "https://${config.vars.network.server.domain}/qbt/";
       }
       {
         short = "jf";
         full = "jellyfin";
-        url = "https://${vars.network.server.domain}/jellyfin/";
+        url = "https://${config.vars.network.server.domain}/jellyfin/";
       }
     ])
 
-    (lib.optional vars.network.server.enable "separator")
+    (lib.optional config.vars.network.server.enable "separator")
 
     [
       [
@@ -124,7 +124,7 @@ let
   };
 in
 {
-  hjem.users.${vars.user.name} = {
+  hjem.users.${config.vars.user.name} = {
     files.".local/share/home.html".text = homepageHtml;
   };
 }

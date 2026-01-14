@@ -1,12 +1,7 @@
-{
-  config,
-  pkgs,
-  vars,
-  ...
-}:
+{ config, pkgs, ... }:
 
 let
-  configuration = import ./config.nix { inherit config pkgs vars; };
+  configuration = import ./config.nix { inherit config pkgs; };
   dunstWrapped = pkgs.writeShellScriptBin "dunst" ''
     ${pkgs.dunst}/bin/dunst -config ${configuration.configDir}/dunstrc "$@"
   '';

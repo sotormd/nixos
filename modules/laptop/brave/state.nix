@@ -1,4 +1,4 @@
-{ vars, ... }:
+{ config, ... }:
 
 let
   # configuration at '~/.config/BraveSoftware/Brave-Browser/Local State'
@@ -16,7 +16,7 @@ let
   };
 in
 {
-  hjem.users.${vars.user.name} = {
+  hjem.users.${config.vars.user.name} = {
     files.".config/BraveSoftware/Brave-Browser/Local State".text = builtins.toJSON localState;
   };
 }

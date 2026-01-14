@@ -1,9 +1,4 @@
-{
-  config,
-  lib,
-  vars,
-  ...
-}:
+{ config, lib, ... }:
 
 let
   # helper to resolve "nord.nixos" → *.wallpapers.nord.nixos
@@ -11,5 +6,5 @@ let
     pathStr: lib.attrsets.getAttrFromPath (lib.splitString "." pathStr) config.wallpapers;
 in
 {
-  wallpaper = getWallpaper vars.outputs.wallpaper;
+  wallpaper = getWallpaper config.vars.outputs.wallpaper;
 }

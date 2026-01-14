@@ -1,3 +1,5 @@
+{ config, ... }:
+
 {
   imports = [
     ./nginx.nix
@@ -5,5 +7,5 @@
     ./service.nix
   ];
 
-  services.jellyfin.enable = true;
+  services.jellyfin.enable = config.vars.network.jellyfin.enable;
 }

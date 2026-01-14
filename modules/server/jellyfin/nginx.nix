@@ -1,9 +1,11 @@
-{ vars, ... }:
+{ config, lib, ... }:
 
 {
-  services.nginx.virtualHosts."${vars.network.duckdns.domain}" = {
-    locations."/jellyfin" = {
-      proxyPass = "http://127.0.0.1:${toString vars.network.jellyfin.port}";
+  config = lib.mkIf config.vars.network.jellyfin.enable {
+    services.nginx.virtualHosts."${config.vars.network.duckdns.domain}" = {
+      locations."/jellyfin" = {
+        proxyPass = "http://127.0.0.1:${toString config.vars.network.jellyfin.port}";
+      };
     };
   };
 }

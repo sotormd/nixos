@@ -1,13 +1,8 @@
-{
-  config,
-  pkgs,
-  vars,
-  ...
-}:
+{ config, pkgs, ... }:
 
 let
-  package = import ./package.nix { inherit config pkgs vars; };
+  package = import ./package.nix { inherit config pkgs; };
 in
 {
-  users.users.${vars.user.name}.packages = [ package.foot ];
+  users.users.${config.vars.user.name}.packages = [ package.foot ];
 }

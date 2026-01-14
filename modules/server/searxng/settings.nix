@@ -1,4 +1,4 @@
-{ config, vars, ... }:
+{ config, ... }:
 
 {
   services.searx.settings = {
@@ -30,7 +30,7 @@
     };
 
     server = {
-      base_url = "https://${vars.network.duckdns.domain}/searxng";
+      base_url = "https://${config.vars.network.duckdns.domain}/searxng";
       secret_key = config.sops.secrets.searxng.path;
       public_instance = false;
       limiter = false;

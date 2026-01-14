@@ -1,20 +1,20 @@
-{ config, vars, ... }:
+{ config, ... }:
 
 {
   security.acme = {
     acceptTerms = true;
-    defaults.email = vars.user.email;
+    defaults.email = config.vars.user.email;
     defaults.dnsPropagationCheck = false;
-    certs."${vars.network.duckdns.domain}" = {
-      domain = vars.network.duckdns.domain;
+    certs."${config.vars.network.duckdns.domain}" = {
+      domain = config.vars.network.duckdns.domain;
       group = "nginx";
       dnsProvider = "duckdns";
       environmentFile = config.sops.secrets.duckdns.path;
     };
   };
 
-  services.nginx.virtualHosts."${vars.network.duckdns.domain}" = {
-    useACMEHost = vars.network.duckdns.domain;
+  services.nginx.virtualHosts."${config.vars.network.duckdns.domain}" = {
+    useACMEHost = config.vars.network.duckdns.domain;
     onlySSL = true;
   };
 

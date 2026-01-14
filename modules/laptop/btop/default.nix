@@ -1,7 +1,6 @@
 {
   config,
   pkgs,
-  vars,
   ...
 }:
 
@@ -9,5 +8,5 @@ let
   package = import ./package.nix { inherit config pkgs; };
 in
 {
-  users.users.${vars.user.name}.packages = [ package.btop ];
+  users.users.${config.vars.user.name}.packages = [ package.btop ];
 }

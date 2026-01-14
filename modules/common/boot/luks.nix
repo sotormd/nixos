@@ -1,14 +1,14 @@
-{ vars, ... }:
+{ config, ... }:
 
 let
-  luks = vars.device.luks;
+  luks = config.vars.device.luks;
 
   luksNames = builtins.attrNames luks;
 
   luksList = builtins.map (name: luks.${name} // { inherit name; }) luksNames;
 
   # generate text to put in /etc/crypttab
-  # based on vars.device.luks
+  # based on config.vars.device.luks
   # see docs/laptop.md or docs/server.md
   crypttabText = builtins.concatStringsSep "\n" (
     builtins.map (entry: "${entry.name} UUID=${entry.uuid} ${entry.keyfile} luks,nofail") luksList

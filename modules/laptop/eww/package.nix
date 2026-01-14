@@ -1,12 +1,7 @@
-{
-  config,
-  pkgs,
-  vars,
-  ...
-}:
+{ config, pkgs, ... }:
 
 let
-  configuration = import ./config.nix { inherit config pkgs vars; };
+  configuration = import ./config.nix { inherit config pkgs; };
   scripts = import ./scripts.nix { inherit pkgs; };
 
   ewwWrapped = pkgs.writeShellScriptBin "eww" ''

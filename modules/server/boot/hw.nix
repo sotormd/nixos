@@ -1,7 +1,7 @@
 {
+  config,
   lib,
   modulesPath,
-  vars,
   ...
 }:
 
@@ -14,7 +14,7 @@
   ];
 
   fileSystems."/" = {
-    device = "/dev/disk/by-partuuid/${vars.device.root}";
+    device = "/dev/disk/by-partuuid/${config.vars.device.root}";
     fsType = "ext4";
   };
 

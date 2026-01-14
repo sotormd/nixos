@@ -1,9 +1,4 @@
-{
-  config,
-  pkgs,
-  vars,
-  ...
-}:
+{ config, pkgs, ... }:
 
 let
   configuration = pkgs.writeTextFile {
@@ -15,7 +10,7 @@ let
       font="${config.colors.fonts.normal} 9"
       frame_color="#${config.colors.dunst.normal}"
       gap_size=5
-      monitor=${vars.outputs.monitor}
+      monitor=${config.vars.outputs.monitor}
       offset="5x5"
       origin="top-right"
       highlight="#${config.colors.dunst.normal}"

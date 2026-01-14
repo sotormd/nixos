@@ -1,6 +1,6 @@
-{ vars, ... }:
+{ config, ... }:
 
 {
   # host ID - needed for ZFS
-  networking.hostId = vars.device.hostId;
+  networking.hostId = config.vars.device.hostId;
 }

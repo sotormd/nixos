@@ -1,9 +1,4 @@
-{
-  config,
-  lib,
-  vars,
-  ...
-}:
+{ config, lib, ... }:
 
 let
   # helper to resolve "nord.nixos" → *.wallpapers.nord.nixos
@@ -12,8 +7,8 @@ let
 in
 {
   lockscreen =
-    if (builtins.substring 0 4 vars.outputs.lockscreen == "xkcd") then
+    if (builtins.substring 0 4 config.vars.outputs.lockscreen == "xkcd") then
       config.xkcd.target
     else
-      getWallpaper vars.outputs.lockscreen;
+      getWallpaper config.vars.outputs.lockscreen;
 }

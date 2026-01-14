@@ -1,7 +1,7 @@
 {
+  config,
   lib,
   pkgs,
-  vars,
   ...
 }:
 
@@ -13,7 +13,11 @@ let
   mkSpec = desktop: {
     inheritParentConfig = false;
     configuration = {
+
+      # everything needed for a clean, base system
       imports = [
+        ../../../vars-schema/common.nix
+        ../../../vars-schema/laptop.nix
         ../../common
         ../audio
         ../boot
@@ -26,7 +30,7 @@ let
         ./${desktop}.nix
       ];
 
-      environment.sessionVariables.NIXOS_ROLE = lib.mkForce "nomad-${desktop}";
+      vars.nixosRole = lib.mkForce "nomad";
 
       networking = {
         wireless.enable = lib.mkForce false;
@@ -39,7 +43,7 @@ let
 
       boot.kernel.sysctl."kernel.unprivileged_userns_clone" = lib.mkForce "1";
 
-      users.users.${vars.user.name}.packages = [
+      users.users.${config.vars.user.name}.packages = [
         pkgs.librewolf
       ];
 

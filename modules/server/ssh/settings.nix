@@ -1,10 +1,10 @@
-{ vars, ... }:
+{ config, ... }:
 
 {
   services.openssh.settings = {
     # only allow the main user
-    AllowUsers = [ vars.user.name ];
-    AllowGroups = [ vars.user.name ];
+    AllowUsers = [ config.vars.user.name ];
+    AllowGroups = [ config.vars.user.name ];
 
     # disable root login
     PermitRootLogin = "no";
@@ -29,5 +29,5 @@
   };
 
   # authorized keys
-  users.users."${vars.user.name}".openssh.authorizedKeys.keys = vars.network.ssh.keys;
+  users.users."${config.vars.user.name}".openssh.authorizedKeys.keys = config.vars.network.ssh.keys;
 }

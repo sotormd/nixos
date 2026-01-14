@@ -2,12 +2,11 @@
   config,
   lib,
   pkgs,
-  vars,
   ...
 }:
 
 {
-  hjem.users.${vars.user.name}.files =
+  hjem.users.${config.vars.user.name}.files =
     { }
     // builtins.listToAttrs (
       map (pkg: {

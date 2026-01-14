@@ -1,7 +1,7 @@
 {
+  config,
   inputs,
   pkgs,
-  vars,
   ...
 }:
 
@@ -16,5 +16,5 @@
     ./settings.nix
   ];
 
-  users.users.${vars.user.name}.packages = [ pkgs.sops ];
+  users.users.${config.vars.user.name}.packages = [ pkgs.sops ];
 }

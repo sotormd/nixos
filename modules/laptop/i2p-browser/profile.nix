@@ -1,19 +1,14 @@
-{
-  config,
-  pkgs,
-  vars,
-  ...
-}:
+{ config, pkgs, ... }:
 
 let
   userJs = pkgs.writeTextFile {
     name = "firefox-i2p-userjs";
     text = ''
       user_pref("network.proxy.type", 1);
-      user_pref("network.proxy.http", "${vars.network.server.ip}");
-      user_pref("network.proxy.http_port", ${toString vars.network.server.i2p.port});
-      user_pref("network.proxy.ssl", "${vars.network.server.ip}");
-      user_pref("network.proxy.ssl_port", ${toString vars.network.server.i2p.port});
+      user_pref("network.proxy.http", "${config.vars.network.server.ip}");
+      user_pref("network.proxy.http_port", ${toString config.vars.network.server.i2p.port});
+      user_pref("network.proxy.ssl", "${config.vars.network.server.ip}");
+      user_pref("network.proxy.ssl_port", ${toString config.vars.network.server.i2p.port});
       user_pref("network.proxy.no_proxies_on", "");
 
       user_pref("browser.urlbar.suggest.bookmark", false);

@@ -1,3 +1,5 @@
+{ config, ... }:
+
 {
   imports = [
     ./nginx.nix
@@ -5,5 +7,5 @@
     ./settings.nix
   ];
 
-  services.vaultwarden.enable = true;
+  services.vaultwarden.enable = config.vars.network.vaultwarden.enable;
 }

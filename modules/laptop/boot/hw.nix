@@ -2,7 +2,6 @@
   config,
   lib,
   modulesPath,
-  vars,
   ...
 }:
 
@@ -35,7 +34,7 @@
 
   # boot partition
   fileSystems."/boot" = {
-    device = "/dev/disk/by-partuuid/${vars.device.boot}";
+    device = "/dev/disk/by-partuuid/${config.vars.device.boot}";
     fsType = "vfat";
     options = [
       "fmask=0022"
@@ -46,7 +45,7 @@
   # swap partition with random encryption
   swapDevices = [
     {
-      device = "/dev/disk/by-partuuid/${vars.device.swap}";
+      device = "/dev/disk/by-partuuid/${config.vars.device.swap}";
       randomEncryption = true;
     }
   ];
@@ -54,7 +53,7 @@
   # main root partition
   boot.initrd.luks.devices = {
     root = {
-      device = "/dev/disk/by-partuuid/${vars.device.root}";
+      device = "/dev/disk/by-partuuid/${config.vars.device.root}";
       preLVM = true;
     };
   };

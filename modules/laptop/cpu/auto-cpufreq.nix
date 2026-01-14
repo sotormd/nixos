@@ -1,5 +1,7 @@
+{ config, lib, ... }:
+
 {
-  services.auto-cpufreq = {
+  services.auto-cpufreq = lib.mkIf config.vars.device.auto-cpufreq.enable {
     enable = true;
     settings = {
       battery = {

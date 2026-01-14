@@ -1,4 +1,4 @@
-{ vars, ... }:
+{ config, ... }:
 
 {
   programs.ssh.extraConfig = ''
@@ -6,6 +6,6 @@
         IdentitiesOnly yes
         User git
         HostName github.com
-        IdentityFile /home/${vars.user.name}/.ssh/${vars.user.github.keyfile}
+        IdentityFile /home/${config.vars.user.name}/.ssh/${config.vars.user.github.keyfile}
   '';
 }

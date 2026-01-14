@@ -1,9 +1,9 @@
-{ vars, ... }:
+{ config, ... }:
 
 {
   programs.xfconf.enable = true;
 
-  hjem.users.${vars.user.name} = {
+  hjem.users.${config.vars.user.name} = {
     files.".config/xfce4/xfconf/xfce-perchannel-xml/thunar.xml".text = ''
       <?xml version="1.1" encoding="UTF-8"?>
 

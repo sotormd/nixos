@@ -1,12 +1,7 @@
-{
-  config,
-  pkgs,
-  vars,
-  ...
-}:
+{ config, pkgs, ... }:
 
 {
-  hjem.users.${vars.user.name}.files = {
+  hjem.users.${config.vars.user.name}.files = {
     ".local/share/themes/${config.colors.gtk.theme.name}".source = "${
       pkgs.${config.colors.gtk.theme.package}
     }/share/themes/${config.colors.gtk.theme.name}";

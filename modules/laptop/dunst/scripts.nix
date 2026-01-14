@@ -1,4 +1,4 @@
-{ pkgs, vars, ... }:
+{ config, pkgs, ... }:
 
 let
   volume = pkgs.writeShellScriptBin "volume" ''
@@ -35,7 +35,7 @@ let
   '';
 in
 {
-  users.users.${vars.user.name}.packages = [
+  users.users.${config.vars.user.name}.packages = [
     volume
     brightness
   ];

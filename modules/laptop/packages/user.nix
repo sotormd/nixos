@@ -1,13 +1,13 @@
 {
+  config,
   inputs,
   pkgs,
-  vars,
   ...
 }:
 
 {
   # set of packages to appear in user environment
-  users.users.${vars.user.name}.packages = with pkgs; [
+  users.users.${config.vars.user.name}.packages = with pkgs; [
     # audio visualizer
     cava
 

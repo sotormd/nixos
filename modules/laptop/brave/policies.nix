@@ -1,4 +1,4 @@
-{ lib, vars, ... }:
+{ config, lib, ... }:
 
 {
   programs.chromium.extraOpts = {
@@ -55,22 +55,22 @@
     DefaultSearchProviderEnabled = true;
 
     DefaultSearchProviderImageURL = lib.concatStrings (
-      lib.choose vars.network.server.enable
-        "https://${vars.network.server.domain}/searxng/static/themes/simple/img/favicon.svg"
+      lib.choose config.vars.network.server.enable
+        "https://${config.vars.network.server.domain}/searxng/static/themes/simple/img/favicon.svg"
         "https://duckduckgo.com/assets/logo_header_mobile.alt.v109.svg"
     );
 
     DefaultSearchProviderKeyword = lib.concatStrings (
-      lib.choose vars.network.server.enable ":sx" ":ddg"
+      lib.choose config.vars.network.server.enable ":sx" ":ddg"
     );
 
     DefaultSearchProviderName = lib.concatStrings (
-      lib.choose vars.network.server.enable "SearXNG" "DuckDuckGo"
+      lib.choose config.vars.network.server.enable "SearXNG" "DuckDuckGo"
     );
 
     DefaultSearchProviderSearchURL = lib.concatStrings (
-      lib.choose vars.network.server.enable
-        "https://${vars.network.server.domain}/searxng/search?q={searchTerms}"
+      lib.choose config.vars.network.server.enable
+        "https://${config.vars.network.server.domain}/searxng/search?q={searchTerms}"
         "https://duckduckgo.com/?q={searchTerms}"
     );
 
@@ -107,8 +107,8 @@
 
     # homepage
     HomepageIsNewTabPage = false;
-    HomepageLocation = "file:///home/${vars.user.name}/.local/share/home.html";
-    NewTabPageLocation = "file:///home/${vars.user.name}/.local/share/home.html";
+    HomepageLocation = "file:///home/${config.vars.user.name}/.local/share/home.html";
+    NewTabPageLocation = "file:///home/${config.vars.user.name}/.local/share/home.html";
     ShowHomeButton = false;
 
     # new tab on startup

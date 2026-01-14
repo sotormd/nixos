@@ -1,14 +1,14 @@
-{ vars, ... }:
+{ config, ... }:
 
 let
   securebootRequired = [
-    vars.device.impermanence.enable
+    config.vars.device.impermanence.enable
   ];
 in
 {
   config.assertions = [
     {
-      assertion = !(builtins.any (x: x) securebootRequired) || vars.device.secureboot.enable;
+      assertion = !(builtins.any (x: x) securebootRequired) || config.vars.device.secureboot.enable;
       message = "secureboot must be enabled if any dependent service is enabled";
     }
   ];

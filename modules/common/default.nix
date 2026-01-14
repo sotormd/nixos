@@ -1,4 +1,4 @@
-{ inputs, ... }:
+{ legacyVars, ... }:
 
 {
   imports = [
@@ -40,4 +40,6 @@
     # users
     ./users
   ];
+
+  config.vars = legacyVars;
 }

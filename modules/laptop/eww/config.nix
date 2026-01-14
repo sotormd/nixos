@@ -1,9 +1,4 @@
-{
-  config,
-  pkgs,
-  vars,
-  ...
-}:
+{ config, pkgs, ... }:
 
 let
   style = import ./style.nix { inherit config pkgs; };
@@ -227,7 +222,7 @@ let
                      :space-evenly true
                      :hexpand true
                      :vexpand false
-                     (label :class "host" :xalign 0 :text "${vars.user.name}@${vars.device.hostName}")
+                     (label :class "host" :xalign 0 :text "${config.vars.user.name}@${config.vars.device.hostName}")
                      (label :class "uptime" :xalign 1 :text uptime))
                    (box
                      :class "start-inner-box-system"

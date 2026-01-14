@@ -2,7 +2,6 @@
   config,
   lib,
   pkgs,
-  vars,
   ...
 }:
 
@@ -12,18 +11,15 @@ let
       config
       lib
       pkgs
-      vars
       ;
   };
 in
 {
-  imports = lib.concatMap (x: x) [
-    [
-      ./settings.nix
-    ]
+  imports = [
+    ./settings.nix
 
-    (lib.optional (builtins.substring 0 4 vars.outputs.lockscreen == "xkcd") ./xkcd.nix)
+    ./xkcd.nix
   ];
 
-  users.users.${vars.user.name}.packages = [ package.swaylock ];
+  users.users.${config.vars.user.name}.packages = [ package.swaylock ];
 }

@@ -1,3 +1,5 @@
+{ config, ... }:
+
 {
   imports = [
     ./address.nix
@@ -6,5 +8,5 @@
   ];
 
   # enable unbound validating recursive dns server
-  services.unbound.enable = true;
+  services.unbound.enable = config.vars.network.unbound.enable;
 }

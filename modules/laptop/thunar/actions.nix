@@ -1,7 +1,7 @@
-{ vars, ... }:
+{ config, ... }:
 
 {
-  hjem.users.${vars.user.name} = {
+  hjem.users.${config.vars.user.name} = {
     files.".config/Thunar/uca.xml".text = ''
       <?xml version="1.0" encoding="UTF-8"?>
       <actions>

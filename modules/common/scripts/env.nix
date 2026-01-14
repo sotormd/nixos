@@ -1,8 +1,10 @@
-{ vars, ... }:
+{ config, ... }:
 
 {
   environment.sessionVariables = {
-    NIXOS_DIR = vars.nixosDirectory;
-    NIXOS_ROLE = vars.nixosRole;
+    NIXOS_DIR = config.vars.nixosDirectory;
+    NIXOS_ROLE = config.vars.nixosRole;
   };
+
+  environment.etc."nixos-role".text = config.vars.nixosRole;
 }

@@ -1,4 +1,4 @@
-{ pkgs, vars, ... }:
+{ config, pkgs, ... }:
 
 {
   imports = [
@@ -11,5 +11,5 @@
     ./xfconf.nix
   ];
 
-  users.users.${vars.user.name}.packages = [ pkgs.xfce.thunar ];
+  users.users.${config.vars.user.name}.packages = [ pkgs.xfce.thunar ];
 }
