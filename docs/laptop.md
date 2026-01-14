@@ -798,7 +798,7 @@ things to / paste things from the clipboard.
 ### Wallpapers
 
 To change the current wallpaper, change the `outputs.wallpaper` and
-`outputs.lockscreen` variables.
+`outputs.lockscreen` variables in `vars.nix` .
 
 ```bash
 nixos edit vars
@@ -1059,11 +1059,7 @@ found [here](../modules/laptop/i2p-browser/profile.nix) and policies
 [here](../modules/laptop/i2p-browser/policies.nix).
 
 The i2p-browser uses the I2P HTTP Proxy from `network.server.i2p.port` in
-`vars.nix`. To edit variables:
-
-```bash
-nixos edit vars
-```
+`vars.nix`.
 
 The included `i2p-browser` executable is a firejail wrapper which uses
 `--nonewprivs` to mitigate possible SUID vulnerabilities. All flags can be seen
@@ -1316,11 +1312,7 @@ On the `server` role, it uses a hardened configuration that lives
 [here](../modules/server/ssh/).
 
 The server ssh port that the laptop accesses is set in the variables file under
-`network.server.ssh.port`. To edit the variables file:
-
-```bash
-nixos edit vars
-```
+`network.server.ssh.port`.
 
 ## Anonymity
 
