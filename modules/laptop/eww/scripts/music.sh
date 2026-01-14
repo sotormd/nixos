@@ -64,7 +64,7 @@ get_ctime() {
     if [[ -z "$pos" ]]; then
         echo "0:00"
     else
-        date -u -d @"''${pos%.*}" +%M:%S
+        date -u -d @"${pos%.*}" +%M:%S
     fi
 }
 
