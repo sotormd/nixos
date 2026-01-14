@@ -83,7 +83,7 @@ get_ttime() {
 get_cover() {
     arturl=$(@playerctl@ metadata mpris:artUrl 2>/dev/null)
     if [[ -n "$arturl" && "$arturl" =~ ^file:// ]]; then
-        cover_path="''${arturl#file://}"
+        cover_path="${arturl#file://}"
         cp "$cover_path" "$COVER" 2>/dev/null && echo "$COVER" && return
     fi
     echo "$DEFAULT_COVER"
