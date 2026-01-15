@@ -111,16 +111,16 @@ examples.
 | bootloader                    | `systemd-boot`, `uboot`                                                                                    |
 | secure boot                   | `lanzaboote`                                                                                               |
 | filesystem                    | `zfs`                                                                                                      |
-| impermanence                  | ZFS snapshots, bind mounts                                                                                 |
+| impermanence                  | `zfs(8)` `mount(8)`                                                                                        |
 | ~ symlinks                    | `hjem`                                                                                                     |
-| dotfiles                      | custom wrappers                                                                                            |
+| dotfiles                      | `nixpkgs` wrappers                                                                                         |
 | auditing                      | `auditd`                                                                                                   |
 | secrets                       | `sops`, `sops-nix`                                                                                         |
 | sandboxing                    | `firejail`                                                                                                 |
 | firewall                      | `iptables (nf_tables)`                                                                                     |
 | anonymity                     | `i2pd`, `oniux`                                                                                            |
 | networking                    | `wpa_supplicant`                                                                                           |
-| DNS                           | `unbound`                                                                                                  |
+| dns                           | `unbound`                                                                                                  |
 | display server                | `wayland`                                                                                                  |
 | compositor                    | `swayfx`                                                                                                   |
 | bar                           | `waybar`                                                                                                   |
