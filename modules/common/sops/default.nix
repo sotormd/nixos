@@ -1,9 +1,4 @@
-{
-  config,
-  inputs,
-  pkgs,
-  ...
-}:
+{ inputs, pkgs, ... }:
 
 {
   imports = [
@@ -16,5 +11,5 @@
     ./settings.nix
   ];
 
-  users.users.${config.vars.user.name}.packages = [ pkgs.sops ];
+  environment.systemPackages = [ pkgs.sops ];
 }

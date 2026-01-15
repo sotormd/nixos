@@ -13,7 +13,7 @@
 
   config = lib.mkIf config.vars.device.secureboot.enable {
 
-    users.users.${config.vars.user.name}.packages = [ pkgs.sbctl ];
+    environment.systemPackages = [ pkgs.sbctl ];
 
     boot.loader.systemd-boot.enable = lib.mkForce false;
 
