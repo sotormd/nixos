@@ -14,6 +14,7 @@ in
     dimensions = "1920x1200";
     target = "/home/${config.vars.user.name}/.local/share/bg.png";
     fallback = wallpaper.wallpaper;
+    cache = "/home/${config.vars.user.name}/.cache/xkcd-wall";
     inherit type interval;
   };
 }
