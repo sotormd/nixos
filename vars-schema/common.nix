@@ -53,6 +53,7 @@ with lib;
               fsType = mkOption {
                 type = types.str;
                 description = "Filesystem type.";
+                default = "auto";
               };
 
               options = mkOption {
