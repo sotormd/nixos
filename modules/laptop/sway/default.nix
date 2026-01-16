@@ -16,7 +16,13 @@ let
 in
 {
   imports = [
-    ./settings.nix
+    ./opengl.nix
+
+    ./ozone.nix
+
+    ./polkit.nix
+
+    ./screensharing.nix
 
     ./start.nix
   ];
