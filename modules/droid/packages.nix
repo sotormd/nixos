@@ -7,7 +7,7 @@
     procps
     killall
     diffutils
-    utillinux
+    util-linux
     tzdata
     hostname
     man
@@ -34,7 +34,7 @@
     curl
     wget
     findutils
-    coreutils
+    coreutils-full
     less
     htop
     ncurses
@@ -43,5 +43,8 @@
     tree
     which
     rsync
+    binutils
+    acl
+    attr
   ];
 }
