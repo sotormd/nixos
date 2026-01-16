@@ -34,7 +34,7 @@
     curl
     wget
     findutils
-    coreutils-full
+    coreutils
     less
     htop
     ncurses
