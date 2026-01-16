@@ -1,4 +1,4 @@
-{ pkgs, ... }:
+{ lib, pkgs, ... }:
 
 {
   # blacklist certain kernel modules
@@ -165,4 +165,9 @@
     install rds ${pkgs.coreutils}/bin/false
     install tipc ${pkgs.coreutils}/bin/false
   '';
+
+  # disable bluetooth
+  # didn't we already blacklist it ??
+  hardware.bluetooth.enable = lib.mkForce false;
+  hardware.bluetooth.powerOnBoot = lib.mkForce false;
 }
