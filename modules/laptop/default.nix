@@ -26,6 +26,10 @@
     # btop system resources monitor
     ./btop
 
+    # vscodium text editor
+    # uses home-manager
+    #    ./codium
+
     # cpu frequency optimizations, power management
     ./cpu
 
