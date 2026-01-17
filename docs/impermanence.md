@@ -3,7 +3,7 @@
 This flake implements Impermanence without using the
 [library](https://github.com/nix-community/impermanence).
 
-Instructions for setting up impermanence is covered in
+Instructions for setting up impermanence are covered in
 [laptop.md](./laptop.md#setting-up-impermanence).
 
 This document covers the inner workings of impermanence.
@@ -69,8 +69,8 @@ several such blocks.
 
 The following directories are persisted:
 
-- [root](../modules/laptop/impermanence/bind-root.nix): Directories under `/`
-- [home](../modules/laptop/impermanence/bind-home.nix): Directories under
+- [`root`](../modules/laptop/impermanence/bind-root.nix): Directories under `/`
+- [`home`](../modules/laptop/impermanence/bind-home.nix): Directories under
   `/home`
 
 To persist more directories, simply add to the list. The directories under `/`
