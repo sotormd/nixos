@@ -177,3 +177,5 @@ PSA: using GPG instead of age for encryption is worse in almost every case.
 [link](https://github.com/nix-community/nh)
 
 I maintain my own scripts.
+
+See [scripts.md](./scripts.md) for more information.
