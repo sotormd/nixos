@@ -2,7 +2,7 @@
 # this will NOT work inside a firejail
 # so, running `brave` will not work
 # instead, run the brave executable directly
-# like this `$(cat $(which brave) | grep brave | awk '{print $7}')`
+# like this `$(cat $(which brave) | grep brave | awk '{print $17}')`
 # this uses the SUID sandbox instead of namespaces
 # but also doesn't work with firejail
 # use at own risk
