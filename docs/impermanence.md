@@ -1,4 +1,4 @@
-# impermanence
+# Impermanence
 
 This flake implements Impermanence without using the
 [library](https://github.com/nix-community/impermanence).
@@ -10,14 +10,13 @@ This document covers the inner workings of impermanence.
 
 # Contents
 
-1. [Implementation Details](#implementation-details)
+1. [ZFS Datasets](#zfs-datasets)
 2. [Directories](#directories)
 
-# Implementation Details
+# ZFS Datasets
 
-## ZFS Datasets
-
-> This section covers the ZFS datasets as created by the init script.
+> This section covers the ZFS datasets as created by the init script, or based
+> on the recommendations in laptop.md.
 
 The init script creates four datasets:
 
