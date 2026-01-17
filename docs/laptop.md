@@ -404,6 +404,8 @@ Ensure all variables and secrets are properly defined.
    nixos switch
    ```
 
+See [impermanence.md](./impermanence.md) for more information.
+
 # Usage
 
 Using the `laptop` role.
@@ -1204,6 +1206,8 @@ reboots.
 
 This is accomplished by rolling back the `rpool/root` and `rpool/home` datasets
 to their blank snapshots every boot.
+
+See [impermanence.md](./impermanence.md) for more information.
 
 The impermanence configuration, including the list of persisted directories can
 be found [here](../modules/laptop/impermanence/).
