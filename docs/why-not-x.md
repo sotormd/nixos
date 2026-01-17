@@ -124,6 +124,8 @@ I have found that I can replicate everything that it does with simple systemd
 services and bind mounts - a single [lambda](../lib/impermanence.nix) to create
 the `fileSystems` blocks.
 
+See [impermanence.md](./impermanence.md) for more information.
+
 ## stylix
 
 [link](https://github.com/nix-community/stylix)
