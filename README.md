@@ -89,9 +89,15 @@ See [images](./docs/images.md) for more details.
 
 Routine tasks such as updating the flake, switching configurations,
 garbage-collecting, repairing the Nix store, and editing variables & secrets are
-handled through the unified `nixos` helper script.
+handled through the unified `nixos(1)` helper CLI.
 
-To see all commands:
+Manpage:
+
+```bash
+man nixos
+```
+
+Overview:
 
 ```bash
 nixos help

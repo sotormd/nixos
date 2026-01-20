@@ -1,7 +1,9 @@
 # scripts
 
-This document covers all included scripts (except `init`, which is covered in
-the role documentation).
+This document covers all included scripts, and the `nixos(1)` unified wrapper.
+
+The documentation for `nixos init` is not included, which is covered in
+role-specific bootstrap documentation.
 
 # Contents
 
@@ -31,6 +33,12 @@ To get a basic overview of available commands:
 
 ```bash
 nixos help
+```
+
+For the manpage:
+
+```bash
+man nixos
 ```
 
 When run with no commands, equivalent to:
@@ -319,13 +327,13 @@ $ which nixos
 /etc/profiles/per-user/username/bin/nixos
 ```
 
-This allows using `nixos` without installing every individual script as a
-package.
+This allows using using `nixos(1)` without installing every individual script as
+a package.
 
 The included commands are loaded into the wrapper package's environment
 [here](../modules/common/scripts/bin.nix).
 
-`nixos` runs all commands in the `$NIXOS_DIR`, like so:
+`nixos(1)` runs all commands in the `$NIXOS_DIR`, like so:
 
 ```bash
 (
@@ -343,7 +351,7 @@ command in three places:
    nixos
    ```
 
-   `nixos` runs `tree $NIXOS_DIR --filesfirst`
+   `nixos(1)` runs `tree $NIXOS_DIR --filesfirst`
 
 2. A script present in `$NIXOS_DIR/scripts/` provided
 
@@ -351,7 +359,7 @@ command in three places:
    nixos switch
    ```
 
-   `nixos` runs `$NIXOS_DIR/scripts/switch`
+   `nixos(1)` runs `$NIXOS_DIR/scripts/switch`
 
 3. Any other command provided
 
@@ -359,12 +367,12 @@ command in three places:
    nixos cat modules/server/searxng/engines.nix | wl-copy
    ```
 
-   `nixos` dispatches the provided command as-is in `$NIXOS_DIR`
+   `nixos(1)` dispatches the provided command as-is in `$NIXOS_DIR`
 
-`nixos` also checks that the `$NIXOS_DIR` and `$NIXOS_ROLE` variables are set
+`nixos(1)` also checks that the `$NIXOS_DIR` and `$NIXOS_ROLE` variables are set
 and valid.
 
-`nixos` creates a lockfile in `/tmp/nixos-script.lock` when the following
+`nixos(1)` creates a lockfile in `/tmp/nixos-script.lock` when the following
 commands are used:
 
 - test
@@ -376,7 +384,7 @@ commands are used:
 - perms
 - init
 
-`nixos` also reports the amount of time taken to finish executing a command:
+`nixos(1)` also reports the amount of time taken to finish executing a command:
 
 ```console
 $ nixos switch
@@ -392,7 +400,7 @@ yes n | nixos test > /tmp/nixos-git-diff-output.txt
 ```
 
 All the included scripts were written assuming that they will be called from the
-`nixos` wrapper, and not executed directly.
+`nixos(1)` wrapper, and not executed directly.
 
 Additionally, there is no need to use `sudo` for any of the included scripts;
 the scripts will use `sudo` to elevate privileges when required.

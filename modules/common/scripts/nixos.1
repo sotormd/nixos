@@ -1,0 +1,151 @@
+.TH NIXOS 1 "" "NixOS Flake Helper" "User Commands"
+
+.SH NAME
+nixos \- unified wrapper for managing the NixOS flake
+
+.SH SYNOPSIS
+.B nixos
+.RI [ command ] " [args]"
+
+.SH DESCRIPTION
+The
+.B nixos
+command is a user-facing wrapper for managing the NixOS flake.
+It provides a curated set of high-level commands for carrying out
+routine tasks.
+
+When invoked without a command,
+.B nixos
+displays the flake directory tree with files listed first.
+
+If an unrecognized command is provided, it is dispatched verbatim
+inside the flake directory
+.RB ( $NIXOS_DIR ),
+allowing arbitrary commands to be run relative to the flake.
+
+.SH COMMANDS
+
+.TP
+.B test
+Activate the new configuration without creating a boot entry.
+Changes are lost on reboot.
+.br
+Roles: laptop, server
+
+.TP
+.B switch
+Activate the new configuration and create a boot entry,
+also format the flake.
+.br
+Roles: laptop, server
+
+.TP
+.B commit
+Activate the new configuration, create a boot entry, format the flake,
+fix file permissions, and create a Git commit.
+.br
+Roles: laptop only
+
+.TP
+.B update " [inputs...]"
+Update flake inputs in
+.BR flake.lock .
+If no inputs are specified, all inputs are updated.
+.br
+Roles: laptop, server
+
+.TP
+.B format
+Format all Nix files in the flake using
+.BR nixfmt .
+.br
+Roles: laptop, server
+
+.TP
+.B perms
+Fix file ownership and permissions in the flake.
+All files are set to mode 600, directories to 700, and scripts under
+.B $NIXOS_DIR/scripts/
+to 700.
+.br
+Roles: laptop, server
+
+.TP
+.B purge
+Delete all non-current system generations.
+This is a destructive operation.
+Equivalent to:
+.br
+.B sudo nix-collect-garbage --delete-old
+.br
+Roles: laptop, server
+
+.TP
+.B repair
+Verify and repair the Nix store.
+Equivalent to:
+.br
+.B sudo nix-store --verify --check-contents --repair
+.br
+Roles: laptop, server
+
+.TP
+.B edit " <vars|sops>"
+Edit variables or secrets associated with the flake.
+.br
+Roles: laptop, server
+
+.TP
+.B serverpush " <path>"
+Push the local flake to
+.BR server:<path> .
+.br
+Roles: laptop only
+
+.TP
+.B help
+Display a brief usage summary and exit.
+.br
+Roles: laptop, server
+
+.SH DISPATCH BEHAVIOR
+If a command does not match one of the built-in subcommands,
+.B nixos
+executes it directly inside
+.BR $NIXOS_DIR .
+
+This allows convenient interaction with the flake repository, such as:
+
+.nf
+nixos git status
+nixos cat flake.nix | wl-copy
+nixos vi modules/common/firewall.nix
+.fi
+
+.SH LOCKING
+To prevent concurrent execution,
+.B nixos
+creates a lockfile at
+.BR /tmp/nixos-script.lock
+for the following commands:
+test, switch, commit, update, purge, format, perms, and init.
+
+.SH NOTES
+All commands are intended to be run through the
+.B nixos
+wrapper and not executed directly.
+The wrapper automatically escalates privileges using
+.B sudo
+when required.
+
+Command execution time is reported on completion.
+
+.SH FILES
+.TP
+.B $NIXOS_DIR/scripts/
+Implementation of all subcommands.
+
+.TP
+.B $NIXOS_DIR/docs/scripts.md
+Full documentation.
+
