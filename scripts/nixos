@@ -43,7 +43,7 @@ fi
 
 if [[ "$1" =~ ^(commit|format|init|perms|purge|switch|test|update)$ ]]; then
     # ensure there is only one instance running
-    LOCKFILE="/tmp/nixos-script.lock"
+    LOCKFILE="$XDG_RUNTIME_DIR/nixos-script.lock"
 
     # open lockfile on fd 9
     exec 9>"$LOCKFILE" || {

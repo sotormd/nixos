@@ -372,8 +372,8 @@ command in three places:
 `nixos(1)` also checks that the `$NIXOS_DIR` and `$NIXOS_ROLE` variables are set
 and valid.
 
-`nixos(1)` creates a lockfile in `/tmp/nixos-script.lock` when the following
-commands are used:
+`nixos(1)` creates a lockfile in `$XDG_RUNTIME_DIR/nixos-script.lock` when the
+following commands are used:
 
 - test
 - switch
