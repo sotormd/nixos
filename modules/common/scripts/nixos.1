@@ -126,7 +126,7 @@ nixos vi modules/common/firewall.nix
 To prevent concurrent execution,
 .B nixos
 creates a lockfile at
-.BR /tmp/nixos-script.lock
+.BR $XDG_RUNTIME_DIR/nixos-script.lock
 for the following commands:
 test, switch, commit, update, purge, format, perms, and init.
 
