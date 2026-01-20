@@ -113,7 +113,7 @@
           mkImage =
             role:
             mkHost {
-              role = "image${role}";
+              role = "image-${role}";
               withVars = false;
             };
         in
@@ -124,10 +124,10 @@
             server = mkMachine "server";
 
             # images
-            imageGnome = mkImage "Gnome";
-            imageMinimal = mkImage "Minimal";
-            imageSD = mkImage "SD";
-            imageSDRemote = mkImage "SDRemote";
+            image-gnome = mkImage "gnome";
+            image-minimal = mkImage "minimal";
+            image-sd = mkImage "sd";
+            image-sd-remote = mkImage "sd-remote";
           };
 
           # nix-on-droid

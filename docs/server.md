@@ -32,7 +32,7 @@ Bootstrap process for the `server` role.
    One such image is included in this flake. To use the included image:
 
    ```bash
-   nix build github:sotormd/nixos#nixosConfigurations.imageSD.config.system.build.sdImage
+   nix build github:sotormd/nixos#nixosConfigurations.image-sd.config.system.build.sdImage
    ```
 
    The generated image will be available under `./result/sd-image/`.
