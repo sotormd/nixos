@@ -117,7 +117,6 @@ ${bold}${yellow}  init <command> [args]${reset}
     Used to bootstrap this flake
     See documentation for more information
 
-
 For full documentation, see:
 $NIXOS_DIR/docs/scripts.md
 EOF
