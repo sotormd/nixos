@@ -31,7 +31,7 @@ ARTISTS="$(
     '
 )"
 
-if [[ -e /tmp/waybar-noanimation ]]; then
+if [[ -e "$XDG_RUNTIME_DIR/waybar-noanimation" ]]; then
   PLAYING_CLASS="playerctl-playing-noanimation"
 else
   PLAYING_CLASS="playerctl-playing"
