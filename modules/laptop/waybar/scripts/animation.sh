@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-FILE="/tmp/waybar-noanimation"
+FILE="$XDG_RUNTIME_DIR/waybar-noanimation"
 
 if [[ -e "$FILE" ]]; then
   rm "$FILE"
