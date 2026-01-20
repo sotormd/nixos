@@ -41,7 +41,7 @@ Bootstrap process for the `laptop` role.
    ```bash
    nix run nixpkgs#nixos-generators -- \
    --format iso \
-   --flake github:sotormd/nixos#imageGnome \
+   --flake github:sotormd/nixos#image-gnome \
    -o /tmp/gnome-image
    ```
 

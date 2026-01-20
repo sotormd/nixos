@@ -30,7 +30,7 @@ jobs:
         run: |
           nix run nixpkgs#nixos-generators -- \
             --format iso \
-            --flake github:sotormd/nixos#imageMinimal \
+            --flake .#image-minimal \
             -o /tmp/minimal-image
 
           MIN_SRC=$(echo /tmp/minimal-image/iso/*.iso)
