@@ -45,7 +45,7 @@ ${bold}${yellow}  switch${reset}
     Switch to the current configuration.
     Creates a boot entry.
 
-${bold}${yellow}  commit${reset}
+${bold}${yellow}  commit [-m <message>]${reset}
   ${dim}roles:${reset} laptop
 
     ${green}\$ nixos commit${reset}
@@ -58,7 +58,7 @@ ${bold}${yellow}  update [inputs...]${reset}
     ${green}\$ nixos update${reset}
     Update flake inputs in flake.lock.
     Equivalent to:
-      ${magenta}\$ nixos nix flake update [inputs]${reset}
+      ${magenta}\$ nixos nix flake update [inputs...]${reset}
 
 ${bold}${yellow}  format${reset}
   ${dim}roles:${reset} laptop, server
@@ -110,4 +110,14 @@ ${bold}${yellow}  help${reset}
 
     ${green}\$ nixos help${reset}
     Show this message and exit
+
+${bold}${yellow}  init <command> [args]${reset}
+  ${dim}roles:${reset} laptop, server
+
+    Used to bootstrap this flake
+    See documentation for more information
+
+
+For full documentation, see:
+$NIXOS_DIR/docs/scripts.md
 EOF

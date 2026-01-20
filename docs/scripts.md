@@ -70,19 +70,19 @@ nixos switch
 
 Brief overview of commands:
 
-| Command              | `laptop` | `server` | Description                                                                                                   |
-| -------------------- | -------- | -------- | ------------------------------------------------------------------------------------------------------------- |
-| `test`               | ✔        | ✔        | <br>`nixos test` <br>Test the current configuration. Does **not** create a boot entry.                        |
-| `switch`             | ✔        | ✔        | <br>`nixos switch` <br>Switch to the current configuration. Creates a boot entry.                             |
-| `commit`             | ✔        | ✘        | <br>`nixos commit` <br>Switch to and commit the current configuration. Creates a boot entry and a Git commit. |
-| `update [inputs...]` | ✔        | ✔        | <br>`nixos update` <br>Update flake inputs in `flake.lock`.                                                   |
-| `format`             | ✔        | ✔        | <br>`nixos format` <br>Format the flake using nixfmt.                                                         |
-| `perms`              | ✔        | ✔        | <br>`nixos perms` <br>Apply correct permissions to all files in the flake.                                    |
-| `purge`              | ✔        | ✔        | <br>`nixos purge` <br>Garbage collect old generations.                                                        |
-| `repair`             | ✔        | ✔        | <br>`nixos repair` <br>Attempt to repair the nix store.                                                       |
-| `edit <vars\|sops>`  | ✔        | ✔        | <br>`nixos edit vars` <br>Edit variables file. <br><br>`nixos edit sops` <br>Edit sops-nix secrets.           |
-| `serverpush <path>`  | ✔        | ✘        | <br>`nixos serverpush /nixos` <br>Push the flake to `server:/nixos`.                                          |
-| `help`               | ✔        | ✔        | <br>`nixos help` <br>Show this message and exit.                                                              |
+| Command                 | `laptop` | `server` | Description                                                                                                   |
+| ----------------------- | -------- | -------- | ------------------------------------------------------------------------------------------------------------- |
+| `test`                  | ✔        | ✔        | <br>`nixos test` <br>Test the current configuration. Does **not** create a boot entry.                        |
+| `switch`                | ✔        | ✔        | <br>`nixos switch` <br>Switch to the current configuration. Creates a boot entry.                             |
+| `commit [-m <message>]` | ✔        | ✘        | <br>`nixos commit` <br>Switch to and commit the current configuration. Creates a boot entry and a Git commit. |
+| `update [inputs...]`    | ✔        | ✔        | <br>`nixos update` <br>Update flake inputs in `flake.lock`.                                                   |
+| `format`                | ✔        | ✔        | <br>`nixos format` <br>Format the flake using nixfmt.                                                         |
+| `perms`                 | ✔        | ✔        | <br>`nixos perms` <br>Apply correct permissions to all files in the flake.                                    |
+| `purge`                 | ✔        | ✔        | <br>`nixos purge` <br>Garbage collect old generations.                                                        |
+| `repair`                | ✔        | ✔        | <br>`nixos repair` <br>Attempt to repair the nix store.                                                       |
+| `edit <vars\|sops>`     | ✔        | ✔        | <br>`nixos edit vars` <br>Edit variables file. <br><br>`nixos edit sops` <br>Edit sops-nix secrets.           |
+| `serverpush <path>`     | ✔        | ✘        | <br>`nixos serverpush /nixos` <br>Push the flake to `server:/nixos`.                                          |
+| `help`                  | ✔        | ✔        | <br>`nixos help` <br>Show this message and exit.                                                              |
 
 # Updating the Lockfile
 
