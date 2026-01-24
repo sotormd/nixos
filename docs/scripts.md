@@ -320,11 +320,11 @@ All scripts are stored in `$NIXOS_DIR/scripts/`.
 The entry point is the `$NIXOS_DIR/scripts/nixos` script, which is mainly a
 wrapper for all other scripts.
 
-This wrapper is installed as a package to the user profile.
+This wrapper is installed as a package to the system profile.
 
 ```console
 $ which nixos
-/etc/profiles/per-user/username/bin/nixos
+/run/current-system/sw/bin/nixos
 ```
 
 This allows using using `nixos(1)` without installing every individual script as
