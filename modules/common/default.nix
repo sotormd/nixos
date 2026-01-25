@@ -7,6 +7,9 @@
     # linux audit subsystem
     ./audit
 
+    # bash shell
+    ./bash
+
     # bootloader, kernel parameters, sysctl options
     ./boot
 

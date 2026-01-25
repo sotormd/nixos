@@ -8,8 +8,6 @@
 
     ./main.nix
 
-    ./prompt.nix
-
     ./xdg.nix
   ];
 }
