@@ -396,7 +396,8 @@ $ nixos switch
 It is _generally_ safe to pipe into and out of the included scripts:
 
 ```bash
-yes n | nixos test > /tmp/nixos-git-diff-output.txt
+nixos cat modules/server/searxng/engines.nix | wl-copy
+yes | nixos switch
 ```
 
 All the included scripts were written assuming that they will be called from the
