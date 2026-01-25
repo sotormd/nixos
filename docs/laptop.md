@@ -31,6 +31,19 @@ Bootstrap process for the `laptop` role.
 
 **The configuration expects a particular disk setup (covered below).**
 
+Some other assumptions:
+
+- `x86_64-linux` architecture
+- AMD chipset
+- No specific graphics requirements (eg. no NVIDIA)
+- UEFI firmware
+- Enough memory for ZFS (at least 8gb)
+- Specific disk layout
+
+Optional:
+
+- Secure Boot support
+
 ## Obtaining a Live NixOS Image
 
 1. Get a live NixOS image that has experimental features `flakes` and
