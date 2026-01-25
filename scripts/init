@@ -220,13 +220,6 @@ elif [ "$1" == "vars" ]; then
 
     if [ "$ROLE" == "laptop" ]; then
 
-        : "${BOOT:?Please set BOOT (e.g. /dev/disk/by-partuuid/xxx)}"
-        echo "BOOT=$BOOT"
-        : "${SWAP:?Please set SWAP (e.g. /dev/disk/by-partuuid/xxx)}"
-        echo "SWAP=$SWAP"
-        : "${ROOT:?Please set ROOT (e.g. /dev/disk/by-partuuid/xxx)}"
-        echo "ROOT=$ROOT"
-
         # check environment variables for vars
         if [ -z "$VARS_DEVICE_HOSTNAME" ]; then
             VARS_DEVICE_HOSTNAME=$(uname -n)
@@ -241,14 +234,20 @@ elif [ "$1" == "vars" ]; then
         fi
 
         if [ -z "$VARS_DEVICE_BOOT" ]; then
+            : "${BOOT:?Please set BOOT (e.g. /dev/disk/by-partuuid/xxx)}"
+            echo "BOOT=$BOOT"
             VARS_DEVICE_BOOT="${BOOT##*/}"
         fi
 
         if [ -z "$VARS_DEVICE_SWAP" ]; then
+            : "${SWAP:?Please set SWAP (e.g. /dev/disk/by-partuuid/xxx)}"
+            echo "SWAP=$SWAP"
             VARS_DEVICE_SWAP="${SWAP##*/}"
         fi
 
         if [ -z "$VARS_DEVICE_ROOT" ]; then
+            : "${ROOT:?Please set ROOT (e.g. /dev/disk/by-partuuid/xxx)}"
+            echo "ROOT=$ROOT"
             VARS_DEVICE_ROOT="${ROOT##*/}"
         fi
 
