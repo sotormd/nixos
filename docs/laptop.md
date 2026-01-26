@@ -1000,7 +1000,8 @@ Three web browsers: `brave`, `i2p-browser` and `chromium` are included.
 
 - `brave`: Primary browser
 - `i2p-browser`: Browser for the I2P network
-- `chromium`: Completely sandboxed with Windows 11 user agent
+- `chromium`: Completely sandboxed vanilla chromium browser with Windows 11 user
+  agent
 
 ### Brave
 
@@ -1102,6 +1103,8 @@ Chromium runs in a `--private` firejail, all flags can be seen
 [here](../modules/laptop/chromium/firejail.nix).
 
 Chromium also sets the user agent to show Windows 11.
+
+It is not configured at all, and is mostly vanilla.
 
 ## Other Applications
 
