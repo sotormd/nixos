@@ -4,7 +4,7 @@ let
   package = import ./package.nix { inherit pkgs; };
 in
 {
-  programs.firejail.wrappedBinaries.chromium = {
+  programs.firejail.wrappedBinaries.vanilla-browser = {
     executable = "${package.chromium}/bin/chromium";
     profile = "${pkgs.firejail}/etc/firejail/chromium.profile";
     extraArgs = [
