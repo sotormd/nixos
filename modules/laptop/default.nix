@@ -26,6 +26,9 @@
     # btop system resources monitor
     ./btop
 
+    # chromium
+    ./chromium
+
     # cpu frequency optimizations, power management
     ./cpu
 
