@@ -996,7 +996,11 @@ This prevents aggressive head parking and increases drive longevity.
 
 ## Browsers
 
-Two web browsers, `brave` and `i2p-browser` are included.
+Three web browsers: `brave`, `i2p-browser` and `chromium` are included.
+
+- `brave`: Primary browser
+- `i2p-browser`: Browser for the I2P network
+- `chromium`: Completely sandboxed with Windows 11 user agent
 
 ### Brave
 
@@ -1085,6 +1089,19 @@ The i2p-browser uses the I2P HTTP Proxy from `network.server.i2p.port` in
 The included `i2p-browser` executable is a firejail wrapper which uses
 `--nonewprivs` to mitigate possible SUID vulnerabilities. All flags can be seen
 [here](../modules/laptop/i2p-browser/firejail.nix).
+
+### chromium
+
+Chromium can be launched by executing the firejail wrapper:
+
+```bash
+chromium
+```
+
+Chromium runs in a `--private` firejail, all flags can be seen
+[here](../modules/laptop/chromium/firejail.nix).
+
+Chromium also sets the user agent to show Windows 11.
 
 ## Other Applications
 
