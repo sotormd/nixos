@@ -996,11 +996,11 @@ This prevents aggressive head parking and increases drive longevity.
 
 ## Browsers
 
-Three web browsers: `brave`, `i2p-browser` and `chromium` are included.
+Three web browsers: `brave`, `i2p-browser` and `vanilla-browser` are included.
 
 - `brave`: Primary browser
 - `i2p-browser`: Browser for the I2P network
-- `chromium`: Completely sandboxed vanilla chromium browser with Windows 11 user
+- `vanilla-browser`: Completely sandboxed vanilla chromium browser with Windows 11 user
   agent
 
 ### Brave
@@ -1091,12 +1091,12 @@ The included `i2p-browser` executable is a firejail wrapper which uses
 `--nonewprivs` to mitigate possible SUID vulnerabilities. All flags can be seen
 [here](../modules/laptop/i2p-browser/firejail.nix).
 
-### chromium
+### vanilla-browser
 
-Chromium can be launched by executing the firejail wrapper:
+`vanilla-browser` can be launched by executing the firejail wrapper:
 
 ```bash
-chromium
+vanilla-browser
 ```
 
 Chromium runs in a `--private` firejail, all flags can be seen
