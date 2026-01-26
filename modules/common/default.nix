@@ -13,9 +13,6 @@
     # bootloader, kernel parameters, sysctl options
     ./boot
 
-    # clam av
-    #    ./clamav
-
     # timezone, locales, keyboard layout
     ./internationalization
 
