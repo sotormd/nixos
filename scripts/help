@@ -16,10 +16,12 @@ red=$'\e[31m'
 white=$'\e[97m'
 
 cat <<EOF
+${bold}${blue}==================${reset}
 ${bold}${blue}NixOS Flake Helper${reset}
-==================
+${bold}${blue}==================${reset}
 
-${bold}${underline}Usage${reset}
+${bold}${underline}USAGE${reset}
+
   ${green}nixos${reset} [${cyan}command${reset}] [${yellow}args${reset}]
 
 ${dim}When run with no command, equivalent to:${reset}
@@ -29,7 +31,7 @@ ${dim}When run with a command not mentioned below,
 the command is dispatched to \$NIXOS_DIR.${reset}
   ${magenta}\$ nixos vi modules/common/firewall.nix${reset}
 
-${bold}${underline}Commands${reset}
+${bold}${underline}COMMANDS${reset}
 
 ${bold}${yellow}  test${reset}
   ${dim}roles:${reset} laptop, server
