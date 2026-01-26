@@ -33,6 +33,13 @@ Changes are lost on reboot.
 Roles: laptop, server
 
 .TP
+.B boot
+Create a boot entry but don't activate the new configuration,
+also format the flake.
+.br
+Roles: laptop, server
+
+.TP
 .B switch
 Activate the new configuration and create a boot entry,
 also format the flake.
@@ -107,6 +114,11 @@ Roles: laptop only
 Display a brief usage summary and exit.
 .br
 Roles: laptop, server
+
+.TP
+.B init
+Bootstrap this flake.
+See documentation for more information
 
 .SH DISPATCH BEHAVIOR
 If a command does not match one of the built-in subcommands,

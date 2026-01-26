@@ -41,7 +41,7 @@ else
 	cmd=("$@")
 fi
 
-if [[ "$1" =~ ^(commit|format|init|perms|purge|switch|test|update)$ ]]; then
+if [[ "$1" =~ ^(boot|commit|format|init|perms|purge|switch|test|update)$ ]]; then
     # ensure there is only one instance running
     LOCKFILE="$XDG_RUNTIME_DIR/nixos-script.lock"
 

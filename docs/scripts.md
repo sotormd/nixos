@@ -10,16 +10,17 @@ role-specific bootstrap documentation.
 1. [Overview](#overview)
 2. [Updating the Lockfile](#updating-the-lockfile)
 3. [Testing a New Configuration](#testing-a-new-configuration)
-4. [Switching to a New Configuration](#switching-to-a-new-configuration)
-5. [Committing a New Configuration](#committing-a-new-configuration)
-6. [Format the Flake](#format-the-flake)
-7. [Fix Flake Permissions](#fix-flake-permissions)
-8. [Garbage Collect](#garbage-collect)
-9. [Repair the Nix Store](#repair-the-nix-store)
-10. [Push Local Changes to server](#push-local-changes-to-server)
-11. [Edit variables / secrets](#edit-variables--secrets)
-12. [Miscellaneous](#miscellaneous)
-13. [Implementation Details](#implementation-details)
+4. [Make a New Configuration the Boot Default](#make-a-new-configuration-the-boot-default)
+5. [Switching to a New Configuration](#switching-to-a-new-configuration)
+6. [Committing a New Configuration](#committing-a-new-configuration)
+7. [Format the Flake](#format-the-flake)
+8. [Fix Flake Permissions](#fix-flake-permissions)
+9. [Garbage Collect](#garbage-collect)
+10. [Repair the Nix Store](#repair-the-nix-store)
+11. [Push Local Changes to server](#push-local-changes-to-server)
+12. [Edit variables / secrets](#edit-variables--secrets)
+13. [Miscellaneous](#miscellaneous)
+14. [Implementation Details](#implementation-details)
 
 # Overview
 
@@ -78,19 +79,20 @@ nixos switch
 
 Brief overview of commands:
 
-| Command                 | `laptop` | `server` | Description                                                                                                   |
-| ----------------------- | -------- | -------- | ------------------------------------------------------------------------------------------------------------- |
-| `test`                  | ✔        | ✔        | <br>`nixos test` <br>Test the current configuration. Does **not** create a boot entry.                        |
-| `switch`                | ✔        | ✔        | <br>`nixos switch` <br>Switch to the current configuration. Creates a boot entry.                             |
-| `commit [-m <message>]` | ✔        | ✘        | <br>`nixos commit` <br>Switch to and commit the current configuration. Creates a boot entry and a Git commit. |
-| `update [inputs...]`    | ✔        | ✔        | <br>`nixos update` <br>Update flake inputs in `flake.lock`.                                                   |
-| `format`                | ✔        | ✔        | <br>`nixos format` <br>Format the flake using nixfmt.                                                         |
-| `perms`                 | ✔        | ✔        | <br>`nixos perms` <br>Apply correct permissions to all files in the flake.                                    |
-| `purge`                 | ✔        | ✔        | <br>`nixos purge` <br>Garbage collect old generations.                                                        |
-| `repair`                | ✔        | ✔        | <br>`nixos repair` <br>Attempt to repair the nix store.                                                       |
-| `edit <vars\|sops>`     | ✔        | ✔        | <br>`nixos edit vars` <br>Edit variables file. <br><br>`nixos edit sops` <br>Edit sops-nix secrets.           |
-| `serverpush <path>`     | ✔        | ✘        | <br>`nixos serverpush /nixos` <br>Push the flake to `server:/nixos`.                                          |
-| `help`                  | ✔        | ✔        | <br>`nixos help` <br>Show this message and exit.                                                              |
+| Command                 | `laptop` | `server` | Description                                                                                                                                   |
+| ----------------------- | -------- | -------- | --------------------------------------------------------------------------------------------------------------------------------------------- |
+| `test`                  | ✔        | ✔        | <br>`nixos test` <br>Test the current configuration. Does **not** create a boot entry but activates the configuration.                        |
+| `boot`                  | ✔        | ✔        | <br>`nixos boot` <br>Make the current configuration the boot default. Creates a boot entry but doesn't activate the configuration.            |
+| `switch`                | ✔        | ✔        | <br>`nixos switch` <br>Switch to the current configuration. Creates a boot entry and activates the configuration.                             |
+| `commit [-m <message>]` | ✔        | ✘        | <br>`nixos commit` <br>Switch to and commit the current configuration. Creates a boot entry and a Git commit and activates the configuration. |
+| `update [inputs...]`    | ✔        | ✔        | <br>`nixos update` <br>Update flake inputs in `flake.lock`.                                                                                   |
+| `format`                | ✔        | ✔        | <br>`nixos format` <br>Format the flake using nixfmt.                                                                                         |
+| `perms`                 | ✔        | ✔        | <br>`nixos perms` <br>Apply correct permissions to all files in the flake.                                                                    |
+| `purge`                 | ✔        | ✔        | <br>`nixos purge` <br>Garbage collect old generations.                                                                                        |
+| `repair`                | ✔        | ✔        | <br>`nixos repair` <br>Attempt to repair the nix store.                                                                                       |
+| `edit <vars\|sops>`     | ✔        | ✔        | <br>`nixos edit vars` <br>Edit variables file. <br><br>`nixos edit sops` <br>Edit sops-nix secrets.                                           |
+| `serverpush <path>`     | ✔        | ✘        | <br>`nixos serverpush /nixos` <br>Push the flake to `server:/nixos`.                                                                          |
+| `help`                  | ✔        | ✔        | <br>`nixos help` <br>Show this message and exit.                                                                                              |
 
 # Updating the Lockfile
 
@@ -136,6 +138,24 @@ To skip the confirmation:
 
 ```bash
 yes | nixos test
+```
+
+# Make a New Configuration the Boot Default
+
+- Does **not** activate the new configuration
+- Creates a boot entry
+- Formats the flake
+- Does **not** fix flake permissions
+- Does **not** create a git commit
+
+```bash
+nixos boot
+```
+
+To skip the confirmation:
+
+```bash
+yes | nixos boot
 ```
 
 # Switching to a New Configuration
@@ -190,6 +210,7 @@ Comparison among `test`, `switch` and `commit`:
 | Command  | Activate new configuration | Create boot entry | Format flake | Fix perms | Create git commit |
 | -------- | -------------------------- | ----------------- | ------------ | --------- | ----------------- |
 | `test`   | Yes                        | No                | No           | No        | No                |
+| `boot`   | No                         | Yes               | Yes          | No        | No                |
 | `switch` | Yes                        | Yes               | Yes          | No        | No                |
 | `commit` | Yes                        | Yes               | Yes          | Yes       | Yes               |
 
@@ -331,7 +352,8 @@ This allows using using `nixos(1)` without installing every individual script as
 a package.
 
 The included commands are loaded into the wrapper package's environment
-[here](../modules/common/scripts/bin.nix).
+[here](../modules/common/scripts/bin.nix). This is possible because the wrapper
+respects the `$NIXOS_SCRIPTS_DIR` environment variable.
 
 `nixos(1)` runs all commands in the `$NIXOS_DIR`, like so:
 
@@ -376,6 +398,7 @@ and valid.
 following commands are used:
 
 - test
+- boot
 - switch
 - commit
 - update

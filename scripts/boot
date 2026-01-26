@@ -1,40 +1,20 @@
 #!/usr/bin/env bash
 
-set -e
-
-if [ "$NIXOS_ROLE" != "laptop" ]; then
-    echo "Error: unexpected role $NIXOS_ROLE" >&2
-    exit 1
-fi
-
 if [ -z "$NIXOS_SCRIPTS_DIR" ]; then
     SCRIPTS="$NIXOS_DIR/scripts"
 else
     SCRIPTS="$NIXOS_SCRIPTS_DIR"
 fi
 
-message=""
-
-while [[ "$#" -gt 0 ]]; do
-    case "$1" in
-        -m|--message)
-            shift
-            message="$1"
-            ;;
-        *)
-            echo "Error: unknown option: $1" >&2
-            exit 1
-            ;;
-    esac
-    shift
-done
+set -e
 
 (
     cd $NIXOS_DIR
     $SCRIPTS/format
-    $SCRIPTS/perms
     git add .
-    GIT_PAGER=cat git diff HEAD -- ':!vars/vars.nix' ':!vars/secrets.yaml' ':!.sops.yaml'
+    if [ "$NIXOS_ROLE" == "laptop" ]; then
+        GIT_PAGER=cat git diff HEAD -- ':!vars/vars.nix' ':!vars/secrets.yaml' ':!.sops.yaml'
+    fi
 
     echo
     vars_hash=$(sha256sum "$NIXOS_DIR/vars/vars.nix" | awk '{print $1}')
@@ -54,17 +34,11 @@ done
 
     if [[ $confirm =~ ^[Yy]$ ]]; then
 
-        sudo nixos-rebuild switch --flake .#$NIXOS_ROLE
+        sudo nixos-rebuild boot --flake .#$NIXOS_ROLE
 
         git reset -- vars/vars.nix vars/secrets.yaml .sops.yaml
 
-        if [[ -n "$message" ]]; then
-            git commit -m "$message" --allow-empty-message
-        else
-            git commit --allow-empty-message
-        fi
-
 	else
-        echo "cancelled"
+            echo "cancelled"
 	fi
 )

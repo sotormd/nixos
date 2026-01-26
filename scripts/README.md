@@ -4,6 +4,7 @@ See [scripts.md](/docs/scripts.md).
 
 ```console
 scripts
+├── boot
 ├── commit
 ├── edit
 ├── format
