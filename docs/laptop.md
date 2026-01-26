@@ -998,10 +998,11 @@ This prevents aggressive head parking and increases drive longevity.
 
 Three web browsers: `brave`, `i2p-browser` and `vanilla-browser` are included.
 
-- `brave`: Primary browser
-- `i2p-browser`: Browser for the I2P network
-- `vanilla-browser`: Completely sandboxed vanilla chromium browser with Windows 11 user
-  agent
+| Name              | Browser  | Description                                          |
+| ----------------- | -------- | ---------------------------------------------------- |
+| `brave`           | Brave    | Primary, hardened browser                            |
+| `i2p-browser`     | Firefox  | Browser for the I2P network                          |
+| `vanilla-browser` | Chromium | Sandboxed vanilla browser with Windows 11 user agent |
 
 ### Brave
 
@@ -1099,12 +1100,12 @@ The included `i2p-browser` executable is a firejail wrapper which uses
 vanilla-browser
 ```
 
-Chromium runs in a `--private` firejail, all flags can be seen
-[here](../modules/laptop/chromium/firejail.nix).
+`vanilla-browser` runs in a `--private` firejail, all flags can be seen
+[here](../modules/laptop/vanilla-browser/firejail.nix).
 
-Chromium also sets the user agent to show Windows 11.
+`vanilla-browser` also sets the user agent to show Windows 11.
 
-It is not configured at all, and is mostly vanilla.
+It is not configured at all, and is mostly vanilla Chromium.
 
 ## Other Applications
 

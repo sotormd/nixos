@@ -26,9 +26,6 @@
     # btop system resources monitor
     ./btop
 
-    # chromium
-    ./chromium
-
     # cpu frequency optimizations, power management
     ./cpu
 
@@ -94,6 +91,9 @@
 
     # users
     ./users
+
+    # sandboxed browser with windows user agent
+    ./vanilla-browser
 
     # virtualisation with qemu, distrobox, etc
     ./virtualization
