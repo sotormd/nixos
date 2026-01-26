@@ -40,6 +40,13 @@ ${bold}${yellow}  test${reset}
     Test the current configuration.
     Does not create a boot entry.
 
+${bold}${yellow}  boot${reset}
+  ${dim}roles:${reset} laptop, server
+
+    ${green}\$ nixos boot${reset}
+    Make current configuration the boot default.
+    Does not activate the current configuration.
+
 ${bold}${yellow}  switch${reset}
   ${dim}roles:${reset} laptop, server
 

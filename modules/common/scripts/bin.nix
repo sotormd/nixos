@@ -3,6 +3,7 @@
 let
   scriptNames = [
     "test"
+    "boot"
     "switch"
     "commit"
     "update"
