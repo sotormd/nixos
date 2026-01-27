@@ -50,6 +50,7 @@ let
       services.flatpak.enable = true;
 
       systemd.services.flatpak-repo = {
+        enable = false;
         wantedBy = [ "multi-user.target" ];
         path = [ pkgs.flatpak ];
         script = ''
