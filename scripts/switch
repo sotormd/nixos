@@ -17,16 +17,7 @@ set -e
     fi
 
     echo
-    vars_hash=$(sha256sum "$NIXOS_DIR/vars/vars.nix" | awk '{print $1}')
-    vars_r=$((16#${vars_hash:0:2}))
-    vars_g=$((16#${vars_hash:2:2}))
-    vars_b=$((16#${vars_hash:4:2}))
-    sops_hash=$(sha256sum "$NIXOS_DIR/vars/secrets.yaml" | awk '{print $1}')
-    sops_r=$((16#${sops_hash:0:2}))
-    sops_g=$((16#${sops_hash:2:2}))
-    sops_b=$((16#${sops_hash:4:2}))
-    echo -e "\033[1m\033[38;2;${vars_r};${vars_g};${vars_b}mvars:\033[0m $vars_hash $(stat -c %y "$NIXOS_DIR/vars/vars.nix")"
-    echo -e "\033[1m\033[38;2;${sops_r};${sops_g};${sops_b}msops:\033[0m $sops_hash $(stat -c %y "$NIXOS_DIR/vars/secrets.yaml")"
+    $SCRIPTS/digest
 
     read -p "continue? [Y/n]: " confirm
 

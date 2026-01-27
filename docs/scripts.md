@@ -13,14 +13,15 @@ role-specific bootstrap documentation.
 4. [Make a New Configuration the Boot Default](#make-a-new-configuration-the-boot-default)
 5. [Switching to a New Configuration](#switching-to-a-new-configuration)
 6. [Committing a New Configuration](#committing-a-new-configuration)
-7. [Format the Flake](#format-the-flake)
-8. [Fix Flake Permissions](#fix-flake-permissions)
-9. [Garbage Collect](#garbage-collect)
-10. [Repair the Nix Store](#repair-the-nix-store)
-11. [Push Local Changes to server](#push-local-changes-to-server)
-12. [Edit variables / secrets](#edit-variables--secrets)
-13. [Miscellaneous](#miscellaneous)
-14. [Implementation Details](#implementation-details)
+7. [Get Checksum of Variables and Secrets](#get-checksum-of-variables-and-secrets)
+8. [Format the Flake](#format-the-flake)
+9. [Fix Flake Permissions](#fix-flake-permissions)
+10. [Garbage Collect](#garbage-collect)
+11. [Repair the Nix Store](#repair-the-nix-store)
+12. [Push Local Changes to server](#push-local-changes-to-server)
+13. [Edit variables / secrets](#edit-variables--secrets)
+14. [Miscellaneous](#miscellaneous)
+15. [Implementation Details](#implementation-details)
 
 # Overview
 
@@ -86,6 +87,7 @@ Brief overview of commands:
 | `switch`                | ✔        | ✔        | <br>`nixos switch` <br>Switch to the current configuration. Creates a boot entry and activates the configuration.                             |
 | `commit [-m <message>]` | ✔        | ✘        | <br>`nixos commit` <br>Switch to and commit the current configuration. Creates a boot entry and a Git commit and activates the configuration. |
 | `update [inputs...]`    | ✔        | ✔        | <br>`nixos update` <br>Update flake inputs in `flake.lock`.                                                                                   |
+| `digest`                | ✔        | ✔        | <br>`nixos digest` <br>Get checksum of variables and secrets.                                                                                 |
 | `format`                | ✔        | ✔        | <br>`nixos format` <br>Format the flake using nixfmt.                                                                                         |
 | `perms`                 | ✔        | ✔        | <br>`nixos perms` <br>Apply correct permissions to all files in the flake.                                                                    |
 | `purge`                 | ✔        | ✔        | <br>`nixos purge` <br>Garbage collect old generations.                                                                                        |
@@ -140,6 +142,8 @@ To skip the confirmation:
 yes | nixos test
 ```
 
+It shows a full `git diff` and `digest` of the variables and secrets.
+
 # Make a New Configuration the Boot Default
 
 - Does **not** activate the new configuration
@@ -158,6 +162,8 @@ To skip the confirmation:
 yes | nixos boot
 ```
 
+It shows a full `git diff` and `digest` of the variables and secrets.
+
 # Switching to a New Configuration
 
 - Activates the new configuration
@@ -175,6 +181,8 @@ To skip the confirmation:
 ```bash
 yes | nixos switch
 ```
+
+It shows a full `git diff` and `digest` of the variables and secrets.
 
 # Committing a New Configuration
 
@@ -205,6 +213,8 @@ nixos commit -m "docs: update scripts.md"
 If a message is not mentioned with the `-m` flag, the `$EDITOR` will be opened
 to ask the user for a git commit message.
 
+It shows a full `git diff` and `digest` of the variables and secrets.
+
 Comparison among `test`, `boot`, `switch` and `commit`:
 
 | Command  | Activate new configuration | Create boot entry | Format flake | Fix perms | Create git commit |
@@ -213,6 +223,24 @@ Comparison among `test`, `boot`, `switch` and `commit`:
 | `boot`   | No                         | Yes               | Yes          | No        | No                |
 | `switch` | Yes                        | Yes               | Yes          | No        | No                |
 | `commit` | Yes                        | Yes               | Yes          | Yes       | Yes               |
+
+# Get Checksum of Variables and Secrets
+
+```bash
+nixos digest
+```
+
+This shows the `sha256sum` of `vars/vars.nix` and `vars/secrets.yaml` along with
+the last modified date and time.
+
+The indicator is also colored with a color derived from the hash, for quick
+verification.
+
+The output of `digest` is also shown before every `test`, `boot`, `switch` and
+`commit` to verify the status of the variables and secrets.
+
+This is important because while those scripts show a full `git diff` of the
+flake, they leave out any changes in the variables and secrets.
 
 # Format the Flake
 
