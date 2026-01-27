@@ -2,9 +2,9 @@
   <h1 align="center">NixOS Configuration Flake</h1>
   <p align="center" style="font-size: 0.85rem;">
     <strong>
-      <a href="#setup--usage">Setup & Usage</a> |
-      <a href="#images">Images</a> |
-      <a href="#nixos-flake-helper">CLI</a> |
+      <a href="#setup--usage">Setup & Usage</a> ||
+      <a href="#images">Images</a> ||
+      <a href="#nixos-flake-helper">CLI</a> ||
       <a href="#features--tooling">Features & Tooling</a>
     </strong>
   </p>
