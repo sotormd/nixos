@@ -47,10 +47,23 @@ let
         pkgs.librewolf
       ];
 
+      services.flatpak.enable = true;
+
+      systemd.services.flatpak-repo = {
+        wantedBy = [ "multi-user.target" ];
+        path = [ pkgs.flatpak ];
+        script = ''
+          flatpak remote-add --if-not-exists flathub https://dl.flathub.org/repo/flathub.flatpakrepo
+        '';
+      };
+
       system.stateVersion = "24.05";
     };
   };
 in
 {
-  specialisation = lib.genAttrs desktops mkSpec;
+  # enable nomad specialisations only if impermanence is enabled
+  config = lib.mkIf config.vars.device.impermanence.enable {
+    specialisation = lib.genAttrs desktops mkSpec;
+  };
 }
