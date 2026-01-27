@@ -1,6 +1,13 @@
 <p align="center" style="display: flex; align-items: center; justify-content: center; gap: 10px;">
   <h1 align="center">NixOS Configuration Flake</h1>
-  <h6 align="center"><a href="#setup--usage">Setup & Usage<a>  |  <a href="#images">Images</a>  |  <a href="#nixos-flake-helper">CLI</a>  |  <a href="#features--tooling">Features & Tooling</a></h6>
+  <p align="center" style="font-size: 0.85rem;">
+    <strong>
+      <a href="#setup--usage">Setup & Usage</a> |
+      <a href="#images">Images</a> |
+      <a href="#nixos-flake-helper">CLI</a> |
+      <a href="#features--tooling">Features & Tooling</a>
+    </strong>
+  </p>
 </p>
 
 ![nixos](./docs/screenshots/nord.gif)
