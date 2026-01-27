@@ -397,10 +397,10 @@ Use `device.luks` to define encrypted volumes that unlock using a keyfile.
 
 Each entry requires:
 
-- `uuid` - LUKS container UUID (`blkid` output)
+- `uuid` - LUKS container UUID (from `blkid` output)
 - `keyfile` - path to keyfile
 - `mount` - where the decrypted mapper device should mount
-- `fs` - filesystem inside the LUKS container (`ext4`, `xfs`, etc.)
+- `fs` - filesystem inside the LUKS container (`ext4`, `xfs`)
 
 #### Example
 
@@ -440,6 +440,9 @@ For each entry:
      fsType = "<fs>";
    };
    ```
+
+> Currently only `ext4` and `xfs` block devices are supported, use
+> `device.mount` options for anything else.
 
 ### hdparm Configuration (device.hdparm)
 
