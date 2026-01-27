@@ -7,6 +7,7 @@ let
     "switch"
     "commit"
     "update"
+    "digest"
     "purge"
     "edit"
     "perms"

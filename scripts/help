@@ -69,6 +69,12 @@ ${bold}${yellow}  update [inputs...]${reset}
     Equivalent to:
       ${magenta}\$ nixos nix flake update [inputs...]${reset}
 
+${bold}${yellow}  digest${reset}
+  ${dim}roles:${reset} laptop, server
+
+    ${green}\$ nixos digest${reset}
+    Get checksum of variables and secrets.
+
 ${bold}${yellow}  format${reset}
   ${dim}roles:${reset} laptop, server
 

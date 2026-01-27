@@ -6,6 +6,7 @@ See [scripts.md](/docs/scripts.md).
 scripts
 ├── boot
 ├── commit
+├── digest
 ├── edit
 ├── format
 ├── help
