@@ -1201,9 +1201,13 @@ Notable changes from default `laptop` config:
 - unbound from `server` replaced by cloudflare DNS
 - `kernel.unprivileged_userns_clone` set to 1 by default
 - librewolf browser is installed
+- flatpak is enabled and apps can be installed through GNOME software
 
 Nomad Mode can be used by booting into the `gnome` specialisation from the boot
 menu.
+
+> Nomad Mode is available only if impermanence is enabled. This ensures that
+> activity under Nomad Mode does not affect the standard system.
 
 > **Does this clutter my device?** No, all GNOME-specific things (except some
 > logs) are thrown out by impermanence.
