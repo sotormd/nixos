@@ -908,10 +908,10 @@ Use `device.luks` to define encrypted volumes that unlock using a keyfile.
 
 Each entry requires:
 
-- `uuid` - LUKS container UUID (`blkid` output)
+- `uuid` - LUKS container UUID (from `blkid` output)
 - `keyfile` - path to keyfile
 - `mount` - where the decrypted mapper device should mount
-- `fs` - filesystem inside the LUKS container (`ext4`, `xfs`, etc.)
+- `fs` - filesystem inside the LUKS container (`ext4`, `xfs`)
 
 #### Example
 
@@ -951,6 +951,9 @@ For each entry:
      fsType = "<fs>";
    };
    ```
+
+> Currently only `ext4` and `xfs` block devices are supported, use the
+> `device.mount` options for anything else.
 
 ### hdparm Configuration (device.hdparm)
 
@@ -1002,7 +1005,7 @@ Three web browsers: `brave`, `i2p-browser` and `vanilla-browser` are included.
 | ----------------- | -------- | ---------------------------------------------------- |
 | `brave`           | Brave    | Primary, hardened browser                            |
 | `i2p-browser`     | Firefox  | Browser for the I2P network                          |
-| `vanilla-browser` | Chromium | Sandboxed vanilla browser with Windows 11 user agent |
+| `vanilla-browser` | Chromium | Ephemeral vanilla browser with Windows 11 user agent |
 
 ### Brave
 
@@ -1094,16 +1097,17 @@ The included `i2p-browser` executable is a firejail wrapper which uses
 
 ### vanilla-browser
 
-`vanilla-browser` can be launched by executing the firejail wrapper:
+The vanilla-browser can be launched by executing the firejail wrapper:
 
 ```bash
 vanilla-browser
 ```
 
-`vanilla-browser` runs in a `--private` firejail, all flags can be seen
-[here](../modules/laptop/vanilla-browser/firejail.nix).
+The vanilla-browser runs in a `--private` firejail, all flags can be seen
+[here](../modules/laptop/vanilla-browser/firejail.nix). This means that it can't
+write to the user's home directory like Brave or i2p-browser.
 
-`vanilla-browser` also sets the user agent to show Windows 11.
+The vanilla-browser also sets the user agent to show Windows 11.
 
 It is not configured at all, and is mostly vanilla Chromium.
 
@@ -1112,6 +1116,8 @@ It is not configured at all, and is mostly vanilla Chromium.
 ### foot
 
 Terminal emulator for wayland.
+
+Launch using `$mod+Return`
 
 ### Thunar
 
