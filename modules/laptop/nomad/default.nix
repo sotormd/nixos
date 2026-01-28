@@ -50,8 +50,10 @@ let
       services.flatpak.enable = true;
 
       systemd.services.flatpak-repo = {
-        enable = false;
+        enable = true;
         wantedBy = [ "multi-user.target" ];
+        after = [ "network-online.target" ];
+        wants = [ "network-online.target" ];
         path = [ pkgs.flatpak ];
         script = ''
           flatpak remote-add --if-not-exists flathub https://dl.flathub.org/repo/flathub.flatpakrepo
