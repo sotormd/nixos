@@ -1201,8 +1201,7 @@ Notable changes from default `laptop` config:
 - unbound from `server` replaced by cloudflare DNS
 - `kernel.unprivileged_userns_clone` set to 1 by default
 - librewolf browser is installed
-- flatpak is enabled
-- flathub can be added by starting `flatpak-repo.service`
+- flatpak is enabled, and flathub is added as a repo
 - apps can be installed from GNOME software
 
 Nomad Mode can be used by booting into the `gnome` specialisation from the boot
