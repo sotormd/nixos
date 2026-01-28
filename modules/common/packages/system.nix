@@ -120,5 +120,11 @@
     # show type of files
     file
 
+    # lspci
+    pciutils
+
+    # lsusb
+    usbutils
+
   ];
 }
