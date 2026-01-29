@@ -28,7 +28,7 @@ Nix-specific features:
 - Package management using [lix](https://lix.systems)
 - Android environment using
   [nix-on-droid](https://github.com/nix-community/nix-on-droid)
-- Flake helper [cli](#nixos-flake-helper)
+- Flake helper [CLI](#nixos-flake-helper)
 - Flake-enabled installation [images](#images)
 
 Desktop features:
@@ -40,9 +40,9 @@ Desktop features:
 - [Eww](https://github.com/elkowar/eww) widgets for bottom dock, dashboard,
   calendar, etc
 - [Rofi](https://github.com/davatorium/rofi) menu for launchers, clipboard
-  history, workspace switchers, etc.
+  history, workspace switchers, etc
 - [Brave](https://github.com/brave/brave-browser/) browser with tight policies
-  to ensure security and protect user privacy.
+  to ensure security and protect user privacy
 - NVF-powered [neovim](https://github.com/sotormd/neovim) configuration
 - Theming and colors with [colors](https://github.com/sotormd/colors)
 - Declarative browser homepage with
@@ -53,6 +53,7 @@ Desktop features:
   [xkcd-wall](https://github.com/sotormd/xkcd-wall)
 - Automatic behavior changes when outside trusted & reliable networks with
   [Nomad Mode](./docs/laptop.md#nomad-mode)
+- Minimal X environment with [X Mode](./docs/laptop.md#x-mode)
 
 Services features:
 

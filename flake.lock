@@ -212,11 +212,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1766179550,
-        "narHash": "sha256-hC4B/vZxcinBI8Yq5gXcadXFtwSZ0wiO56VogeChdAI=",
+        "lastModified": 1769370427,
+        "narHash": "sha256-NEBWlyBQllOI5L2dneXFxHYKM7kB7uofyJIIzGYRdVI=",
         "owner": "StevenBlack",
         "repo": "hosts",
-        "rev": "cfd15cacfd73f2b29ee366da74d8ec5916dd143c",
+        "rev": "6897cff7b21b609800ddd61abe109587079a4ca1",
         "type": "github"
       },
       "original": {
@@ -245,6 +245,26 @@
       "original": {
         "owner": "nix-community",
         "repo": "lanzaboote",
+        "type": "github"
+      }
+    },
+    "minimal-openbox": {
+      "inputs": {
+        "nixpkgs": [
+          "nixpkgs"
+        ]
+      },
+      "locked": {
+        "lastModified": 1769683787,
+        "narHash": "sha256-hAxDHkKWKGb/5Cv1YrXnUjoNSMtzJG5gR0PTSMeGmwY=",
+        "owner": "sotormd",
+        "repo": "minimal-openbox",
+        "rev": "9174f00ab3906e16b3779991df0997c89b395e49",
+        "type": "github"
+      },
+      "original": {
+        "owner": "sotormd",
+        "repo": "minimal-openbox",
         "type": "github"
       }
     },
@@ -559,6 +579,7 @@
         "homepage": "homepage",
         "hosts": "hosts",
         "lanzaboote": "lanzaboote",
+        "minimal-openbox": "minimal-openbox",
         "neovim": "neovim",
         "nix-on-droid": "nix-on-droid",
         "nixpkgs": "nixpkgs_2",
@@ -701,11 +722,11 @@
     },
     "wallpapers": {
       "locked": {
-        "lastModified": 1768151125,
-        "narHash": "sha256-fs/pd2SsBzUwHeOcfEr8pyf623LeIY72HEvdWoAEIu0=",
+        "lastModified": 1768152712,
+        "narHash": "sha256-WG8oEiWm0ccFDA38vYM1rqQU9OruguihjoIt5atzsJs=",
         "owner": "sotormd",
         "repo": "wallpapers",
-        "rev": "38aa36ad01737d7dae12f887a14848f5a7dae8ea",
+        "rev": "29029b836ea2e2564fac73bb94e79d87bc9c8edf",
         "type": "github"
       },
       "original": {
@@ -724,11 +745,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1766056913,
-        "narHash": "sha256-tKdvO57PSdE+olSiu1E74zOSziZ81v+/OCGeLyUAg3E=",
+        "lastModified": 1769680376,
+        "narHash": "sha256-iJPpbA2YvQpQlJRaJc87Eye7QPhnNTpL10wDZQiZf1Q=",
         "owner": "sotormd",
         "repo": "xkcd-wall",
-        "rev": "4a8888dfb27a45bac247284c2fed9d4cbcbaea59",
+        "rev": "a8aaed6dd81809da9d901b1d5caf83b44ebd1ee6",
         "type": "github"
       },
       "original": {

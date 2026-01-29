@@ -22,6 +22,7 @@ Personal laptop configuration.
 5. [Other Applications](#other-applications)
 6. [Virtualisation & Containers](#virtualisation--containers)
 7. [Nomad Mode](#nomad-mode)
+8. [X Mode](#x-mode)
 
 [Security & Privacy](#security--privacy)
 
@@ -1191,7 +1192,7 @@ sudo zfs rollback rpool/vm-example-disk@snap1
 
 ## Nomad Mode
 
-Nomad Mode refers to the specialisation `gnome`, which sets up an environment
+Nomad Mode refers to the specialisation `nomad`, which sets up an environment
 ideal for usage away from home, in unreliable conditions.
 
 Notable changes from default `laptop` config:
@@ -1204,7 +1205,7 @@ Notable changes from default `laptop` config:
 - flatpak is enabled, and flathub is added as a repo
 - apps can be installed from GNOME software
 
-Nomad Mode can be used by booting into the `gnome` specialisation from the boot
+Nomad Mode can be used by booting into the `nomad` specialisation from the boot
 menu.
 
 > Nomad Mode is available only if impermanence is enabled. This ensures that
@@ -1217,6 +1218,30 @@ The base configuration for nomads is [here](../modules/laptop/nomad/default.nix)
 and that for the GNOME desktop is [here](../modules/laptop/nomad/gnome.nix).
 
 You can not use the `nixos` script from within the nomad specialisation.
+
+## X Mode
+
+X Mode refers to the specialisation `x`, which sets up a minimal openbox
+environment.
+
+Notable changes from default `laptop` config:
+
+- sway window manager replaced by minimal openbox environment
+- xterm, w3a is installed
+
+X Mode can be used by booting into the `x` specialisation form the boot menu and
+logging into `tty1`, which calls `startx`.
+
+> X Mode is available only if impermanence is enabled. This ensures that
+> activity under X Mode does not affect the standard system.
+
+> **Does this clutter my device?** No, all openbox-specific things (except some
+> logs) are thrown out by impermanence.
+
+The configuration for this environment is from
+[minimal-openbox](https://github.com/sotormd/minimal-openbox).
+
+You can not use the `nixos` script from within the `x` specialisation.
 
 # Security & Privacy
 
