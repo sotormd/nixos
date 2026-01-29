@@ -1,3 +1,5 @@
+{ lib, ... }:
+
 {
   # cool bash prompt
   # looks like this:
@@ -5,7 +7,7 @@
   # nixos ~ λ
   #
   # but in green
-  programs.bash.promptInit = ''
+  programs.bash.promptInit = lib.mkDefault ''
     # Only set prompt if terminal supports it
     if [ "$TERM" != "dumb" ] || [ -n "$INSIDE_EMACS" ]; then
       # Set color based on UID (root = red, others = green)
