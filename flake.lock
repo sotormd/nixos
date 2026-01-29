@@ -255,11 +255,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1769685565,
-        "narHash": "sha256-BrIj/FfB8NvSoVN3pWkPNNma1l43jau++kqFw7S3Yw8=",
+        "lastModified": 1769691633,
+        "narHash": "sha256-bzhnU7GrsgSuvJ+9YBto4N8EYpVbLMBORWICcHfP5yo=",
         "owner": "sotormd",
         "repo": "minimal-openbox",
-        "rev": "e90f0c95438f9b878da5641e2fb0bc2e7255f3ab",
+        "rev": "deb86c5c91a37240b742e3d84877019228c53edf",
         "type": "github"
       },
       "original": {
