@@ -27,7 +27,7 @@ Bootstrap process for the `server` role.
 ## Obtaining a NixOS Image
 
 1. Get a NixOS sd-card image that has experimental features `flakes` and
-   `nix-command` enabled.
+   `nix-command` enabled, as well as all required packages for the init scripts.
 
    One such image is included in this flake. To use the included image:
 
