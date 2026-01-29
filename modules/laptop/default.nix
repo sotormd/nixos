@@ -53,6 +53,9 @@
     # inkscape vector graphics editor
     ./inkscape
 
+    # nomad mode & x mode
+    ./modes
+
     # mousepad text editor
     ./mousepad
 
@@ -61,9 +64,6 @@
 
     # networking
     ./network
-
-    # nomad mode
-    ./nomad
 
     # packages
     ./packages

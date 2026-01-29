@@ -13,7 +13,7 @@ with lib;
       type = types.enum [
         "laptop"
         "server"
-        "nomad"
+        "laptop-mode"
       ];
       description = "Configuration role for this machine.";
       example = "laptop";

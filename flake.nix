@@ -59,6 +59,11 @@
       url = "github:sotormd/homepage";
       inputs.colors.follows = "colors";
     };
+
+    minimal-openbox = {
+      url = "github:sotormd/minimal-openbox";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
   outputs =
