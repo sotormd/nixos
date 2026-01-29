@@ -47,7 +47,7 @@ Optional:
 ## Obtaining a Live NixOS Image
 
 1. Get a live NixOS image that has experimental features `flakes` and
-   `nix-command` enabled.
+   `nix-command` enabled, as well as all required packages for the init scripts.
 
    Two such images are included in this flake. To use the included GNOME image:
 
