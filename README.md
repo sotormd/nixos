@@ -53,7 +53,6 @@ Desktop features:
   [xkcd-wall](https://github.com/sotormd/xkcd-wall)
 - Automatic behavior changes when outside trusted & reliable networks with
   [Nomad Mode](./docs/laptop.md#nomad-mode)
-- Minimal X environment with [X Mode](./docs/laptop.md#x-mode)
 
 Services features:
 
