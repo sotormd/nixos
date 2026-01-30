@@ -248,26 +248,6 @@
         "type": "github"
       }
     },
-    "minimal-openbox": {
-      "inputs": {
-        "nixpkgs": [
-          "nixpkgs"
-        ]
-      },
-      "locked": {
-        "lastModified": 1769691633,
-        "narHash": "sha256-bzhnU7GrsgSuvJ+9YBto4N8EYpVbLMBORWICcHfP5yo=",
-        "owner": "sotormd",
-        "repo": "minimal-openbox",
-        "rev": "deb86c5c91a37240b742e3d84877019228c53edf",
-        "type": "github"
-      },
-      "original": {
-        "owner": "sotormd",
-        "repo": "minimal-openbox",
-        "type": "github"
-      }
-    },
     "mnw": {
       "locked": {
         "lastModified": 1758834834,
@@ -579,7 +559,6 @@
         "homepage": "homepage",
         "hosts": "hosts",
         "lanzaboote": "lanzaboote",
-        "minimal-openbox": "minimal-openbox",
         "neovim": "neovim",
         "nix-on-droid": "nix-on-droid",
         "nixpkgs": "nixpkgs_2",
