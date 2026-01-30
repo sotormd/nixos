@@ -1214,8 +1214,7 @@ menu.
 > **Does this clutter my device?** No, all GNOME-specific things (except some
 > logs) are thrown out by impermanence.
 
-The base configuration for nomads is [here](../modules/laptop/nomad/default.nix)
-and that for the GNOME desktop is [here](../modules/laptop/nomad/gnome.nix).
+The configuration for nomad mode is [here](../modules/laptop/modes/nomad.nix).
 
 You can not use the `nixos` script from within the nomad specialisation.
 
