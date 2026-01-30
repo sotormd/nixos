@@ -1,10 +1,7 @@
 { config, lib, ... }:
 
 let
-  modes = [
-    "nomad"
-    "x"
-  ];
+  modes = [ "nomad" ];
 
   mkSpec = mode: {
     inheritParentConfig = false;
