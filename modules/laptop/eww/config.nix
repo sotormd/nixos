@@ -34,15 +34,8 @@ let
                /^Cached/ {cache=$2}
                /SReclaimable/ {sreclaimable=$2}
                END {
-               arc_cache=0;
-               if (system(\"test -f /proc/spl/kstat/zfs/arcstats\") == 0) {
-               while ((getline < \"/proc/spl/kstat/zfs/arcstats\") > 0) {
-               if ($1 == \"size\") { arc_cache=$3 / 1024; break; }
-               }
-               close(\"/proc/spl/kstat/zfs/arcstats\");
-               }
-               used=total - free - buffers - sreclaimable - arc_cache;
-               print used / total * 100;
+                   used = total - free - buffers - cache - sreclaimable
+                   printf used/total*100
                }' /proc/meminfo")
       (defpoll ram-gib :interval "1s"
                "awk '
@@ -52,15 +45,8 @@ let
                /^Cached/ {cache=$2}
                /SReclaimable/ {sreclaimable=$2}
                END {
-               arc_cache=0;
-               if (system(\"test -f /proc/spl/kstat/zfs/arcstats\") == 0) {
-               while ((getline < \"/proc/spl/kstat/zfs/arcstats\") > 0) {
-               if ($1 == \"size\") { arc_cache=$3 / 1024; break; }
-               }
-               close(\"/proc/spl/kstat/zfs/arcstats\");
-               }
-               used=total - free - buffers - sreclaimable - arc_cache;
-               printf \"%.1fG\\n\", used / 1024 / 1024;
+                   used = total - free - buffers - cache - sreclaimable
+                   printf \"%.1fG\\n\", used/1024/1024
                }' /proc/meminfo")
       (defpoll zfs-perc :interval "1s" "zpool iostat | awk '/rpool/ {print 100 * \$2 / (\$2 + \$3)}'")
       (defpoll zfs-gib :interval "1s" "zpool iostat | awk '/rpool/ {print \$2}'")
