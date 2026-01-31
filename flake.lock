@@ -186,17 +186,12 @@
       }
     },
     "homepage": {
-      "inputs": {
-        "colors": [
-          "colors"
-        ]
-      },
       "locked": {
-        "lastModified": 1765097053,
-        "narHash": "sha256-bm4v6p4jH2pvdlTN3iH8Y6k2gfcca1Exc0UMVS/h27E=",
+        "lastModified": 1769836390,
+        "narHash": "sha256-ToQD7Hi7wbL73Jx2ALqJVgES8DFtF99k5CkIDc6huSI=",
         "owner": "sotormd",
         "repo": "homepage",
-        "rev": "57972b9678678752c25fc37fb58fa1467f124729",
+        "rev": "1fef79364f151742878416b9d5ad9c727bb4fcff",
         "type": "github"
       },
       "original": {
@@ -718,17 +713,14 @@
       "inputs": {
         "nixpkgs": [
           "nixpkgs"
-        ],
-        "wallpapers": [
-          "wallpapers"
         ]
       },
       "locked": {
-        "lastModified": 1769680376,
-        "narHash": "sha256-iJPpbA2YvQpQlJRaJc87Eye7QPhnNTpL10wDZQiZf1Q=",
+        "lastModified": 1769836797,
+        "narHash": "sha256-FTRrSVbORY9snI6nIRF5xcZqbWGrFNORy3P42N/WhGs=",
         "owner": "sotormd",
         "repo": "xkcd-wall",
-        "rev": "a8aaed6dd81809da9d901b1d5caf83b44ebd1ee6",
+        "rev": "3b5c442b66519c0cd72f1308fb969288a88ab518",
         "type": "github"
       },
       "original": {

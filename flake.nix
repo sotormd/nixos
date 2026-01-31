@@ -52,12 +52,10 @@
     xkcd = {
       url = "github:sotormd/xkcd-wall";
       inputs.nixpkgs.follows = "nixpkgs";
-      inputs.wallpapers.follows = "wallpapers";
     };
 
     homepage = {
       url = "github:sotormd/homepage";
-      inputs.colors.follows = "colors";
     };
   };
 
