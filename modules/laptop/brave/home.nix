@@ -121,6 +121,16 @@ let
   homepageHtml = inputs.homepage.lib.makeHomepage {
     inherit layout;
     n = 5;
+    colors = {
+      inherit (config.colors.homepage)
+        bg
+        btnbg
+        fg
+        accent
+        hover
+        ;
+    };
+    font = config.colors.fonts.normal;
   };
 in
 {
