@@ -20,6 +20,9 @@
     # wayland clipboard
     wl-clipboard
 
+    # kiosk-style compositor
+    cage
+
     # text editor
     inputs.neovim.packages.x86_64-linux.default
   ];
