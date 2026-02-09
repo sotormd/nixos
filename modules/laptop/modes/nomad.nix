@@ -8,6 +8,7 @@
 {
   networking = {
     wireless.enable = lib.mkForce false;
+    wireless.networks = lib.mkForce { };
     networkmanager.enable = lib.mkForce true;
     nameservers = lib.mkForce [
       "1.1.1.1"

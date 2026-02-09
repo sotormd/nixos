@@ -5,5 +5,5 @@
     ./config.nix
   ];
 
-  users.users.${config.vars.user.name}.packages = [ pkgs.xfce.mousepad ];
+  users.users.${config.vars.user.name}.packages = [ pkgs.mousepad ];
 }
