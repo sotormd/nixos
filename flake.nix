@@ -71,7 +71,7 @@
         { pkgs, ... }:
         {
           # formatter
-          formatter = pkgs.nixfmt-rfc-style;
+          formatter = pkgs.nixfmt;
 
           # scripts as a package
           packages.default =
