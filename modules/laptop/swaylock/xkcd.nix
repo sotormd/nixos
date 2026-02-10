@@ -9,8 +9,8 @@ in
 {
   xkcd = lib.mkIf (builtins.substring 0 4 config.vars.outputs.lockscreen == "xkcd") {
     enable = true;
-    background-colors = [ config.colors.bg0 ];
-    foreground-colors = [ config.colors.fg0 ];
+    background-colors = config.colors.xkcd.bgs;
+    foreground-colors = config.colors.xkcd.fgs;
     dimensions = "1920x1200";
     target = "/home/${config.vars.user.name}/.local/share/bg.png";
     fallback = wallpaper.wallpaper;
