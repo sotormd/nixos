@@ -2,26 +2,26 @@
 
 {
   terminal.colors = {
-    background = "#${config.colors.bg0}";
-    foreground = "#${config.colors.fg0}";
-    cursor = "#${config.colors.fg0}";
+    background = "#${config.colors.droid.bg}";
+    foreground = "#${config.colors.droid.fg}";
+    cursor = "#${config.colors.droid.cursor}";
 
-    color0 = "#${config.colors.bg3}"; # black
-    color1 = "#${config.colors.red}"; # red
-    color2 = "#${config.colors.green}"; # green
-    color3 = "#${config.colors.yellow}"; # yellow
-    color4 = "#${config.colors.blue3}"; # blue
-    color5 = "#${config.colors.purple}"; # magenta
-    color6 = "#${config.colors.blue1}"; # cyan
-    color7 = "#${config.colors.fg1}"; # white
+    color0 = "#${config.colors.droid.color0}";
+    color1 = "#${config.colors.droid.color1}";
+    color2 = "#${config.colors.droid.color2}";
+    color3 = "#${config.colors.droid.color3}";
+    color4 = "#${config.colors.droid.color4}";
+    color5 = "#${config.colors.droid.color5}";
+    color6 = "#${config.colors.droid.color6}";
+    color7 = "#${config.colors.droid.color7}";
 
-    color8 = "#${config.colors.bg2}"; # bright black
-    color9 = "#${config.colors.red}"; # bright red
-    color10 = "#${config.colors.green}"; # bright green
-    color11 = "#${config.colors.yellow}"; # bright yellow
-    color12 = "#${config.colors.blue2}"; # bright blue
-    color13 = "#${config.colors.purple}"; # bright magenta
-    color14 = "#${config.colors.blue0}"; # bright cyan
-    color15 = "#${config.colors.fg2}"; # bright white
+    color8 = "#${config.colors.droid.color8}";
+    color9 = "#${config.colors.droid.color9}";
+    color10 = "#${config.colors.droid.color10}";
+    color11 = "#${config.colors.droid.color11}";
+    color12 = "#${config.colors.droid.color12}";
+    color13 = "#${config.colors.droid.color13}";
+    color14 = "#${config.colors.droid.color14}";
+    color15 = "#${config.colors.droid.color15}";
   };
 }

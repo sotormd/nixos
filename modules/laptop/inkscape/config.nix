@@ -100,11 +100,11 @@
            id="template">
           <group
              id="base"
-             pagecolor="#${config.colors.bg0}"
-             deskcolor="#${config.colors.bg0}"
+             pagecolor="#${config.colors.inkscape.pagecolor}"
+             deskcolor="#${config.colors.inkscape.deskcolor}"
              pageopacity="0"
              pagecheckerboard="0"
-             bordercolor="#${config.colors.bg3}"
+             bordercolor="#${config.colors.inkscape.bordercolor}"
              borderopacity="1"
              objecttolerance="10.0"
              gridtolerance="10.0"
