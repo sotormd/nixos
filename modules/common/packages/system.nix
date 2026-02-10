@@ -65,6 +65,9 @@
     # control the TCP/IP stack
     iproute2
 
+    # dig
+    dig
+
     # general purpose compression
     xz
 
