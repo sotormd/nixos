@@ -187,6 +187,7 @@
 
     # disable V8
     DefaultJavaScriptJitSetting = 2;
+    JavaScriptJitAllowedForSites = [ config.vars.network.server.domain ];
 
     # disable promotions
     PromotionsEnabled = false;
