@@ -17,11 +17,11 @@
       # ---- foot-specific prompt ----
       if [ "$TERM" = "foot" ]; then
         # [noir:/directory] λ
-        PS1="\n\[\033[$PROMPT_COLOR\][noir:\w] λ\[\033[0m\] "
+        PS1="\n\[\033[$PROMPT_COLOR\][\h:\w] λ\[\033[0m\] "
 
       else
         # ---- all other terminals ----
-        PS1="\n\[\033[$PROMPT_COLOR\][noir:\w] $\[\033[0m\] "
+        PS1="\n\[\033[$PROMPT_COLOR\][\h:\w] $\[\033[0m\] "
 
         # xterm extra title
         if [ "$TERM" = "xterm" ]; then
