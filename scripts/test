@@ -9,14 +9,15 @@ else
 fi
 
 (
-    cd $NIXOS_DIR
+    cd "$NIXOS_DIR" || exit 1
+
     git add .
     if [ "$NIXOS_ROLE" == "laptop" ]; then
         GIT_PAGER=cat git diff HEAD -- ':!vars/vars.nix' ':!vars/secrets.yaml' ':!.sops.yaml'
     fi
 
     echo
-    $SCRIPTS/digest
+    "$SCRIPTS/digest"
 
     read -p "continue? [Y/n]: " confirm
 
@@ -24,7 +25,7 @@ fi
 
     if [[ $confirm =~ ^[Yy]$ ]]; then
 
-        sudo nixos-rebuild test --flake .#$NIXOS_ROLE --fallback
+        sudo nixos-rebuild test --flake ".#$NIXOS_ROLE" --fallback
 
         git reset -- vars/vars.nix vars/secrets.yaml .sops.yaml
 

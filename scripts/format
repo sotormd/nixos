@@ -3,6 +3,6 @@
 set -e
 
 (
-    cd $NIXOS_DIR
+    cd "$NIXOS_DIR" || exit 1
     find . -type f -name '*.nix' -exec nix fmt {} +
 )

@@ -3,6 +3,6 @@
 set -e
 
 (
-	cd $NIXOS_DIR
+	cd "$NIXOS_DIR" || exit 1
 	nix flake update "$@"
 )

@@ -62,7 +62,7 @@ fi
 
 (
     if [ "$1" != "init" ]; then
-    	cd $DIR || exit 1
+    	cd "$DIR" || exit 1
     fi
 	"${cmd[@]}"
 )
