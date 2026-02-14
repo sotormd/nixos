@@ -16,10 +16,6 @@ red=$'\e[31m'
 white=$'\e[97m'
 
 cat <<EOF
-${bold}${blue}==================${reset}
-${bold}${blue}NixOS Flake Helper${reset}
-${bold}${blue}==================${reset}
-
 ${bold}${underline}USAGE${reset}
 
   ${green}nixos${reset} [${cyan}command${reset}] [${yellow}args${reset}]
