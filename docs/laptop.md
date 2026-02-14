@@ -482,8 +482,8 @@ Note: `$mod` is `Mod4` (the `Super` / `Windows` key).
 | Move container down                              | `$mod+Shift+Down` / `$mod+Shift+j`  |
 | Go to workspace `1..10`                          | `$mod+1..0`                         |
 | Move container to workspace `1..10`              | `$mod+Shift+1..0`                   |
-| Go to next workspace                             | `$mod+PgDown`                       |
-| Go to previous workspace                         | `$mod+PgUp`                         |
+| Go to next workspace                             | `$mod+PgDown` / `$mod+ctrl+Right`   |
+| Go to previous workspace                         | `$mod+PgUp`/ `$mod+ctrl+Left`       |
 | Fetch containers from scratchpad                 | `$mod+Minus`                        |
 | Move container to scratchpad                     | `$mod+Shift+Minus`                  |
 | Toggle focus between floating / tiled containers | `$mod+Space`                        |
