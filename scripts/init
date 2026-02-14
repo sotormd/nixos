@@ -5,7 +5,7 @@ if [ -z "$NIXOS_ROOT_MOUNT" ]; then
 fi
 
 DIR="$NIXOS_ROOT_MOUNT$NIXOS_DIR"
-ROLE=$NIXOS_ROLE
+ROLE="$NIXOS_ROLE"
 
 VARS_DIR="$DIR/vars"
 VARS="$VARS_DIR/vars.nix"
@@ -193,9 +193,9 @@ elif [ "$1" == "clone" ]; then
         exit 1
     fi
 
-    sudo mkdir -p $DIR
-    sudo git clone https://github.com/sotormd/nixos $DIR
-    sudo chown nixos: -R $DIR
+    sudo mkdir -p "$DIR"
+    sudo git clone https://github.com/sotormd/nixos "$DIR"
+    sudo chown nixos: -R "$DIR"
 
 ############
 # VARS INIT
@@ -204,11 +204,11 @@ elif [ "$1" == "clone" ]; then
 elif [ "$1" == "vars" ]; then
 
     if [ "$2" == "edit" ]; then
-        $EDITOR $DIR/vars/vars.nix
+        $EDITOR "$DIR/vars/vars.nix"
         exit 0
     fi
 
-    mkdir -p $VARS_DIR
+    mkdir -p "$VARS_DIR"
 
     if [ -f "$VARS" ] && [[ "$2" != "replace" ]]; then
         echo "Error: vars.nix already exists" >&2
@@ -360,7 +360,7 @@ elif [ "$1" == "vars" ]; then
         fi
 
         # create vars file
-        cat > $VARS <<EOF
+        cat > "$VARS" <<EOF
 {
   # use this file to declare variables
   # this file will be stored in the world-readable /nix/store
@@ -678,7 +678,7 @@ EOF
         fi
 
         # create vars file
-        cat > $VARS <<EOF
+        cat > "$VARS" <<EOF
 {
   # use this file to declare variables
   # this file will be stored in the world-readable /nix/store
@@ -862,7 +862,7 @@ EOF
     fi
 
     # set permissions for vars file
-    sudo chmod 600 $VARS
+    sudo chmod 600 "$VARS"
 
 #############
 # SOPS INIT
@@ -871,11 +871,11 @@ EOF
 elif [ "$1" == "sops" ]; then
 
     if [ "$2" == "edit" ]; then
-        sudo GNUPGHOME="$SOPS_DIR" sops $DIR/vars/secrets.yaml
+        sudo GNUPGHOME="$SOPS_DIR" sops "$DIR/vars/secrets.yaml"
 	    exit 0
     fi
 
-    mkdir -p $VARS_DIR
+    mkdir -p "$VARS_DIR"
 
     if [ -f "$SECRETS" ] && [[ "$2" != "replace" ]]; then
         echo "Error: secrets.yaml already exists" >&2
@@ -944,14 +944,14 @@ elif [ "$1" == "sops" ]; then
     fi
 
     # delete old sops-nix directory if exists
-    if [ -d $SOPS_DIR ]; then
-        sudo rm -rf $SOPS_DIR
+    if [ -d "$SOPS_DIR" ]; then
+        sudo rm -rf "$SOPS_DIR"
     fi
-    sudo mkdir $SOPS_DIR
+    sudo mkdir "$SOPS_DIR"
 
     # change ownership of sops-nix directory
-    sudo chown root: $SOPS_DIR
-    sudo chmod 700 $SOPS_DIR
+    sudo chown root: "$SOPS_DIR"
+    sudo chmod 700 "$SOPS_DIR"
 
     # create new gpg key for sops-nix
     # save key fingerprint
@@ -964,7 +964,7 @@ elif [ "$1" == "sops" ]; then
     fi
 
     # move key to the sops-nix directory
-    sudo cp -r /tmp/sops-nix/** $SOPS_DIR
+    sudo cp -r /tmp/sops-nix/** "$SOPS_DIR"
 
     # export the gpg key from sops-nix directory
     nix shell nixpkgs#gnupg --command sudo GNUPGHOME=$SOPS_DIR gpg --export --armor > /tmp/sops-nix-pub.asc
@@ -977,7 +977,7 @@ elif [ "$1" == "sops" ]; then
     rm -rf /tmp/sops-nix
 
     # create .sops.yaml configuration file
-    cat > $SOPS_YAML <<EOF
+    cat > "$SOPS_YAML" <<EOF
 keys:
   - &personal $FINGERPRINT
 creation_rules:
@@ -994,7 +994,7 @@ EOF
     #create the secrets file
     if [ "$ROLE" == "laptop" ]; then
 
-        cat > $TEMP_SECRETS <<EOF
+        cat > "$TEMP_SECRETS" <<EOF
 hashedPassword: $SECRETS_HASHED_PASSWORD
 network: |
   psk=$SECRETS_PSK
@@ -1002,7 +1002,7 @@ EOF
 
     elif [ "$ROLE" == "server" ]; then
 
-        cat > $TEMP_SECRETS <<EOF
+        cat > "$TEMP_SECRETS" <<EOF
 hashedPassword: $SECRETS_HASHED_PASSWORD
 network: |
   psk=$SECRETS_PSK
@@ -1016,13 +1016,13 @@ EOF
 
     # open secrets file
     (
-        cd $DIR || exit
+        cd "$DIR" || exit
         nix shell nixpkgs#sops nixpkgs#gnupg --command sudo GNUPGHOME=$SOPS_DIR sops -e $TEMP_SECRETS > $SECRETS
-        shred $TEMP_SECRETS -u
+        shred "$TEMP_SECRETS" -u
     )
 
     # set permissions for secrets file
-    sudo chmod 600 $SECRETS
+    sudo chmod 600 "$SECRETS"
 
 ###############
 # INSTALLATION
@@ -1041,10 +1041,10 @@ elif [ "$1" == "install" ]; then
     fi
 
     (
-        cd $DIR
+        cd "$DIR"
         git add .
 
-        sudo nixos-install --root $NIXOS_ROOT_MOUNT --flake $DIR#$ROLE --no-root-passwd
+        sudo nixos-install --root "$NIXOS_ROOT_MOUNT" --flake "$DIR#$ROLE" --no-root-passwd
 
         git reset -- vars/vars.nix vars/secrets.yaml .sops.yaml
     )
@@ -1095,59 +1095,59 @@ elif [ "$1" == "impermanence" ]; then
     fi
 
     # ROOT
-    sudo mkdir $PERSIST_DIR_ROOT
+    sudo mkdir "$PERSIST_DIR_ROOT"
 
     # zpool.cache
-    sudo mkdir -p $PERSIST_DIR_ROOT/etc/zfs
-    sudo cp --preserve=mode,ownership,timestamps /etc/zfs/zpool.cache $PERSIST_DIR_ROOT/etc/zfs/zpool.cache
+    sudo mkdir -p "$PERSIST_DIR_ROOT/etc/zfs"
+    sudo cp --preserve=mode,ownership,timestamps /etc/zfs/zpool.cache "$PERSIST_DIR_ROOT/etc/zfs/zpool.cache"
 
     # /var/lib/nixos
-    sudo mkdir -p $PERSIST_DIR_ROOT/var/lib
-    sudo cp -r --preserve=mode,ownership,timestamps /var/lib/nixos $PERSIST_DIR_ROOT/var/lib/nixos
+    sudo mkdir -p "$PERSIST_DIR_ROOT/var/lib"
+    sudo cp -r --preserve=mode,ownership,timestamps /var/lib/nixos "$PERSIST_DIR_ROOT/var/lib/nixos"
 
     # /var/lib/systemd
-    sudo mkdir -p $PERSIST_DIR_ROOT/var/lib
-    sudo cp -r --preserve=mode,ownership,timestamps /var/lib/systemd $PERSIST_DIR_ROOT/var/lib/systemd
+    sudo mkdir -p "$PERSIST_DIR_ROOT/var/lib"
+    sudo cp -r --preserve=mode,ownership,timestamps /var/lib/systemd "$PERSIST_DIR_ROOT/var/lib/systemd"
 
     # /var/lib/sbctl
-    sudo mkdir -p $PERSIST_DIR_ROOT/var/lib
-    sudo cp -r --preserve=mode,ownership,timestamps /var/lib/sbctl $PERSIST_DIR_ROOT/var/lib/sbctl
+    sudo mkdir -p "$PERSIST_DIR_ROOT/var/lib"
+    sudo cp -r --preserve=mode,ownership,timestamps /var/lib/sbctl "$PERSIST_DIR_ROOT/var/lib/sbctl"
 
     # /var/log
-    sudo mkdir -p $PERSIST_DIR_ROOT/var
-    sudo cp -r --preserve=mode,ownership,timestamps /var/log $PERSIST_DIR_ROOT/var/log
+    sudo mkdir -p "$PERSIST_DIR_ROOT/var"
+    sudo cp -r --preserve=mode,ownership,timestamps /var/log "$PERSIST_DIR_ROOT/var/log"
 
-    sudo chown -R root: $PERSIST_DIR_ROOT
+    sudo chown -R root: "$PERSIST_DIR_ROOT"
 
     # HOME
-    sudo mkdir -p $PERSIST_DIR_HOME
+    sudo mkdir -p "$PERSIST_DIR_HOME"
 
     # Documents
-    sudo mkdir $PERSIST_DIR_HOME/Documents
-    sudo cp -r --preserve=mode,ownership,timestamps $HOME/Documents $PERSIST_DIR_HOME/Documents
+    sudo mkdir "$PERSIST_DIR_HOME/Documents"
+    sudo cp -r --preserve=mode,ownership,timestamps "$HOME/Documents" "$PERSIST_DIR_HOME/Documents"
 
     # Downloads
-    sudo mkdir $PERSIST_DIR_HOME/Downloads
-    sudo cp -r --preserve=mode,ownership,timestamps $HOME/Downloads $PERSIST_DIR_HOME/Downloads
+    sudo mkdir "$PERSIST_DIR_HOME/Downloads"
+    sudo cp -r --preserve=mode,ownership,timestamps "$HOME/Downloads" "$PERSIST_DIR_HOME/Downloads"
 
     # Pictures
-    sudo mkdir $PERSIST_DIR_HOME/Pictures
-    sudo cp -r --preserve=mode,ownership,timestamps $HOME/Pictures $PERSIST_DIR_HOME/Pictures
+    sudo mkdir "$PERSIST_DIR_HOME/Pictures"
+    sudo cp -r --preserve=mode,ownership,timestamps "$HOME/Pictures" "$PERSIST_DIR_HOME/Pictures"
 
     # Projects
-    sudo mkdir $PERSIST_DIR_HOME/Projects
-    sudo cp -r --preserve=mode,ownership,timestamps $HOME/Projects $PERSIST_DIR_HOME/Projects
+    sudo mkdir "$PERSIST_DIR_HOME/Projects"
+    sudo cp -r --preserve=mode,ownership,timestamps "$HOME/Projects" "$PERSIST_DIR_HOME/Projects"
 
     # Brave Browser
-    sudo mkdir -p $PERSIST_DIR_HOME/.config/BraveSoftware/Brave-Browser
-    sudo cp -r --preserve=mode,ownership,timestamps $HOME/.config/BraveSoftware/Brave-Browser $PERSIST_DIR_HOME/.config/BraveSoftware/Brave-Browser
+    sudo mkdir -p "$PERSIST_DIR_HOME/.config/BraveSoftware/Brave-Browser"
+    sudo cp -r --preserve=mode,ownership,timestamps "$HOME/.config/BraveSoftware/Brave-Browser" "$PERSIST_DIR_HOME/.config/BraveSoftware/Brave-Browser"
 
     # SSH
-    sudo mkdir $PERSIST_DIR_HOME/.ssh
-    sudo cp -r --preserve=mode,ownership,timestamps $HOME/.ssh $PERSIST_DIR_HOME/.ssh
+    sudo mkdir "$PERSIST_DIR_HOME/.ssh"
+    sudo cp -r --preserve=mode,ownership,timestamps "$HOME/.ssh" "$PERSIST_DIR_HOME/.ssh"
 
-    sudo chown -R $USER: $PERSIST_DIR_ROOT/home
+    sudo chown -R $USER: "$PERSIST_DIR_ROOT/home"
 
-    sudo chmod 700 $PERSIST_DIR_HOME/.ssh
+    sudo chmod 700 "$PERSIST_DIR_HOME/.ssh"
 
 fi

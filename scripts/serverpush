@@ -14,7 +14,7 @@ if [ "$NIXOS_ROLE" == "laptop" ]; then
     --exclude='.sops.yaml' \
     --exclude='.git' \
     --exclude='.local' \
-    $NIXOS_DIR/ \
+    "$NIXOS_DIR/" \
     server:$1/
 else
     echo "Error: unexpected role $NIXOS_ROLE" >&2
