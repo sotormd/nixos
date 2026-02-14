@@ -103,6 +103,8 @@ let
       # 
       bindsym Mod4+Page_Down workspace next
       bindsym Mod4+Page_Up workspace prev
+      bindsym Mod4+ctrl+Right workspace next
+      bindsym Mod4+ctrl+Left workspace prev
       bindsym Mod4+g exec ${pkgs.swayfx}/bin/swaymsg workspace $(${pkgs.swayfx}/bin/swaymsg -t get_workspaces -r | ${pkgs.jq}/bin/jq -r '.[].name' | rofi -dmenu -p "")
       bindsym Mod4+0 exec ${pkgs.swayfx}/bin/swaymsg workspace $(${pkgs.swayfx}/bin/swaymsg -t get_outputs | ${pkgs.jq}/bin/jq -r '.[] | select(.focused) | .name | if . == "${config.vars.outputs.monitor}" then "1" elif . == "${config.vars.outputs.laptop}" then "0" else "unknown" end')10
       bindsym Mod4+1 exec ${pkgs.swayfx}/bin/swaymsg workspace $(${pkgs.swayfx}/bin/swaymsg -t get_outputs | ${pkgs.jq}/bin/jq -r '.[] | select(.focused) | .name | if . == "${config.vars.outputs.monitor}" then "1" elif . == "${config.vars.outputs.laptop}" then "0" else "unknown" end')1
