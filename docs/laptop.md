@@ -23,7 +23,7 @@ Personal laptop configuration.
 6. [Virtualisation & Containers](#virtualisation--containers)
 7. [Nomad Mode](#nomad-mode)
 
-[Security & Privacy](#security--privacy)
+[Security and Privacy](#security-and-privacy)
 
 # Setup
 
@@ -1217,7 +1217,7 @@ The configuration for nomad mode is [here](../modules/laptop/modes/nomad.nix).
 
 You can not use the `nixos` script from within the nomad specialisation.
 
-# Security & Privacy
+# Security and Privacy
 
 Several security and privacy oriented decisions were made while writing the
 included modules.
