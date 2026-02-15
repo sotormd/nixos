@@ -18,7 +18,7 @@ Personal home-server configuration.
 2. [Services](#services)
 3. [Adding External Disks](#adding-external-disks)
 
-[Security and Privacy](#security--privacy)
+[Security and Privacy](#security-and-privacy)
 
 # Setup
 
