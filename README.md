@@ -2,10 +2,10 @@
   <h1 align="center">NixOS Configuration Flake</h1>
   <p align="center" style="font-size: 0.3rem;">
     <strong>
-      <a href="#setup--usage">Setup & Usage</a> |
+      <a href="#setup-and-usage">Setup and Usage</a> |
       <a href="#images">Images</a> |
       <a href="#nixos-flake-helper">CLI</a> |
-      <a href="#features--tooling">Features & Tooling</a>
+      <a href="#features-and-tooling">Features and Tooling</a>
     </strong>
   </p>
 </p>
@@ -66,7 +66,7 @@ Services features:
 
 See [Features](#features--tooling) for all features.
 
-# Setup & Usage
+# Setup and Usage
 
 1. `laptop` role: Laptop configuration
 
@@ -113,7 +113,7 @@ nixos help
 See [scripts](./docs/scripts.md) for the full command reference and workflow
 examples.
 
-# Features & Tooling
+# Features and Tooling
 
 | Category                      | Stack                                                                                                      |
 | ----------------------------- | ---------------------------------------------------------------------------------------------------------- |

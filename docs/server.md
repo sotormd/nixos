@@ -18,7 +18,7 @@ Personal home-server configuration.
 2. [Services](#services)
 3. [Adding External Disks](#adding-external-disks)
 
-[Security & Privacy](#security--privacy)
+[Security and Privacy](#security--privacy)
 
 # Setup
 
@@ -486,7 +486,7 @@ This prevents aggressive head parking and increases drive longevity.
 | **Encrypted (LUKS)**  | `device.luks`   | Creates crypttab entries + mapper mounts |
 | **hdparm tuning**     | `device.hdparm` | Generates systemd services per drive     |
 
-# Security & Privacy
+# Security and Privacy
 
 Several security and privacy oriented decisions were made while writing the
 included modules.
