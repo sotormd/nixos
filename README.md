@@ -157,7 +157,7 @@ These images have an ideal environment for setting up this flake.
 
 See [images](./docs/images.md) for more details.
 
-# `nixos` Flake Helper
+# CLI
 
 Routine tasks such as updating the flake, switching configurations,
 garbage-collecting, repairing the Nix store, and editing variables & secrets are
