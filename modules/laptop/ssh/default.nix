@@ -1,6 +1,6 @@
 {
   imports = [
-    ./github.nix
+    ./forges.nix
 
     ./server.nix
   ];

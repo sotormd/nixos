@@ -23,17 +23,14 @@ with lib;
 
     device.impermanence.enable = mkEnableOption "Impermanent root using ZFS snapshots";
 
-    device.plymouth.enable = mkEnableOption "Plymouth boot splash";
-
-    device.auto-cpufreq.enable = mkEnableOption "auto-cpufreq power management";
-
-    device.powertop.enable = mkEnableOption "powertop power tuning";
-
-    device.tlp.enable = mkEnableOption "TLP battery optimization";
-
-    user.github.keyfile = mkOption {
+    user.github = mkOption {
       type = types.str;
-      description = "GitHub SSH key filename.";
+      description = "github ssh key filename.";
+    };
+
+    user.codeberg = mkOption {
+      type = types.str;
+      description = "codeberg ssh key filename.";
     };
 
     network.server = {

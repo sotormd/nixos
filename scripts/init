@@ -62,7 +62,6 @@ if [ "$1" == "hardware" ]; then
 
 elif [ "$1" == "disks" ]; then
 
-    set -euo pipefail
 
     if ! [ "$ROLE" == "laptop" ]; then
         echo "Error: unexpected role $ROLE" >&2
@@ -78,6 +77,8 @@ elif [ "$1" == "disks" ]; then
         exit 1
     fi
 
+    set -euo pipefail
+    
     DRY_RUN="$NIXOS_DISKS_DRY_RUN"
 
     : "${BOOT:?Please set BOOT (e.g. /dev/disk/by-partuuid/xxx)}"
@@ -195,7 +196,7 @@ elif [ "$1" == "clone" ]; then
 
     sudo mkdir -p "$DIR"
     sudo git clone https://github.com/sotormd/nixos "$DIR"
-    sudo chown nixos: -R "$DIR"
+    sudo chown $USER: -R "$DIR"
 
 ############
 # VARS INIT
@@ -259,22 +260,6 @@ elif [ "$1" == "vars" ]; then
     	    VARS_DEVICE_IMPERMANENCE_ENABLE="false"
 	    fi
 
-    	if [ -z "$VARS_DEVICE_PLYMOUTH_ENABLE" ]; then
-	        VARS_DEVICE_PLYMOUTH_ENABLE="false"
-    	fi
-
-    	if [ -z "$VARS_DEVICE_AUTOCPUFREQ_ENABLE" ]; then
-    	    VARS_DEVICE_AUTOCPUFREQ_ENABLE="true"
-    	fi
-
-    	if [ -z "$VARS_DEVICE_POWERTOP_ENABLE" ]; then
-    	    VARS_DEVICE_POWERTOP_ENABLE="false"
-    	fi
-
-    	if [ -z "$VARS_DEVICE_TLP_ENABLE" ]; then
-    	    VARS_DEVICE_TLP_ENABLE="false"
-	    fi
-
         if [ -z "$VARS_USER_NAME" ]; then
             VARS_USER_NAME=$USER
         fi
@@ -283,8 +268,12 @@ elif [ "$1" == "vars" ]; then
             VARS_USER_EMAIL="$USER@nixos"
         fi
 
-        if [ -z "$VARS_USER_GITHUB_KEYFILE" ]; then
-            VARS_USER_GITHUB_KEYFILE="id_ed25519_github"
+        if [ -z "$VARS_USER_GITHUB" ]; then
+            VARS_USER_GITHUB="id_ed25519_github_$VARS_DEVICE_HOSTNAME"
+        fi
+
+        if [ -z "$VARS_USER_CODEBERG" ]; then
+            VARS_USER_CODEBERG="id_ed25519_codeberg_$VARS_DEVICE_HOSTNAME"
         fi
 
         if [ -z "$VARS_I18N_TIMEZONE" ]; then
@@ -395,7 +384,7 @@ elif [ "$1" == "vars" ]; then
   # partition partuuids
   # find them from /dev/disk/by-partuuid/...
   # assumes a specific configuration
-  # see ../docs/laptop.md
+  # see docs/laptop/setup.md
   device.boot = "$VARS_DEVICE_BOOT";
   device.swap = "$VARS_DEVICE_SWAP";
   device.root = "$VARS_DEVICE_ROOT";
@@ -436,26 +425,14 @@ elif [ "$1" == "vars" ]; then
 
   # secure boot: boot signed software
   # provided by the lanzaboote project
-  # read docs/laptop.md before enabling
+  # read docs/laptop/secureboot.md before enabling
   device.secureboot.enable = $VARS_DEVICE_SECUREBOOT_ENABLE;
 
   # impermanence: erase your darlings
   # using zfs snapshots and bind mounts
-  # read docs/laptop.md before enabling
+  # read docs/laptop/impermanence.md before enabling
   # requires: secureboot
   device.impermanence.enable = $VARS_DEVICE_IMPERMANENCE_ENABLE;
-
-  # plymouth: boot splash screen
-  device.plymouth.enable = $VARS_DEVICE_PLYMOUTH_ENABLE;
-
-  # auto-cpufreq: optimize cpu speed & power
-  device.auto-cpufreq.enable = $VARS_DEVICE_AUTOCPUFREQ_ENABLE;
-
-  # powertop: power management tool
-  device.powertop.enable = $VARS_DEVICE_POWERTOP_ENABLE;
-
-  # tlp: optimize battery life
-  device.tlp.enable = $VARS_DEVICE_TLP_ENABLE;
 
   #########################
   # USER ACCOUNT VARIABLES
@@ -468,7 +445,10 @@ elif [ "$1" == "vars" ]; then
   user.email = "$VARS_USER_EMAIL";
 
   # github ssh keyfile
-  user.github.keyfile = "$VARS_USER_GITHUB_KEYFILE";
+  user.github = "$VARS_USER_GITHUB";
+
+  # codeberg ssh keyfile
+  user.codeberg = "$VARS_USER_CODEBERG";
 
   #################
   # I18N VARIABLES
@@ -669,12 +649,12 @@ EOF
     	    VARS_NETWORK_JELLYFIN_ENABLE="false"
     	fi
 
-        if [ -z "$VARS_NETWORK_JELLYFIN_PORT" ]; then
-            VARS_NETWORK_JELLYFIN_PORT="8096"
-        fi
-
         if [ -z "$VARS_NETWORK_JELLYFIN_DATA" ]; then
             VARS_NETWORK_JELLYFIN_DATA="/var/lib/jellyfin"
+        fi
+
+        if [ -z "$VARS_NETWORK_JELLYFIN_PORT" ]; then
+            VARS_NETWORK_JELLYFIN_PORT="8096"
         fi
 
         # create vars file
@@ -710,7 +690,7 @@ EOF
   # partition partuuids
   # find them from /dev/disk/by-partuuid/...
   # assumes a specific configuration
-  # see ../docs/server.md
+  # see docs/server/setup.md
   device.root = "$VARS_DEVICE_ROOT";
 
   # mount: unencrypted mounts
@@ -851,11 +831,11 @@ EOF
   # requires: nginx
   network.jellyfin.enable = $VARS_NETWORK_JELLYFIN_ENABLE;
 
-  # jellyfin (loopback) port
-  network.jellyfin.port = $VARS_NETWORK_JELLYFIN_PORT;
-
   # jellyfin data directory
   network.jellyfin.data = "$VARS_NETWORK_JELLYFIN_DATA";
+
+  # jellyfin (loopback) port
+  network.jellyfin.port = $VARS_NETWORK_JELLYFIN_PORT;
 }
 EOF
 
