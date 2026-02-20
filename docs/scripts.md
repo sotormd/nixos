@@ -435,15 +435,6 @@ following commands are used:
 - perms
 - init
 
-`nixos(1)` also reports the amount of time taken to finish executing a command:
-
-```console
-$ nixos switch
-...
-...
-[nixos] finished in 8s
-```
-
 It is _generally_ safe to pipe into and out of the included scripts:
 
 ```bash

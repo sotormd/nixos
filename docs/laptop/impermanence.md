@@ -1,19 +1,45 @@
 # Impermanence
 
-This flake implements Impermanence without using the
-[library](https://github.com/nix-community/impermanence).
-
-Instructions for setting up impermanence are covered in
-[laptop.md](./laptop.md#setting-up-impermanence).
-
-This document covers the inner workings of impermanence.
+This document covers impermanence on the `laptop` role.
 
 # Contents
 
-1. [ZFS Datasets](#zfs-datasets)
-2. [Directories](#directories)
+1. [Setup](#setup)
+2. [Implementation](#implementation)
 
-# ZFS Datasets
+# Setup
+
+> This section assumes Secure Boot is set up and keys are available at
+> `/var/lib/sbctl`.
+
+1. Populate `/persist/` with the default directories to persist.
+
+   ```bash
+   nixos init impermanence
+   ```
+
+2. Enable impermanence in configuration.
+
+   Set `device.impermanence.enable = true;` in the variables file.
+
+   ```bash
+   nixos edit vars
+   ```
+
+3. Switch to the new configuration.
+
+   ```bash
+   nixos switch
+   ```
+
+# Implementation
+
+This flake implements Impermanence without using the
+[library](https://github.com/nix-community/impermanence).
+
+This section covers the inner workings of impermanence.
+
+## ZFS Datasets
 
 > This section covers the ZFS datasets as created by the init script, or based
 > on the recommendations in laptop.md.
@@ -38,15 +64,15 @@ During the impermanence setup (post-install), the init script copies all
 relevant directories to `/persist`.
 
 Then, systemd services roll back the
-[root](../modules/laptop/impermanence/rollback-root.nix) and
-[home](../modules/laptop/impermanence/rollback-home.nix) datasets.
+[root](../../modules/laptop/impermanence/rollback-root.nix) and
+[home](../../modules/laptop/impermanence/rollback-home.nix) datasets.
 
 So, in early boot, the `rpool/root` and `rpool/home` directories are
 **completely empty**. Nix populates it with relevant files from `/nix`.
 
 All other directories are persisted using bind mounts.
 
-# Directories
+## Directories
 
 The directories are persisted by bind-mounting them from `/persist`.
 
@@ -64,13 +90,14 @@ fileSystems."/path/to/thing" = {
 > `x-gvfs-hide` prevents the bind-mounts from showing up as devices in the File
 > Manager.
 
-A lib [function](../lib/impermanence.nix) helps avoid repeated code across
+A lib [function](../../lib/impermanence.nix) helps avoid repeated code across
 several such blocks.
 
 The following directories are persisted:
 
-- [`root`](../modules/laptop/impermanence/bind-root.nix): Directories under `/`
-- [`home`](../modules/laptop/impermanence/bind-home.nix): Directories under
+- [`root`](../../modules/laptop/impermanence/bind-root.nix): Directories under
+  `/`
+- [`home`](../../modules/laptop/impermanence/bind-home.nix): Directories under
   `/home`
 
 To persist more directories, simply add to the list. The directories under `/`

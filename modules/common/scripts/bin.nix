@@ -34,14 +34,23 @@ let
     paths = scripts;
   };
 
-  nixosScriptRaw = pkgs.writeShellScriptBin "nixos" (builtins.readFile ../../../scripts/nixos);
-in
-{
-  nixosWrapper = pkgs.writeShellScriptBin "nixos" ''
+  nixosRaw = pkgs.writeShellScriptBin "nixos-raw" (builtins.readFile ../../../scripts/nixos);
+
+  nixosWithScripts = pkgs.writeShellScriptBin "nixos" ''
     #!/usr/bin/env ${pkgs.runtimeShell}
 
     export NIXOS_SCRIPTS_DIR=${scriptsDir}
 
-    ${nixosScriptRaw}/bin/nixos "$@"
+    ${nixosRaw}/bin/nixos-raw "$@"
   '';
+in
+{
+  nixosWrapper = pkgs.symlinkJoin {
+    name = "nixos-wrapper";
+    paths = [ nixosWithScripts ];
+    postBuild = ''
+      mkdir -p $out/share/man/man1
+      install -m644 ${./nixos.1} $out/share/man/man1/nixos.1
+    '';
+  };
 }

@@ -9,9 +9,13 @@ Two images are offered for the `x86_64-linux` architecture:
 
 2. `gnome`: NixOS with the GNOME desktop environment.
 
-One image is offered for the `aarch64-linux` architecture:
+Two images are offered for the `aarch64-linux` architecture:
 
 1. `sd`: NixOS for sdcard targets (intended for raspberry-pi 4b).
+
+2. `sd-remote`: Same as `sd`, but for installation over WiFi.
+
+These images have an ideal environment for setting up this flake.
 
 These images have experimental features `flakes` and `nix-command` enabled.
 
@@ -59,6 +63,8 @@ As with all NixOS installation images, the username for the live session is
    ```
 
    The resultant image will be available inside `./result/sd-image/`.
+
+4. `sd-remote` image
 
    To build an image for a wireless remote install:
 

@@ -10,7 +10,8 @@ nixos \- unified wrapper for managing the NixOS flake
 .SH DESCRIPTION
 The
 .B nixos
-command is a user-facing wrapper for managing the NixOS flake.
+command is a user-facing wrapper for managing the NixOS flake
+.B github:sotormd/nixos.
 It provides a curated set of high-level commands for carrying out
 routine tasks.
 
@@ -27,102 +28,108 @@ allowing arbitrary commands to be run relative to the flake.
 
 .TP
 .B test
-Activate the new configuration without creating a boot entry.
-Changes are lost on reboot.
+.br
+Test the current configuration.
+.br
+Does not create a boot entry.
 .br
 Roles: laptop, server
 
 .TP
 .B boot
-Create a boot entry but don't activate the new configuration,
-also format the flake.
+.br
+Make current configuration the boot default.
+.br
+Does not activate the current configuration.
 .br
 Roles: laptop, server
 
 .TP
 .B switch
-Activate the new configuration and create a boot entry,
-also format the flake.
+.br
+Switch to the current configuration.
+.br
+Creates a boot entry.
 .br
 Roles: laptop, server
 
 .TP
 .B commit
-Activate the new configuration, create a boot entry, format the flake,
-fix file permissions, and create a Git commit.
+.br
+Switch to and commit the current configuration.
+.br
+Creates a boot entry and a Git commit.
 .br
 Roles: laptop only
 
 .TP
 .B update " [inputs...]"
-Update flake inputs in
-.BR flake.lock .
+.br
+Update flake inputs in flake.lock.
+.br
 If no inputs are specified, all inputs are updated.
 .br
 Roles: laptop, server
 
 .TP
 .B digest
+.br
 Get checksum of variables and secrets.
 .br
 Roles: laptop, server
 
 .TP
 .B format
-Format all Nix files in the flake using
-.BR nixfmt .
+.br
+Format the flake using nixfmt.
 .br
 Roles: laptop, server
 
 .TP
 .B perms
+.br
 Fix file ownership and permissions in the flake.
-All files are set to mode 600, directories to 700, and scripts under
-.B $NIXOS_DIR/scripts/
-to 700.
 .br
 Roles: laptop, server
 
 .TP
 .B purge
-Delete all non-current system generations.
-This is a destructive operation.
-Equivalent to:
 .br
-.B sudo nix-collect-garbage --delete-old
+Garbage collect old generations.
 .br
 Roles: laptop, server
 
 .TP
 .B repair
-Verify and repair the Nix store.
-Equivalent to:
 .br
-.B sudo nix-store --verify --check-contents --repair
+Attempt to repair the nix store.
 .br
 Roles: laptop, server
 
 .TP
 .B edit " <vars|sops>"
-Edit variables or secrets associated with the flake.
+.br
+Edit variables file or sops-nix secrets.
 .br
 Roles: laptop, server
 
 .TP
 .B serverpush " <path>"
-Push the local flake to
-.BR server:<path> .
+.br
+Push the local flake to server:<path> .
 .br
 Roles: laptop only
 
 .TP
 .B help
+.br
 Display a brief usage summary and exit.
 .br
 Roles: laptop, server
 
 .TP
-.B init
+.B init <command> [args]
+.br
 Bootstrap this flake.
 See documentation for more information
 
@@ -146,7 +153,7 @@ To prevent concurrent execution,
 creates a lockfile at
 .BR $XDG_RUNTIME_DIR/nixos-script.lock
 for the following commands:
-test, switch, commit, update, purge, format, perms, and init.
+test, boot, switch, commit, update, purge, format, perms, and init.
 
 .SH NOTES
 All commands are intended to be run through the
@@ -156,13 +163,7 @@ The wrapper automatically escalates privileges using
 .B sudo
 when required.
 
-Command execution time is reported on completion.
-
 .SH FILES
-.TP
-.B $NIXOS_DIR/scripts/
-Implementation of all subcommands.
-
 .TP
 .B $NIXOS_DIR/docs/scripts.md
 Full documentation.

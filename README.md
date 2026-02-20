@@ -2,10 +2,10 @@
   <h1 align="center">NixOS Configuration Flake</h1>
   <p align="center" style="font-size: 0.3rem;">
     <strong>
-      <a href="#setup-and-usage">Setup and Usage</a> |
+      <a href="#features">Features</a>
+      <a href="#roles">Setup</a> |
       <a href="#images">Images</a> |
-      <a href="#nixos-flake-helper">CLI</a> |
-      <a href="#features-and-tooling">Features and Tooling</a>
+      <a href="#cli">CLI</a> |
     </strong>
   </p>
 </p>
@@ -13,6 +13,8 @@
 ![nixos](./docs/screenshots/nord.gif)
 
 ~~slighly overengineered~~ NixOS configuration flake for multiple hosts
+
+# Features
 
 [Why do I not use some popular libraries?](/docs/why-not-x.md)
 
@@ -23,11 +25,13 @@ Nix-specific features:
 - Symlinks in ~ managed using [hjem](https://github.com/feel-co/hjem)
 - Secrets managed using [sops-nix](https://github.com/Mic92/sops-nix)
 - Secure boot using [lanzaboote](https://github.com/nix-community/lanzaboote)
-- [Impermanence](/docs/impermanence.md) using ZFS snapshots and bind mounts,
-  without the library.
+- [Impermanence](/docs/laptop/impermanence.md#implementation) using ZFS
+  snapshots and bind mounts, without the library.
 - Package management using [lix](https://lix.systems)
 - Android environment using
   [nix-on-droid](https://github.com/nix-community/nix-on-droid)
+- Role based modules
+- Variables system for device-specific configuration
 - Flake helper [CLI](#nixos-flake-helper)
 - Flake-enabled installation [images](#images)
 
@@ -52,7 +56,7 @@ Desktop features:
 - XKCD lockscreen wallpapers with
   [xkcd-wall](https://github.com/sotormd/xkcd-wall)
 - Automatic behavior changes when outside trusted & reliable networks with
-  [Nomad Mode](./docs/laptop.md#nomad-mode)
+  [Nomad Mode](./docs/laptop/usage.md#nomad-mode)
 
 Services features:
 
@@ -63,57 +67,6 @@ Services features:
 - [Vaultwarden](https://github.com/dani-garcia/vaultwarden) password manager
 - [i2pd](https://github.com/PurpleI2P/i2pd) I2P router
 - [Jellyfin](https://jellyfin.org/) media server
-
-See [Features](#features--tooling) for all features.
-
-# Setup and Usage
-
-1. `laptop` role: Laptop configuration
-
-   [Setup & Usage Documentation](./docs/laptop.md)
-
-2. `server` role: Headless home server configuration
-
-   [Setup & Usage Documentation](./docs/server.md)
-
-3. `droid` role: nix-on-droid configuration
-
-   [Setup & Usage Documentation](./docs/droid.md)
-
-# Images
-
-[![Build Minimal ISO](https://img.shields.io/github/actions/workflow/status/sotormd/nixos/build-minimal-iso.yml?style=for-the-badge&label=Build%20Minimal%20ISO)](https://github.com/sotormd/nixos/actions/workflows/build-minimal-iso.yml)
-[![Build GNOME ISO](https://img.shields.io/github/actions/workflow/status/sotormd/nixos/build-gnome-iso.yml?style=for-the-badge&label=Build%20GNOME%20ISO)](https://github.com/sotormd/nixos/actions/workflows/build-gnome-iso.yml)
-
-Three images: `minimal`, `gnome` and `sd` are included (for installation,
-recovery, etc.)
-
-These images have experimental features `flakes` and `nix-command` enabled.
-
-See [images](./docs/images.md) for more details.
-
-# `nixos` Flake Helper
-
-Routine tasks such as updating the flake, switching configurations,
-garbage-collecting, repairing the Nix store, and editing variables & secrets are
-handled through the unified `nixos(1)` helper CLI.
-
-Manpage:
-
-```bash
-man nixos
-```
-
-Overview:
-
-```bash
-nixos help
-```
-
-See [scripts](./docs/scripts.md) for the full command reference and workflow
-examples.
-
-# Features and Tooling
 
 | Category                      | Stack                                                                                                      |
 | ----------------------------- | ---------------------------------------------------------------------------------------------------------- |
@@ -162,8 +115,73 @@ examples.
 | version control               | `git`                                                                                                      |
 | development                   | `rust`, `python`, `go`, `haskell`                                                                          |
 | virtualization                | `qemu`, `virt-manager`, `distrobox`                                                                        |
-| optimizations                 | `auto-cpufreq`, `tlp`, `powertop`                                                                          |
+| cpu optimizations             | `auto-cpufreq`                                                                                             |
 | resource monitor              | `btop`, `htop`                                                                                             |
 | android                       | `nix-on-droid`                                                                                             |
 | themes, icons, cursors, fonts | [`colors`](https://github.com/sotormd/colors)                                                              |
 | wallpapers                    | [`wallpapers`](https://github.com/sotormd/wallpapers), [`xkcd-wall`](https://github.com/sotormd/xkcd-wall) |
+
+# Roles
+
+This flake uses role-based configuration
+
+1. `laptop` role: Laptop configuration
+
+   [Requirements](./docs/laptop/requirements.nix)
+
+   [Setup](./docs/laptop/setup.md)
+
+   [Usage](./docs/laptop/usage.md)
+
+   Additional topics:
+
+   [Secure Boot](./docs/laptop/secureboot.nix)
+
+   [Impermanence](./docs/laptop/impermanence.nix)
+
+2. `server` role: Headless home server configuration
+
+   [Requirements](./docs/server/requirements.nix)
+
+   [Setup](./docs/server/setup.md)
+
+   [Usage](./docs/server/usage.md)
+
+3. `droid` role: nix-on-droid configuration
+
+   [Setup & Usage Documentation](./docs/droid.md)
+
+Also see [Security](./docs/security.md)
+
+# Images
+
+[![Build Minimal ISO](https://img.shields.io/github/actions/workflow/status/sotormd/nixos/build-minimal-iso.yml?style=for-the-badge&label=Build%20Minimal%20ISO)](https://github.com/sotormd/nixos/actions/workflows/build-minimal-iso.yml)
+[![Build GNOME ISO](https://img.shields.io/github/actions/workflow/status/sotormd/nixos/build-gnome-iso.yml?style=for-the-badge&label=Build%20GNOME%20ISO)](https://github.com/sotormd/nixos/actions/workflows/build-gnome-iso.yml)
+
+Four images: `minimal`, `gnome`, `sd` and `sd-remote` are included (for
+installation, recovery, etc.)
+
+These images have an ideal environment for setting up this flake.
+
+See [images](./docs/images.md) for more details.
+
+# `nixos` Flake Helper
+
+Routine tasks such as updating the flake, switching configurations,
+garbage-collecting, repairing the Nix store, and editing variables & secrets are
+handled through the unified `nixos(1)` helper CLI.
+
+Manpage:
+
+```bash
+man nixos
+```
+
+Overview:
+
+```bash
+nixos help
+```
+
+See [scripts](./docs/scripts.md) for the full command reference and workflow
+examples.
