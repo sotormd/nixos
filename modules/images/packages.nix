@@ -1,7 +1,11 @@
 { pkgs, ... }:
 
+let
+  nixosPackage = import ../common/scripts/bin.nix { inherit pkgs; };
+in
 {
   environment.systemPackages = with pkgs; [
+    nixosPackage.nixosWrapped
     bashInteractive
     bat
     btrfs-progs

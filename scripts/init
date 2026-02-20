@@ -214,9 +214,6 @@ elif [ "$1" == "vars" ]; then
     if [ -f "$VARS" ] && [[ "$2" != "replace" ]]; then
         echo "Error: vars.nix already exists" >&2
         exit 1
-    else
-	    cp "$VARS" "/tmp/vars.nix" || true
-        rm "$VARS" || true
     fi
 
     if [ "$ROLE" == "laptop" ]; then
@@ -269,11 +266,11 @@ elif [ "$1" == "vars" ]; then
         fi
 
         if [ -z "$VARS_USER_GITHUB" ]; then
-            VARS_USER_GITHUB="id_ed25519_github_$VARS_DEVICE_HOSTNAME"
+            VARS_USER_GITHUB_KEYFILE="id_ed25519_github"
         fi
 
         if [ -z "$VARS_USER_CODEBERG" ]; then
-            VARS_USER_CODEBERG="id_ed25519_codeberg_$VARS_DEVICE_HOSTNAME"
+            VARS_USER_CODEBERG_KEYFILE="id_ed25519_codeberg"
         fi
 
         if [ -z "$VARS_I18N_TIMEZONE" ]; then
@@ -445,10 +442,10 @@ elif [ "$1" == "vars" ]; then
   user.email = "$VARS_USER_EMAIL";
 
   # github ssh keyfile
-  user.github = "$VARS_USER_GITHUB";
+  user.github.keyfile = "$VARS_USER_GITHUB_KEYFILE";
 
   # codeberg ssh keyfile
-  user.codeberg = "$VARS_USER_CODEBERG";
+  user.codeberg.keyfile = "$VARS_USER_CODEBERG_KEYFILE";
 
   #################
   # I18N VARIABLES
@@ -860,9 +857,6 @@ elif [ "$1" == "sops" ]; then
     if [ -f "$SECRETS" ] && [[ "$2" != "replace" ]]; then
         echo "Error: secrets.yaml already exists" >&2
         exit 1
-    else
-	    cp "$SECRETS" "/tmp/secrets.yaml" || true
-        rm "$SECRETS" || true
     fi
 
     # check environment variables

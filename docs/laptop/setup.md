@@ -261,8 +261,8 @@ in step 3.
 | `VARS_DEVICE_IMPERMANENCE_ENABLE` | Enable impermanence.                               | `"false"`                                         | `"true"`                             |
 | `VARS_USER_NAME`                  | Username.                                          | `$USER`                                           | `"Bar"`                              |
 | `VARS_USER_EMAIL`                 | Email used for git commits.                        | `"$USER@nixos"`                                   | `"Bar@domain.com"`                   |
-| `VARS_USER_GITHUB`                | Github SSH identity key.                           | `"id_ed25519_github_$VARS_DEVICE_HOSTNAME"`       | `"id_rsa_github"`                    |
-| `VARS_USER_CODEBERG`              | Codeberg SSH identity key.                         | `"id_ed25519_codeberg_$VARS_DEVICE_HOSTNAME"`     | `"id_rsa_codeberg"`                  |
+| `VARS_USER_GITHUB_KEYFILE`        | Github SSH identity key.                           | `"id_ed25519_github"`                             | `"id_rsa_github"`                    |
+| `VARS_USER_CODEBERG_KEYFILE`      | Codeberg SSH identity key.                         | `"id_ed25519_codeberg"`                           | `"id_rsa_codeberg"`                  |
 | `VARS_I18N_TIMEZONE`              | Timezone.                                          | `$(timedatectl show --property=Timezone --value)` | `"Europe/Berlin"`                    |
 | `VARS_I18N_KEYBOARD`              | Keyboard layout.                                   | `"us"`                                            | `"us"`                               |
 | `VARS_I18N_LOCALE`                | Locale.                                            | `"en_US.UTF-8"`                                   | `"de_DE.UTF-8"`                      |

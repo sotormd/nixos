@@ -23,12 +23,12 @@ with lib;
 
     device.impermanence.enable = mkEnableOption "Impermanent root using ZFS snapshots";
 
-    user.github = mkOption {
+    user.github.keyfile = mkOption {
       type = types.str;
       description = "github ssh key filename.";
     };
 
-    user.codeberg = mkOption {
+    user.codeberg.keyfile = mkOption {
       type = types.str;
       description = "codeberg ssh key filename.";
     };
