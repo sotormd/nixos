@@ -3,7 +3,7 @@
   <p align="center" style="font-size: 0.3rem;">
     <strong>
       <a href="#features">Features</a> |
-      <a href="#roles">Setup</a> |
+      <a href="#roles">Roles</a> |
       <a href="#images">Images</a> |
       <a href="#cli">CLI</a>
     </strong>
