@@ -1,4 +1,4 @@
-# Usage
+# `server` Usage
 
 This document covers using the `server` role.
 
