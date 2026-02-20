@@ -1,4 +1,4 @@
-# Usage
+# `laptop` Usage
 
 This document covers using the `laptop` role.
 

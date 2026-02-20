@@ -32,7 +32,7 @@ Nix-specific features:
   [nix-on-droid](https://github.com/nix-community/nix-on-droid)
 - Role based modules
 - Variables system for device-specific configuration
-- Flake helper [CLI](#nixos-flake-helper)
+- Flake helper [CLI](#cli)
 - Flake-enabled installation [images](#images)
 
 Desktop features:
@@ -127,7 +127,7 @@ This flake uses role-based configuration
 
 1. `laptop` role: Laptop configuration
 
-   [Requirements](./docs/laptop/requirements.nix)
+   [Requirements](./docs/laptop/requirements.md)
 
    [Setup Documentation](./docs/laptop/setup.md)
 
@@ -135,7 +135,7 @@ This flake uses role-based configuration
 
 2. `server` role: Headless home server configuration
 
-   [Requirements](./docs/server/requirements.nix)
+   [Requirements](./docs/server/requirements.md)
 
    [Setup Documentation](./docs/server/setup.md)
 

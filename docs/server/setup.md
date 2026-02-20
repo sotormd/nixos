@@ -1,4 +1,4 @@
-# `server` role
+# `server` Setup
 
 Bootstrap process for the `server` role.
 
