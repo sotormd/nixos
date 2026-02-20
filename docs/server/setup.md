@@ -39,6 +39,8 @@ Bootstrap process for the `server` role.
    export NIXOS_DIR=/nixos
    ```
 
+> You can use any `NIXOS_DIR` you like
+
 # Applying Configuration
 
 1. Clone the flake.
