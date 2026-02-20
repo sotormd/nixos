@@ -2,10 +2,10 @@
   <h1 align="center">NixOS Configuration Flake</h1>
   <p align="center" style="font-size: 0.3rem;">
     <strong>
-      <a href="#features">Features</a>
+      <a href="#features">Features</a> |
       <a href="#roles">Setup</a> |
       <a href="#images">Images</a> |
-      <a href="#cli">CLI</a> |
+      <a href="#cli">CLI</a>
     </strong>
   </p>
 </p>
@@ -129,29 +129,21 @@ This flake uses role-based configuration
 
    [Requirements](./docs/laptop/requirements.nix)
 
-   [Setup](./docs/laptop/setup.md)
+   [Setup Documentation](./docs/laptop/setup.md)
 
-   [Usage](./docs/laptop/usage.md)
-
-   Additional topics:
-
-   [Secure Boot](./docs/laptop/secureboot.nix)
-
-   [Impermanence](./docs/laptop/impermanence.nix)
+   [Usage Documenation](./docs/laptop/usage.md)
 
 2. `server` role: Headless home server configuration
 
    [Requirements](./docs/server/requirements.nix)
 
-   [Setup](./docs/server/setup.md)
+   [Setup Documentation](./docs/server/setup.md)
 
-   [Usage](./docs/server/usage.md)
+   [Usage Documentation](./docs/server/usage.md)
 
 3. `droid` role: nix-on-droid configuration
 
    [Setup & Usage Documentation](./docs/droid.md)
-
-Also see [Security](./docs/security.md)
 
 # Images
 
