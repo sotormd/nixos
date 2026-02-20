@@ -18,5 +18,13 @@
     onlySSL = true;
   };
 
+  fileSystems."/var/lib/acme" = {
+    device = config.vars.network.nginx.acme.data;
+    options = [
+      "bind"
+      "nofail"
+    ];
+  };
+
   users.users.nginx.extraGroups = [ "acme" ];
 }
