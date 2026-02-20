@@ -95,6 +95,8 @@ The nginx web server is hosted at `https://<your-duckdns-domain>`.
 
 The DuckDNS domain is declared using `vars.network.duckdns.domain`.
 
+The ACME directory is declared using `vars.network.nginx.acme.data`.
+
 It attempts to fetch a Let's Encrypt HTTPS certificate with a DNS-01 challenge
 using your duckdns domain.
 

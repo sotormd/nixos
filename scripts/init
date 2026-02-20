@@ -594,6 +594,10 @@ EOF
     	    VARS_NETWORK_NGINX_ENABLE="false"
     	fi
 
+    	if [ -z "$VARS_NETWORK_NGINX_ACME_DATA" ]; then
+    	    VARS_NETWORK_NGINX_ACME_DATA="/var/lib/acme"
+    	fi
+
     	if [ -z "$VARS_NETWORK_SEARXNG_ENABLE" ]; then
     	    VARS_NETWORK_SEARXNG_ENABLE="false"
     	fi
@@ -783,6 +787,9 @@ EOF
 
   # nginx: web server
   network.nginx.enable = $VARS_NETWORK_NGINX_ENABLE;
+
+  # nginx acme certs data directory
+  network.nginx.acme.data = "$VARS_NETWORK_NGINX_ACME_DATA";
 
   # searxng: metasearch engine
   # requires: nginx

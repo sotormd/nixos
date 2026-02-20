@@ -26,7 +26,14 @@ with lib;
 
     network.unbound.enable = mkEnableOption "Unbound recursive DNS server";
 
-    network.nginx.enable = mkEnableOption "Nginx web server";
+    network.nginx = {
+      enable = mkEnableOption "Nginx web server";
+
+      acme.data = mkOption {
+        type = types.path;
+        description = "ACME certs data directory for DuckDNS domain.";
+      };
+    };
 
     network.searxng.enable = mkEnableOption "SearxNG metasearch engine";
 
