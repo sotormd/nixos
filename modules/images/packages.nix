@@ -5,7 +5,7 @@ let
 in
 {
   environment.systemPackages = with pkgs; [
-    nixosPackage.nixosWrapped
+    nixosPackage.nixosWrapper
     bashInteractive
     bat
     btrfs-progs
