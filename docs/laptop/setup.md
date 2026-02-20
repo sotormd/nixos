@@ -294,14 +294,14 @@ At this point, this flake has been installed on the device.
 
 For further setup, see:
 
-1. [Secure Boot](#secure-boot)
+1. [Secure Boot](./secureboot.md)
 
    For setting up Secure Boot with lanzaboote.
 
-2. [Impermanence](#impermanence)
+2. [Impermanence](./impermanence.md)
 
    For setting up impermanence.
 
-3. [Usage](#usage)
+3. [Usage](./usage.md)
 
    For using the `laptop` role.
