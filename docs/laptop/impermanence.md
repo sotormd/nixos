@@ -47,17 +47,17 @@ This section covers the inner workings of impermanence.
 The init script creates four datasets:
 
 ```
-rpool/nix
-rpool/persist
-rpool/root
-rpool/home
+rpool/nixos/nix        mounted at /nix
+rpool/nixos/persist    mounted at /persist
+rpool/nixos/root       mounted at /
+rpool/nixos/home       mounted at /home
 ```
 
 Two blank snapshots are also created at this time:
 
 ```
-rpool/root@blank
-rpool/home@blank
+rpool/nixos/root@blank
+rpool/nixos/home@blank
 ```
 
 During the impermanence setup (post-install), the init script copies all
@@ -67,7 +67,7 @@ Then, systemd services roll back the
 [root](../../modules/laptop/impermanence/rollback-root.nix) and
 [home](../../modules/laptop/impermanence/rollback-home.nix) datasets.
 
-So, in early boot, the `rpool/root` and `rpool/home` directories are
+So, in early boot, the `rpool/nixos/root` and `rpool/nixos/home` directories are
 **completely empty**. Nix populates it with relevant files from `/nix`.
 
 All other directories are persisted using bind mounts.

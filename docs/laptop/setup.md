@@ -146,38 +146,31 @@ Bootstrap process for the `laptop` role.
 7. Create ZFS datasets.
 
    ```bash
-   sudo zfs create rpool/root -o mountpoint=legacy
-   sudo zfs create rpool/home -o mountpoint=legacy
-   sudo zfs create rpool/nix -o mountpoint=legacy
-   sudo zfs create rpool/persist -o mountpoint=legacy
+   sudo zfs create rpool/nixos
+   sudo zfs create rpool/nixos/root -o mountpoint=legacy
+   sudo zfs create rpool/nixos/home -o mountpoint=legacy
+   sudo zfs create rpool/nixos/nix -o mountpoint=legacy
+   sudo zfs create rpool/nixos/persist -o mountpoint=legacy
    ```
 
-8. Create a reserved dataset.
-
-   ZFS's performance will deteriorate significantly when more than 80% of the
-   available space is used - to avoid this, reserve disk space beforehand.
+8. Create empty snapshots of `rpool/nixos/root` and `rpool/nixos/home` for
+   impermanence.
 
    ```bash
-   sudo zfs create rpool/reserved -o refreservation=10G -o mountpoint=none
+   sudo zfs snapshot rpool/nixos/root@blank
+   sudo zfs snapshot rpool/nixos/home@blank
    ```
 
-9. Create empty snapshots of `rpool/root` and `rpool/home` for impermanence.
+9. Mount ZFS datasets.
 
    ```bash
-   sudo zfs snapshot rpool/root@blank
-   sudo zfs snapshot rpool/home@blank
+   sudo mkdir -p /mnt && sudo mount rpool/nixos/root /mnt -t zfs
+   sudo mkdir -p /mnt/home && sudo mount rpool/nixos/home /mnt/home -t zfs
+   sudo mkdir -p /mnt/nix && sudo mount rpool/nixos/nix /mnt/nix -t zfs
+   sudo mkdir -p /mnt/persist && sudo mount rpool/nixos/persist /mnt/persist -t zfs
    ```
 
-10. Mount ZFS datasets.
-
-    ```bash
-    sudo mkdir -p /mnt && sudo mount rpool/root /mnt -t zfs
-    sudo mkdir -p /mnt/home && sudo mount rpool/home /mnt/home -t zfs
-    sudo mkdir -p /mnt/nix && sudo mount rpool/nix /mnt/nix -t zfs
-    sudo mkdir -p /mnt/persist && sudo mount rpool/persist /mnt/persist -t zfs
-    ```
-
-11. Mount boot partition.
+10. Mount boot partition.
 
     ```bash
     sudo mkdir -p /mnt/boot && sudo mount $BOOT /mnt/boot

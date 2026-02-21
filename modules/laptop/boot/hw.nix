@@ -59,22 +59,22 @@
   };
 
   fileSystems."/" = {
-    device = "rpool/root";
+    device = "rpool/nixos/root";
     fsType = "zfs";
   };
 
   fileSystems."/home" = {
-    device = "rpool/home";
+    device = "rpool/nixos/home";
     fsType = "zfs";
   };
 
   fileSystems."/nix" = {
-    device = "rpool/nix";
+    device = "rpool/nixos/nix";
     fsType = "zfs";
   };
 
   fileSystems."/persist" = {
-    device = "rpool/persist";
+    device = "rpool/nixos/persist";
     fsType = "zfs";
     neededForBoot = true;
   };

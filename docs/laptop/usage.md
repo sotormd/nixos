@@ -635,7 +635,8 @@ them.
 For example, to create a 1TB ZVOL:
 
 ```bash
-sudo zfs create -o compression=zstd -o volblocksize=16K -V 1T rpool/vm-example-disk
+sudo zfs create -o compression=zstd rpool/vms 
+sudo zfs create -o volblocksize=16K -V 1T rpool/vms/solaris
 ```
 
 ZVOLs are thin-provisioned by default, so the full size is not allocated at
@@ -644,14 +645,14 @@ creation. Space is consumed only as the VM writes data.
 Using `16K` as the `volblocksize` is optimal for VM workloads. Using `zstd`
 gives decent compression ratios.
 
-Now you can use `/dev/zvol/rpool/vm-example-disk` as the block device for your
+Now you can use `/dev/zvol/rpool/vms/solaris` as the block device for your
 virtual machines.
 
 This way, you can manage snapshots using ZFS as well:
 
 ```bash
-sudo zfs snapshot rpool/vm-example-disk@snap1
-sudo zfs rollback rpool/vm-example-disk@snap1
+sudo zfs snapshot rpool/vms/solaris@snap1
+sudo zfs rollback rpool/vms/solaris@snap1
 ```
 
 # Nomad Mode
@@ -681,4 +682,4 @@ menu.
 The configuration for nomad mode is
 [here](../../modules/laptop/modes/nomad.nix).
 
-You can not use the `nixos` script from within the nomad specialisation.
+You cannot use the `nixos` script from within the nomad specialisation.
