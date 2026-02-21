@@ -376,11 +376,11 @@ $ which nixos
 /run/current-system/sw/bin/nixos
 ```
 
-This allows using using `nixos(1)` without installing every individual script as
+This allows using `nixos(1)` without installing every individual script as
 a package.
 
 The included commands are loaded into the wrapper package's environment
-[here](../modules/common/scripts/bin.nix). This is possible because the wrapper
+[here](../../modules/common/scripts/bin.nix). This is possible because the wrapper
 respects the `$NIXOS_SCRIPTS_DIR` environment variable.
 
 `nixos(1)` runs all commands in the `$NIXOS_DIR`, like so:
