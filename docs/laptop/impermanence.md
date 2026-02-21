@@ -93,12 +93,9 @@ fileSystems."/path/to/thing" = {
 A lib [function](../../lib/impermanence.nix) helps avoid repeated code across
 several such blocks.
 
-The following directories are persisted:
-
-- [`root`](../../modules/laptop/impermanence/bind-root.nix): Directories under
-  `/`
-- [`home`](../../modules/laptop/impermanence/bind-home.nix): Directories under
-  `/home`
+Persisted directories under `/` are declared
+[here](../../modules/laptop/impermanence/bind-root.nix) and those under `/home`
+are declared [here](../../modules/laptop/impermanence/bind-home.nix).
 
 To persist more directories, simply add to the list. The directories under `/`
 are based on the recommendations in the NixOS
