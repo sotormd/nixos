@@ -9,7 +9,6 @@ let
 
   # mount plain unencrypted devices
   # from config.vars.device.mount
-  # see docs/laptop.md or docs/server.md
   mountFileSystems = builtins.listToAttrs mountEntries;
 in
 {

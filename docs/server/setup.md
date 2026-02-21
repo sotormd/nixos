@@ -107,6 +107,7 @@ in step 3.
 | `NIXOS_ROLE`                         | `laptop` or `server` role                          | -                                                 |
 | `VARS_DEVICE_HOSTNAME`               | Hostname of the device.                            | `$(uname -n)`                                     |
 | `VARS_DEVICE_MACHINEID`              | `systemd` machine-id.                              | `$(cat /etc/machine-id)`                          |
+| `VARS_DEVICE_HOSTID`                 | Host ID, required for `ZFS`.                       | `$(head -c 8 /etc/machine-id)`                    |
 | `VARS_DEVICE_ROOT`                   | Root partition partuuid.                           | `"2178694e-02"`                                   |
 | `VARS_USER_NAME`                     | Username.                                          | `$USER`                                           |
 | `VARS_USER_EMAIL`                    | Email used for git commits.                        | `"$USER@nixos"`                                   |

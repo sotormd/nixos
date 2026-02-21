@@ -3,12 +3,6 @@
 with lib;
 {
   options.vars = {
-    device.hostId = mkOption {
-      type = types.strMatching "[a-f0-9]{8}";
-      description = "ZFS hostId (8 hex characters).";
-      example = "deadbeef";
-    };
-
     device.boot = mkOption {
       type = types.strMatching "[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12}";
       description = "PARTUUID of the boot partition.";
