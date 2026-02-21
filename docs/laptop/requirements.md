@@ -2,8 +2,8 @@
 
 This document covers the requirements for the `laptop` role.
 
-> While I have tried to cover all possible requirements, it is possible that I
-> have overlooked something.
+> These requirements reflect the hardware this role is designed and tested for.
+> Other configurations may work but are not guaranteed.
 
 Required:
 
