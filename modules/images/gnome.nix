@@ -20,22 +20,12 @@
   programs.partition-manager.enable = true;
 
   # install calamares
-  # also autostart gnome-console
-  environment.systemPackages =
-    let
-      console-autostart = pkgs.makeAutostartItem {
-        name = "console";
-        package = pkgs.gnome-console;
-      };
-    in
-    with pkgs;
-    [
-      calamares-nixos
-      calamares-nixos-extensions
-      glibcLocales
-      nerd-fonts.fira-code
-      console-autostart
-    ];
+  environment.systemPackages = with pkgs; [
+    calamares-nixos
+    calamares-nixos-extensions
+    glibcLocales
+    nerd-fonts.fira-code
+  ];
 
   i18n.supportedLocales = [ "all" ];
 }
