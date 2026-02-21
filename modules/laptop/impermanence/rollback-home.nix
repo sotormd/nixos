@@ -16,7 +16,7 @@
     unitConfig.DefaultDependencies = "no";
     serviceConfig.Type = "oneshot";
     script = ''
-      zfs rollback -r rpool/home@blank
+      zfs rollback -r rpool/nixos/home@blank
     '';
   };
 

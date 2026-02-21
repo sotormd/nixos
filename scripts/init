@@ -153,27 +153,25 @@ elif [ "$1" == "disks" ]; then
         run "sudo zpool create ${ZPOOL_NAME} ${ZPOOL_ARGS[*]} ${ZPOOL_DEVICE}"
 
         # 7) Create datasets
-        run "sudo zfs create rpool/root -o mountpoint=legacy"
-        run "sudo zfs create rpool/home -o mountpoint=legacy"
-        run "sudo zfs create rpool/nix -o mountpoint=legacy"
-        run "sudo zfs create rpool/persist -o mountpoint=legacy"
+        run "sudo zfs create rpool/nixos"
+        run "sudo zfs create rpool/nixos/root -o mountpoint=legacy"
+        run "sudo zfs create rpool/nixos/home -o mountpoint=legacy"
+        run "sudo zfs create rpool/nixos/nix -o mountpoint=legacy"
+        run "sudo zfs create rpool/nixos/persist -o mountpoint=legacy"
 
-        # 8) reserved dataset
-        run "sudo zfs create rpool/reserved -o refreservation=10G -o mountpoint=none"
-
-        # 9) empty snapshots for impermanence
-        run "sudo zfs snapshot rpool/root@blank"
-        run "sudo zfs snapshot rpool/home@blank"
+        # 8) empty snapshots for impermanence
+        run "sudo zfs snapshot rpool/nixos/root@blank"
+        run "sudo zfs snapshot rpool/nixos/home@blank"
 
     elif [ "$2" == "mount" ]; then
 
         # 10) mount filesystems
         run "sudo mkdir -p /mnt"
-        run "sudo mount -t zfs rpool/root /mnt"
+        run "sudo mount -t zfs rpool/nixos/root /mnt"
         run "sudo mkdir -p /mnt/home /mnt/nix /mnt/persist"
-        run "sudo mount -t zfs rpool/home /mnt/home"
-        run "sudo mount -t zfs rpool/nix /mnt/nix"
-        run "sudo mount -t zfs rpool/persist /mnt/persist"
+        run "sudo mount -t zfs rpool/nixos/home /mnt/home"
+        run "sudo mount -t zfs rpool/nixos/nix /mnt/nix"
+        run "sudo mount -t zfs rpool/nixos/persist /mnt/persist"
 
         # 11) mount boot
         run "sudo mkdir -p /mnt/boot"
