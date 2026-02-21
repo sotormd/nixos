@@ -262,7 +262,7 @@ elif [ "$1" == "vars" ]; then
         fi
 
         if [ -z "$VARS_USER_EMAIL" ]; then
-            VARS_USER_EMAIL="$USER@nixos"
+            VARS_USER_EMAIL="$USER@$VARS_DEVICE_HOSTNAME"
         fi
 
         if [ -z "$VARS_USER_GITHUB" ]; then
@@ -403,12 +403,11 @@ elif [ "$1" == "vars" ]; then
   # example usage:
   # device.luks = {
   #   ht02 = {
-  #       uuid = "3f74d2e3-5a67-4b86-b2c3-842f39e45b7a";
-  #       keyfile = "/root/keys/ht02";
-  #       mount = "/mnt/ht02";
-  #       fs = "xfs";
+  #     uuid = "3f74d2e3-5a67-4b86-b2c3-842f39e45b7a";
+  #     keyfile = "/root/keys/ht02";
   #   };
   # };
+  # this can be mounted using device.mount
   device.luks = { };
 
   # hdparm: stop aggressive head parking
@@ -526,6 +525,10 @@ EOF
             VARS_DEVICE_MACHINEID=$(cat /etc/machine-id)
         fi
 
+        if [ -z "$VARS_DEVICE_HOSTID" ]; then
+            VARS_DEVICE_HOSTID=$(head -c 8 /etc/machine-id)
+        fi
+
         if [ -z "$VARS_DEVICE_ROOT" ]; then
             VARS_DEVICE_ROOT="2178694e-02"
         fi
@@ -535,7 +538,7 @@ EOF
         fi
 
         if [ -z "$VARS_USER_EMAIL" ]; then
-            VARS_USER_EMAIL="$USER@nixos"
+            VARS_USER_EMAIL="$USER@$VARS_DEVICE_HOSTNAME"
         fi
 
         if [ -z "$VARS_I18N_TIMEZONE" ]; then
@@ -688,6 +691,9 @@ EOF
   # do not change for consistent journald logs
   device.machineId = "$VARS_DEVICE_MACHINEID";
 
+  # required for zfs
+  device.hostId = "$VARS_DEVICE_HOSTID";
+
   # partition partuuids
   # find them from /dev/disk/by-partuuid/...
   # assumes a specific configuration
@@ -711,12 +717,11 @@ EOF
   # example usage:
   # device.luks = {
   #   ht02 = {
-  #       uuid = "3f74d2e3-5a67-4b86-b2c3-842f39e45b7a";
-  #       keyfile = "/root/keys/ht02";
-  #       mount = "/mnt/ht02";
-  #       fs = "xfs";
+  #     uuid = "3f74d2e3-5a67-4b86-b2c3-842f39e45b7a";
+  #     keyfile = "/root/keys/ht02";
   #   };
   # };
+  # this can be mounted using device.mount
   device.luks = { };
 
   # hdparm: stop aggressive head parking

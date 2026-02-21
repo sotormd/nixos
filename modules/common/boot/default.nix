@@ -23,5 +23,7 @@
     ./tmp.nix
 
     ./quiet.nix
+
+    ./zfs.nix
   ];
 }

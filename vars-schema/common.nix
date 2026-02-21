@@ -34,6 +34,12 @@ with lib;
       example = "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa";
     };
 
+    device.hostId = mkOption {
+      type = types.strMatching "[a-f0-9]{8}";
+      description = "ZFS hostId (8 hex characters).";
+      example = "deadbeef";
+    };
+
     device.root = mkOption {
       type = types.strMatching "([a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12}|[a-f0-9]{8}-[a-f0-9]{2})";
       description = "PARTUUID of the root partition.";
@@ -76,32 +82,16 @@ with lib;
 
     device.luks = mkOption {
       type = types.attrsOf (
-        types.submodule (
-          { ... }:
-          {
-            options = {
-              uuid = mkOption {
-                type = types.strMatching "[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12}";
-              };
-
-              keyfile = mkOption {
-                type = types.path;
-              };
-
-              mount = mkOption {
-                type = types.str;
-                description = "Mount point.";
-              };
-
-              fs = mkOption {
-                type = types.enum [
-                  "ext4"
-                  "xfs"
-                ];
-              };
+        types.submodule (_: {
+          options = {
+            uuid = mkOption {
+              type = types.strMatching "[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12}";
             };
-          }
-        )
+            keyfile = mkOption {
+              type = types.path;
+            };
+          };
+        })
       );
       default = { };
       description = "Encrypted LUKS devices.";

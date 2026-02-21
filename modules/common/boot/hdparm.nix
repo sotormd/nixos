@@ -5,7 +5,6 @@ let
 
   # build one service per disk
   # to prevent aggressive head-parking
-  # see docs/laptop.md or docs/server.md
   hdparmServices = builtins.listToAttrs (
     builtins.genList (i: {
       name = "hdparm-${toString i}";
@@ -17,6 +16,7 @@ let
           ExecStart = ''
             ${pkgs.hdparm}/sbin/hdparm -B 254 -S 0 "/dev/disk/by-id/${builtins.elemAt disks i}"
           '';
+          Restart = "on-failure";
         };
       };
     }) (builtins.length disks)
