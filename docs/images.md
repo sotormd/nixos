@@ -11,7 +11,7 @@ Two images are offered for the `x86_64-linux` architecture:
 
 Two images are offered for the `aarch64-linux` architecture:
 
-1. `sd`: NixOS for sdcard targets (intended for raspberry-pi 4b).
+1. `sd`: NixOS for sdcard targets (intended for Raspberry-Pi 4b).
 
 2. `sd-remote`: Same as `sd`, but for installation over WiFi.
 
