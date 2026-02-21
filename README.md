@@ -131,9 +131,13 @@ This flake uses role-based configuration
 
    [Setup Documentation](./docs/laptop/setup.md)
 
+   [Secure Boot Documentation](./docs/laptop/secureboot.md)
+
+   [Impermanence Documentation](./docs/laptop/impermanence.md)
+
    [Usage Documenation](./docs/laptop/usage.md)
 
-2. `server` role: Headless home server configuration
+3. `server` role: Headless home server configuration
 
    [Requirements](./docs/server/requirements.md)
 
@@ -141,7 +145,7 @@ This flake uses role-based configuration
 
    [Usage Documentation](./docs/server/usage.md)
 
-3. `droid` role: nix-on-droid configuration
+4. `droid` role: nix-on-droid configuration
 
    [Setup & Usage Documentation](./docs/droid.md)
 
