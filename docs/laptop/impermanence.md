@@ -42,7 +42,7 @@ This section covers the inner workings of impermanence.
 ## ZFS Datasets
 
 > This section covers the ZFS datasets as created by the init script, or based
-> on the recommendations in laptop.md.
+> on the recommendations in [setup](./setup.md).
 
 The init script creates four datasets:
 
