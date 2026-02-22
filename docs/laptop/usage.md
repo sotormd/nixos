@@ -663,13 +663,13 @@ sudo zfs rollback rpool/vms/solaris@snap1
 `distrobox` allows for using other distributions under rootless containers on
 the NixOS host system.
 
-Example: To create a new distrobox using Debian Stable
+Example: To create a new container using Debian Stable
 
 ```bash
 distrobox create debian -i debian:stable
 ```
 
-To enter this distrobox:
+To enter this container:
 
 ```bash
 distrobox enter debian
@@ -688,6 +688,18 @@ these directories to the impermanence setup.
 `distrobox` requires the use of unprivileged user namespaces, which is disabled
 by default. It can be enabled by setting the `kernel.unprivileged_userns_clone`
 sysctl to `1` or via the waybar [userns](#userns-module) module.
+
+## Podman
+
+Podman, a simple management tool for pods, containers and images is installed.
+
+See the manpage for more information:
+
+```bash
+podman
+```
+
+Podman is also used as the backend for Distrobox.
 
 # Nomad Mode
 
