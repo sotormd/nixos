@@ -614,20 +614,23 @@ Archive manager from the GNOME desktop environment.
 
 # Virtualisation and Containers
 
+Virtual machines and containers allow running isolated environments.
+
+## Virtual Machines
+
 Virtual machines can be created using QEMU/KVM through `virt-manager`.
 
-`distrobox` allows for using other distributions under rootless containers on
-the NixOS host system.
+To launch the Virtual Machine Manager:
 
-Notes:
+```bash
+virt-manager
+```
 
-- Created virtual machines and containers are lost on reboot, since impermanence
-  does not persist these directories. To persist across reboots, store these
-  under `/persist` or add these directories to the impermanence setup.
-- `distrobox` requires the use of unprivileged user namespaces, which is
-  disabled by default. It can be enabled by setting the
-  `kernel.unprivileged_userns_clone` sysctl to `1` or via the waybar
-  [userns](#userns-module) module.
+It can also be launched from [rofi](#launcher-rofi).
+
+Created virtual machines are lost on reboot, since impermanence does not persist
+these directories. To persist across reboots, store these under `/persist` or
+add these directories to the impermanence setup.
 
 An alternative to creating persistent VM disks is to use ZFS ZVOLs to store
 them.
@@ -654,6 +657,37 @@ This way, you can manage snapshots using ZFS as well:
 sudo zfs snapshot rpool/vms/solaris@snap1
 sudo zfs rollback rpool/vms/solaris@snap1
 ```
+
+## Distrobox
+
+`distrobox` allows for using other distributions under rootless containers on
+the NixOS host system.
+
+Example: To create a new distrobox using Debian Stable
+
+```bash
+distrobox create debian -i debian:stable
+```
+
+To enter this distrobox:
+
+```bash
+distrobox enter debian
+```
+
+See the manpage for more information:
+
+```bash
+man distrobox
+```
+
+Created containers are lost on reboot, since impermanence does not persist these
+directories. To persist across reboots, store these under `/persist` or add
+these directories to the impermanence setup.
+
+`distrobox` requires the use of unprivileged user namespaces, which is disabled
+by default. It can be enabled by setting the `kernel.unprivileged_userns_clone`
+sysctl to `1` or via the waybar [userns](#userns-module) module.
 
 # Nomad Mode
 
