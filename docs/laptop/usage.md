@@ -696,7 +696,7 @@ Podman, a simple management tool for pods, containers and images is installed.
 See the manpage for more information:
 
 ```bash
-podman
+man podman
 ```
 
 Podman is also used as the backend for Distrobox.
