@@ -114,7 +114,7 @@ Services features:
 | text editor                   | [`neovim`](https://github.com/sotormd/neovim), `mousepad`                                                  |
 | version control               | `git`                                                                                                      |
 | development                   | `rust`, `python`, `go`, `haskell`                                                                          |
-| virtualization                | `qemu`, `virt-manager`, `distrobox`                                                                        |
+| virtualization                | `qemu`, `virt-manager`, `distrobox`, `podman`                                                              |
 | cpu optimizations             | `auto-cpufreq`                                                                                             |
 | resource monitor              | `btop`, `htop`                                                                                             |
 | android                       | `nix-on-droid`                                                                                             |
@@ -137,7 +137,7 @@ This flake uses role-based configuration
 
    [Usage Documenation](./docs/laptop/usage.md)
 
-3. `server` role: Headless home server configuration
+2. `server` role: Headless home server configuration
 
    [Requirements](./docs/server/requirements.md)
 
@@ -145,7 +145,7 @@ This flake uses role-based configuration
 
    [Usage Documentation](./docs/server/usage.md)
 
-4. `droid` role: nix-on-droid configuration
+3. `droid` role: nix-on-droid configuration
 
    [Setup & Usage Documentation](./docs/droid.md)
 
