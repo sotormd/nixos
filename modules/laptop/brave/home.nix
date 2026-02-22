@@ -65,14 +65,14 @@ let
           url = "https://lichess.org";
         }
         {
-          short = "fm";
-          full = "lastfm";
-          url = "https://last.fm";
-        }
-        {
           short = "gh";
           full = "github";
           url = "https://github.com";
+        }
+        {
+          short = "cb";
+          full = "codeberg";
+          url = "https://codeberg.org";
         }
         {
           short = "mt";
