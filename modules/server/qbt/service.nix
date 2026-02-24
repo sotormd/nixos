@@ -50,10 +50,10 @@
                             cat > '/var/lib/qbt/home/.config/qBittorrent/categories.json' <<EOF
               {
                   "Movies": {
-                      "save_path": "/srv/media/movies"
+                      "save_path": "/srv/torrents/movies"
                   },
                   "TV": {
-                      "save_path": "/srv/media/tv"
+                      "save_path": "/srv/torrents/tv"
                   }
               }
               EOF
