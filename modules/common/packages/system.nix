@@ -133,5 +133,8 @@
     pkgs.jq
     pkgs.yq
 
+    # luks
+    pkgs.cryptsetup
+
   ];
 }
