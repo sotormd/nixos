@@ -96,7 +96,7 @@ Services features:
 | notifications                 | `dunst`                                                                                                    |
 | terminal emulator             | `foot`                                                                                                     |
 | file manager                  | `thunar`                                                                                                   |
-| audio                         | `pipewire`                                                                                                 |
+| audio                         | `pipewire`, `pavucontrol`                                                                                  |
 | media player                  | `mpv`                                                                                                      |
 | pdf reader                    | `zathura`                                                                                                  |
 | image viewer                  | `swayimg`                                                                                                  |
