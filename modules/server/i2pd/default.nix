@@ -7,5 +7,5 @@
     ./settings.nix
   ];
 
-  services.i2pd.enable = config.vars.network.i2pd.enable;
+  services.i2pd.enable = config.vars.services.i2pd.enable;
 }

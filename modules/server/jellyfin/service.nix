@@ -9,17 +9,17 @@ let
   jellyfinSetup = pkgs.writeShellScript "jellyfin-setup" ''
         #!/usr/bin/env bash
 
-        if [ ! -f '${config.vars.network.jellyfin.data}/config/network.xml' ]; then
-          mkdir -p "${config.vars.network.jellyfin.data}/config"
-          cat > '${config.vars.network.jellyfin.data}/config/network.xml' <<EOF
+        if [ ! -f '/var/lib/jellyfin/config/network.xml' ]; then
+          mkdir -p "/var/lib/jellyfin/config"
+          cat > '/var/lib/jellyfin/config/network.xml' <<EOF
     <?xml version="1.0" encoding="utf-8"?>
     <NetworkConfiguration xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
       <BaseUrl>/jellyfin</BaseUrl>
       <EnableHttps>false</EnableHttps>
       <RequireHttps>false</RequireHttps>
-      <InternalHttpPort>${toString config.vars.network.jellyfin.port}</InternalHttpPort>
+      <InternalHttpPort>8096</InternalHttpPort>
       <InternalHttpsPort>8920</InternalHttpsPort>
-      <PublicHttpPort>${toString config.vars.network.jellyfin.port}</PublicHttpPort>
+      <PublicHttpPort>8096</PublicHttpPort>
       <PublicHttpsPort>8920</PublicHttpsPort>
       <AutoDiscovery>false</AutoDiscovery>
       <EnableUPnP>false</EnableUPnP>
@@ -43,11 +43,11 @@ let
     EOF
         fi
 
-        chown jellyfin:jellyfin -R ${config.vars.network.jellyfin.data}
+        chown jellyfin:jellyfin -R /var/lib/jellyfin
   '';
 in
 {
-  config = lib.mkIf config.vars.network.jellyfin.enable {
+  config = lib.mkIf config.vars.services.jellyfin.enable {
     systemd.services.jellyfin-setup = {
       enable = true;
       before = [ "jellyfin.service" ];
@@ -56,14 +56,6 @@ in
         Type = "oneshot";
         ExecStart = "${jellyfinSetup}";
       };
-    };
-
-    fileSystems."/var/lib/jellyfin" = {
-      device = "${config.vars.network.jellyfin.data}";
-      options = [
-        "bind"
-        "nofail"
-      ];
     };
   };
 }

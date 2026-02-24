@@ -1,10 +1,10 @@
 { config, lib, ... }:
 
 {
-  config = lib.mkIf config.vars.network.i2pd.enable {
-    services.nginx.virtualHosts."${config.vars.network.duckdns.domain}" = {
+  config = lib.mkIf config.vars.services.i2pd.enable {
+    services.nginx.virtualHosts."${config.vars.network.domain}" = {
       locations."/i2pd/" = {
-        proxyPass = "http://127.0.0.1:${toString config.vars.network.i2pd.webconsole.port}";
+        proxyPass = "http://127.0.0.1:7070";
         extraConfig = ''
           proxy_set_header Host $host;
           proxy_set_header X-Real-IP $remote_addr;

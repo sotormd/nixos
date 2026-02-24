@@ -6,6 +6,77 @@
 }:
 
 let
+  orderedOutputs = lib.sort (a: b: a.name < b.name) (
+    lib.mapAttrsToList (name: value: { inherit name value; }) config.vars.displays.outputs
+  );
+
+  indexedOutputs = lib.listToAttrs (
+    lib.imap0 (i: item: {
+      name = toString i;
+      value = {
+        inherit (item) name;
+        identifier = item.value.identifier;
+        index = i;
+      };
+    }) orderedOutputs
+  );
+
+  digits = [
+    "1"
+    "2"
+    "3"
+    "4"
+    "5"
+    "6"
+    "7"
+    "8"
+    "9"
+    "10"
+  ];
+
+  workspaceLines = lib.concatStringsSep "\n" (
+    lib.concatMap (
+      out: map (n: ''workspace "${toString out.index}${n}" output "${out.identifier}"'') digits
+    ) (lib.attrValues indexedOutputs)
+  );
+
+  jqCondition =
+    lib.concatStringsSep " " (
+      lib.imap0 (
+        i: out:
+        if i == 0 then
+          ''if . == "${out.identifier}" then "${toString i}"''
+        else
+          ''elif . == "${out.identifier}" then "${toString i}"''
+      ) (lib.attrValues indexedOutputs)
+    )
+    + ''else "unknown" end'';
+
+  lastChar = str: lib.substring (lib.stringLength str - 1) 1 str;
+
+  workspaceFocusLines = lib.concatStringsSep "\n" (
+    map (d: ''
+      bindsym Mod4+${lastChar d} exec ${pkgs.swayfx}/bin/swaymsg workspace $(${pkgs.swayfx}/bin/swaymsg -t get_outputs | ${pkgs.jq}/bin/jq -r '.[] | select(.focused) | .name | ${jqCondition}')${d}
+    '') digits
+  );
+
+  workspaceMoveLines = lib.concatStringsSep "\n" (
+    map (d: ''
+      bindsym Mod4+shift+${lastChar d} exec ${pkgs.swayfx}/bin/swaymsg move workspace $(${pkgs.swayfx}/bin/swaymsg -t get_outputs | ${pkgs.jq}/bin/jq -r '.[] | select(.focused) | .name | ${jqCondition}')${d}
+    '') digits
+  );
+
+  renderOutput = name: cfg: ''
+    output "${name}" {
+        mode ${cfg.resolution}@${cfg.refresh}
+        position ${cfg.position}
+    }
+  '';
+
+  outputLines = lib.concatStringsSep "\n\n" (
+    map (item: renderOutput item.name item.value) orderedOutputs
+  );
+
   backgrounds = import ./backgrounds.nix { inherit config lib; };
 
   configuration = pkgs.writeTextFile {
@@ -77,26 +148,7 @@ let
       #
       workspace_layout default
       workspace_auto_back_and_forth no
-      workspace "01" output "${config.vars.outputs.laptop}"
-      workspace "02" output "${config.vars.outputs.laptop}"
-      workspace "03" output "${config.vars.outputs.laptop}"
-      workspace "04" output "${config.vars.outputs.laptop}"
-      workspace "05" output "${config.vars.outputs.laptop}"
-      workspace "06" output "${config.vars.outputs.laptop}"
-      workspace "07" output "${config.vars.outputs.laptop}"
-      workspace "08" output "${config.vars.outputs.laptop}"
-      workspace "09" output "${config.vars.outputs.laptop}"
-      workspace "010" output "${config.vars.outputs.laptop}"
-      workspace "11" output "${config.vars.outputs.monitor}"
-      workspace "12" output "${config.vars.outputs.monitor}"
-      workspace "13" output "${config.vars.outputs.monitor}"
-      workspace "14" output "${config.vars.outputs.monitor}"
-      workspace "15" output "${config.vars.outputs.monitor}"
-      workspace "16" output "${config.vars.outputs.monitor}"
-      workspace "17" output "${config.vars.outputs.monitor}"
-      workspace "18" output "${config.vars.outputs.monitor}"
-      workspace "19" output "${config.vars.outputs.monitor}"
-      workspace "110" output "${config.vars.outputs.monitor}"
+      ${workspaceLines}
 
       #
       # SWITCH TO WORKSPACE
@@ -106,31 +158,13 @@ let
       bindsym Mod4+ctrl+Right workspace next
       bindsym Mod4+ctrl+Left workspace prev
       bindsym Mod4+g exec ${pkgs.swayfx}/bin/swaymsg workspace $(${pkgs.swayfx}/bin/swaymsg -t get_workspaces -r | ${pkgs.jq}/bin/jq -r '.[].name' | rofi -dmenu -p "")
-      bindsym Mod4+0 exec ${pkgs.swayfx}/bin/swaymsg workspace $(${pkgs.swayfx}/bin/swaymsg -t get_outputs | ${pkgs.jq}/bin/jq -r '.[] | select(.focused) | .name | if . == "${config.vars.outputs.monitor}" then "1" elif . == "${config.vars.outputs.laptop}" then "0" else "unknown" end')10
-      bindsym Mod4+1 exec ${pkgs.swayfx}/bin/swaymsg workspace $(${pkgs.swayfx}/bin/swaymsg -t get_outputs | ${pkgs.jq}/bin/jq -r '.[] | select(.focused) | .name | if . == "${config.vars.outputs.monitor}" then "1" elif . == "${config.vars.outputs.laptop}" then "0" else "unknown" end')1
-      bindsym Mod4+2 exec ${pkgs.swayfx}/bin/swaymsg workspace $(${pkgs.swayfx}/bin/swaymsg -t get_outputs | ${pkgs.jq}/bin/jq -r '.[] | select(.focused) | .name | if . == "${config.vars.outputs.monitor}" then "1" elif . == "${config.vars.outputs.laptop}" then "0" else "unknown" end')2
-      bindsym Mod4+3 exec ${pkgs.swayfx}/bin/swaymsg workspace $(${pkgs.swayfx}/bin/swaymsg -t get_outputs | ${pkgs.jq}/bin/jq -r '.[] | select(.focused) | .name | if . == "${config.vars.outputs.monitor}" then "1" elif . == "${config.vars.outputs.laptop}" then "0" else "unknown" end')3
-      bindsym Mod4+4 exec ${pkgs.swayfx}/bin/swaymsg workspace $(${pkgs.swayfx}/bin/swaymsg -t get_outputs | ${pkgs.jq}/bin/jq -r '.[] | select(.focused) | .name | if . == "${config.vars.outputs.monitor}" then "1" elif . == "${config.vars.outputs.laptop}" then "0" else "unknown" end')4
-      bindsym Mod4+5 exec ${pkgs.swayfx}/bin/swaymsg workspace $(${pkgs.swayfx}/bin/swaymsg -t get_outputs | ${pkgs.jq}/bin/jq -r '.[] | select(.focused) | .name | if . == "${config.vars.outputs.monitor}" then "1" elif . == "${config.vars.outputs.laptop}" then "0" else "unknown" end')5
-      bindsym Mod4+6 exec ${pkgs.swayfx}/bin/swaymsg workspace $(${pkgs.swayfx}/bin/swaymsg -t get_outputs | ${pkgs.jq}/bin/jq -r '.[] | select(.focused) | .name | if . == "${config.vars.outputs.monitor}" then "1" elif . == "${config.vars.outputs.laptop}" then "0" else "unknown" end')6
-      bindsym Mod4+7 exec ${pkgs.swayfx}/bin/swaymsg workspace $(${pkgs.swayfx}/bin/swaymsg -t get_outputs | ${pkgs.jq}/bin/jq -r '.[] | select(.focused) | .name | if . == "${config.vars.outputs.monitor}" then "1" elif . == "${config.vars.outputs.laptop}" then "0" else "unknown" end')7
-      bindsym Mod4+8 exec ${pkgs.swayfx}/bin/swaymsg workspace $(${pkgs.swayfx}/bin/swaymsg -t get_outputs | ${pkgs.jq}/bin/jq -r '.[] | select(.focused) | .name | if . == "${config.vars.outputs.monitor}" then "1" elif . == "${config.vars.outputs.laptop}" then "0" else "unknown" end')8
-      bindsym Mod4+9 exec ${pkgs.swayfx}/bin/swaymsg workspace $(${pkgs.swayfx}/bin/swaymsg -t get_outputs | ${pkgs.jq}/bin/jq -r '.[] | select(.focused) | .name | if . == "${config.vars.outputs.monitor}" then "1" elif . == "${config.vars.outputs.laptop}" then "0" else "unknown" end')9
+      ${workspaceFocusLines}
 
       #
       # MOVE TO WORKSPACE
       #
       bindsym Mod4+shift+g exec ${pkgs.swayfx}/bin/swaymsg move workspace $(${pkgs.swayfx}/bin/swaymsg -t get_workspaces -r | ${pkgs.jq}/bin/jq -r '.[].name' | rofi -dmenu -p "")
-      bindsym Mod4+shift+0 exec ${pkgs.swayfx}/bin/swaymsg move workspace $(${pkgs.swayfx}/bin/swaymsg -t get_outputs | ${pkgs.jq}/bin/jq -r '.[] | select(.focused) | .name | if . == "${config.vars.outputs.monitor}" then "1" elif . == "${config.vars.outputs.laptop}" then "0" else "unknown" end')10
-      bindsym Mod4+shift+1 exec ${pkgs.swayfx}/bin/swaymsg move workspace $(${pkgs.swayfx}/bin/swaymsg -t get_outputs | ${pkgs.jq}/bin/jq -r '.[] | select(.focused) | .name | if . == "${config.vars.outputs.monitor}" then "1" elif . == "${config.vars.outputs.laptop}" then "0" else "unknown" end')1
-      bindsym Mod4+shift+2 exec ${pkgs.swayfx}/bin/swaymsg move workspace $(${pkgs.swayfx}/bin/swaymsg -t get_outputs | ${pkgs.jq}/bin/jq -r '.[] | select(.focused) | .name | if . == "${config.vars.outputs.monitor}" then "1" elif . == "${config.vars.outputs.laptop}" then "0" else "unknown" end')2
-      bindsym Mod4+shift+3 exec ${pkgs.swayfx}/bin/swaymsg move workspace $(${pkgs.swayfx}/bin/swaymsg -t get_outputs | ${pkgs.jq}/bin/jq -r '.[] | select(.focused) | .name | if . == "${config.vars.outputs.monitor}" then "1" elif . == "${config.vars.outputs.laptop}" then "0" else "unknown" end')3
-      bindsym Mod4+shift+4 exec ${pkgs.swayfx}/bin/swaymsg move workspace $(${pkgs.swayfx}/bin/swaymsg -t get_outputs | ${pkgs.jq}/bin/jq -r '.[] | select(.focused) | .name | if . == "${config.vars.outputs.monitor}" then "1" elif . == "${config.vars.outputs.laptop}" then "0" else "unknown" end')4
-      bindsym Mod4+shift+5 exec ${pkgs.swayfx}/bin/swaymsg move workspace $(${pkgs.swayfx}/bin/swaymsg -t get_outputs | ${pkgs.jq}/bin/jq -r '.[] | select(.focused) | .name | if . == "${config.vars.outputs.monitor}" then "1" elif . == "${config.vars.outputs.laptop}" then "0" else "unknown" end')5
-      bindsym Mod4+shift+6 exec ${pkgs.swayfx}/bin/swaymsg move workspace $(${pkgs.swayfx}/bin/swaymsg -t get_outputs | ${pkgs.jq}/bin/jq -r '.[] | select(.focused) | .name | if . == "${config.vars.outputs.monitor}" then "1" elif . == "${config.vars.outputs.laptop}" then "0" else "unknown" end')6
-      bindsym Mod4+shift+7 exec ${pkgs.swayfx}/bin/swaymsg move workspace $(${pkgs.swayfx}/bin/swaymsg -t get_outputs | ${pkgs.jq}/bin/jq -r '.[] | select(.focused) | .name | if . == "${config.vars.outputs.monitor}" then "1" elif . == "${config.vars.outputs.laptop}" then "0" else "unknown" end')7
-      bindsym Mod4+shift+8 exec ${pkgs.swayfx}/bin/swaymsg move workspace $(${pkgs.swayfx}/bin/swaymsg -t get_outputs | ${pkgs.jq}/bin/jq -r '.[] | select(.focused) | .name | if . == "${config.vars.outputs.monitor}" then "1" elif . == "${config.vars.outputs.laptop}" then "0" else "unknown" end')8
-      bindsym Mod4+shift+9 exec ${pkgs.swayfx}/bin/swaymsg move workspace $(${pkgs.swayfx}/bin/swaymsg -t get_outputs | ${pkgs.jq}/bin/jq -r '.[] | select(.focused) | .name | if . == "${config.vars.outputs.monitor}" then "1" elif . == "${config.vars.outputs.laptop}" then "0" else "unknown" end')9
+      ${workspaceMoveLines}
 
       #
       # AUDIO
@@ -213,20 +247,9 @@ let
       }
 
       #
-      # MONITOR
+      # OUTPUTS
       #
-      output "${config.vars.outputs.monitor}" {
-        mode 1920x1080@75Hz
-        position 1920 0
-      }
-
-      #
-      # LAPTOP
-      #
-      output "${config.vars.outputs.laptop}" {
-        mode 1920x1200@60Hz
-        position 0 0
-      }
+      ${outputLines}
 
       #
       # LEAVE MODE
@@ -336,6 +359,11 @@ let
       timeout 10 'swaylock && sudo systemctl start restore-default-route' \
       timeout 180 'systemctl suspend' \
       before-sleep 'swaylock && sudo systemctl start restore-default-route'
+
+      #
+      # XKCD-WALL
+      #
+      exec xkcd-refresh
 
       #
       # POLKIT AGENT

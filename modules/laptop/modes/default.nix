@@ -17,13 +17,10 @@ let
         ../impermanence
         ../network
         ../sops
-        ../ssh
         ../users
         ../virtualization
         ./${mode}.nix
       ];
-
-      vars.nixosRole = lib.mkForce "laptop-mode";
 
       system.stateVersion = "24.05";
     };
@@ -31,7 +28,7 @@ let
 in
 {
   # enable mode specialisations only if impermanence is enabled
-  config = lib.mkIf config.vars.device.impermanence.enable {
+  config = lib.mkIf config.vars.features.impermanence.enable {
     specialisation = lib.genAttrs modes mkSpec;
   };
 }

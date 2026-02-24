@@ -11,7 +11,7 @@
 
   imports = [ inputs.lanzaboote.nixosModules.lanzaboote ];
 
-  config = lib.mkIf config.vars.device.secureboot.enable {
+  config = lib.mkIf config.vars.features.secureboot.enable {
 
     environment.systemPackages = [ pkgs.sbctl ];
 

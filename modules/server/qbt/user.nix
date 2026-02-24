@@ -1,10 +1,8 @@
-{ config, ... }:
-
 {
   users.users.qbt = {
     isSystemUser = true;
     group = "qbt";
-    home = "${config.vars.network.qbt.data}/qbt/home";
+    home = "/var/lib/qbt/home";
     createHome = true;
   };
   users.groups = {

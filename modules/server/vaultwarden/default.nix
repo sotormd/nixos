@@ -7,5 +7,5 @@
     ./settings.nix
   ];
 
-  services.vaultwarden.enable = config.vars.network.vaultwarden.enable;
+  services.vaultwarden.enable = config.vars.services.vaultwarden.enable;
 }

@@ -55,21 +55,21 @@
     DefaultSearchProviderEnabled = true;
 
     DefaultSearchProviderImageURL = lib.concatStrings (
-      lib.choose config.vars.network.server.enable
+      lib.choose config.vars.features.selfhosted.enable
         "https://${config.vars.network.server.domain}/searxng/static/themes/simple/img/favicon.svg"
         "https://duckduckgo.com/assets/logo_header_mobile.alt.v109.svg"
     );
 
     DefaultSearchProviderKeyword = lib.concatStrings (
-      lib.choose config.vars.network.server.enable ":sx" ":ddg"
+      lib.choose config.vars.features.selfhosted.enable ":sx" ":ddg"
     );
 
     DefaultSearchProviderName = lib.concatStrings (
-      lib.choose config.vars.network.server.enable "SearXNG" "DuckDuckGo"
+      lib.choose config.vars.features.selfhosted.enable "SearXNG" "DuckDuckGo"
     );
 
     DefaultSearchProviderSearchURL = lib.concatStrings (
-      lib.choose config.vars.network.server.enable
+      lib.choose config.vars.features.selfhosted.enable
         "https://${config.vars.network.server.domain}/searxng/search?q={searchTerms}"
         "https://duckduckgo.com/?q={searchTerms}"
     );

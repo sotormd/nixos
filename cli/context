@@ -1,0 +1,7 @@
+#!/usr/bin/env bash
+
+set -euo pipefail
+
+echo "NIXOS_ROLE   : $__NIXOS_ROLE"
+echo "NIXOS_DIR    : $__NIXOS_DIR"
+echo "NIXOS_SCRIPTS: $__NIXOS_SCRIPTS"

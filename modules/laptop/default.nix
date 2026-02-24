@@ -10,8 +10,6 @@
 
     inputs.wallpapers.nixosModules.wallpapers
 
-    inputs.xkcd.nixosModules.xkcd
-
     # MODULES - sorted alphabetically
 
     # audio with pipewire
@@ -73,9 +71,6 @@
 
     # sops-nix secrets management
     ./sops
-
-    # secure shell
-    ./ssh
 
     # sway wayland compositor
     ./sway

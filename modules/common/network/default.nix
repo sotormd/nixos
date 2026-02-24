@@ -15,7 +15,5 @@
     ./timesyncd.nix
 
     ./wifi.nix
-
-    ./wpa3.nix
   ];
 }

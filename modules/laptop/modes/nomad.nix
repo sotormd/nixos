@@ -6,6 +6,8 @@
 }:
 
 {
+  vars.flake.nixosRole = lib.mkForce "laptop-nomad";
+
   networking = {
     wireless.enable = lib.mkForce false;
     wireless.networks = lib.mkForce { };

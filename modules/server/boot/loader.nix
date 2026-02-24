@@ -6,5 +6,5 @@
   boot.loader.generic-extlinux-compatible.enable = true;
 
   # limit entries to 10
-  boot.loader.generic-extlinux-compatible.configurationLimit = 10;
+  boot.loader.generic-extlinux-compatible.configurationLimit = 20;
 }

@@ -61,7 +61,7 @@
     # nginx web server
     local-data = [
       ''
-        "${config.vars.network.duckdns.domain}. IN A ${config.vars.network.ip}"
+        "${config.vars.network.domain}. IN A ${config.vars.network.address}"
       ''
     ];
   };

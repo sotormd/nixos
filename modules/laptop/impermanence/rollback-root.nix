@@ -7,12 +7,12 @@
 
 {
   # Rollback /
-  boot.initrd.systemd.services.rollback-root = lib.mkIf config.vars.device.impermanence.enable {
+  boot.initrd.systemd.services.rollback-root = lib.mkIf config.vars.features.impermanence.enable {
     description = "Rollback /";
     wantedBy = [ "initrd.target" ];
     after = [ "zfs-import-rpool.service" ];
     before = [ "sysroot.mount" ];
-    path = with pkgs; [ zfs ];
+    path = [ pkgs.zfs ];
     unitConfig.DefaultDependencies = "no";
     serviceConfig.Type = "oneshot";
     script = ''

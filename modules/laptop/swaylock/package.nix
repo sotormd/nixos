@@ -13,16 +13,10 @@ let
       pkgs
       ;
   };
-  swaylockWrapped = pkgs.writeShellScriptBin "swaylock" (
-    lib.concatStringsSep "\n" (
-      lib.concatMap (x: x) [
-        [ ''${pkgs.swaylock}/bin/swaylock --config ${configuration.configDir}/config "$@"'' ]
-        (lib.optional (
-          builtins.substring 0 4 config.vars.outputs.lockscreen == "xkcd"
-        ) "systemctl restart xkcd-wall.service --user || echo 1")
-      ]
-    )
-  );
+  swaylockWrapped = pkgs.writeShellScriptBin "swaylock" ''
+    ${pkgs.swaylock}/bin/swaylock --config ${configuration.configDir}/config "$@"
+    xkcd-refresh
+  '';
 in
 {
   swaylock = pkgs.symlinkJoin {

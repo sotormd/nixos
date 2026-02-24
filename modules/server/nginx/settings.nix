@@ -10,30 +10,30 @@ let
   homepageText = inputs.homepage.lib.makeHomepage {
     layout = [
       (lib.concatMap (x: x) [
-        (lib.optional config.vars.network.searxng.enable {
+        (lib.optional config.vars.services.searxng.enable {
           short = "sx";
           full = "searxng";
-          url = "https://${config.vars.network.duckdns.domain}/searxng/";
+          url = "https://${config.vars.network.domain}/searxng/";
         })
-        (lib.optional config.vars.network.vaultwarden.enable {
+        (lib.optional config.vars.services.vaultwarden.enable {
           short = "vw";
           full = "vaultwarden";
-          url = "https://${config.vars.network.duckdns.domain}/vaultwarden/";
+          url = "https://${config.vars.network.domain}/vaultwarden/";
         })
-        (lib.optional config.vars.network.i2pd.enable {
+        (lib.optional config.vars.services.i2pd.enable {
           short = "ip";
           full = "i2pd";
-          url = "https://${config.vars.network.duckdns.domain}/i2pd/";
+          url = "https://${config.vars.network.domain}/i2pd/";
         })
-        (lib.optional config.vars.network.qbt.enable {
+        (lib.optional config.vars.services.qbt.enable {
           short = "qb";
           full = "qbittorrent";
-          url = "https://${config.vars.network.duckdns.domain}/qbt/";
+          url = "https://${config.vars.network.domain}/qbt/";
         })
-        (lib.optional config.vars.network.jellyfin.enable {
+        (lib.optional config.vars.services.jellyfin.enable {
           short = "jf";
           full = "jellyfin";
-          url = "https://${config.vars.network.duckdns.domain}/jellyfin/";
+          url = "https://${config.vars.network.domain}/jellyfin/";
         })
       ])
     ];
@@ -63,7 +63,7 @@ in
     '';
   };
 
-  services.nginx.virtualHosts."${config.vars.network.duckdns.domain}" = {
+  services.nginx.virtualHosts."${config.vars.network.domain}" = {
     locations."/" = {
       root = homepageDir;
       index = "home.html";

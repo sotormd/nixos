@@ -7,5 +7,5 @@
   boot.loader.systemd-boot.consoleMode = "max";
 
   # limit entries to 10
-  boot.loader.systemd-boot.configurationLimit = 10;
+  boot.loader.systemd-boot.configurationLimit = 20;
 }

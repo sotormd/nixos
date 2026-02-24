@@ -21,22 +21,23 @@ This document covers setting up Secure Boot on the `laptop` role.
 2. Create secure boot keys.
 
    ```bash
-   nixos init lanzaboote create
+   nixos bootstrap lanzaboote create
    ```
 
-   Set `device.secureboot.enable = true;` in the variables file.
+3. Set `secureboot.enable` to `true` in the `features` section of the variables
+   file.
 
    ```bash
    nixos edit vars
    ```
 
-   Switch to the new configuration.
+4. Switch to the new configuration.
 
    ```bash
    nixos switch
    ```
 
-   Verify `sbctl verify` output.
+5. Verify `sbctl verify` output.
 
    ```bash
    sbctl verify
@@ -44,21 +45,21 @@ This document covers setting up Secure Boot on the `laptop` role.
 
    It is expected that `bzImage.efi` files are not signed.
 
-3. Enter Secure Boot setup mode in BIOS.
+6. Enter Secure Boot setup mode in BIOS.
 
    Boot into EFI firmware and clear existing plaform keys (setup mode).
 
-4. Boot into NixOS and enroll Secure Boot keys.
+7. Boot into NixOS and enroll Secure Boot keys.
 
    ```bash
-   nixos init lanzaboote enroll
+   nixos bootstrap lanzaboote enroll
    ```
 
-5. Enable Secure Boot in BIOS.
+8. Enable Secure Boot in BIOS.
 
    Boot into EFI firmware and enable Secure Boot.
 
-   Boot into NixOS and Secure Boot should be activated and in user mode.
+9. Boot into NixOS and Secure Boot should be activated and in user mode.
 
    ```bash
    bootctl status

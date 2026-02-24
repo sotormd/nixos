@@ -1,20 +1,27 @@
 #!/usr/bin/env bash
 
-DIR="$NIXOS_DIR"
-ROLE="$NIXOS_ROLE"
+set -euo pipefail
+
+DIR="$__NIXOS_DIR"
+ROLE="$__NIXOS_ROLE"
 
 VARS_DIR="$DIR/vars"
 VARS="$VARS_DIR/vars.nix"
+
 SECRETS="$VARS_DIR/secrets.yaml"
 
-if [ "$ROLE" == "laptop" ]; then
+case "$ROLE" in
+  laptop)
     SOPS_DIR="/persist/sops-nix"
-elif [ "$ROLE" == "server" ]; then
+    ;;
+  server)
     SOPS_DIR="/var/lib/sops-nix"
-else
-    echo "Error: unexpected role $ROLE" >&2
+    ;;
+  *)
+    echo "Error: unexpected role '$ROLE'" >&2
     exit 1
-fi
+    ;;
+esac
 
 case "$1" in
     vars)
@@ -24,7 +31,7 @@ case "$1" in
         sudo GNUPGHOME="$SOPS_DIR" sops "$SECRETS"
         ;;
     *)
-        echo "Error: expected argument 'vars' or 'sops'" >&2
+    echo "Error: expected argument (vars/sops)" >&2
         exit 1
         ;;
 esac

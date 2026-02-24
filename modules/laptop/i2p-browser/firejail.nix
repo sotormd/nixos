@@ -9,7 +9,7 @@ let
   package = import ./package.nix { inherit config pkgs; };
 in
 {
-  programs.firejail.wrappedBinaries.i2p-browser = lib.mkIf config.vars.network.server.enable {
+  programs.firejail.wrappedBinaries.i2p-browser = lib.mkIf config.vars.features.selfhosted.enable {
     executable = "${package.i2pBrowser}/bin/i2p-browser";
     profile = "${pkgs.firejail}/etc/firejail/firefox.profile";
     extraArgs = [

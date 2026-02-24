@@ -1,0 +1,36 @@
+#!/usr/bin/env bash
+
+if ! [[ "$1" =~ ^(test|boot|switch)$ ]]; then
+  echo "Error: expected verb (test/boot/switch)" >&2
+  exit 1
+fi
+
+VERB=$1
+
+set -euo pipefail
+
+"$__NIXOS_SCRIPTS/format"
+"$__NIXOS_SCRIPTS/perms"
+
+git add .
+
+if [ "$__NIXOS_ROLE" == "laptop" ]; then
+    GIT_PAGER=cat git diff HEAD -- ':!vars/vars.nix' ':!vars/secrets.yaml' ':!.sops.yaml'
+fi
+
+echo
+"$__NIXOS_SCRIPTS/digest"
+
+read -p "continue? [Y/n]: " confirm
+
+confirm=${confirm:-Y}
+
+if [[ $confirm =~ ^[Yy]$ ]]; then
+
+    sudo nixos-rebuild $VERB --flake ".#$__NIXOS_ROLE" --fallback
+
+    git reset -- vars/vars.nix vars/secrets.yaml .sops.yaml
+
+else
+    echo "cancelled"
+fi

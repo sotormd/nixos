@@ -10,7 +10,7 @@ let
       font="${config.colors.fonts.normal} 9"
       frame_color="#${config.colors.dunst.normal}"
       gap_size=5
-      monitor=${config.vars.outputs.monitor}
+      monitor=${config.vars.displays.outputs.${config.vars.displays.primary}.identifier}
       offset="5x5"
       origin="top-right"
       highlight="#${config.colors.dunst.normal}"

@@ -80,11 +80,11 @@ Bootstrap process for the `laptop` role.
 3. Format and mount partitions for installation.
 
    ```bash
-   export NIXOS_DISKS_DRY_RUN=false
-   nixos init disks boot
-   nixos init disks swap
-   nixos init disks root
-   nixos init disks mount
+   export DISKS_DRY_RUN=false
+   nixos bootstrap disks boot
+   nixos bootstrap disks swap
+   nixos bootstrap disks root
+   nixos bootstrap disks mount
    ```
 
    Or alternatively, format and mount the partitions manually by following
@@ -183,7 +183,7 @@ Bootstrap process for the `laptop` role.
 1. Clone this flake.
 
    ```bash
-   nixos init clone
+   nixos bootstrap clone
    ```
 
    The flake will be cloned to `$NIXOS_ROOT_MOUNT$NIXOS_DIR`.
@@ -191,8 +191,8 @@ Bootstrap process for the `laptop` role.
 2. Initialize variables and secrets.
 
    ```bash
-   nixos init vars
-   nixos init sops
+   nixos bootstrap vars
+   nixos bootstrap sops
    ```
 
    Variables and secrets can be configured through environment variables while
@@ -202,8 +202,8 @@ Bootstrap process for the `laptop` role.
 3. Edit variables and secrets.
 
    ```bash
-   nixos init vars edit
-   nixos init sops edit
+   nixos edit vars
+   nixos edit sops
    ```
 
    Make sure all variables and secrets are properly defined.
@@ -211,7 +211,7 @@ Bootstrap process for the `laptop` role.
 4. Install NixOS
 
    ```bash
-   nixos init install
+   nixos bootstrap install
    ```
 
 5. Finish installation.
@@ -222,8 +222,6 @@ Bootstrap process for the `laptop` role.
 
    Remove the removable medium and boot into the newly installed NixOS
    installation.
-
-   You should be able to log in to the sway desktop and use the `nixos` command.
 
 ## Environment variables
 
@@ -240,42 +238,37 @@ in step 3.
 
 <summary>Click to expand: full list of possible environment variables</summary>
 
-| Name                              | Explanation                                        | Default                                           | Example                              |
-| --------------------------------- | -------------------------------------------------- | ------------------------------------------------- | ------------------------------------ |
-| `NIXOS_DIR`                       | Directory where the NixOS configuration is stored. | -                                                 | `"/persist/nixos"`                   |
-| `NIXOS_ROLE`                      | `laptop` or `server` role                          | -                                                 | `"laptop"`                           |
-| `VARS_DEVICE_HOSTNAME`            | Hostname of the device.                            | `$(uname -n)`                                     | `"Foo"`                              |
-| `VARS_DEVICE_MACHINEID`           | `systemd` machine-id.                              | `$(cat /etc/machine-id)`                          | `"51934ba93b754bf28caf413f7e6c65bd"` |
-| `VARS_DEVICE_HOSTID`              | Host ID, required for `ZFS`.                       | `$(head -c 8 /etc/machine-id)`                    | `"51934b"`                           |
-| `VARS_DEVICE_BOOT`                | Boot partition partuuid.                           | `"$BOOT"`                                         | -                                    |
-| `VARS_DEVICE_SWAP`                | Swap partition partuuid.                           | `"$SWAP"`                                         | -                                    |
-| `VARS_DEVICE_ROOT`                | Root partition partuuid.                           | `"$ROOT"`                                         | -                                    |
-| `VARS_DEVICE_SECUREBOOT_ENABLE`   | Enable secure boot.                                | `"false"`                                         | `"true"`                             |
-| `VARS_DEVICE_IMPERMANENCE_ENABLE` | Enable impermanence.                               | `"false"`                                         | `"true"`                             |
-| `VARS_USER_NAME`                  | Username.                                          | `$USER`                                           | `"Bar"`                              |
-| `VARS_USER_EMAIL`                 | Email used for git commits.                        | `"$USER@nixos"`                                   | `"Bar@domain.com"`                   |
-| `VARS_USER_GITHUB_KEYFILE`        | Github SSH identity key.                           | `"id_ed25519_github"`                             | `"id_rsa_github"`                    |
-| `VARS_USER_CODEBERG_KEYFILE`      | Codeberg SSH identity key.                         | `"id_ed25519_codeberg"`                           | `"id_rsa_codeberg"`                  |
-| `VARS_I18N_TIMEZONE`              | Timezone.                                          | `$(timedatectl show --property=Timezone --value)` | `"Europe/Berlin"`                    |
-| `VARS_I18N_KEYBOARD`              | Keyboard layout.                                   | `"us"`                                            | `"us"`                               |
-| `VARS_I18N_LOCALE`                | Locale.                                            | `"en_US.UTF-8"`                                   | `"de_DE.UTF-8"`                      |
-| `VARS_NETWORK_INTERFACE`          | Wireless network interface.                        | `"wlp1s0"`                                        | `"wlan0"`                            |
-| `VARS_NETWORK_SSID`               | Wireless network ssid.                             | `"net"`                                           | `"net20"`                            |
-| `VARS_NETWORK_GATEWAY`            | Wireless network gateway.                          | `"192.168.0.1"`                                   | `"10.0.0.0"`                         |
-| `VARS_NETWORK_IP`                 | Static local IP address.                           | `"192.168.0.100"`                                 | `"10.0.0.3"`                         |
-| `VARS_NETWORK_WPA3_ENABLE`        | Enable SAE (dragonfly) authentication.             | `"true"`                                          | `"false"`                            |
-| `VARS_NETWORK_SERVER_ENABLE`      | Enable server-dependant features.                  | `"false"`                                         | `"false"`                            |
-| `VARS_NETWORK_SERVER_IP`          | Static local server IP address.                    | `"192.168.0.200"`                                 | `"10.0.0.5"`                         |
-| `VARS_NETWORK_SERVER_DOMAIN`      | Server domain.                                     | `"nixos-server.duckdns.org"`                      | `"myserver.domain.com"`              |
-| `VARS_NETWORK_SERVER_SSH_PORT`    | Server SSH port.                                   | `"22"`                                            | `"20000"`                            |
-| `VARS_NETWORK_SERVER_SSH_KEYFILE` | Server SSH identity key.                           | `"id_ed25519_server"`                             | `"id_rsa"`                           |
-| `VARS_NETWORK_SERVER_I2P_PORT`    | Server I2P HTTP proxy port.                        | `"4444"`                                          | `"23001"`                            |
-| `VARS_OUTPUTS_LAPTOP`             | Identifier for laptop screen.                      | `"eDP-1"`                                         | `"eDP-1"`                            |
-| `VARS_OUTPUTS_MONITOR`            | Identifier for monitor screen.                     | `"HDMI-A-1"`                                      | `"HDMI-A-1"`                         |
-| `VARS_OUTPUTS_WALLPAPER`          | Wallpaper name.                                    | `"nord.space"`                                    | `"oc.nixos"`                         |
-| `VARS_OUTPUTS_LOCKSCREEN`         | Lockscreen wallpaper name.                         | `"xkcd.random"`                                   | `"oc.nixos"`                         |
-| `SECRETS_HASHED_PASSWORD`         | Hashed user password.                              | `$(mkpasswd -m yescrypt)`                         | -                                    |
-| `SECRETS_PSK`                     | PSK for the network.                               | (user input)                                      | `"supersecretpsk"`                   |
+| Name                               | Explanation                              | Default                                           |
+| ---------------------------------- | ---------------------------------------- | ------------------------------------------------- |
+| `VARS_DEVICE_HOSTNAME`             | Hostname of the device.                  | `$(uname -n)`                                     |
+| `VARS_DEVICE_MACHINEID`            | `systemd` machine-id.                    | `$(cat /etc/machine-id)`                          |
+| `VARS_DEVICE_HOSTID`               | Host ID, required for `ZFS`.             | `$(head -c 8 /etc/machine-id)`                    |
+| `VARS_PARTITIONS_BOOT`             | Boot partition identifier.               | `${BOOT##*/}`                                     |
+| `VARS_PARTITIONS_SWAP`             | Swap partition identifier.               | `${SWAP##*/}`                                     |
+| `VARS_PARTITIONS_ROOT`             | Root partition identifier.               | `${ROOT##*/}`                                     |
+| `VARS_USER_NAME`                   | Username.                                | `$USER`                                           |
+| `VARS_USER_EMAIL`                  | Email address.                           | `$USER@$VARS_DEVICE_HOSTNAME`                     |
+| `VARS_USER_GITHUB_KEYFILE`         | Github SSH identity key path.            | `/home/$VARS_USER_NAME/.ssh/id_ed25519_github`    |
+| `VARS_USER_CODEBERG_KEYFILE`       | Codeberg SSH identity key path.          | `/home/$VARS_USER_NAME/.ssh/id_ed25519_codeberg`  |
+| `VARS_I18N_TIMEZONE`               | Timezone.                                | `$(timedatectl show --property=Timezone --value)` |
+| `VARS_I18N_KEYBOARD`               | Keyboard layout.                         | `"us"`                                            |
+| `VARS_I18N_LOCALE`                 | Locale.                                  | `"en_US.UTF-8"`                                   |
+| `VARS_NETWORK_INTERFACE`           | Wireless network interface.              | `"wlp1s0"`                                        |
+| `VARS_NETWORK_SSID`                | Wireless network SSID.                   | `"net"`                                           |
+| `VARS_NETWORK_GATEWAY`             | Network gateway address.                 | `"192.168.0.1"`                                   |
+| `VARS_NETWORK_ADDRESS`             | Static local IP address.                 | `"192.168.0.100"`                                 |
+| `VARS_NETWORK_SERVER_ADDRESS`      | Static local server IP address.          | `"192.168.0.200"`                                 |
+| `VARS_NETWORK_SERVER_DOMAIN`       | Server domain.                           | `"example.duckdns.org"`                           |
+| `VARS_DISPLAYS_LAPTOP_IDENTIFIER`  | Identifier for laptop display.           | `"eDP-1"`                                         |
+| `VARS_DISPLAYS_LAPTOP_RESOLUTION`  | Laptop display resolution.               | `"1920x1200"`                                     |
+| `VARS_DISPLAYS_LAPTOP_REFRESH`     | Laptop display refresh rate.             | `"60Hz"`                                          |
+| `VARS_DISPLAYS_LAPTOP_POSITION`    | Laptop display position.                 | `"0 0"`                                           |
+| `VARS_DISPLAYS_MONITOR_IDENTIFIER` | Identifier for external monitor display. | `"HDMI-A-1"`                                      |
+| `VARS_DISPLAYS_MONITOR_RESOLUTION` | External monitor resolution.             | `"1920x1080"`                                     |
+| `VARS_DISPLAYS_MONITOR_REFRESH`    | External monitor refresh rate.           | `"60Hz"`                                          |
+| `VARS_DISPLAYS_MONITOR_POSITION`   | External monitor position.               | `"1920 0"`                                        |
+| `SECRETS_HASHED_PASSWORD`          | Hashed user password.                    | (user input)                                      |
+| `SECRETS_PSK`                      | PSK for the network.                     | (user input)                                      |
 
 Ensure all variables and secrets are properly defined.
 

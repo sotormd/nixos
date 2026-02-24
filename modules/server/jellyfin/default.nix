@@ -7,5 +7,5 @@
     ./service.nix
   ];
 
-  services.jellyfin.enable = config.vars.network.jellyfin.enable;
+  services.jellyfin.enable = config.vars.services.jellyfin.enable;
 }

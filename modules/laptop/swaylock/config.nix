@@ -1,20 +1,13 @@
-{
-  config,
-  lib,
-  pkgs,
-  ...
-}:
+{ config, pkgs, ... }:
 
 let
-  backgrounds = import ./backgrounds.nix { inherit config lib; };
-
   configuration = pkgs.writeTextFile {
     name = "config";
     text = ''
       font=${config.colors.fonts.normal}
       font-size=16
 
-      image=${backgrounds.lockscreen}
+      image=/home/${config.vars.user.name}/.local/share/xkcd.png
 
       indicator-radius=90
       indicator-thickness=7

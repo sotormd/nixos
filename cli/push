@@ -1,0 +1,24 @@
+#!/usr/bin/env bash
+
+if [ -z "$1" ]; then
+    echo "Error: expected target host" >&2
+    exit 1
+fi
+
+if [ -z "$2" ]; then
+    echo "Error: expected target directory" >&2
+    exit 1
+fi
+
+set -euo pipefail
+
+rsync -avz --delete \
+--exclude='modules/laptop/hardware-configuration.nix' \
+--exclude='modules/server/hardware-configuration.nix' \
+--exclude='vars/vars.nix' \
+--exclude='vars/secrets.yaml' \
+--exclude='.sops.yaml' \
+--exclude='.git' \
+--exclude='.local' \
+"$NIXOS_DIR/" \
+$1:$2/

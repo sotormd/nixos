@@ -3,147 +3,121 @@
 with lib;
 {
   options.vars = {
-    nixosDirectory = mkOption {
-      type = types.path;
-      description = "Directory where the NixOS configuration is stored.";
-      example = "/persist/nixos";
+
+    flake = {
+
+      nixosDirectory = mkOption {
+        type = types.path;
+      };
+
+      nixosRole = mkOption {
+        type = types.enum [
+          "laptop"
+          "server"
+          "laptop-nomad"
+        ];
+      };
+
     };
 
-    nixosRole = mkOption {
-      type = types.enum [
-        "laptop"
-        "server"
-        "laptop-mode"
-      ];
-      description = "Configuration role for this machine.";
-      example = "laptop";
+    device = {
+
+      hostName = mkOption {
+        type = types.str;
+      };
+
+      machineId = mkOption {
+        type = types.strMatching "[a-f0-9]{32}";
+      };
+
+      hostId = mkOption {
+        type = types.strMatching "[a-f0-9]{8}";
+      };
+
     };
 
-    device.hostName = mkOption {
-      type = types.str;
-      description = "System hostname (/etc/hostname).";
-      example = "framework-11";
+    partitions = {
+
+      root = mkOption {
+        type = types.strMatching "([a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12}|[a-f0-9]{8}-[a-f0-9]{2})";
+      };
+
     };
 
-    device.machineId = mkOption {
-      type = types.strMatching "[a-f0-9]{32}";
-      description = ''
-        Persistent machine-id passed as a boot parameter.
-        Must be exactly 32 lowercase hex characters.
-      '';
-      example = "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa";
-    };
+    filesystem = {
 
-    device.hostId = mkOption {
-      type = types.strMatching "[a-f0-9]{8}";
-      description = "ZFS hostId (8 hex characters).";
-      example = "deadbeef";
-    };
+      mount = mkOption {
+        type = types.attrs;
+      };
 
-    device.root = mkOption {
-      type = types.strMatching "([a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12}|[a-f0-9]{8}-[a-f0-9]{2})";
-      description = "PARTUUID of the root partition.";
-    };
-
-    device.mount = mkOption {
-      type = types.attrsOf (
-        types.submodule (
-          { ... }:
-          {
+      luks = mkOption {
+        type = types.attrsOf (
+          types.submodule (_: {
             options = {
-              device = mkOption {
-                type = types.str;
-                description = "Block device path.";
+              uuid = mkOption {
+                type = types.strMatching "[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12}";
               };
-
-              fsType = mkOption {
-                type = types.str;
-                description = "Filesystem type.";
-                default = "auto";
-              };
-
-              options = mkOption {
-                type = types.listOf types.str;
-                default = [ ];
-                description = "Mount options.";
-              };
-
-              neededForBoot = mkOption {
-                type = types.bool;
-                default = false;
+              keyfile = mkOption {
+                type = types.path;
               };
             };
-          }
-        )
-      );
-      default = { };
-      description = "Extra unencrypted mounts (mapped to fileSystems).";
+          })
+        );
+      };
+
+      hdparm = mkOption {
+        type = types.listOf types.str;
+      };
+
     };
 
-    device.luks = mkOption {
-      type = types.attrsOf (
-        types.submodule (_: {
-          options = {
-            uuid = mkOption {
-              type = types.strMatching "[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12}";
-            };
-            keyfile = mkOption {
-              type = types.path;
-            };
-          };
-        })
-      );
-      default = { };
-      description = "Encrypted LUKS devices.";
+    user = {
+
+      name = mkOption {
+        type = types.str;
+      };
+
+      email = mkOption {
+        type = types.str;
+      };
+
     };
 
-    device.hdparm = mkOption {
-      type = types.listOf types.str;
-      default = [ ];
-      description = "Disk IDs under /dev/disk/by-id for hdparm tuning.";
+    i18n = {
+
+      timeZone = mkOption {
+        type = types.str;
+      };
+
+      keyboard = mkOption {
+        type = types.str;
+      };
+
+      locale = mkOption {
+        type = types.str;
+      };
+
     };
 
-    user.name = mkOption {
-      type = types.str;
-      description = "Primary user name.";
+    network = {
+
+      interface = mkOption {
+        type = types.str;
+      };
+
+      ssid = mkOption {
+        type = types.str;
+      };
+
+      gateway = mkOption {
+        type = types.str;
+      };
+
+      address = mkOption {
+        type = types.str;
+      };
+
     };
 
-    user.email = mkOption {
-      type = types.str;
-      description = "Primary user email address.";
-    };
-
-    i18n.timeZone = mkOption {
-      type = types.str;
-      example = "Europe/Zurich";
-    };
-
-    i18n.keyboard = mkOption {
-      type = types.str;
-      default = "us";
-    };
-
-    i18n.locale = mkOption {
-      type = types.str;
-      default = "en_US.UTF-8";
-    };
-
-    network.interface = mkOption {
-      type = types.str;
-    };
-
-    network.ssid = mkOption {
-      type = types.str;
-    };
-
-    network.gateway = mkOption {
-      type = types.str;
-    };
-
-    network.ip = mkOption {
-      type = types.str;
-    };
-
-    network.wpa3.enable = mkEnableOption "WPA3 (SAE) authentication";
   };
 }

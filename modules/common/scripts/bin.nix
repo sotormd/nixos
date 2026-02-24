@@ -2,27 +2,26 @@
 
 let
   scriptNames = [
-    "test"
-    "boot"
-    "switch"
-    "commit"
+    "apply"
     "update"
+    "clean"
+
+    "context"
     "digest"
-    "purge"
     "edit"
-    "perms"
+
     "format"
-    "repair"
-    "serverpush"
-    "help"
-    "init"
+    "perms"
+    "push"
+
+    "bootstrap"
   ];
 
   mkScript =
     name:
     pkgs.writeTextFile {
       inherit name;
-      text = builtins.readFile ../../../scripts/${name};
+      text = builtins.readFile ../../../cli/${name};
       destination = "/${name}";
       executable = true;
     };
@@ -30,18 +29,18 @@ let
   scripts = map mkScript scriptNames;
 
   scriptsDir = pkgs.symlinkJoin {
-    name = "scripts";
+    name = "nixos-scripts";
     paths = scripts;
   };
 
-  nixosRaw = pkgs.writeShellScriptBin "nixos-raw" (builtins.readFile ../../../scripts/nixos);
+  nixosRaw = pkgs.writeShellScriptBin "nixos" (builtins.readFile ../../../cli/nixos);
 
   nixosWithScripts = pkgs.writeShellScriptBin "nixos" ''
     #!/usr/bin/env ${pkgs.runtimeShell}
 
-    export NIXOS_SCRIPTS_DIR=${scriptsDir}
+    export NIXOS_SCRIPTS=${scriptsDir}
 
-    ${nixosRaw}/bin/nixos-raw "$@"
+    ${nixosRaw}/bin/nixos "$@"
   '';
 in
 {

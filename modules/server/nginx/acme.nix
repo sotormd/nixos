@@ -5,25 +5,17 @@
     acceptTerms = true;
     defaults.email = config.vars.user.email;
     defaults.dnsPropagationCheck = false;
-    certs."${config.vars.network.duckdns.domain}" = {
-      domain = config.vars.network.duckdns.domain;
+    certs."${config.vars.network.domain}" = {
+      inherit (config.vars.network) domain;
       group = "nginx";
       dnsProvider = "duckdns";
       environmentFile = config.sops.secrets.duckdns.path;
     };
   };
 
-  services.nginx.virtualHosts."${config.vars.network.duckdns.domain}" = {
-    useACMEHost = config.vars.network.duckdns.domain;
+  services.nginx.virtualHosts."${config.vars.network.domain}" = {
+    useACMEHost = config.vars.network.domain;
     onlySSL = true;
-  };
-
-  fileSystems."/var/lib/acme" = {
-    device = config.vars.network.nginx.acme.data;
-    options = [
-      "bind"
-      "nofail"
-    ];
   };
 
   users.users.nginx.extraGroups = [ "acme" ];

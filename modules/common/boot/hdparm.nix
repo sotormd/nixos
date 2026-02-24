@@ -1,7 +1,7 @@
 { config, pkgs, ... }:
 
 let
-  disks = config.vars.device.hdparm;
+  disks = config.vars.filesystem.hdparm;
 
   # build one service per disk
   # to prevent aggressive head-parking

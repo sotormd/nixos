@@ -3,7 +3,7 @@
 let
   user = config.vars.user.name;
 in
-lib.mkIf config.vars.device.impermanence.enable (
+lib.mkIf config.vars.features.impermanence.enable (
   lib.persistDirs "/persist/root" [
     # Documents, Downloads, Pictures, Projects
     "/home/${user}/Documents"
@@ -11,10 +11,10 @@ lib.mkIf config.vars.device.impermanence.enable (
     "/home/${user}/Pictures"
     "/home/${user}/Projects"
 
-    # OpenSSH keys
+    # ssh keys
     "/home/${user}/.ssh"
 
-    # Brave Browser
+    # brave browser
     "/home/${user}/.config/BraveSoftware/Brave-Browser"
   ]
 )

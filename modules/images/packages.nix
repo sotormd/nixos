@@ -91,5 +91,7 @@ in
     xz
     zip
     zfs
+    jq
+    yq
   ];
 }
