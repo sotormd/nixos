@@ -11,8 +11,10 @@ Bootstrap process for the `server` role.
 
 # Obtaining a NixOS Image
 
-1. Download either of the two included images for `aarch64-linux`: `sd` or
-   `sd-remote`. For more information, see [images.md](../images.md).
+1. Build either of the two included images for `aarch64-linux`: `sd` or
+   `sd-remote`.
+
+   For more information, see [images.md](../images.md).
 
 2. Write the generated image to a sd-card using `dd` or any equivalent tool.
 

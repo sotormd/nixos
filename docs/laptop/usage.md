@@ -451,7 +451,8 @@ executing the firejail wrapper:
 brave
 ```
 
-It can also be launched from [rofi](#launcher-rofi).
+It can also be launched from [rofi](#launcher-rofi) or from the
+[dock](#dock-widget)
 
 ### Configuration
 
@@ -534,7 +535,8 @@ It is not configured at all, and is mostly vanilla Chromium.
 
 # Other Applications
 
-All apps can be launched using [rofi](#launcher-rofi).
+All apps can be launched using [rofi](#launcher-rofi) or from the
+[dock](#dock-widget).
 
 ## foot
 
@@ -569,6 +571,12 @@ Scalable vector graphics editor.
 ## file-roller
 
 Archive manager from the GNOME desktop environment.
+
+## pavucontrol
+
+PulseAudio volume control.
+
+Launch using waybar [audio](#audio-module) module.
 
 # Virtualisation and Containers
 
