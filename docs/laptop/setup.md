@@ -12,8 +12,10 @@ Bootstrap process for the `laptop` role.
 
 # Obtaining a Live NixOS Image
 
-1. Download either of the two included images for `x86_64-linux`: `minimal` or
-   `gnome`. For more information, see [images.md](./images.md).
+1. Build either of the two included images for `x86_64-linux`: `minimal` or
+   `gnome`.
+
+   For more information, see [images.md](./images.md).
 
 2. Write the generated image to a removable medium (eg. a usb stick) using `dd`
    or any equivalent tool.
