@@ -3,7 +3,7 @@
 {
   # ssh address
   services.openssh.settings = {
-    ListenAddress = config.vars.network.ip;
+    ListenAddress = config.vars.network.address;
   };
 
   # ssh port

@@ -1,10 +1,39 @@
-{ pkgs, ... }:
+{
+  config,
+  lib,
+  pkgs,
+  ...
+}:
 
 let
   scripts = import ./scripts.nix { inherit pkgs; };
+
+  count = lib.length (lib.attrNames config.vars.displays.outputs);
+
+  indices = lib.genList (i: i) count;
+
+  digits = [
+    "1"
+    "2"
+    "3"
+    "4"
+    "5"
+    "6"
+    "7"
+    "8"
+    "9"
+    "10"
+  ];
+
+  lastChar = str: lib.substring (lib.stringLength str - 1) 1 str;
+
+  mappingText = lib.removeSuffix "," (
+    lib.concatStringsSep "\n" (
+      lib.concatMap (i: map (d: ''"${toString i}${d}": "${lastChar d}",'') digits) indices
+    )
+  );
 in
 {
-
   config = pkgs.writeTextFile {
     name = "config";
     text = ''
@@ -125,26 +154,7 @@ in
             "disable-scroll": true,
             "format": "{icon}",
             "format-icons": {
-              "01": "1",
-              "010": "0",
-              "02": "2",
-              "03": "3",
-              "04": "4",
-              "05": "5",
-              "06": "6",
-              "07": "7",
-              "08": "8",
-              "09": "9",
-              "11": "1",
-              "110": "0",
-              "12": "2",
-              "13": "3",
-              "14": "4",
-              "15": "5",
-              "16": "6",
-              "17": "7",
-              "18": "8",
-              "19": "9"
+              ${mappingText}
             },
             "tooltip": false,
             "window-rewrite": {}

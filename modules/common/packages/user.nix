@@ -2,19 +2,19 @@
 
 {
   # set of packages to appear in user environment
-  users.users.${config.vars.user.name}.packages = with pkgs; [
+  users.users.${config.vars.user.name}.packages = [
     # version control
-    git
+    pkgs.git
 
     # resource monitor
-    htop
+    pkgs.htop
 
     # text editors
-    nano
-    vim
+    pkgs.nano
+    pkgs.vim
 
     # list contents of directories in a tree-like format
-    tree
+    pkgs.tree
   ];
 
   environment.sessionVariables.EDITOR = "vi";

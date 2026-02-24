@@ -173,11 +173,4 @@ Manpage:
 man nixos
 ```
 
-Overview:
-
-```bash
-nixos help
-```
-
-See [scripts](./docs/scripts.md) for the full command reference and workflow
-examples.
+See [cli](./docs/cli.md) for the full command reference and workflow examples.

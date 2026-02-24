@@ -1,145 +1,83 @@
 .TH NIXOS 1 "" "NixOS Flake Helper" "User Commands"
 
 .SH NAME
-nixos \- unified wrapper for managing the NixOS flake
+nixos \- unified wrapper for managing a NixOS flake
 
 .SH SYNOPSIS
-.B nixos
-.RI [ command ] " [args]"
+.B nixos [command] [args]
 
 .SH DESCRIPTION
-The
-.B nixos
-command is a user-facing wrapper for managing the NixOS flake
-.B github:sotormd/nixos.
-It provides a curated set of high-level commands for carrying out
-routine tasks.
+Unified wrapper for managing a NixOS flake.
 
-When invoked without a command,
-.B nixos
-displays the flake directory tree with files listed first.
-
-If an unrecognized command is provided, it is dispatched verbatim
-inside the flake directory
-.RB ( $NIXOS_DIR ),
-allowing arbitrary commands to be run relative to the flake.
+It provides a curated set of high-level commands for performing
+common maintenance tasks.
 
 .SH COMMANDS
 
 .TP
-.B test
+.B apply <test|boot|switch>
 .br
-Test the current configuration.
+Rebuild and apply current configuration.
 .br
-Does not create a boot entry.
+test   : activate but do not add boot entry
 .br
-Roles: laptop, server
+boot   : add boot entry but do not activate
+.br
+switch : activate and add boot entry
 
 .TP
-.B boot
+.B update [ inputs... ]
 .br
-Make current configuration the boot default.
-.br
-Does not activate the current configuration.
-.br
-Roles: laptop, server
-
-.TP
-.B switch
-.br
-Switch to the current configuration.
-.br
-Creates a boot entry.
-.br
-Roles: laptop, server
-
-.TP
-.B commit
-.br
-Switch to and commit the current configuration.
-.br
-Creates a boot entry and a Git commit.
-.br
-Roles: laptop only
-
-.TP
-.B update " [inputs...]"
-.br
-Update flake inputs in flake.lock.
+Update flake inputs.
 .br
 If no inputs are specified, all inputs are updated.
+
+.TP
+.B clean
 .br
-Roles: laptop, server
+Garbage collect old generations.
+
+.TP
+.B context
+.br
+Get context environment variables.
 
 .TP
 .B digest
 .br
-Get checksum of variables and secrets.
+Get checksum of variables and sops-nix secrets.
+
+.TP
+.B edit <vars|sops>
 .br
-Roles: laptop, server
+Edit variables or sops-nix secrets.
+.br
+vars : edit variables
+.br
+sops : edit encrypted secrets using sops
 
 .TP
 .B format
 .br
-Format the flake using nixfmt.
-.br
-Roles: laptop, server
+Format flake using nixfmt.
 
 .TP
 .B perms
 .br
-Fix file ownership and permissions in the flake.
-.br
-Roles: laptop, server
+Fix flake ownership and permissions.
 
 .TP
-.B purge
+.B push <host> <path>
 .br
-Garbage collect old generations.
-.br
-Roles: laptop, server
+Push flake to a remote host via rsync.
 
-.TP
-.B repair
-.br
-Attempt to repair the nix store.
-.br
-Roles: laptop, server
-
-.TP
-.B edit " <vars|sops>"
-.br
-Edit variables file or sops-nix secrets.
-.br
-Roles: laptop, server
-
-.TP
-.B serverpush " <path>"
-.br
-Push the local flake to server:<path> .
-.br
-Roles: laptop only
-
-.TP
-.B help
-.br
-Display a brief usage summary and exit.
-.br
-Roles: laptop, server
-
-.TP
-.B init <command> [args]
-.br
-Bootstrap this flake.
-See documentation for more information
-
-.SH DISPATCH BEHAVIOR
+.SH DISPATCH
 If a command does not match one of the built-in subcommands,
 .B nixos
 executes it directly inside
 .BR $NIXOS_DIR .
 
-This allows convenient interaction with the flake repository, such as:
+This allows convenient interaction with the flake repository:
 
 .nf
 nixos git status
@@ -147,24 +85,28 @@ nixos cat flake.nix | wl-copy
 nixos vi modules/common/firewall.nix
 .fi
 
-.SH LOCKING
-To prevent concurrent execution,
-.B nixos
-creates a lockfile at
-.BR $XDG_RUNTIME_DIR/nixos-script.lock
-for the following commands:
-test, boot, switch, commit, update, purge, format, perms, and init.
+If no command is passed, the flake directory tree is displayed.
 
-.SH NOTES
-All commands are intended to be run through the
-.B nixos
-wrapper and not executed directly.
-The wrapper automatically escalates privileges using
-.B sudo
-when required.
+.SH ENVIRONMENT
+The wrapper respects the following environment variables:
+
+.TP
+.B NIXOS_ROLE
+Configuration role.
+
+.TP
+.B NIXOS_DIR
+Flake path.
+
+.TP
+.B NIXOS_SCRIPTS
+Subcommands path.
 
 .SH FILES
 .TP
 .B $NIXOS_DIR/docs/scripts.md
 Full documentation.
 
+.SH SEE ALSO
+.BR nixos-rebuild (8),
+.BR nix (1)

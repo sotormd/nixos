@@ -7,21 +7,21 @@
 
 {
   # set of packages to appear in user environment
-  users.users.${config.vars.user.name}.packages = with pkgs; [
+  users.users.${config.vars.user.name}.packages = [
     # audio visualizer
-    cava
+    pkgs.cava
 
     # compression
-    file-roller
+    pkgs.file-roller
 
     # wayland image viewer
-    swayimg
+    pkgs.swayimg
 
     # wayland clipboard
-    wl-clipboard
+    pkgs.wl-clipboard
 
     # kiosk-style compositor
-    cage
+    pkgs.cage
 
     # text editor
     inputs.neovim.packages.x86_64-linux.default

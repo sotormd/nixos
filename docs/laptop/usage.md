@@ -26,14 +26,7 @@ Manpage:
 man nixos
 ```
 
-Overview:
-
-```bash
-nixos help
-```
-
-See [scripts.md](../scripts.md) for the full command reference and workflow
-examples.
+See [cli.md](../cli.md) for the full command reference and workflow examples.
 
 ## Variables and Secrets
 
@@ -57,7 +50,7 @@ nixos edit sops
 
 # Using the Sway Desktop
 
-The full sway config lives [here](../../modules/laptop/sway/config.nix).
+This section covers using the Sway desktop.
 
 ## Logging In
 
@@ -202,9 +195,7 @@ The color picker copies the hex code to the clipboard.
 
 ## Top panel, waybar
 
-The full waybar config lives [here](../../modules/laptop/waybar/config.nix).
-
-Styling options live [here](../../modules/laptop/waybar/style.nix).
+This section covers the Waybar top panel.
 
 ### workspaces Module
 
@@ -307,11 +298,7 @@ Shows current time.
 
 ## Widgets, eww
 
-The full eww config lives [here](../../modules/laptop/eww/config.nix).
-
-Styling options live [here](../../modules/laptop/eww/style.nix).
-
-Scripts used in the widgets live [here](../../modules/laptop/eww/scripts.nix).
+This section covers the EWW widgets.
 
 ### Dock widget
 
@@ -347,9 +334,6 @@ The following actions can be done on a `focused` icon:
 | Send to scratchpad             | Right click  |
 | Close current window           | Middle click |
 | Focus through all open windows | Scroll       |
-
-The configuration for the dock, including pinned icons are defined
-[here](../../modules/laptop/eww/dock-clients.json).
 
 Use the `eww-dock-init` command to reload the dock scripts.
 
@@ -398,9 +382,7 @@ this widget instead.
 
 ## Launcher, rofi
 
-The full rofi config lives [here](../../modules/laptop/rofi/config.nix).
-
-Styling options live [here](../../modules/laptop/rofi/style.nix).
+This section covers the Rofi launcher.
 
 ### run
 
@@ -427,42 +409,26 @@ things to / paste things from the clipboard.
 
 ## Wallpapers
 
-To change the current wallpaper, change the `vars.outputs.wallpaper` and
-`vars.outputs.lockscreen` variables.
+The `nord.space` wallpaper from
+[wallpapers](https://github.com/sotormd/wallpapers) is used for the desktop.
 
-Any wallpaper from [wallpapers](https://github.com/sotormd/wallpapers) can be
-used.
+A random XKCD comic is used as the lockscreen wallpaper, with
+[xkcd-wall](https://github.com/sotormd/xkcd-wall). The comic is refreshed after
+every unlock. To manually refresh:
 
-For example to use `wallpapers/nord/building.png`, the variable should be set to
-`"nord.building"`.
+```bash
+xkcd-refresh
+```
 
-To use your own wallpapers, change the `wallpapers` input in
-[flake.nix](../../flake.nix) to a flake that exposes similar outputs.
-
-The `vars.output.lockscreen` can also be one of `xkcd.today` or `xkcd.random`
-for xkcd comics.
-
-See [xkcd-wall](https://github.com/sotormd/xkcd-wall) for more information.
+The fallback wallpaper for the lockscreen is `oc.nixos` from
+[wallpapers](https://github.com/sotormd/wallpapers).
 
 ## Colors & Theming
-
-By default, the Nord palette is used.
 
 All colors and theming options are defined in
 [colors](https://github.com/sotormd/colors).
 
-To use a different colorscheme, change the `colors` input in
-[flake.nix](../../flake.nix).
-
-Examples:
-
-| Colorscheme | Input URL                                              |
-| ----------- | ------------------------------------------------------ |
-| nord        | `github:sotormd/colors` / `github:sotormd/colors/nord` |
-| gruvbox     | `github:sotormd/colors/gruvbox`                        |
-
-To use your own colorscheme, change the input to a flake that exposes similar
-outputs.
+By default, the Nord palette is used.
 
 # Browsers
 
@@ -485,26 +451,24 @@ executing the firejail wrapper:
 brave
 ```
 
+It can also be launched from [rofi](#launcher-rofi).
+
 ### Configuration
 
 Note that the `~/.config/BraveSoftware/Brave-Browser/` directory is persisted by
 impermanence so all state is persisted across reboots.
 
-The included brave browser is heavily policied via chromium policies. The full
-list of policies live [here](../../modules/laptop/brave/policies.nix). The
-policies include options to disable several anti-features, particularly those
-related to crypto and web3.
+The included brave browser is heavily policied via chromium enterprise policies.
+
+The policies include options to disable several anti-features, particularly
+those related to crypto and web3.
 
 The included brave browser also strips out any telemetry by setting initial
-preferences and local state files. The initial preferences live
-[here](../../modules/laptop/brave/preferences.nix) and the local state lives
-[here](../../modules/laptop/brave/state.nix).
+preferences and local state files.
 
 ### Extensions
 
-The browser also comes with these
-[extensions](../../modules/laptop/brave/extensions.nix) to preserve privacy and
-improve usability.
+The browser also comes with these extensions:
 
 - uBlock Origin
 - Darkreader
@@ -515,31 +479,21 @@ uBlock Origin is also configured further via chromium policies.
 
 ### Sandbox
 
-The `brave` executable provided is a firejail wrapper. All firejail flags can be
-seen [here](../../modules/laptop/brave/firejail.nix).
+The `brave` executable provided is a firejail wrapper with several hardening
+flags.
 
 Note that to run the brave browser, you will have to enable unprivileged user
 namespaces, which is disabled by default. It can be enabled by setting the
 `kernel.unprivileged_userns_clone` sysctl to `1` or via the waybar
 [userns](#userns-module) module.
 
-Using the brave browser without enabling unprivileged user namespaces is
-possible, but requires a workaround. The brave browser uses the chromium
-namespaces sandbox by default, you can check by visiting `brave://sandbox`. If
-unprvileged user namespaces are disabled, then brave will fall back to using the
-chromium SUID sandbox.
-
-However, firejail doesn't allow using the chromium SUID sandbox from within a
-firejail sandbox. So you must run brave outside of firejail. See
-[here](../../modules/laptop/brave/sandbox.nix) for instructions. This however is
-not recommended unless you absolutely have to avoid unprivileged user
-namespaces.
-
 ### WebApps
 
-The web app for `spotify` is also installed, and more web apps can be added
-[here](../../modules/laptop/brave/webapps.nix). The web apps also run under
-firejail.
+The following websites are installed as web apps:
+
+- `spotify`
+
+Web apps can be launched like normal apps. The web apps also run under firejail.
 
 ## i2p-browser
 
@@ -549,16 +503,16 @@ The i2p-browser can be launched by executing the firejail wrapper:
 i2p-browser
 ```
 
+It can also be launched from [rofi](#launcher-rofi).
+
 The i2p-browser is just the Firefox browser with several configuration settings
-to allow browsing the I2P network. The additional configuration options can be
-found [here](../../modules/laptop/i2p-browser/profile.nix) and policies
-[here](../../modules/laptop/i2p-browser/policies.nix).
+to allow browsing the I2P network, along with hardened policies and preferences.
 
 The i2p-browser uses the I2P HTTP Proxy from `network.server.i2p.port` in the
 variables.
 
-The included `i2p-browser` executable is a firejail wrapper. All firejail flags
-can be seen [here](../../modules/laptop/i2p-browser/firejail.nix).
+The included `i2p-browser` executable is a firejail wrapper with several
+hardening flags.
 
 ## vanilla-browser
 
@@ -568,15 +522,19 @@ The vanilla-browser can be launched by executing the firejail wrapper:
 vanilla-browser
 ```
 
-The vanilla-browser runs in a `--private` firejail, all flags can be seen
-[here](../../modules/laptop/vanilla-browser/firejail.nix). This means that it
-can't write to the user's home directory like Brave or i2p-browser.
+It can also be launched from [rofi](#launcher-rofi).
+
+The vanilla-browser runs in a `--private` firejail with several hardening flags.
+This means that it can't write to the user's home directory like Brave or
+i2p-browser.
 
 The vanilla-browser also sets the user agent to show Windows 11.
 
 It is not configured at all, and is mostly vanilla Chromium.
 
 # Other Applications
+
+All apps can be launched using [rofi](#launcher-rofi).
 
 ## foot
 
@@ -725,7 +683,4 @@ menu.
 > **Does this clutter my device?** No, all GNOME-specific things (except some
 > logs) are thrown out by impermanence.
 
-The configuration for nomad mode is
-[here](../../modules/laptop/modes/nomad.nix).
-
-You cannot use the `nixos` script from within the nomad specialisation.
+You cannot use the `nixos` CLI from within the nomad specialisation.

@@ -1,7 +1,12 @@
-{ config, pkgs, ... }:
+{
+  config,
+  lib,
+  pkgs,
+  ...
+}:
 
 let
-  configuration = import ./config.nix { inherit pkgs; };
+  configuration = import ./config.nix { inherit config lib pkgs; };
   style = import ./style.nix { inherit config pkgs; };
   waybarWrapped = pkgs.writeShellScriptBin "waybar" ''
     ${pkgs.waybar}/bin/waybar --config ${configuration.config}/config --style ${style.style}/style.css "$@"

@@ -1,20 +1,27 @@
-{ config, lib, ... }:
+{
+  config,
+  inputs,
+  pkgs,
+  ...
+}:
 
 let
-  type = builtins.elemAt (lib.splitString "." config.vars.outputs.lockscreen) 1;
-  interval = builtins.elemAt (lib.choose (type == "today") "1d" "12h") 0;
+  xkcd-config = pkgs.writeText "xkcd-config.json" (
+    builtins.toJSON {
+      background-colors = config.colors.xkcd.bgs;
+      foreground-colors = config.colors.xkcd.fgs;
+      dimensions = config.vars.displays.outputs.${config.vars.displays.primary}.resolution;
+    }
+  );
 
-  wallpaper = import ../sway/backgrounds.nix { inherit config lib; };
+  fallback = config.wallpapers.oc.nixos;
+
+  target = "/home/${config.vars.user.name}/.local/share/xkcd.png";
+
+  xkcd-refresh = pkgs.writeShellScriptBin "xkcd-refresh" ''
+    ${inputs.xkcd.packages.x86_64-linux.default}/bin/xkcd-wall -t random -c "${xkcd-config}" "${target}" || cp "${fallback}" "${target}"; chmod 777 "${target}"
+  '';
 in
 {
-  xkcd = lib.mkIf (builtins.substring 0 4 config.vars.outputs.lockscreen == "xkcd") {
-    enable = true;
-    background-colors = config.colors.xkcd.bgs;
-    foreground-colors = config.colors.xkcd.fgs;
-    dimensions = "1920x1200";
-    target = "/home/${config.vars.user.name}/.local/share/bg.png";
-    fallback = wallpaper.wallpaper;
-    cache = "/home/${config.vars.user.name}/.cache/xkcd-wall";
-    inherit type interval;
-  };
+  inherit xkcd-refresh;
 }

@@ -30,7 +30,7 @@
     };
 
     server = {
-      base_url = "https://${config.vars.network.duckdns.domain}/searxng";
+      base_url = "https://${config.vars.network.domain}/searxng";
       secret_key = config.sops.secrets.searxng.path;
       public_instance = false;
       limiter = false;

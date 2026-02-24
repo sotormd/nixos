@@ -1,8 +1,8 @@
-{ config, lib, ... }:
+{ config, ... }:
 
 {
   # use WPA3 on the default connection
-  networking.wireless.networks = lib.mkIf config.vars.network.wpa3.enable {
+  networking.wireless.networks = {
     "${config.vars.network.ssid}" = {
       authProtocols = [ "SAE" ];
     };

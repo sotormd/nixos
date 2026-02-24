@@ -1,14 +1,15 @@
 { config, ... }:
 
 let
-  mounts = config.vars.device.mount;
-  mountEntries = builtins.map (path: {
-    name = path;
-    value = mounts.${path};
-  }) (builtins.attrNames mounts);
+  inherit (config.vars.filesystem) mount;
 
-  # mount plain unencrypted devices
-  # from config.vars.device.mount
+  mountEntries = map (path: {
+    name = path;
+    value = mount.${path};
+  }) (builtins.attrNames mount);
+
+  # mount devices
+  # with fstab entries
   mountFileSystems = builtins.listToAttrs mountEntries;
 in
 {

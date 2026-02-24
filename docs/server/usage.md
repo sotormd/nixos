@@ -28,14 +28,7 @@ Manpage:
 man nixos
 ```
 
-Overview:
-
-```bash
-nixos help
-```
-
-See [scripts.md](../scripts.md) for the full command reference and workflow
-examples.
+See [cli.md](../cli.md) for the full command reference and workflow examples.
 
 ## Variables and Secrets
 
@@ -59,46 +52,70 @@ nixos edit sops
 
 # SSH
 
-OpenSSH secure shell daemon.
+OpenSSH secure shell daemon with a hardened configuration.
+
+## Enabling
 
 Enabled by default.
 
-Exposes one port to `vars.network.range`: `vars.network.ssh.port`.
+## Ports
+
+Open on `vars.network.address` to `vars.network.range`:
+
+1. `vars.network.ssh.port`
+
+## Keys
 
 Trusted public keys are defined in `vars.network.ssh.keys`.
 
-SSH uses a hardened configuration which can be found
-[here](../../modules/server/ssh/settings.nix).
-
 # Unbound
 
-Unbound is a recursive validating DNS server.
+Unbound recursive validating DNS server with a hardened configuration.
 
-Enabled using `vars.network.unbound.`
+## Enabling
 
-Exposes two ports to `vars.network.range`: `53/tcp` `53/udp`.
+Enabled using `vars.services.unbound.enable`
 
-Unbound uses a hardened configuration which can be found
-[here](../../modules/server/unbound/settings.nix).
+## Ports
+
+Open on `127.0.0.1`:
+
+1. `53/tcp` dns
+2. `53/udp` dns
+
+Open on `vars.network.address` to `vars.network.range`
+
+1. `53/tcp` dns
+2. `53/udp` dns
+
+## Data
+
+Data is stored under `/var/lib/unbound`.
 
 # NGINX
 
-Nginx is a web server and reverse proxy.
+Web server and reverse proxy.
 
-Enabled using `vars.network.nginx.enable`.
+## Enabling
 
-Exposes one port to `vars.network.range`: `443`.
+Enabled using `vars.services.nginx.enable`.
+
+## Ports
+
+Open on `vars.network.address` to `vars.network.range`:
+
+1. `443` https
 
 ## Domain
 
 The nginx web server is hosted at `https://<your-duckdns-domain>`.
 
-The DuckDNS domain is declared using `vars.network.duckdns.domain`.
-
-The ACME directory is declared using `vars.network.nginx.acme.data`.
+The DuckDNS domain is declared using `vars.network.domain`.
 
 It attempts to fetch a Let's Encrypt HTTPS certificate with a DNS-01 challenge
 using your duckdns domain.
+
+Certificates are renewed using ACME, which stores them in `/var/lib/acme`.
 
 ## Reverse Proxy
 
@@ -118,46 +135,100 @@ Reverse proxy is set up for the following services, if enabled:
 
 # SearXNG
 
-SearXNG is a fast, private metasearch engine.
+Fast, private metasearch engine.
 
-Enabled using `vars.network.searxng.enable`.
+## Enabling
 
-Doesn't expose any ports since it uses `uwsgi`.
+Enabled using `vars.services.searxng.enable`.
 
-The full list of enabled search engines can be found
-[here](../../modules/server/searxng/engines.nix).
+## Ports
+
+Doesn't open any ports since it uses `uwsgi`.
+
+## Search Engines
+
+The following search engines are enabled by default on the general tab:
+
+1. Bing
+2. DuckDuckGo
+3. Google
+4. Startpage
+5. Yahoo
+6. Wikipedia
+
+## Key
+
+Requires a secret key which is stored using sops-nix.
 
 # Vaultwarden
 
-Vaultwarden is a password manager.
+Password manager.
 
-Enabled using `vars.network.vaultwarden.enable`.
+## Enabling
 
-Exposes one port to the loopback interface: `vars.network.vaultwarden.port`.
+Enabled using `vars.services.vaultwarden.enable`.
 
-Data directory is declared by `vars.network.vaultwarden.data`.
+## Ports
+
+Open on `127.0.0.1`:
+
+1. `8222` web vault
+
+## Vault
+
+The vault is stored at `/var/lib/bitwarden_rs`.
 
 # I2PD
 
-I2PD is a router for the I2P network.
+Router for the I2P network.
 
-Enabled using `vars.network.i2pd.enable`.
+## Enabling
 
-Exposes three ports to the loopback interface:
-`vars.network.i2pd.webconsole.port` `vars.network.i2pd.socksProxy.port`
-`vars.network.i2pd.sam.port`.
+Enabled using `vars.services.i2pd.enable`.
 
-Exposes one port to `vars.network.range`: `vars.network.i2pd.httpProxy.port`.
+## Ports
+
+Open on `127.0.0.1`:
+
+1. `7656` SAM
+2. `4447` SOCKS proxy
+3. `7070` webconsole
+
+Open on `vars.network.address` to `vars.network.range`:
+
+1. `4444` HTTP proxy
+
+## Data
+
+Data is stored under `/var/lib/i2pd`.
 
 # qBittorrent
 
-qBittorrent-nox is a web interface for the qBittorrent bittorrent client.
+Web interface for the qBittorrent bittorrent client.
 
-Enabled using `vars.network.qbt.enable`.
+## Enabling
 
-Exposes one port to the loopback interface: `vars.network.qbt.port`.
+Enabled using `vars.services.qbt.enable`.
 
-Data directory is declared by `vars.network.qbt.data`.
+## Ports
+
+Open on `127.0.0.1`:
+
+1. `8080` webui
+
+## Data
+
+Data is stored under `/var/lib/qbt`.
+
+## Torrents
+
+Default torrent download directory is `/srv/torrents/downloads`.
+
+Additionally, two categories are created: Movies and TV.
+
+Default download directory for Movies is: `/srv/torrents/movies`.
+
+Default download directory for TV is: `/srv/torrents/tv`.
 
 ## Initial Setup
 
@@ -171,24 +242,31 @@ systemctl status qbt
 Then, in the web ui `https://<your-duckdns-domain>/qbt` under
 `Tools > Options > WebUI > Authentication` set a username and password.
 
-## Categories
-
-Two categories, `Movies` and `TV`, are created by default.
-
 # Jellyfin
 
-Jellyfin is a media server.
+Media server.
 
-Enabled using `vars.network.jellyfin.enable`.
+## Enabling
 
-Exposes one port to the loopback interface: `vars.network.jellyfin.port`.
+Enabled using `vars.services.jellyfin.enable`.
 
-Data directory is declared by `vars.network.jellyfin.data`.
+## Ports
+
+Open on `127.0.0.1`:
+
+1. `8096` web interface
+
+## Data
+
+Data is stored under `/var/lib/jellyfin`.
 
 ## Initial Setup
 
 Access the web interface at `https://<your-duckdns-domain>/jellyfin` and follow
 the wizard to set up your user and library.
+
+To use torrents from qBittorrent, add `/srv/torrents/movies` and
+`/srv/torrents/tv`.
 
 ## Disabling media playback
 

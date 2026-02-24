@@ -5,129 +5,133 @@
   environment.defaultPackages = lib.mkForce [ ];
 
   # set of packages to appear in system environment
-  environment.systemPackages = with pkgs; [
+  environment.systemPackages = [
 
     # tools for manipulating access control lists
-    acl
+    pkgs.acl
 
     # tools for manipulating extended attributes
-    attr
+    pkgs.attr
 
     # the GNU bourne again shell
     # bash with ncurses support
-    bashInteractive
+    pkgs.bashInteractive
 
     # tools for manipulating binaries
-    binutils
+    pkgs.binutils
 
     # the GNU core utilities
-    coreutils-full
+    pkgs.coreutils-full
 
     # create or extract from cpio archives
-    cpio
+    pkgs.cpio
 
     # transfer files with url syntax
-    curl
+    pkgs.curl
 
     # retrieve files using HTTP/HTTPS/FTP
-    wget
+    pkgs.wget
 
     # show differences between files
-    diffutils
+    pkgs.diffutils
 
     # GNU findutils
-    findutils
+    pkgs.findutils
 
     # GNU implemenation of awk
-    gawk
+    pkgs.gawk
 
     # get entries from system databases
-    getent
+    pkgs.getent
 
     # get system configuration values
-    getconf
+    pkgs.getconf
 
     # GNU implementation of grep
-    gnugrep
+    pkgs.gnugrep
 
     # apply differences to files
-    gnupatch
+    pkgs.gnupatch
 
     # batch stream editor
-    gnused
+    pkgs.gnused
 
     # GNU implemenation of tar archiver
-    gnutar
+    pkgs.gnutar
 
     # GNU zip compression
-    gzip
+    pkgs.gzip
 
     # control the TCP/IP stack
-    iproute2
+    pkgs.iproute2
 
     # dig
-    dig
+    pkgs.dig
 
     # general purpose compression
-    xz
+    pkgs.xz
 
     # file pager
-    less
+    pkgs.less
 
     # library for working with POSIX capabilities
-    libcap
+    pkgs.libcap
 
     # curses
-    ncurses
+    pkgs.ncurses
 
     # read and write data across data connections
-    netcat
+    pkgs.netcat
 
     # frontend to crypt
-    mkpasswd
+    pkgs.mkpasswd
 
     # information from /proc
-    procps
+    pkgs.procps
 
     # fast, incremental file transfer utility
-    rsync
+    pkgs.rsync
 
     # monitor the health of hard drives
-    smartmontools
+    pkgs.smartmontools
 
     # system call tracer
-    strace
+    pkgs.strace
 
     # authentication related tools
-    su
+    pkgs.su
 
     # run programs and summarize system resources used
-    time
+    pkgs.time
 
     # set of system utilities for linux
-    util-linux
+    pkgs.util-linux
 
     # show full path of shell commands
-    which
+    pkgs.which
 
     # zstandard compression
-    zstd
+    pkgs.zstd
 
     # working with .zip archives
-    zip
-    unzip
+    pkgs.zip
+    pkgs.unzip
 
     # list open files
-    lsof
+    pkgs.lsof
 
     # show type of files
-    file
+    pkgs.file
 
     # lspci
-    pciutils
+    pkgs.pciutils
 
     # lsusb
-    usbutils
+    pkgs.usbutils
+
+    # json and yaml
+    pkgs.jq
+    pkgs.yq
 
   ];
 }

@@ -7,12 +7,12 @@
 
 {
   # Rollback /home
-  boot.initrd.systemd.services.rollback-home = lib.mkIf config.vars.device.impermanence.enable {
+  boot.initrd.systemd.services.rollback-home = lib.mkIf config.vars.features.impermanence.enable {
     description = "Rollback /home";
     wantedBy = [ "initrd.target" ];
     after = [ "zfs-import-rpool.service" ];
     before = [ "sysroot.mount" ];
-    path = with pkgs; [ zfs ];
+    path = [ pkgs.zfs ];
     unitConfig.DefaultDependencies = "no";
     serviceConfig.Type = "oneshot";
     script = ''
@@ -21,7 +21,7 @@
   };
 
   # Setup /home
-  systemd.services.setup-home = lib.mkIf config.vars.device.impermanence.enable {
+  systemd.services.setup-home = lib.mkIf config.vars.features.impermanence.enable {
     description = "Setup /home";
     wantedBy = [ "local-fs.target" ];
     after = [
@@ -29,7 +29,7 @@
       "home.mount"
     ];
     before = [ "hjem-activate@${config.vars.user.name}.service" ];
-    path = with pkgs; [ coreutils ];
+    path = [ pkgs.coreutils-full ];
     serviceConfig.Type = "oneshot";
     script = ''
       mkdir -p /home/${config.vars.user.name}/.config

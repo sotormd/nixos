@@ -1,5 +1,5 @@
 { config, ... }:
 
 {
-  services.nginx.defaultListenAddresses = [ config.vars.network.ip ];
+  services.nginx.defaultListenAddresses = [ config.vars.network.address ];
 }

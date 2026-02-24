@@ -9,7 +9,7 @@
   networking.defaultGateway = config.vars.network.gateway;
   networking.interfaces."${config.vars.network.interface}".ipv4.addresses = [
     {
-      address = config.vars.network.ip;
+      address = config.vars.network.address;
       prefixLength = 24;
     }
   ];

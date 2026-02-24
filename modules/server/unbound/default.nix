@@ -8,5 +8,5 @@
   ];
 
   # enable unbound validating recursive dns server
-  services.unbound.enable = config.vars.network.unbound.enable;
+  services.unbound.enable = config.vars.services.unbound.enable;
 }

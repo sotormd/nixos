@@ -7,7 +7,7 @@
 
 let
   layout = lib.concatMap (x: x) [
-    (lib.optional config.vars.network.server.enable [
+    (lib.optional config.vars.features.selfhosted.enable [
       {
         short = "sx";
         full = "searxng";
@@ -35,7 +35,7 @@ let
       }
     ])
 
-    (lib.optional config.vars.network.server.enable "separator")
+    (lib.optional config.vars.features.selfhosted.enable "separator")
 
     [
       [

@@ -3,71 +3,101 @@
 with lib;
 {
   options.vars = {
-    device.boot = mkOption {
-      type = types.strMatching "[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12}";
-      description = "PARTUUID of the boot partition.";
+
+    partitions = {
+
+      boot = mkOption {
+        type = types.strMatching "[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12}";
+      };
+
+      swap = mkOption {
+        type = types.strMatching "[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12}";
+      };
+
     };
 
-    device.swap = mkOption {
-      type = types.strMatching "[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12}";
-      description = "PARTUUID of the swap partition.";
+    user = {
+
+      sshAliases = mkOption {
+        type = types.attrsOf (
+          types.submodule (_: {
+            options = {
+              user = mkOption {
+                type = types.str;
+              };
+              host = mkOption {
+                type = types.str;
+              };
+              port = mkOption {
+                type = types.port;
+              };
+              keyfile = mkOption {
+                type = types.str;
+              };
+            };
+          })
+        );
+      };
+
     };
 
-    device.secureboot.enable = mkEnableOption "Secure Boot via lanzaboote";
+    network = {
 
-    device.impermanence.enable = mkEnableOption "Impermanent root using ZFS snapshots";
+      server = {
+        address = mkOption {
+          type = types.str;
+        };
+        domain = mkOption {
+          type = types.str;
+        };
+      };
 
-    user.github.keyfile = mkOption {
-      type = types.str;
-      description = "github ssh key filename.";
     };
 
-    user.codeberg.keyfile = mkOption {
-      type = types.str;
-      description = "codeberg ssh key filename.";
-    };
+    displays = {
 
-    network.server = {
-      enable = mkEnableOption "Server features";
+      outputs = mkOption {
+        type = types.attrsOf (
+          types.submodule (_: {
+            options = {
+              identifier = mkOption {
+                type = types.str;
+              };
+              resolution = mkOption {
+                type = types.str;
+              };
+              refresh = mkOption {
+                type = types.str;
+              };
+              position = mkOption {
+                type = types.str;
+              };
+            };
+          })
+        );
+      };
 
-      ip = mkOption {
+      primary = mkOption {
         type = types.str;
       };
 
-      domain = mkOption {
-        type = types.str;
+    };
+
+    features = {
+
+      secureboot.enable = mkOption {
+        type = types.bool;
       };
 
-      ssh.port = mkOption {
-        type = types.port;
-        default = 22;
+      impermanence.enable = mkOption {
+        type = types.bool;
       };
 
-      ssh.keyfile = mkOption {
-        type = types.str;
+      selfhosted.enable = mkOption {
+        type = types.bool;
       };
 
-      i2p.port = mkOption {
-        type = types.port;
-      };
     };
 
-    outputs.laptop = mkOption {
-      type = types.str;
-      example = "eDP-1";
-    };
-
-    outputs.monitor = mkOption {
-      type = types.str;
-      example = "HDMI-A-1";
-    };
-
-    outputs.wallpaper = mkOption {
-      type = types.str;
-    };
-
-    outputs.lockscreen = mkOption {
-      type = types.str;
-    };
   };
 }

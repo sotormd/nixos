@@ -6,7 +6,7 @@
 }:
 
 {
-  config = lib.mkIf config.vars.network.qbt.enable {
+  config = lib.mkIf config.vars.services.qbt.enable {
     systemd.services.qbt = {
       description = "qbittorrent-nox service";
       documentation = [ "man:qbittorrent-nox(1)" ];
@@ -25,38 +25,47 @@
                           #!/usr/bin/env ${pkgs.bash}/bin/bash
 
                           # create the data directory
-                          mkdir -p '${config.vars.network.qbt.data}'
+                          mkdir -p '/var/lib/qbt'
 
                           # set permissions on the data directory
-                          chown qbt:qbt -R '${config.vars.network.qbt.data}'
+                          chown qbt:qbt -R '/var/lib/qbt'
 
                           # create configuration directory
-                          mkdir -p '${config.vars.network.qbt.data}/qbt/home/.config/qBittorrent'
+                          mkdir -p '/var/lib/qbt/home/.config/qBittorrent'
 
                           # set permissions on the configuration directory
-                          chown qbt:qbt -R '${config.vars.network.qbt.data}/qbt/home/.config/qBittorrent'
+                          chown qbt:qbt -R '/var/lib/qbt/home/.config/qBittorrent'
+
+                          # create download directories
+                          mkdir -p /srv/torrents/
+                          mkdir -p /srv/torrents/downloads
+                          mkdir -p /srv/torrents/movies
+                          mkdir -p /srv/torrents/tv
+
+                          # set permissions on the download directories
+                          chown qbt:qbt -R /srv/torrents
 
                           # write categories
-                          if [ ! -f '${config.vars.network.qbt.data}/qbt/home/.config/qBittorrent/categories.json' ]; then
-                            cat > '${config.vars.network.qbt.data}/qbt/home/.config/qBittorrent/categories.json' <<EOF
+                          if [ ! -f '/var/lib/qbt/home/.config/qBittorrent/categories.json' ]; then
+                            cat > '/var/lib/qbt/home/.config/qBittorrent/categories.json' <<EOF
               {
                   "Movies": {
-                      "save_path": "${config.vars.network.qbt.data}/movies"
+                      "save_path": "/srv/media/movies"
                   },
                   "TV": {
-                      "save_path": "${config.vars.network.qbt.data}/tv"
+                      "save_path": "/srv/media/tv"
                   }
               }
               EOF
                           fi
 
                           # write configuration
-                          if [ ! -f '${config.vars.network.qbt.data}/qbt/home/.config/qBittorrent/qBittorrent.conf' ]; then
-                            cat > '${config.vars.network.qbt.data}/qbt/home/.config/qBittorrent/qBittorrent.conf' <<EOF
+                          if [ ! -f '/var/lib/qbt/home/.config/qBittorrent/qBittorrent.conf' ]; then
+                            cat > '/var/lib/qbt/home/.config/qBittorrent/qBittorrent.conf' <<EOF
               [BitTorrent]
               Session\AnonymousModeEnabled=true
               Session\DHTEnabled=false
-              Session\DefaultSavePath=${config.vars.network.qbt.data}/downloads
+              Session\DefaultSavePath=/srv/torrents/downloads
               Session\DisableAutoTMMByDefault=false
               Session\Encryption=1
               Session\LSDEnabled=false
@@ -67,7 +76,7 @@
               Session\I2P\Enabled=true
               Session\I2P\MixedMode=false
               Session\I2P\Address=127.0.0.1
-              Session\I2P\Port=${toString config.vars.network.i2pd.sam.port}
+              Session\I2P\Port=7656
               Session\ProxyPeerConnections=true
 
               [Meta]
@@ -77,7 +86,7 @@
               Proxy\AuthEnabled=false
               Proxy\HostnameLookupEnabled=true
               Proxy\IP=127.0.0.1
-              Proxy\Port=${toString config.vars.network.i2pd.socksProxy.port}
+              Proxy\Port=4447
               Proxy\Profiles\BitTorrent=true
               Proxy\Profiles\Misc=true
               Proxy\Profiles\RSS=true
@@ -90,7 +99,7 @@
 
               [Preferences]
               WebUI\Address=127.0.0.1
-              WebUI\Port=${toString config.vars.network.qbt.port}
+              WebUI\Port=8080
               WebUI\CSRFProtection=true
               WebUI\ClickjackingProtection=true
               WebUI\MaxAuthenticationFailCount=3
@@ -99,10 +108,10 @@
                           fi
 
                           # set permissions on categories file and configuration file
-                          chown qbt:qbt '${config.vars.network.qbt.data}/qbt/home/.config/qBittorrent/categories.json'
-                          chmod 600 '${config.vars.network.qbt.data}/qbt/home/.config/qBittorrent/categories.json'
-                          chown qbt:qbt '${config.vars.network.qbt.data}/qbt/home/.config/qBittorrent/qBittorrent.conf'
-                          chmod 600 '${config.vars.network.qbt.data}/qbt/home/.config/qBittorrent/qBittorrent.conf'
+                          chown qbt:qbt '/var/lib/qbt/home/.config/qBittorrent/categories.json'
+                          chmod 600 '/var/lib/qbt/home/.config/qBittorrent/categories.json'
+                          chown qbt:qbt '/var/lib/qbt/home/.config/qBittorrent/qBittorrent.conf'
+                          chmod 600 '/var/lib/qbt/home/.config/qBittorrent/qBittorrent.conf'
 
             '';
           in

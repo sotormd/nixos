@@ -15,12 +15,11 @@ This document covers impermanence on the `laptop` role.
 1. Populate `/persist/` with the default directories to persist.
 
    ```bash
-   nixos init impermanence
+   nixos bootstrap impermanence
    ```
 
-2. Enable impermanence in configuration.
-
-   Set `device.impermanence.enable = true;` in the variables file.
+2. Set `impermanence.enable` to `true` in `features` section of the variables
+   file.
 
    ```bash
    nixos edit vars

@@ -14,7 +14,7 @@
   ];
 
   fileSystems."/" = {
-    device = "/dev/disk/by-partuuid/${config.vars.device.root}";
+    device = "/dev/disk/by-partuuid/${config.vars.partitions.root}";
     fsType = "ext4";
   };
 

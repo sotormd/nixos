@@ -2,9 +2,7 @@
 
 {
   environment.sessionVariables = {
-    NIXOS_DIR = config.vars.nixosDirectory;
-    NIXOS_ROLE = config.vars.nixosRole;
+    NIXOS_DIR = config.vars.flake.nixosDirectory;
+    NIXOS_ROLE = config.vars.flake.nixosRole;
   };
-
-  environment.etc."nixos-role".text = config.vars.nixosRole;
 }

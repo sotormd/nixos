@@ -5,7 +5,7 @@ let
   footWrapped = pkgs.writeShellScriptBin "foot" ''
     FOCUSED_OUT="$(${pkgs.swayfx}/bin/swaymsg -t get_outputs -r | ${pkgs.jq}/bin/jq -r '.[] | select(.focused == true).name')"
 
-    if [ "$FOCUSED_OUT" = "${config.vars.outputs.laptop}" ]; then
+    if [ "$FOCUSED_OUT" = "${config.vars.displays.outputs.laptop.identifier}" ]; then
       SIZE=7
     else
       SIZE=10
