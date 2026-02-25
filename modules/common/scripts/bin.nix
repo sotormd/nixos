@@ -3,6 +3,7 @@
 let
   scriptNames = [
     "apply"
+    "switch"
     "update"
     "clean"
 

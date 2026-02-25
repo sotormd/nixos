@@ -1,16 +1,13 @@
 .TH NIXOS 1 "" "NixOS Flake Helper" "User Commands"
 
 .SH NAME
-nixos \- unified wrapper for managing a NixOS flake
+nixos \- unified wrapper and general command dispatcher for managing a NixOS flake
 
 .SH SYNOPSIS
 .B nixos [command] [args]
 
 .SH DESCRIPTION
-Unified wrapper for managing a NixOS flake.
-
-It provides a curated set of high-level commands for performing
-common maintenance tasks.
+A unified wrapper and general command dispatcher for managing a NixOS flake with abstractions for standard maintenance commands.
 
 .SH COMMANDS
 
@@ -24,6 +21,12 @@ test   : activate but do not add boot entry
 boot   : add boot entry but do not activate
 .br
 switch : activate and add boot entry
+
+.TP
+.B switch
+.br
+Alias for
+.B nixos apply switch
 
 .TP
 .B update [ inputs... ]

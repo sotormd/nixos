@@ -1,5 +1,8 @@
 # CLI
 
+`nixos(1)` is a unified **wrapper** and general command **dispatcher** for
+managing this NixOS flake.
+
 This document covers the `nixos(1)` command line interface for `laptop` and
 `server` roles.
 
@@ -78,10 +81,16 @@ Safe workflow wrapper around `nixos-rebuild`.
 nixos apply <test|boot|switch>
 ```
 
-These map to
+These map to:
 
 ```bash
 nixos-rebuild <test|boot|switch>
+```
+
+Alias for `nixos apply switch`:
+
+```bash
+nixos switch
 ```
 
 The `apply` command does the following extra things:
@@ -107,7 +116,7 @@ Examples:
 1. Switch to the new configuration
 
    ```bash
-   nixos apply switch
+   nixos switch
    ```
 
 2. Make the new configuration the boot default, and skip confirmation:

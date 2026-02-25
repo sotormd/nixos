@@ -1,0 +1,5 @@
+#!/usr/bin/env bash
+
+set -euo pipefail
+
+"$__NIXOS_SCRIPTS/apply" switch
