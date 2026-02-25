@@ -354,10 +354,10 @@ command in three places:
 2. A script present in `$NIXOS_DIR/cli/` provided
 
    ```bash
-   nixos switch
+   nixos clean
    ```
 
-   `nixos(1)` runs `$NIXOS_DIR/cli/switch`
+   `nixos(1)` runs `$NIXOS_DIR/cli/clean`
 
 3. Any other command provided
 
@@ -371,7 +371,7 @@ It is _generally_ safe to pipe into and out of the included scripts:
 
 ```bash
 nixos cat modules/server/searxng/engines.nix | wl-copy
-yes | nixos switch
+yes | nixos apply switch
 ```
 
 All the included scripts were written assuming that they will be called from the
