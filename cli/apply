@@ -29,8 +29,8 @@ if [[ $confirm =~ ^[Yy]$ ]]; then
 
     sudo nixos-rebuild $VERB --flake ".#$__NIXOS_ROLE" --fallback
 
-    git reset -- vars/vars.nix vars/secrets.yaml .sops.yaml
-
 else
     echo "cancelled"
 fi
+
+git reset -- vars/vars.nix vars/secrets.yaml .sops.yaml
