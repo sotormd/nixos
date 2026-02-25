@@ -173,4 +173,4 @@ Manpage:
 man nixos
 ```
 
-See [cli](./docs/cli.md) for the full command reference and workflow examples.
+See [CLI](./docs/cli.md) for the full command reference and workflow examples.
