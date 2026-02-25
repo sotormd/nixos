@@ -1,4 +1,4 @@
-# cli
+# CLI
 
 This document covers the `nixos(1)` command line interface for `laptop` and
 `server` roles.
@@ -9,19 +9,15 @@ role-specific setup documentation.
 # Contents
 
 1. [Overview](#overview)
-
 2. [Applying a new configuration](#applying-a-new-configuration)
 3. [Updating the lockfile](#updating-the-lockfile)
 4. [Garbage collect](#garbage-collect)
-
 5. [Get checksum of variables and secrets](#get-checksum-of-variables-and-secrets)
 6. [Get context environment](#get-context-environment)
 7. [Edit variables and secrets](#edit-variables-and-secrets)
-
 8. [Format the flake](#format-the-flake)
 9. [Fix flake permissions](#fix-flake-permissions)
 10. [Push local changes](#push-local-changes)
-
 11. [Miscellaneous](#miscellaneous)
 12. [Implementation details](#implementation-details)
 
@@ -355,18 +351,18 @@ command in three places:
 
    `nixos(1)` runs `tree --filesfirst`
 
-2. A script present in `$NIXOS_DIR/scripts/` provided
+2. A script present in `$NIXOS_DIR/cli/` provided
 
    ```bash
    nixos switch
    ```
 
-   `nixos(1)` runs `$NIXOS_DIR/scripts/switch`
+   `nixos(1)` runs `$NIXOS_DIR/cli/switch`
 
 3. Any other command provided
 
    ```bash
-   nixos cat modules/server/searxng/engines.nix | wl-copy
+   nixos cat modules/server/searxng/engines.nix
    ```
 
    `nixos(1)` dispatches the provided command as-is in `$NIXOS_DIR`
