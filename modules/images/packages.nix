@@ -4,6 +4,8 @@ let
   nixosPackage = import ../common/scripts/bin.nix { inherit pkgs; };
 in
 {
+  imports = [ ./bootstrapPackages.nix ];
+
   environment.systemPackages = with pkgs; [
     nixosPackage.nixosWrapper
     bashInteractive
