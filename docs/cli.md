@@ -15,14 +15,10 @@ role-specific setup documentation.
 2. [Applying a new configuration](#applying-a-new-configuration)
 3. [Updating the lockfile](#updating-the-lockfile)
 4. [Garbage collect](#garbage-collect)
-5. [Get checksum of variables and secrets](#get-checksum-of-variables-and-secrets)
-6. [Get context environment](#get-context-environment)
-7. [Edit variables and secrets](#edit-variables-and-secrets)
-8. [Format the flake](#format-the-flake)
-9. [Fix flake permissions](#fix-flake-permissions)
-10. [Push local changes](#push-local-changes)
-11. [Miscellaneous](#miscellaneous)
-12. [Implementation details](#implementation-details)
+5. [Edit variables and secrets](#edit-variables-and-secrets)
+6. [Push local changes](#push-local-changes)
+7. [Miscellaneous](#miscellaneous)
+8. [Implementation details](#implementation-details)
 
 # Overview
 
@@ -53,26 +49,6 @@ nixos vi modules/common/firewall.nix
 
 See [Miscellaneous](#miscellaneous) for more cases where this is useful.
 
-Additionally, the script is also exposed as the default package of the flake.
-
-so running
-
-```bash
-nix run $NIXOS_DIR -- switch
-```
-
-or
-
-```bash
-nix run github:sotormd/nixos -- switch
-```
-
-is equivalent to
-
-```bash
-nixos switch
-```
-
 # Applying a new configuration
 
 Safe workflow wrapper around `nixos-rebuild`.
@@ -85,12 +61,6 @@ These map to:
 
 ```bash
 nixos-rebuild <test|boot|switch>
-```
-
-Alias for `nixos apply switch`:
-
-```bash
-nixos switch
 ```
 
 The `apply` command does the following extra things:
@@ -116,7 +86,7 @@ Examples:
 1. Switch to the new configuration
 
    ```bash
-   nixos switch
+   nixos apply switch
    ```
 
 2. Make the new configuration the boot default, and skip confirmation:
@@ -159,62 +129,6 @@ Examples:
    nixos update nixpkgs hjem
    ```
 
-# Get context environment
-
-```bash
-nixos context
-```
-
-This shows the values of `$NIXOS_ROLE`, `$NIXOS_DIR` and `$NIXOS_SCRIPTS` that
-the `nixos(1)` wrapper passes on to subcommands.
-
-# Get checksum of variables and secrets
-
-```bash
-nixos digest
-```
-
-This shows the `sha256sum` of `vars/vars.nix` and `vars/secrets.yaml` along with
-the last modified date and time.
-
-The indicator is also colored with a color derived from the hash, for quick
-verification.
-
-The output of `digest` is also shown before every `apply` to verify the status
-of the variables and secrets.
-
-This is important because while those scripts show a full `git diff` of the
-flake, they leave out any changes in the variables and secrets.
-
-# Format the flake
-
-Format all `.nix` files in the flake.
-
-```bash
-nixos format
-```
-
-This is equivalent to running:
-
-```bash
-nixos find . -type f -name '*.nix' -exec nix fmt {} +
-```
-
-`format` is called before every `apply`.
-
-# Fix flake permissions
-
-Fix permissions of all files and directories in the flake.
-
-```bash
-nixos perms
-```
-
-This ensures all files are owned by `$USER`, applies `600` to all files, `700`
-to all directories and `700` to all files under `$NIXOS_DIR/cli/`.
-
-`perms` is called before every `apply`.
-
 # Garbage collect
 
 > WARNING: Destructive command: deletes all non-current generations.
@@ -228,22 +142,6 @@ This is equivalent to running:
 ```bash
 sudo nix-collect-garbage --delete-old
 ```
-
-# Push local changes
-
-Push local changes to a remote host using `rsync` over `ssh`.
-
-```bash
-nixos push <host> <path>
-```
-
-Examples:
-
-1. To push to `server:/nixos`:
-
-   ```bash
-   nixos push server /nixos
-   ```
 
 # Edit variables and secrets
 
@@ -265,6 +163,22 @@ Examples:
 
    ```bash
    nixos edit sops
+   ```
+
+# Push local changes
+
+Push local changes to a remote host using `rsync` over `ssh`.
+
+```bash
+nixos push <host> <path>
+```
+
+Examples:
+
+1. To push to `server:/nixos`:
+
+   ```bash
+   nixos push server /nixos
    ```
 
 # Miscellaneous
@@ -331,7 +245,7 @@ variables make sense:
 - `$NIXOS_DIR` (flake path)
 - `$NIXOS_SCRIPTS` (commands path)
 
-`nixos(1)` also passes on these variables to subcommands as:
+`nixos(1)` also passes on these variables to commands as:
 
 - `$__NIXOS_ROLE`
 - `$__NIXOS_DIR`

@@ -19,8 +19,8 @@ This document covers using the `server` role.
 ## Routine Tasks
 
 Routine tasks such as updating the flake, switching configurations,
-garbage-collecting, repairing the Nix store, and editing variables & secrets are
-handled through the unified `nixos(1)` helper CLI.
+garbage-collecting, and editing variables & secrets are handled through the
+unified `nixos(1)` helper CLI.
 
 Manpage:
 

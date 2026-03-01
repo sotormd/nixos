@@ -9,28 +9,55 @@ VERB=$1
 
 set -euo pipefail
 
-"$__NIXOS_SCRIPTS/format"
-"$__NIXOS_SCRIPTS/perms"
+(
 
-git add .
+    cd "$__NIXOS_DIR"
 
-if [ "$__NIXOS_ROLE" == "laptop" ]; then
-    GIT_PAGER=cat git diff HEAD -- ':!vars/vars.nix' ':!vars/secrets.yaml' ':!.sops.yaml'
-fi
+    # 1. FORMAT FLAKE
+    find "$__NIXOS_DIR" -type f -name '*.nix' -exec nix fmt {} +
 
-echo
-"$__NIXOS_SCRIPTS/digest"
+    # 2. FIX FLAKE PERMISSIONS
+    find "$__NIXOS_DIR" -path "$__NIXOS_DIR/.git" -prune -o -exec chown "$USER": {} +
+    find "$__NIXOS_DIR" -path "$__NIXOS_DIR/.git" -prune -o -type d -exec chmod 700 {} \;
+    find "$__NIXOS_DIR" -path "$__NIXOS_DIR/.git" -prune -o -type f -exec chmod 600 {} \;
+    chmod 700 -R "$__NIXOS_DIR/cli"
 
-read -p "continue? [Y/n]: " confirm
+    # 3. STAGE CHANGES
+    git add .
 
-confirm=${confirm:-Y}
+    # 4. SHOW DIFF
+    if [ "$__NIXOS_ROLE" == "laptop" ]; then
+        GIT_PAGER=cat git diff HEAD -- ':!vars/vars.nix' ':!vars/secrets.yaml' ':!.sops.yaml'
+    fi
 
-if [[ $confirm =~ ^[Yy]$ ]]; then
+    # 5. SHOW DIGEST
+    echo
+    vars_file="$__NIXOS_DIR/vars/vars.nix"
+    sops_file="$__NIXOS_DIR/vars/secrets.yaml"
+    vars_hash=$(sha256sum "$vars_file" | awk '{print $1}')
+    vars_r=$((16#${vars_hash:0:2}))
+    vars_g=$((16#${vars_hash:2:2}))
+    vars_b=$((16#${vars_hash:4:2}))
+    sops_hash=$(sha256sum "$sops_file" | awk '{print $1}')
+    sops_r=$((16#${sops_hash:0:2}))
+    sops_g=$((16#${sops_hash:2:2}))
+    sops_b=$((16#${sops_hash:4:2}))
+    echo -e "\033[1m\033[38;2;${vars_r};${vars_g};${vars_b}mvars:\033[0m $vars_hash $(stat -c %y "$vars_file")"
+    echo -e "\033[1m\033[38;2;${sops_r};${sops_g};${sops_b}msops:\033[0m $sops_hash $(stat -c %y "$sops_file")"
 
-    sudo nixos-rebuild $VERB --flake ".#$__NIXOS_ROLE" --fallback
+    # 6. ASK FOR CONFIRMATION
+    read -p "continue? [Y/n]: " confirm
+    confirm=${confirm:-Y}
 
-else
-    echo "cancelled"
-fi
+    # 7. APPLY CHANGES
+    if [[ $confirm =~ ^[Yy]$ ]]; then
 
-git reset -- vars/vars.nix vars/secrets.yaml .sops.yaml
+        sudo nixos-rebuild $VERB --flake ".#$__NIXOS_ROLE" --fallback
+
+    else
+        echo "cancelled"
+    fi
+
+    # 7. UNSTAGE VARIABLES & SECRETS
+    git reset -- vars/vars.nix vars/secrets.yaml .sops.yaml
+)

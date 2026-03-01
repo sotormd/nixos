@@ -3,16 +3,9 @@
 let
   scriptNames = [
     "apply"
-    "switch"
     "update"
     "clean"
-
-    "context"
-    "digest"
     "edit"
-
-    "format"
-    "perms"
     "push"
 
     "bootstrap"
