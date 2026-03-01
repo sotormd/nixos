@@ -142,6 +142,8 @@ let
             "format-muted": "<span size='12000'></span>  <span>Muted</span>",
             "on-click": "wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle",
             "on-click-right": "pavucontrol",
+            "on-scroll-up": "volume 1%+",
+            "on-scroll-down": "volume 1%-",
             "tooltip": false
           },
           "sway/window": {
