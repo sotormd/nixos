@@ -63,8 +63,8 @@ During the impermanence setup (post-install), the init script copies all
 relevant directories to `/persist`.
 
 Then, systemd services roll back the
-[root](../../modules/laptop/impermanence/rollback-root.nix) and
-[home](../../modules/laptop/impermanence/rollback-home.nix) datasets.
+[root](../../modules/machines/laptop/impermanence/rollback-root.nix) and
+[home](../../modules/machines/laptop/impermanence/rollback-home.nix) datasets.
 
 So, in early boot, the `rpool/nixos/root` and `rpool/nixos/home` directories are
 **completely empty**. Nix populates it with relevant files from `/nix`.
@@ -93,8 +93,9 @@ A lib [function](../../lib/impermanence.nix) helps avoid repeated code across
 several such blocks.
 
 Persisted directories under `/` are declared
-[here](../../modules/laptop/impermanence/bind-root.nix) and those under `/home`
-are declared [here](../../modules/laptop/impermanence/bind-home.nix).
+[here](../../modules/machines/laptop/impermanence/bind-root.nix) and those under
+`/home` are declared
+[here](../../modules/machines/laptop/impermanence/bind-home.nix).
 
 To persist more directories, simply add to the list. The directories under `/`
 are based on the recommendations in the NixOS

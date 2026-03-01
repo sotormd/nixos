@@ -15,7 +15,7 @@ let
     name:
     pkgs.writeTextFile {
       inherit name;
-      text = builtins.readFile ../../../cli/${name};
+      text = builtins.readFile ../../../../cli/${name};
       destination = "/${name}";
       executable = true;
     };
@@ -27,7 +27,7 @@ let
     paths = scripts;
   };
 
-  nixosRaw = pkgs.writeShellScriptBin "nixos" (builtins.readFile ../../../cli/nixos);
+  nixosRaw = pkgs.writeShellScriptBin "nixos" (builtins.readFile ../../../../cli/nixos);
 
   nixosWithScripts = pkgs.writeShellScriptBin "nixos" ''
     #!/usr/bin/env ${pkgs.runtimeShell}
