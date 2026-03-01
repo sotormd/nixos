@@ -1,8 +1,8 @@
 { config, pkgs, ... }:
 
-{
+let
   style = pkgs.writeTextFile {
-    name = "style";
+    name = "waybar-style";
     text = ''
       * {
         font-family: '${config.colors.fonts.normal}';
@@ -154,5 +154,9 @@
       }
     '';
     destination = "/style.css";
+    executable = false;
   };
+in
+{
+  inherit style;
 }

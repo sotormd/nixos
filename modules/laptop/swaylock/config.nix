@@ -2,7 +2,7 @@
 
 let
   configuration = pkgs.writeTextFile {
-    name = "config";
+    name = "swaylock-config";
     text = ''
       font=${config.colors.fonts.normal}
       font-size=16
@@ -50,11 +50,9 @@ let
       separator-color=00000000
     '';
     destination = "/config";
+    executable = false;
   };
 in
 {
-  configDir = pkgs.symlinkJoin {
-    name = "swaylock";
-    paths = [ configuration ];
-  };
+  inherit configuration;
 }

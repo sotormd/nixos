@@ -56,13 +56,13 @@ let
 
   workspaceFocusLines = lib.concatStringsSep "\n" (
     map (d: ''
-      bindsym Mod4+${lastChar d} exec ${pkgs.swayfx}/bin/swaymsg workspace $(${pkgs.swayfx}/bin/swaymsg -t get_outputs | ${pkgs.jq}/bin/jq -r '.[] | select(.focused) | .name | ${jqCondition}')${d}
+      bindsym Mod4+${lastChar d} exec swaymsg workspace $(swaymsg -t get_outputs | jq -r '.[] | select(.focused) | .name | ${jqCondition}')${d}
     '') digits
   );
 
   workspaceMoveLines = lib.concatStringsSep "\n" (
     map (d: ''
-      bindsym Mod4+shift+${lastChar d} exec ${pkgs.swayfx}/bin/swaymsg move workspace $(${pkgs.swayfx}/bin/swaymsg -t get_outputs | ${pkgs.jq}/bin/jq -r '.[] | select(.focused) | .name | ${jqCondition}')${d}
+      bindsym Mod4+shift+${lastChar d} exec swaymsg move workspace $(swaymsg -t get_outputs | jq -r '.[] | select(.focused) | .name | ${jqCondition}')${d}
     '') digits
   );
 
@@ -80,7 +80,7 @@ let
   backgrounds = import ./backgrounds.nix { inherit config lib; };
 
   configuration = pkgs.writeTextFile {
-    name = "config";
+    name = "sway-config";
     text = ''
       #
       # LAUNCH APPS
@@ -157,23 +157,23 @@ let
       bindsym Mod4+Page_Up workspace prev
       bindsym Mod4+ctrl+Right workspace next
       bindsym Mod4+ctrl+Left workspace prev
-      bindsym Mod4+g exec ${pkgs.swayfx}/bin/swaymsg workspace $(${pkgs.swayfx}/bin/swaymsg -t get_workspaces -r | ${pkgs.jq}/bin/jq -r '.[].name' | rofi -dmenu -p "")
+      bindsym Mod4+g exec swaymsg workspace $(swaymsg -t get_workspaces -r | jq -r '.[].name' | rofi -dmenu -p "")
       ${workspaceFocusLines}
 
       #
       # MOVE TO WORKSPACE
       #
-      bindsym Mod4+shift+g exec ${pkgs.swayfx}/bin/swaymsg move workspace $(${pkgs.swayfx}/bin/swaymsg -t get_workspaces -r | ${pkgs.jq}/bin/jq -r '.[].name' | rofi -dmenu -p "")
+      bindsym Mod4+shift+g exec swaymsg move workspace $(swaymsg -t get_workspaces -r | jq -r '.[].name' | rofi -dmenu -p "")
       ${workspaceMoveLines}
 
       #
       # AUDIO
       #
-      bindsym XF86AudioPrev exec ${pkgs.playerctl}/bin/playerctl previous
-      bindsym XF86AudioPlay exec ${pkgs.playerctl}/bin/playerctl play-pause
-      bindsym Mod4+XF86AudioPlay exec ${pkgs.playerctl}/bin/playerctl stop
-      bindsym XF86AudioNext exec ${pkgs.playerctl}/bin/playerctl next
-      bindsym XF86AudioMute exec ${pkgs.wireplumber}/bin/wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle
+      bindsym XF86AudioPrev exec playerctl previous
+      bindsym XF86AudioPlay exec playerctl play-pause
+      bindsym Mod4+XF86AudioPlay exec playerctl stop
+      bindsym XF86AudioNext exec playerctl next
+      bindsym XF86AudioMute exec wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle
       bindsym XF86AudioLowerVolume exec volume 5%-
       bindsym XF86AudioRaiseVolume exec volume 5%+
 
@@ -202,8 +202,8 @@ let
       hide_edge_borders none
       for_window [app_id=".*"] border pixel 3
       for_window [app_id=".*"] opacity 1
-      bindsym Mod4+o exec ${pkgs.swayfx}/bin/swaymsg opacity 1
-      bindsym Mod4+t exec ${pkgs.swayfx}/bin/swaymsg opacity 0.9
+      bindsym Mod4+o exec swaymsg opacity 1
+      bindsym Mod4+t exec swaymsg opacity 0.9
 
       #
       # COLORS & FONTS
@@ -219,11 +219,11 @@ let
       #
       # GTK 4.0 SETTINGS
       #
-      exec ${pkgs.dconf}/bin/dconf write /org/gnome/desktop/interface/font-name "'${config.colors.fonts.normal} 10'"
-      exec ${pkgs.dconf}/bin/dconf write /org/gnome/desktop/interface/icon-theme "'${config.colors.gtk.icons.name}'"
-      exec ${pkgs.dconf}/bin/dconf write /org/gnome/desktop/interface/gtk-theme "'${config.colors.gtk.theme.name}'"
-      exec ${pkgs.dconf}/bin/dconf write /org/gnome/desktop/interface/color-scheme "'prefer-dark'"
-      exec ${pkgs.dconf}/bin/dconf write /org/gnome/desktop/wm/preferences/button-layout "':'"
+      exec dconf write /org/gnome/desktop/interface/font-name "'${config.colors.fonts.normal} 10'"
+      exec dconf write /org/gnome/desktop/interface/icon-theme "'${config.colors.gtk.icons.name}'"
+      exec dconf write /org/gnome/desktop/interface/gtk-theme "'${config.colors.gtk.theme.name}'"
+      exec dconf write /org/gnome/desktop/interface/color-scheme "'prefer-dark'"
+      exec dconf write /org/gnome/desktop/wm/preferences/button-layout "':'"
 
       #
       # MOUSE & TOUCHPAD
@@ -254,7 +254,7 @@ let
       #
       # LEAVE MODE
       #
-      bindsym Mod4+Escape mode leave; exec eww open leavewindow --screen $(${pkgs.swayfx}/bin/swaymsg -t get_outputs | ${pkgs.jq}/bin/jq -r '.[] | select(.focused) | .name')
+      bindsym Mod4+Escape mode leave; exec eww open leavewindow --screen $(swaymsg -t get_outputs | jq -r '.[] | select(.focused) | .name')
       mode "leave" {
         bindsym Escape mode default; exec eww close leavewindow
         bindsym Return mode default; exec eww close leavewindow
@@ -262,7 +262,7 @@ let
         bindsym r mode default; exec eww close leavewindow; exec systemctl reboot
         bindsym s mode default; exec eww close leavewindow; exec systemctl suspend
         bindsym u mode default; exec eww close leavewindow; exec systemctl poweroff
-        bindsym x mode default; exec eww close leavewindow; exec ${pkgs.swayfx}/bin/swaymsg exit
+        bindsym x mode default; exec eww close leavewindow; exec swaymsg exit
       }
 
       #
@@ -285,8 +285,8 @@ let
       #
       # QUICK SCREENSHOT
       #
-      bindsym Mod4+shift+s exec ${pkgs.sway-contrib.grimshot}/bin/grimshot copy area
-      bindsym Print exec ${pkgs.sway-contrib.grimshot}/bin/grimshot save screen
+      bindsym Mod4+shift+s exec grimshot copy area
+      bindsym Print exec grimshot save screen
 
       #
       # SCREENSHOT MODE
@@ -296,7 +296,7 @@ let
         bindsym Escape mode default
         bindsym Return mode default
         bindsym c mode screenshot-copy
-        bindsym p mode default; exec ${pkgs.slurp}/bin/slurp -p | ${pkgs.grim}/bin/grim -g - - | ${pkgs.imagemagick}/bin/magick - txt: | awk 'NR==2 { print tolower($3) }' | ${pkgs.wl-clipboard}/bin/wl-copy
+        bindsym p mode default; exec slurp -p | grim -g - - | magick - txt: | awk 'NR==2 { print tolower($3) }' | wl-copy
         bindsym s mode screenshot-save
       }
 
@@ -306,9 +306,9 @@ let
       mode "screenshot-copy" {
         bindsym Escape mode default
         bindsym Return mode default
-        bindsym a mode default; exec ${pkgs.sway-contrib.grimshot}/bin/grimshot copy area
-        bindsym s mode default; exec ${pkgs.sway-contrib.grimshot}/bin/grimshot copy screen
-        bindsym w mode default; exec ${pkgs.sway-contrib.grimshot}/bin/grimshot copy window
+        bindsym a mode default; exec grimshot copy area
+        bindsym s mode default; exec grimshot copy screen
+        bindsym w mode default; exec grimshot copy window
       }
 
       #
@@ -317,9 +317,9 @@ let
       mode "screenshot-save" {
         bindsym Escape mode default
         bindsym Return mode default
-        bindsym a mode default; exec ${pkgs.sway-contrib.grimshot}/bin/grimshot savecopy area
-        bindsym s mode default; exec ${pkgs.sway-contrib.grimshot}/bin/grimshot savecopy screen
-        bindsym w mode default; exec ${pkgs.sway-contrib.grimshot}/bin/grimshot savecopy window
+        bindsym a mode default; exec grimshot savecopy area
+        bindsym s mode default; exec grimshot savecopy screen
+        bindsym w mode default; exec grimshot savecopy window
       }
 
       #
@@ -337,8 +337,8 @@ let
       exec eww daemon
       exec eww-cal-init
       exec eww-dock-init
-      bindsym Mod4+Tab exec eww open dock --toggle --screen $(${pkgs.swayfx}/bin/swaymsg -t get_outputs | ${pkgs.jq}/bin/jq -r '.[] | select(.focused) | .name')
-      bindsym Mod4+grave exec eww open start --toggle --screen $(${pkgs.swayfx}/bin/swaymsg -t get_outputs | ${pkgs.jq}/bin/jq -r '.[] | select(.focused) | .name')
+      bindsym Mod4+Tab exec eww open dock --toggle --screen $(swaymsg -t get_outputs | jq -r '.[] | select(.focused) | .name')
+      bindsym Mod4+grave exec eww open start --toggle --screen $(swaymsg -t get_outputs | jq -r '.[] | select(.focused) | .name')
 
       #
       # DUNST
@@ -348,14 +348,13 @@ let
       #
       # CLIPHIST
       #
-      exec wl-paste --watch ${pkgs.cliphist}/bin/cliphist store
-      bindsym Mod4+c exec exec ${pkgs.cliphist}/bin/cliphist list | rofi -dmenu -p '' | ${pkgs.cliphist}/bin/cliphist decode | wl-copy
-      bindsym Mod4+ctrl+c ${pkgs.cliphist}/bin/cliphist wipe
+      exec wl-paste --watch cliphist store
+      bindsym Mod4+c exec exec cliphist list | rofi -dmenu -p '' | cliphist decode | wl-copy
 
       #
       # SWAYIDLE
       #
-      exec ${pkgs.swayidle}/bin/swayidle \
+      exec swayidle \
       timeout 10 'swaylock && sudo systemctl start restore-default-route' \
       timeout 180 'systemctl suspend' \
       before-sleep 'swaylock && sudo systemctl start restore-default-route'
@@ -373,7 +372,7 @@ let
       #
       # DBUS
       #
-      exec "${pkgs.dbus}/bin/dbus-update-activation-environment --systemd DISPLAY WAYLAND_DISPLAY SWAYSOCK XDG_CURRENT_DESKTOP XDG_SESSION_TYPE NIXOS_OZONE_WL XCURSOR_THEME XCURSOR_SIZE; systemctl --user reset-failed && systemctl --user start sway-session.target && ${pkgs.swayfx}/bin/swaymsg -mt subscribe '[]' || true && systemctl --user stop sway-session.target"
+      exec "dbus-update-activation-environment --systemd DISPLAY WAYLAND_DISPLAY SWAYSOCK XDG_CURRENT_DESKTOP XDG_SESSION_TYPE NIXOS_OZONE_WL XCURSOR_THEME XCURSOR_SIZE; systemctl --user reset-failed && systemctl --user start sway-session.target && swaymsg -mt subscribe '[]' || true && systemctl --user stop sway-session.target"
 
       #
       # DISABLE XWAYLAND
@@ -390,11 +389,9 @@ let
       blur_brightness 1.1
     '';
     destination = "/config";
+    executable = false;
   };
 in
 {
-  configDir = pkgs.symlinkJoin {
-    name = "sway";
-    paths = [ configuration ];
-  };
+  inherit configuration;
 }

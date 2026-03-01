@@ -6,13 +6,7 @@
 }:
 
 let
-  package = import ./package.nix {
-    inherit
-      config
-      lib
-      pkgs
-      ;
-  };
+  package = import ./package.nix { inherit config lib pkgs; };
 in
 {
   imports = [
@@ -27,5 +21,5 @@ in
     ./start.nix
   ];
 
-  users.users.${config.vars.user.name}.packages = [ package.sway ];
+  users.users.${config.vars.user.name}.packages = [ package.swayWrapped ];
 }

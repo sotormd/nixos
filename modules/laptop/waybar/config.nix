@@ -6,7 +6,7 @@
 }:
 
 let
-  scripts = import ./scripts.nix { inherit pkgs; };
+  inherit (import ./scripts.nix { inherit pkgs; }) scripts;
 
   count = lib.length (lib.attrNames config.vars.displays.outputs);
 
@@ -32,10 +32,9 @@ let
       lib.concatMap (i: map (d: ''"${toString i}${d}": "${lastChar d}",'') digits) indices
     )
   );
-in
-{
-  config = pkgs.writeTextFile {
-    name = "config";
+
+  configuration = pkgs.writeTextFile {
+    name = "waybar-config";
     text = ''
       [
         {
@@ -60,8 +59,8 @@ in
             ],
             "format-plugged": "<span size='13000'>󰂄</span> <span rise='800'>{capacity}%</span>",
             "format-warning": "<span size='13000'>{icon}</span> <span rise='800'>{capacity}%</span>",
-            "on-scroll-down": "${pkgs.brightnessctl}/bin/brightnessctl set 5%-",
-            "on-scroll-up": "${pkgs.brightnessctl}/bin/brightnessctl set 5%+",
+            "on-scroll-down": "brightness 5%-",
+            "on-scroll-up": "brightness 5%+",
             "states": {
               "critical": 15,
               "warning": 30
@@ -70,25 +69,25 @@ in
           },
           "clock": {
             "format": "<span size='12000' rise='-1000'>󰥔</span> <span rise='-1000'>{:%I:%M %p}</span>",
-            "on-click": "eww open --toggle calendar --screen $(${pkgs.swayfx}/bin/swaymsg -t get_outputs | ${pkgs.jq}/bin/jq -r '.[] | select(.focused) | .name')",
+            "on-click": "eww open --toggle calendar --screen $(swaymsg -t get_outputs | jq -r '.[] | select(.focused) | .name')",
             "tooltip": false
           },
           "custom/namespaces": {
-            "exec": "${scripts.scriptsDir}/namespaces-status.sh",
+            "exec": "${scripts}/namespaces-status.sh",
             "interval": 1,
-            "on-click": "${scripts.scriptsDir}/namespaces-toggle.sh",
+            "on-click": "${scripts}/namespaces-toggle.sh",
             "return-type": "json",
             "tooltip": false
           },
           "custom/playerctl": {
-            "exec": "${scripts.scriptsDir}/playerctl.sh",
+            "exec": "${scripts}/playerctl.sh",
             "interval": 1,
             "max-length": 70,
-            "on-click": "${pkgs.playerctl}/bin/playerctl play-pause",
-            "on-click-right": "${scripts.scriptsDir}/animation.sh",
-            "on-click-middle": "${pkgs.playerctl}/bin/playerctl stop",
-            "on-scroll-down": "${pkgs.playerctl}/bin/playerctl previous",
-            "on-scroll-up": "${pkgs.playerctl}/bin/playerctl next",
+            "on-click": "playerctl play-pause",
+            "on-click-right": "${scripts}/animation.sh",
+            "on-click-middle": "playerctl stop",
+            "on-scroll-down": "playerctl previous",
+            "on-scroll-up": "playerctl next",
             "return-type": "json"
           },
           "height": 32,
@@ -141,8 +140,8 @@ in
               "portable": ""
             },
             "format-muted": "<span size='12000'></span>  <span>Muted</span>",
-            "on-click": "${pkgs.wireplumber}/bin/wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle",
-            "on-click-right": "${pkgs.pavucontrol}/bin/pavucontrol",
+            "on-click": "wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle",
+            "on-click-right": "pavucontrol",
             "tooltip": false
           },
           "sway/window": {
@@ -162,6 +161,10 @@ in
         }
       ]
     '';
-    destination = "/config";
+    destination = "/config.json";
+    executable = false;
   };
+in
+{
+  inherit configuration;
 }

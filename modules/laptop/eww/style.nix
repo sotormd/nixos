@@ -1,8 +1,8 @@
 { config, pkgs, ... }:
 
-{
+let
   style = pkgs.writeTextFile {
-    name = "eww.scss";
+    name = "eww-style";
     text = ''
        .dock {
           background: transparent;
@@ -401,5 +401,9 @@
       }
     '';
     destination = "/eww.scss";
+    executable = false;
   };
+in
+{
+  inherit style;
 }

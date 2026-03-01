@@ -1,23 +1,23 @@
 { config, pkgs, ... }:
 
 let
-  style = import ./style.nix { inherit config pkgs; };
-  scripts = import ./scripts.nix { inherit pkgs; };
+  inherit (import ./style.nix { inherit config pkgs; }) style;
+  inherit (import ./scripts.nix { inherit pkgs; }) scripts;
 
   COVER_TEXT = "\${COVER}";
 
-  configuration = pkgs.writeTextFile {
-    name = "eww.yuck";
+  yuck = pkgs.writeTextFile {
+    name = "eww-yuck";
     text = ''
       (defvar dock-items-json "[]")
-      (defpoll SONG :interval "1s" `${scripts.scriptsDir}/music.sh --song`)
-      (defpoll ARTIST :interval "1s" `${scripts.scriptsDir}/music.sh --artist`)
-      (defpoll STATUS :interval "0.5s" `${scripts.scriptsDir}/music.sh --status`)
-      (defpoll CURRENT :interval "1s" `${scripts.scriptsDir}/music.sh --time`)
-      (defpoll COVER :interval "1s" `${scripts.scriptsDir}/music.sh --cover`)
-      (defpoll CTIME :interval "1s" `${scripts.scriptsDir}/music.sh --ctime`)
-      (defpoll TTIME :interval "1s" `${scripts.scriptsDir}/music.sh --ttime`)
-      (defpoll LYRICS :interval "0.5s" `${scripts.scriptsDir}/lyrics.py`)
+      (defpoll SONG :interval "1s" `${scripts}/music.sh --song`)
+      (defpoll ARTIST :interval "1s" `${scripts}/music.sh --artist`)
+      (defpoll STATUS :interval "0.5s" `${scripts}/music.sh --status`)
+      (defpoll CURRENT :interval "1s" `${scripts}/music.sh --time`)
+      (defpoll COVER :interval "1s" `${scripts}/music.sh --cover`)
+      (defpoll CTIME :interval "1s" `${scripts}/music.sh --ctime`)
+      (defpoll TTIME :interval "1s" `${scripts}/music.sh --ttime`)
+      (defpoll LYRICS :interval "0.5s" `${scripts}/lyrics.py`)
       (defvar calendar-json "[]")
       (defvar calendar-selected-month "")
       (defvar calendar-selected-month-pretty "")
@@ -50,7 +50,7 @@ let
                }' /proc/meminfo")
       (defpoll zfs-perc :interval "1s" "zpool iostat | awk '/rpool/ {print 100 * \$2 / (\$2 + \$3)}'")
       (defpoll zfs-gib :interval "1s" "zpool iostat | awk '/rpool/ {print \$2}'")
-      (defpoll fortune :interval "600s" "${pkgs.fortune}/bin/fortune -n 35 -s")
+      (defpoll fortune :interval "600s" "fortune -n 35 -s")
 
       (defwidget calendar-custom []
                  (box :class "calendar"
@@ -104,7 +104,7 @@ let
                        :halign "center"
                        :valign "canter"
                        :cursor "hand2"
-                       :onclick "${scripts.scriptsDir}/do-calendar-action reset"
+                       :onclick "${scripts}/do-calendar-action reset"
                        (box ""))
                      (box
                        :class "controls-month"
@@ -117,22 +117,22 @@ let
                          :halign "fill"
                          :valign "fill"
                          :cursor "hand2"
-                         :onclick "${scripts.scriptsDir}/do-calendar-action month_up"
-                         :onscroll "${scripts.scriptsDir}/do-calendar-action month_{}"
+                         :onclick "${scripts}/do-calendar-action month_up"
+                         :onscroll "${scripts}/do-calendar-action month_{}"
                          (box :valign "end" ""))
                        (eventbox
                          :class "month"
                          :halign "center"
                          :valign "center"
-                         :onscroll "${scripts.scriptsDir}/do-calendar-action month_{}"
+                         :onscroll "${scripts}/do-calendar-action month_{}"
                          "''${calendar-selected-month-pretty}")
                        (eventbox
                          :class "month-prev"
                          :halign "fill"
                          :valign "fill"
                          :cursor "hand2"
-                         :onclick "${scripts.scriptsDir}/do-calendar-action month_down"
-                         :onscroll "${scripts.scriptsDir}/do-calendar-action month_{}"
+                         :onclick "${scripts}/do-calendar-action month_down"
+                         :onscroll "${scripts}/do-calendar-action month_{}"
                          (box :valign "start" "")))
                      (box
                        :class "controls-year"
@@ -145,22 +145,22 @@ let
                          :halign "fill"
                          :valign "fill"
                          :cursor "hand2"
-                         :onclick "${scripts.scriptsDir}/do-calendar-action year_up"
-                         :onscroll "${scripts.scriptsDir}/do-calendar-action year_{}"
+                         :onclick "${scripts}/do-calendar-action year_up"
+                         :onscroll "${scripts}/do-calendar-action year_{}"
                          (box :valign "end" ""))
                        (eventbox
                          :class "year"
                          :halign "center"
                          :valign "center"
-                         :onscroll "${scripts.scriptsDir}/do-calendar-action year_{}"
+                         :onscroll "${scripts}/do-calendar-action year_{}"
                          "''${calendar-selected-year}")
                        (eventbox
                          :class "year-prev"
                          :halign "fill"
                          :valign "fill"
                          :cursor "hand2"
-                         :onclick "${scripts.scriptsDir}/do-calendar-action year_down"
-                         :onscroll "${scripts.scriptsDir}/do-calendar-action year_{}"
+                         :onclick "${scripts}/do-calendar-action year_down"
+                         :onscroll "${scripts}/do-calendar-action year_{}"
                          (box :valign "start" ""))))
                    (calendar-custom
                      :hexpand true)))
@@ -234,11 +234,11 @@ let
                              (label :halign "center" :class "song" :wrap "true" :text SONG)
                              (label :halign "center" :class "artist" :wrap "true" :text ARTIST)
                              (box :orientation "h" :spacing 10 :halign "center" :space-evenly "true" :vexpand "false" :hexpand "false"
-                                  (button :class "btn_prev" :onclick "${scripts.scriptsDir}/music.sh --prev" "󰒮")
-                                  (button :class "btn_play" :onclick "${scripts.scriptsDir}/music.sh --toggle" STATUS)
-                                  (button :class "btn_next" :onclick "${scripts.scriptsDir}/music.sh --next" "󰒭"))
+                                  (button :class "btn_prev" :onclick "${scripts}/music.sh --prev" "󰒮")
+                                  (button :class "btn_play" :onclick "${scripts}/music.sh --toggle" STATUS)
+                                  (button :class "btn_next" :onclick "${scripts}/music.sh --next" "󰒭"))
                              (box :class "music_bar" :halign "center" :vexpand "false" :hexpand "false"
-                                  (scale :active "true" :min 0 :max 100 :value CURRENT :onchange "${pkgs.playerctl}/bin/playerctl position $(($(${pkgs.playerctl}/bin/playerctl metadata mpris:length) / 1000000 * {} / 100))"))))
+                                  (scale :active "true" :min 0 :max 100 :value CURRENT :onchange "playerctl position $(($(playerctl metadata mpris:length) / 1000000 * {} / 100))"))))
                    (box
                      :class "start-inner-box"
                      :orientation "vertical"
@@ -267,7 +267,7 @@ let
                        :class "fortune-refresh"
                        :cursor "hand2"
                        :halign "end"
-                       :onclick "eww update fortune=\"\$(${pkgs.fortune}/bin/fortune -n 30 -s)\""
+                       :onclick "eww update fortune=\"\$(fortune -n 30 -s)\""
                        (box :class "fortune-refresh-inner" :orientation "v" "󱛬")))
                    (box
                      :class "start-inner-box"
@@ -280,7 +280,7 @@ let
                      (eventbox
                        :class "leave-box"
                        :cursor "hand2"
-                       :onclick "${pkgs.swayfx}/bin/swaymsg exit"
+                       :onclick "swaymsg exit"
                        (box :class "exit" "󰗽"))
                      (eventbox
                        :class "leave-box"
@@ -309,27 +309,27 @@ let
                    (eventbox
                      :class "leave-box"
                      :cursor "hand2"
-                     :onclick "eww close leavewindow; ${pkgs.swayfx}/bin/swaymsg mode default; swaylock &"
+                     :onclick "eww close leavewindow; swaymsg mode default; swaylock &"
                      (box :class "lock" "󰌾"))
                    (eventbox
                      :class "leave-box"
                      :cursor "hand2"
-                     :onclick "eww close leavewindow; ${pkgs.swayfx}/bin/swaymsg mode default; ${pkgs.swayfx}/bin/swaymsg exit"
+                     :onclick "eww close leavewindow; swaymsg mode default; swaymsg exit"
                      (box :class "exit" "󰗽"))
                    (eventbox
                      :class "leave-box"
                      :cursor "hand2"
-                     :onclick "eww close leavewindow; ${pkgs.swayfx}/bin/swaymsg mode default; systemctl suspend"
+                     :onclick "eww close leavewindow; swaymsg mode default; systemctl suspend"
                      (box :class "suspend" "󰤄"))
                    (eventbox
                      :class "leave-box"
                      :cursor "hand2"
-                     :onclick "eww close leavewindow; ${pkgs.swayfx}/bin/swaymsg mode default; systemctl poweroff"
+                     :onclick "eww close leavewindow; swaymsg mode default; systemctl poweroff"
                      (box :class "poweroff" ""))
                    (eventbox
                      :class "leave-box"
                      :cursor "hand2"
-                     :onclick "eww close leavewindow; ${pkgs.swayfx}/bin/swaymsg mode default; systemctl reboot"
+                     :onclick "eww close leavewindow; swaymsg mode default; systemctl reboot"
                      (box :class "reboot" ""))))
 
       (defwindow dock
@@ -368,14 +368,17 @@ let
 
     '';
     destination = "/eww.yuck";
+    executable = false;
+  };
+
+  configuration = pkgs.symlinkJoin {
+    name = "eww-config";
+    paths = [
+      yuck
+      style
+    ];
   };
 in
 {
-  configDir = pkgs.symlinkJoin {
-    name = "eww";
-    paths = [
-      configuration
-      style.style
-    ];
-  };
+  inherit configuration;
 }

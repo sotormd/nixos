@@ -1,8 +1,9 @@
 { config, pkgs, ... }:
 
-{
-  hjem.users.${config.vars.user.name} = {
-    files.".config/inkscape/preferences.xml".text = ''
+let
+  preferences = pkgs.writeTextFile {
+    name = "inkscape-preferences";
+    text = ''
       <?xml version="1.0" encoding="UTF-8" standalone="no"?>
       <inkscape
          version="1">
@@ -1123,5 +1124,9 @@
         </group>
       </inkscape>
     '';
+    destination = "/preferences.xml";
   };
+in
+{
+  inherit preferences;
 }

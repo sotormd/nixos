@@ -2,7 +2,7 @@
 
 let
   userJs = pkgs.writeTextFile {
-    name = "firefox-i2p-userjs";
+    name = "i2p-browser-userjs";
     text = ''
       user_pref("network.proxy.type", 1);
       user_pref("network.proxy.http", "${config.vars.network.server.address}");
@@ -51,7 +51,7 @@ let
   };
 
   userChrome = pkgs.writeTextFile {
-    name = "firefox-i2p-userchrome";
+    name = "i2p-browser-userchrome";
     text = ''
       /* Hide unnecessary toolbar items */
       #urlbar-input::placeholder { color: transparent !important; }
@@ -99,7 +99,7 @@ let
   };
 
   userContent = pkgs.writeTextFile {
-    name = "firefox-i2p-usercontent";
+    name = "i2p-browser-usercontent";
     text = ''
       @-moz-document url("about:newtab"), url("about:home") {
         :root[lwt-newtab-brighttext] {
@@ -109,14 +109,16 @@ let
     '';
     destination = "/chrome/userContent.css";
   };
-in
-{
-  i2pProfile = pkgs.symlinkJoin {
-    name = "firefox-i2p-profile";
+
+  profile = pkgs.symlinkJoin {
+    name = "i2p-browser-profile";
     paths = [
       userJs
       userChrome
       userContent
     ];
   };
+in
+{
+  inherit profile;
 }

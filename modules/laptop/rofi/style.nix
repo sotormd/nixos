@@ -1,8 +1,8 @@
 { config, pkgs, ... }:
 
-{
+let
   style = pkgs.writeTextFile {
-    name = "style.rasi";
+    name = "rofi-style";
     text = ''
       /*****----- Configuration -----*****/
       configuration {
@@ -283,6 +283,9 @@
       }
     '';
     destination = "/style.rasi";
+    executable = false;
   };
-
+in
+{
+  inherit style;
 }

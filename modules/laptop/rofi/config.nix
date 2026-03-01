@@ -1,19 +1,22 @@
 { config, pkgs, ... }:
 
 let
-  style = import ./style.nix { inherit config pkgs; };
-in
-{
-  config = pkgs.writeTextFile {
-    name = "config";
+  inherit (import ./style.nix { inherit config pkgs; }) style;
+
+  configuration = pkgs.writeTextFile {
+    name = "rofi-config";
     text = ''
       configuration {
         location: 0;
         xoffset: 0;
         yoffset: 0;
       }
-      @theme "${style.style}/style.rasi"
+      @theme "${style}/style.rasi"
     '';
     destination = "/config.rasi";
+    executable = false;
   };
+in
+{
+  inherit configuration;
 }

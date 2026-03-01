@@ -2,7 +2,7 @@
 
 let
   configuration = pkgs.writeTextFile {
-    name = "dunstrc";
+    name = "dunst-dunstrc";
     text = ''
       [global]
       background="#${config.colors.dunst.bg}"
@@ -19,11 +19,9 @@ let
       frame_color="#${config.colors.dunst.urgent}"
     '';
     destination = "/dunstrc";
+    executable = false;
   };
 in
 {
-  configDir = pkgs.symlinkJoin {
-    name = "dunst";
-    paths = [ configuration ];
-  };
+  inherit configuration;
 }

@@ -2,16 +2,14 @@
 
 let
   configuration = pkgs.writeTextFile {
-    name = "btop.conf";
+    name = "btop-config";
     text = ''
       color_theme = "${config.colors.btop}"
     '';
     destination = "/btop.conf";
+    executable = false;
   };
 in
 {
-  configDir = pkgs.symlinkJoin {
-    name = "btop";
-    paths = [ configuration ];
-  };
+  inherit configuration;
 }
