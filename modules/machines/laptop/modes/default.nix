@@ -9,8 +9,8 @@ let
 
       # everything needed for a clean, base system
       imports = [
-        ../../../vars-schema/common.nix
-        ../../../vars-schema/laptop.nix
+        ../../../../vars-schema/common.nix
+        ../../../../vars-schema/laptop.nix
         ../../common
         ../audio
         ../boot

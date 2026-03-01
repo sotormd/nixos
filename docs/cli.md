@@ -44,7 +44,7 @@ When run with a command not mentioned below, the command is dispatched to
 `$NIXOS_DIR`:
 
 ```bash
-nixos vi modules/common/firewall.nix
+nixos vi modules/machines/common/firewall.nix
 ```
 
 See [Miscellaneous](#miscellaneous) for more cases where this is useful.
@@ -285,7 +285,7 @@ command in three places:
 3. Any other command provided
 
    ```bash
-   nixos cat modules/server/searxng/engines.nix
+   nixos cat modules/machines/server/searxng/engines.nix
    ```
 
    `nixos(1)` dispatches the provided command as-is in `$NIXOS_DIR`
@@ -293,7 +293,7 @@ command in three places:
 It is _generally_ safe to pipe into and out of the included scripts:
 
 ```bash
-nixos cat modules/server/searxng/engines.nix | wl-copy
+nixos cat modules/machines/server/searxng/engines.nix | wl-copy
 yes | nixos apply switch
 ```
 

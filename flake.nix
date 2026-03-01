@@ -70,15 +70,13 @@
       perSystem =
         { pkgs, ... }:
         let
-          nixos = import ./modules/common/scripts/bin.nix { inherit pkgs; };
+          nixos = import ./modules/machines/common/scripts/bin.nix { inherit pkgs; };
         in
         {
           # formatter
           formatter = pkgs.nixfmt;
 
-          # scripts as a package
-          packages.default = nixos.nixosWrapper;
-
+          # cli devshell
           devShells.default = pkgs.mkShell {
             packages = import ./modules/images/bootstrapPackages.nix { inherit pkgs; } ++ [
               nixos.nixosWrapper
@@ -109,7 +107,7 @@
           mkMachine =
             role:
             mkHost {
-              inherit role;
+              role = "machine-${role}";
               withVars = true;
             };
 
@@ -123,8 +121,8 @@
         {
           nixosConfigurations = {
             # machines
-            laptop = mkMachine "laptop";
-            server = mkMachine "server";
+            machine-laptop = mkMachine "laptop";
+            machine-server = mkMachine "server";
 
             # images
             image-gnome = mkImage "gnome";

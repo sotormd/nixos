@@ -8,7 +8,7 @@
     ./base.nix
 
     # quiet boot
-    ../common/boot/quiet.nix
+    ../machines/common/boot/quiet.nix
   ];
 
   nixpkgs.hostPlatform.system = "aarch64-linux";

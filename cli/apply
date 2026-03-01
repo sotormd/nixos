@@ -52,7 +52,7 @@ set -euo pipefail
     # 7. APPLY CHANGES
     if [[ $confirm =~ ^[Yy]$ ]]; then
 
-        sudo nixos-rebuild $VERB --flake ".#$__NIXOS_ROLE" --fallback
+        sudo nixos-rebuild $VERB --flake ".#machine-$__NIXOS_ROLE" --fallback
 
     else
         echo "cancelled"
