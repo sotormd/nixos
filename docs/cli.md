@@ -1,7 +1,7 @@
 # CLI
 
 `nixos(1)` is a unified **wrapper** and general command **dispatcher** for
-managing this NixOS flake.
+maintaining this NixOS flake.
 
 This document covers the `nixos(1)` command line interface for `laptop` and
 `server` roles.
