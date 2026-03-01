@@ -1,7 +1,7 @@
 { pkgs, ... }:
 
 let
-  nixosPackage = import ../common/scripts/bin.nix { inherit pkgs; };
+  nixosPackage = import ../machines/common/scripts/bin.nix { inherit pkgs; };
 in
 {
   environment.systemPackages = [
