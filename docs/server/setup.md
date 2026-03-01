@@ -76,7 +76,7 @@ Bootstrap process for the `server` role.
 4. Switch to the new configuration.
 
    ```bash
-   nixos switch
+   nixos apply switch
    ```
 
 5. Reboot.

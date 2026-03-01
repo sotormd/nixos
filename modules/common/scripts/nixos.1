@@ -1,13 +1,13 @@
 .TH NIXOS 1 "" "NixOS Flake Helper" "User Commands"
 
 .SH NAME
-nixos \- unified wrapper and general command dispatcher for managing a NixOS flake
+nixos \- unified wrapper and general command dispatcher for maintaining a NixOS flake
 
 .SH SYNOPSIS
 .B nixos [command] [args]
 
 .SH DESCRIPTION
-A unified wrapper and general command dispatcher for managing a NixOS flake with abstractions for standard maintenance commands.
+A unified wrapper and general command dispatcher for maintaining a NixOS flake.
 
 .SH COMMANDS
 
@@ -23,12 +23,6 @@ boot   : add boot entry but do not activate
 switch : activate and add boot entry
 
 .TP
-.B switch
-.br
-Alias for
-.B nixos apply switch
-
-.TP
 .B update [inputs...]
 .br
 Update flake inputs.
@@ -41,16 +35,6 @@ If no inputs are specified, all inputs are updated.
 Garbage collect old generations.
 
 .TP
-.B context
-.br
-Get context environment variables.
-
-.TP
-.B digest
-.br
-Get checksum of variables and sops-nix secrets.
-
-.TP
 .B edit <vars|sops>
 .br
 Edit variables or sops-nix secrets.
@@ -58,16 +42,6 @@ Edit variables or sops-nix secrets.
 vars : edit variables
 .br
 sops : edit encrypted secrets using sops
-
-.TP
-.B format
-.br
-Format flake using nixfmt.
-
-.TP
-.B perms
-.br
-Fix flake ownership and permissions.
 
 .TP
 .B push <host> <path>
