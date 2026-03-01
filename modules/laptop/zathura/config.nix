@@ -2,7 +2,7 @@
 
 let
   zathurarc = pkgs.writeTextFile {
-    name = "zathurarc";
+    name = "zathura-zathurarc";
     text = ''
       set notification-error-bg      "#${config.colors.zathura.notification.error.bg}"
       set notification-error-fg      "#${config.colors.zathura.notification.error.fg}"
@@ -17,11 +17,6 @@ let
       set completion-group-fg        "#${config.colors.zathura.completion.group.fg}"
       set completion-highlight-bg    "#${config.colors.zathura.completion.highlight.bg}"
       set completion-highlight-fg    "#${config.colors.zathura.completion.highlight.fg}"
-
-      set index-bg                   "#${config.colors.zathura.index.bg}"
-      set index-fg                   "#${config.colors.zathura.index.fg}"
-      set index-active-bg            "#${config.colors.zathura.index.active.bg}"
-      set index-active-fg            "#${config.colors.zathura.index.active.fg}"
 
       set inputbar-bg                "#${config.colors.zathura.inputbar.bg}"
       set inputbar-fg                "#${config.colors.zathura.inputbar.fg}"
@@ -45,11 +40,9 @@ let
       set font "${config.colors.fonts.monospace}"
     '';
     destination = "/zathurarc";
+    executable = false;
   };
 in
 {
-  configDir = pkgs.symlinkJoin {
-    name = "zathura";
-    paths = [ zathurarc ];
-  };
+  inherit zathurarc;
 }

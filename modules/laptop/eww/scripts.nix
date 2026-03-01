@@ -2,27 +2,27 @@
 
 let
   musicSh = pkgs.writeTextFile {
-    name = "music.sh";
+    name = "eww-script-music";
     text = ''
       #!/usr/bin/env bash
 
       COVER="/tmp/.music_cover.jpg"
       DEFAULT_COVER="images/music.png"
 
-      STATUS=$(${pkgs.playerctl}/bin/playerctl status)
+      STATUS=$(playerctl status)
       TITLE=$(
-        ${pkgs.playerctl}/bin/playerctl metadata title |
+        playerctl metadata title |
         sed -E 's/ -.*//; s/\(.*\)//g; s/\[.*\]//g; s/^[[:space:]]*//; s/[[:space:]]*$//'
       )
       ARTISTS=$(
-        ${pkgs.playerctl}/bin/playerctl metadata artist |
+        playerctl metadata artist |
         awk -F',' '{print $1 ", " $2}' |
         sed -E 's/^[[:space:]]*//; s/[[:space:]]*$//; s/, *$//'
       )
 
       ## Get status
       get_status() {
-          if ${pkgs.playerctl}/bin/playerctl status 2>/dev/null | grep -qi "playing"; then
+          if playerctl status 2>/dev/null | grep -qi "playing"; then
               echo "󰏥"
           else
               echo "󰐌"
@@ -49,15 +49,15 @@ let
 
       ## Get progress percentage
       get_time() {
-          pos=$(${pkgs.playerctl}/bin/playerctl position 2>/dev/null)
-          len=$(${pkgs.playerctl}/bin/playerctl metadata mpris:length 2>/dev/null)
+          pos=$(playerctl position 2>/dev/null)
+          len=$(playerctl metadata mpris:length 2>/dev/null)
 
           if [[ -z "$pos" || -z "$len" ]]; then
               echo "0"
           else
               # Convert microseconds to seconds
               pos_sec=$(printf "%.0f" "$pos")
-              len_sec=$(printf "%.0f" "$(echo "$len / 1000000" | ${pkgs.bc}/bin/bc)")
+              len_sec=$(printf "%.0f" "$(echo "$len / 1000000" | bc)")
               [[ "$len_sec" -eq 0 ]] && echo "0" && return
               percent=$(( 100 * pos_sec / len_sec ))
               echo "$percent"
@@ -66,7 +66,7 @@ let
 
       ## Get current time (e.g. 1:45)
       get_ctime() {
-          pos=$(${pkgs.playerctl}/bin/playerctl position 2>/dev/null)
+          pos=$(playerctl position 2>/dev/null)
           if [[ -z "$pos" ]]; then
               echo "0:00"
           else
@@ -76,18 +76,18 @@ let
 
       ## Get total time (e.g. 3:56)
       get_ttime() {
-          len=$(${pkgs.playerctl}/bin/playerctl metadata mpris:length 2>/dev/null)
+          len=$(playerctl metadata mpris:length 2>/dev/null)
           if [[ -z "$len" ]]; then
               echo "0:00"
           else
-              len_sec=$(echo "$len / 1000000" | ${pkgs.bc}/bin/bc)
+              len_sec=$(echo "$len / 1000000" | bc)
               date -u -d @"$len_sec" +%M:%S
           fi
       }
 
       ## Get cover
       get_cover() {
-          arturl=$(${pkgs.playerctl}/bin/playerctl metadata mpris:artUrl 2>/dev/null)
+          arturl=$(playerctl metadata mpris:artUrl 2>/dev/null)
           if [[ -n "$arturl" && "$arturl" =~ ^file:// ]]; then
               cover_path="''${arturl#file://}"
               cp "$cover_path" "$COVER" 2>/dev/null && echo "$COVER" && return
@@ -104,9 +104,9 @@ let
           --ctime) get_ctime ;;
           --ttime) get_ttime ;;
           --cover) get_cover ;;
-          --toggle) ${pkgs.playerctl}/bin/playerctl play-pause ;;
-          --next) ${pkgs.playerctl}/bin/playerctl next && get_cover ;;
-          --prev) ${pkgs.playerctl}/bin/playerctl previous && get_cover ;;
+          --toggle) playerctl play-pause ;;
+          --next) playerctl next && get_cover ;;
+          --prev) playerctl previous && get_cover ;;
       esac
     '';
     destination = "/music.sh";
@@ -114,9 +114,9 @@ let
   };
 
   calSh = pkgs.writeTextFile {
-    name = "cal.sh";
+    name = "eww-script-cal";
     text = ''
-      #!/usr/bin/env ${pkgs.bash}/bin/bash
+      #!/usr/bin/env bash
 
             (while (true) do
                 ${calPy}/cal.py
@@ -128,7 +128,7 @@ let
   };
 
   doCalendarAction = pkgs.writeTextFile {
-    name = "do-calendar-action";
+    name = "eww-script-calendar-action";
     text = ''
       #!/usr/bin/env bash
 
@@ -189,9 +189,9 @@ let
   };
 
   calPy = pkgs.writeTextFile {
-    name = "cal.py";
+    name = "eww-script-cal";
     text = ''
-      #!/usr/bin/env ${pkgs.python3}/bin/python3
+      #!/usr/bin/env python3
 
       import json, os, subprocess
       from datetime import datetime, timedelta, date
@@ -253,13 +253,14 @@ let
   };
 
   dockClientsJson = pkgs.writeTextFile {
-    name = "dock-clients.json";
+    name = "eww-dock-clients";
     text = builtins.readFile ./dock-clients.json;
     destination = "/dock-clients.json";
+    executable = false;
   };
 
   lyricsPy = pkgs.writeTextFile {
-    name = "lyrics.py";
+    name = "eww-scripts-lyrics";
     text = ''
       #!/usr/bin/env ${pkgs.python3.withPackages (ps: with ps; [ syncedlyrics ])}/bin/python3
 
@@ -297,9 +298,9 @@ let
       # --- Playerctl interface ---
       def get_current_track():
           try:
-              artist = subprocess.check_output(["${pkgs.playerctl}/bin/playerctl", "metadata", "artist"], text=True).strip()
-              title = subprocess.check_output(["${pkgs.playerctl}/bin/playerctl", "metadata", "title"], text=True).strip()
-              progress = float(subprocess.check_output(["${pkgs.playerctl}/bin/playerctl", "position"], text=True).strip())
+              artist = subprocess.check_output(["playerctl", "metadata", "artist"], text=True).strip()
+              title = subprocess.check_output(["playerctl", "metadata", "title"], text=True).strip()
+              progress = float(subprocess.check_output(["playerctl", "position"], text=True).strip())
               return {"artist": artist, "title": title, "progress": progress}
           except subprocess.CalledProcessError:
               return None
@@ -360,7 +361,7 @@ let
   };
 
   dockPy = pkgs.writeTextFile {
-    name = "dock.py";
+    name = "eww-scripts-dock";
     text = ''
       #!/usr/bin/env ${pkgs.python3.withPackages (ps: with ps; [ i3ipc ])}/bin/python3
 
@@ -416,13 +417,13 @@ let
 
                   # actions
                   if self.ids.get(client) and state == "unfocused":
-                      left = f"${pkgs.swayfx}/bin/swaymsg [con_id={self.ids.get(client)[-1]}] focus"
+                      left = f"swaymsg [con_id={self.ids.get(client)[-1]}] focus"
                       middle = right = scroll = None
                   elif self.ids.get(client) and state == "focused":
-                      left = f"${pkgs.swayfx}/bin/swaymsg [con_id={self.ids.get(client)[-1]}] floating toggle"
-                      middle = f"${pkgs.swayfx}/bin/swaymsg [con_id={self.ids.get(client)[-1]}] kill"
-                      right = f"${pkgs.swayfx}/bin/swaymsg [con_id={self.ids.get(client)[-1]}] move scratchpad"
-                      scroll = f"${pkgs.swayfx}/bin/swaymsg [con_id={self.ids.get(client)[0]}] focus"
+                      left = f"swaymsg [con_id={self.ids.get(client)[-1]}] floating toggle"
+                      middle = f"swaymsg [con_id={self.ids.get(client)[-1]}] kill"
+                      right = f"swaymsg [con_id={self.ids.get(client)[-1]}] move scratchpad"
+                      scroll = f"swaymsg [con_id={self.ids.get(client)[0]}] focus"
                   elif state == "empty":
                       left = client_details.get("exec")
                       middle = right = scroll = None
@@ -473,13 +474,13 @@ let
 
                   # left click action
                   if self.ids.get(client) and state == "unfocused":
-                      left = f"${pkgs.swayfx}/bin/swaymsg [con_id={self.ids.get(client)[-1]}] focus"
+                      left = f"swaymsg [con_id={self.ids.get(client)[-1]}] focus"
                       middle = right = scroll = None
                   elif self.ids.get(client) and state == "focused":
-                      left = f"${pkgs.swayfx}/bin/swaymsg [con_id={self.ids.get(client)[-1]}] floating toggle"
-                      middle = f"${pkgs.swayfx}/bin/swaymsg [con_id={self.ids.get(client)[-1]}] kill"
-                      right = f"${pkgs.swayfx}/bin/swaymsg [con_id={self.ids.get(client)[-1]}] move scratchpad"
-                      scroll = f"${pkgs.swayfx}/bin/swaymsg [con_id={self.ids.get(client)[0]}] focus"
+                      left = f"swaymsg [con_id={self.ids.get(client)[-1]}] floating toggle"
+                      middle = f"swaymsg [con_id={self.ids.get(client)[-1]}] kill"
+                      right = f"swaymsg [con_id={self.ids.get(client)[-1]}] move scratchpad"
+                      scroll = f"swaymsg [con_id={self.ids.get(client)[0]}] focus"
                   else:
                       left = middle = right = scroll = None
 
@@ -606,9 +607,8 @@ let
     destination = "/dock.py";
     executable = true;
   };
-in
-{
-  scriptsDir = pkgs.symlinkJoin {
+
+  scripts = pkgs.symlinkJoin {
     name = "eww-scripts";
     paths = [
       musicSh
@@ -620,4 +620,7 @@ in
       dockPy
     ];
   };
+in
+{
+  inherit scripts;
 }

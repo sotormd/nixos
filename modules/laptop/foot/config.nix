@@ -36,11 +36,9 @@ let
       font=${config.colors.fonts.monospace}:size=10
     '';
     destination = "/foot.ini";
+    executable = false;
   };
 in
 {
-  configDir = pkgs.symlinkJoin {
-    name = "foot";
-    paths = [ configuration ];
-  };
+  inherit configuration;
 }

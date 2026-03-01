@@ -1,8 +1,8 @@
 { pkgs, ... }:
 
 let
-  config = pkgs.writeTextFile {
-    name = "mpv.conf";
+  configuration = pkgs.writeTextFile {
+    name = "mpv-config";
     text = ''
       hwdec=auto-safe
       vo=gpu
@@ -10,11 +10,9 @@ let
       gpu-context=wayland
     '';
     destination = "/mpv.conf";
+    executable = false;
   };
 in
 {
-  configDir = pkgs.symlinkJoin {
-    name = "config";
-    paths = [ config ];
-  };
+  inherit configuration;
 }

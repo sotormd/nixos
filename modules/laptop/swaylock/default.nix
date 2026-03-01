@@ -8,7 +8,6 @@
 
 let
   package = import ./package.nix { inherit config lib pkgs; };
-
   xkcd = import ./xkcd.nix { inherit config inputs pkgs; };
 in
 {
@@ -17,7 +16,7 @@ in
   ];
 
   users.users.${config.vars.user.name}.packages = [
-    package.swaylock
-    xkcd.xkcd-refresh
+    package.swaylockWrapped
+    xkcd.xkcdWrapped
   ];
 }

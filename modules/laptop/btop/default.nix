@@ -1,12 +1,8 @@
-{
-  config,
-  pkgs,
-  ...
-}:
+{ config, pkgs, ... }:
 
 let
   package = import ./package.nix { inherit config pkgs; };
 in
 {
-  users.users.${config.vars.user.name}.packages = [ package.btop ];
+  users.users.${config.vars.user.name}.packages = [ package.btopWrapped ];
 }

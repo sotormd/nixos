@@ -1,9 +1,8 @@
 { config, pkgs, ... }:
 
+let
+  package = import ./package.nix { inherit config pkgs; };
+in
 {
-  imports = [
-    ./config.nix
-  ];
-
-  users.users.${config.vars.user.name}.packages = [ pkgs.inkscape ];
+  users.users.${config.vars.user.name}.packages = [ package.inkscapeWrapped ];
 }

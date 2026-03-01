@@ -1,4 +1,4 @@
-{
+let
   policies = {
     AppAutoUpdate = false;
     AutofillAddressEnabled = false;
@@ -82,4 +82,7 @@
     TranslateEnabled = false;
     WindowsSSO = false;
   };
+in
+{
+  inherit policies;
 }

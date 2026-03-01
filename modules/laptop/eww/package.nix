@@ -1,35 +1,57 @@
 { config, pkgs, ... }:
 
 let
-  configuration = import ./config.nix { inherit config pkgs; };
-  scripts = import ./scripts.nix { inherit pkgs; };
+  inherit (import ./config.nix { inherit config pkgs; }) configuration;
+  inherit (import ./scripts.nix { inherit pkgs; }) scripts;
 
-  ewwWrapped = pkgs.writeShellScriptBin "eww" ''
-    ${pkgs.eww}/bin/eww --config ${configuration.configDir} "$@"
-  '';
+  ewwWrapperScript = pkgs.writeTextFile {
+    name = "eww-wrapper-script";
+    text = ''
+      #!/usr/bin/env bash
 
-  eww-cal-init = pkgs.writeShellScriptBin "eww-cal-init" ''
-    ${scripts.scriptsDir}/cal.sh
-  '';
+      ${pkgs.eww}/bin/eww --config ${configuration} "$@"
+    '';
+    destination = "/bin/eww";
+    executable = true;
+  };
 
-  eww-dock-init = pkgs.writeShellScriptBin "eww-dock-init" ''
-    ${scripts.scriptsDir}/dock.py
-  '';
-in
-{
-  eww = pkgs.symlinkJoin {
-    name = "eww";
+  ewwWrapperCal = pkgs.writeTextFile {
+    name = "eww-wrapper-cal";
+    text = ''
+      #!/usr/bin/env bash
+
+      ${scripts}/cal.sh
+    '';
+    destination = "/bin/eww-cal-init";
+    executable = true;
+  };
+
+  ewwWrapperDock = pkgs.writeTextFile {
+    name = "eww-wrapper-dock";
+    text = ''
+      #!/usr/bin/env bash
+
+      ${scripts}/dock.py
+    '';
+    destination = "/bin/eww-dock-init";
+    executable = true;
+  };
+
+  ewwWrapped = pkgs.symlinkJoin {
+    name = "eww-wrapped";
     paths = [
       pkgs.eww
-      eww-cal-init
-      eww-dock-init
+      ewwWrapperCal
+      ewwWrapperDock
     ];
 
     # replace the eww binary with our wrapper
     postBuild = ''
       rm -f $out/bin/eww
-      ln -s ${ewwWrapped}/bin/eww $out/bin/eww
+      ln -s ${ewwWrapperScript}/bin/eww $out/bin/eww
     '';
   };
-
+in
+{
+  inherit ewwWrapped;
 }

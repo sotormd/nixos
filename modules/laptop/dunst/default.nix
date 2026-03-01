@@ -2,14 +2,13 @@
 
 let
   package = import ./package.nix { inherit config pkgs; };
+  scripts = import ./scripts.nix { inherit pkgs; };
 in
 {
-  imports = [
-    ./scripts.nix
-  ];
-
   users.users.${config.vars.user.name}.packages = [
-    package.dunst
+    package.dunstWrapped
+    scripts.volume
+    scripts.brightness
     pkgs.libnotify
   ];
 }

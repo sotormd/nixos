@@ -1,20 +1,30 @@
 { pkgs, ... }:
 
 let
-  config = import ./config.nix { inherit pkgs; };
-  mpvWrapped = pkgs.writeShellScriptBin "mpv" ''
-    ${pkgs.mpv}/bin/mpv --config-dir=${config.configDir} "$@"
-  '';
-in
-{
-  mpv = pkgs.symlinkJoin {
-    name = "mpv";
+  inherit (import ./config.nix { inherit pkgs; }) configuration;
+
+  mpvWrapperScript = pkgs.writeTextFile {
+    name = "mpv-wrapper-script";
+    text = ''
+      #!/usr/bin/env bash
+
+      ${pkgs.mpv}/bin/mpv --config-dir=${configuration} "$@"
+    '';
+    destination = "/bin/mpv";
+    executable = true;
+  };
+
+  mpvWrapped = pkgs.symlinkJoin {
+    name = "mpv-wrapped";
     paths = [ pkgs.mpv ];
 
     # replace the mpv binary with our wrapper
     postBuild = ''
       rm -f $out/bin/mpv
-      ln -s ${mpvWrapped}/bin/mpv $out/bin/mpv
+      ln -s ${mpvWrapperScript}/bin/mpv $out/bin/mpv
     '';
   };
+in
+{
+  inherit mpvWrapped;
 }

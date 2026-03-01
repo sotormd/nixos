@@ -6,27 +6,31 @@
 }:
 
 let
-  configuration = import ./config.nix {
-    inherit
-      config
-      lib
-      pkgs
-      ;
+  inherit (import ./config.nix { inherit config lib pkgs; }) configuration;
+
+  swaylockWrapperScript = pkgs.writeTextFile {
+    name = "swaylock-wrapper-script";
+    text = ''
+      #!/usr/bin/env bash
+
+      ${pkgs.swaylock}/bin/swaylock --config ${configuration}/config "$@"
+      xkcd-refresh
+    '';
+    destination = "/bin/swaylock";
+    executable = true;
   };
-  swaylockWrapped = pkgs.writeShellScriptBin "swaylock" ''
-    ${pkgs.swaylock}/bin/swaylock --config ${configuration.configDir}/config "$@"
-    xkcd-refresh
-  '';
-in
-{
-  swaylock = pkgs.symlinkJoin {
-    name = "swaylock";
+
+  swaylockWrapped = pkgs.symlinkJoin {
+    name = "swaylock-wrapped";
     paths = [ pkgs.swaylock ];
 
     # replace the swaylock binary with our wrapper
     postBuild = ''
       rm -f $out/bin/swaylock
-      ln -s ${swaylockWrapped}/bin/swaylock $out/bin/swaylock
+      ln -s ${swaylockWrapperScript}/bin/swaylock $out/bin/swaylock
     '';
   };
+in
+{
+  inherit swaylockWrapped;
 }
