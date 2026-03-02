@@ -90,8 +90,7 @@ fileSystems."/path/to/thing" = {
 > `x-gvfs-hide` prevents the bind-mounts from showing up as devices in the File
 > Manager.
 
-Several helper [functions](#library-reference) are provided to make bind mounts
-easily, and apply additional options using the following profiles:
+Several helper functions are provided to make bind mounts easily, and apply additional options using the following profiles:
 
 | Profile   | `nosuid` | `nodev` | `noexec` | `ro` |
 | --------- | -------- | ------- | -------- | ---- |
