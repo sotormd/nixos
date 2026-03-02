@@ -3,8 +3,19 @@ let
     "nosuid"
     "nodev"
   ];
-  mountData = mountHarden ++ [ "noexec" ];
-  mountImmutable = mountHarden ++ [ "ro" ];
+
+  mountData = mountHarden ++ [
+    "noexec"
+  ];
+
+  mountImmutable = mountHarden ++ [
+    "ro"
+  ];
+
+  mountStatic = mountHarden ++ [
+    "noexec"
+    "ro"
+  ];
 
   bind = options: source: destination: {
     ${destination} = {
@@ -26,7 +37,12 @@ let
   loopDirs = dirs: builtins.foldl' (acc: dir: acc // bind dir.options dir.path dir.path) { } dirs;
 in
 {
-  inherit mountHarden mountData mountImmutable;
+  inherit
+    mountHarden
+    mountData
+    mountImmutable
+    mountStatic
+    ;
 
   mkPersistRaw =
     dirs:
@@ -64,6 +80,15 @@ in
       }) dirs
     );
 
+  mkPersistStatic =
+    dirs:
+    persistDirs (
+      map (dir: {
+        path = dir;
+        options = mountStatic;
+      }) dirs
+    );
+
   mkLoopHarden =
     dirs:
     loopDirs (
@@ -88,6 +113,15 @@ in
       map (dir: {
         path = dir;
         options = mountImmutable;
+      }) dirs
+    );
+
+  mkLoopStatic =
+    dirs:
+    loopDirs (
+      map (dir: {
+        path = dir;
+        options = mountStatic;
       }) dirs
     );
 }
