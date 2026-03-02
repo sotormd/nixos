@@ -1,14 +1,8 @@
 {
   imports = [
-    ./accounts.nix
+    ./compliance.nix
 
-    ./logins.nix
-
-    ./privileges.nix
-
-    ./run.nix
-
-    ./security-objects.nix
+    ./rules.nix
 
     ./settings.nix
   ];
