@@ -6,6 +6,7 @@ let
     harden
     data
     immutable
+    static
     ;
 
   f =
@@ -26,7 +27,9 @@ let
 
   immutableEntries = f lib.mountImmutable immutable;
 
-  mountEntries = rawEntries // hardenEntries // dataEntries // immutableEntries;
+  staticEntries = f lib.mountStatic static;
+
+  mountEntries = rawEntries // hardenEntries // dataEntries // immutableEntries // staticEntries;
 
   # mount devices
   # with fstab entries

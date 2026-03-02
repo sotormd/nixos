@@ -74,6 +74,9 @@ with lib;
         immutable = mkOption {
           type = types.attrs;
         };
+        static = mkOption {
+          type = types.attrs;
+        };
       };
 
       hdparm = mkOption {
