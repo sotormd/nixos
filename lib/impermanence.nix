@@ -1,15 +1,93 @@
-rec {
-  persistMount = source: destination: {
+let
+  mountHarden = [
+    "nosuid"
+    "nodev"
+  ];
+  mountData = mountHarden ++ [ "noexec" ];
+  mountImmutable = mountHarden ++ [ "ro" ];
+
+  bind = options: source: destination: {
     ${destination} = {
       device = source;
       options = [
         "bind"
         "x-gvfs-hide"
-      ];
+      ]
+      ++ options;
     };
   };
 
-  persistDirs = root: dirs: {
-    fileSystems = builtins.foldl' (acc: dir: acc // persistMount "${root}${dir}" dir) { } dirs;
-  };
+  persist =
+    root: dirs:
+    builtins.foldl' (acc: dir: acc // bind dir.options "${root}${dir.path}" dir.path) { } dirs;
+
+  persistDirs = dirs: persist "/persist/root" dirs;
+
+  loopDirs = dirs: builtins.foldl' (acc: dir: acc // bind dir.options dir.path dir.path) { } dirs;
+in
+{
+  inherit mountHarden mountData mountImmutable;
+
+  mkPersistRaw =
+    dirs:
+    persistDirs (
+      map (dir: {
+        path = dir;
+        options = [ ];
+      }) dirs
+    );
+
+  mkPersistHarden =
+    dirs:
+    persistDirs (
+      map (dir: {
+        path = dir;
+        options = mountHarden;
+      }) dirs
+    );
+
+  mkPersistData =
+    dirs:
+    persistDirs (
+      map (dir: {
+        path = dir;
+        options = mountData;
+      }) dirs
+    );
+
+  mkPersistImmutable =
+    dirs:
+    persistDirs (
+      map (dir: {
+        path = dir;
+        options = mountImmutable;
+      }) dirs
+    );
+
+  mkLoopHarden =
+    dirs:
+    loopDirs (
+      map (dir: {
+        path = dir;
+        options = mountHarden;
+      }) dirs
+    );
+
+  mkLoopData =
+    dirs:
+    loopDirs (
+      map (dir: {
+        path = dir;
+        options = mountData;
+      }) dirs
+    );
+
+  mkLoopImmutable =
+    dirs:
+    loopDirs (
+      map (dir: {
+        path = dir;
+        options = mountImmutable;
+      }) dirs
+    );
 }

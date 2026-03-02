@@ -46,10 +46,6 @@ with lib;
 
     filesystem = {
 
-      mount = mkOption {
-        type = types.attrs;
-      };
-
       luks = mkOption {
         type = types.attrsOf (
           types.submodule (_: {
@@ -63,6 +59,21 @@ with lib;
             };
           })
         );
+      };
+
+      mount = {
+        raw = mkOption {
+          type = types.attrs;
+        };
+        harden = mkOption {
+          type = types.attrs;
+        };
+        data = mkOption {
+          type = types.attrs;
+        };
+        immutable = mkOption {
+          type = types.attrs;
+        };
       };
 
       hdparm = mkOption {

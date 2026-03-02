@@ -1,20 +1,30 @@
 { config, lib, ... }:
 
 let
-  user = config.vars.user.name;
+  home = "/home/${config.vars.user.name}";
 in
-lib.mkIf config.vars.features.impermanence.enable (
-  lib.persistDirs "/persist/root" [
-    # Documents, Downloads, Pictures, Projects
-    "/home/${user}/Documents"
-    "/home/${user}/Downloads"
-    "/home/${user}/Pictures"
-    "/home/${user}/Projects"
+lib.mkIf config.vars.features.impermanence.enable {
 
-    # ssh keys
-    "/home/${user}/.ssh"
+  fileSystems =
 
-    # brave browser
-    "/home/${user}/.config/BraveSoftware/Brave-Browser"
-  ]
-)
+    # nosuid, nodev
+    lib.mkPersistHarden [
+      # Projects
+      "${home}/Projects"
+
+      # brave browser
+      "${home}/.config/BraveSoftware/Brave-Browser"
+    ]
+
+    # nosuid, nodev, noexec
+    // lib.mkPersistData [
+      # Documents, Downloads, Pictures
+      "${home}/Documents"
+      "${home}/Downloads"
+      "${home}/Pictures"
+
+      # ssh keys
+      "${home}/.ssh"
+    ];
+
+}

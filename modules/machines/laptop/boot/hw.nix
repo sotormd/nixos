@@ -58,25 +58,31 @@
     };
   };
 
-  fileSystems."/" = {
-    device = "rpool/nixos/root";
-    fsType = "zfs";
-  };
+  fileSystems = {
 
-  fileSystems."/home" = {
-    device = "rpool/nixos/home";
-    fsType = "zfs";
-  };
+    "/" = {
+      device = "rpool/nixos/root";
+      fsType = "zfs";
+    };
 
-  fileSystems."/nix" = {
-    device = "rpool/nixos/nix";
-    fsType = "zfs";
-  };
+    "/home" = {
+      device = "rpool/nixos/home";
+      fsType = "zfs";
+      options = lib.mountData;
+    };
 
-  fileSystems."/persist" = {
-    device = "rpool/nixos/persist";
-    fsType = "zfs";
-    neededForBoot = true;
+    "/nix" = {
+      device = "rpool/nixos/nix";
+      fsType = "zfs";
+    };
+
+    "/persist" = {
+      device = "rpool/nixos/persist";
+      fsType = "zfs";
+      neededForBoot = true;
+      options = lib.mountHarden;
+    };
+
   };
 
   nixpkgs.hostPlatform = lib.mkDefault "x86_64-linux";
