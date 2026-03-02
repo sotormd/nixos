@@ -93,10 +93,7 @@
 
   # nosuid,nodev
   // lib.mkLoopHarden [
-    "/bin"
-    "/lib64"
     "/tmp"
-    "/usr"
   ]
 
   # nosuid,nodev,noexec
