@@ -13,10 +13,32 @@
     "usbhid"
   ];
 
-  fileSystems."/" = {
-    device = "/dev/disk/by-partuuid/${config.vars.partitions.root}";
-    fsType = "ext4";
-  };
+  fileSystems = {
+
+    # root partition
+    "/" = {
+      device = "/dev/disk/by-partuuid/${config.vars.partitions.root}";
+      fsType = "ext4";
+    };
+
+  }
+
+  # nosuid,nodev
+  // lib.mkLoopHarden [
+    "/bin"
+    "/lib64"
+    "/tmp"
+    "/usr"
+  ]
+
+  # nosuid,nodev,noexec
+  // lib.mkLoopData [
+    "/etc"
+    "/home"
+    "/root"
+    "/srv"
+    "/var"
+  ];
 
   nixpkgs.hostPlatform = lib.mkDefault "aarch64-linux";
 }

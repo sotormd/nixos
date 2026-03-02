@@ -32,17 +32,7 @@
     "rootflags=x-systemd.device-timeout=0"
   ];
 
-  # boot partition
-  fileSystems."/boot" = {
-    device = "/dev/disk/by-partuuid/${config.vars.partitions.boot}";
-    fsType = "vfat";
-    options = [
-      "fmask=0022"
-      "dmask=0022"
-    ];
-  };
-
-  # swap partition with random encryption
+  # swap with random encryption
   swapDevices = [
     {
       device = "/dev/disk/by-partuuid/${config.vars.partitions.swap}";
@@ -60,22 +50,38 @@
 
   fileSystems = {
 
+    # boot partition
+    "/boot" = {
+      device = "/dev/disk/by-partuuid/${config.vars.partitions.boot}";
+      fsType = "vfat";
+      options = [
+        "fmask=0022"
+        "dmask=0022"
+      ];
+    };
+
+    # rpool/nixos/root -> /
     "/" = {
       device = "rpool/nixos/root";
       fsType = "zfs";
     };
 
+    # rpool/nixos/home -> /home
+    # nosuid,nodev,noexec
     "/home" = {
       device = "rpool/nixos/home";
       fsType = "zfs";
       options = lib.mountData;
     };
 
+    # rpool/nixos/nix -> /nix
     "/nix" = {
       device = "rpool/nixos/nix";
       fsType = "zfs";
     };
 
+    # rpool/nixos/persist -> /persist
+    # nosuid,nodev
     "/persist" = {
       device = "rpool/nixos/persist";
       fsType = "zfs";
@@ -83,7 +89,23 @@
       options = lib.mountHarden;
     };
 
-  };
+  }
+
+  # nosuid,nodev
+  // lib.mkLoopHarden [
+    "/bin"
+    "/lib64"
+    "/tmp"
+    "/usr"
+  ]
+
+  # nosuid,nodev,noexec
+  // lib.mkLoopData [
+    "/etc"
+    "/root"
+    "/srv"
+    "/var"
+  ];
 
   nixpkgs.hostPlatform = lib.mkDefault "x86_64-linux";
   hardware.cpu.amd.updateMicrocode = lib.mkDefault config.hardware.enableRedistributableFirmware;
