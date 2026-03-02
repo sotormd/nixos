@@ -66,16 +66,14 @@ let
     '') digits
   );
 
-  renderOutput = name: cfg: ''
-    output "${name}" {
+  renderOutput = cfg: ''
+    output "${cfg.identifier}" {
         mode ${cfg.resolution}@${cfg.refresh}
         position ${cfg.position}
     }
   '';
 
-  outputLines = lib.concatStringsSep "\n\n" (
-    map (item: renderOutput item.name item.value) orderedOutputs
-  );
+  outputLines = lib.concatStringsSep "\n\n" (map (item: renderOutput item.value) orderedOutputs);
 
   backgrounds = import ./backgrounds.nix { inherit config lib; };
 
