@@ -68,6 +68,8 @@ Services features:
 - [i2pd](https://github.com/PurpleI2P/i2pd) I2P router
 - [Jellyfin](https://jellyfin.org/) media server
 
+Comprehensive features list:
+
 | Category                      | Stack                                                                                                      |
 | ----------------------------- | ---------------------------------------------------------------------------------------------------------- |
 | distro                        | `NixOS`                                                                                                    |
@@ -83,6 +85,8 @@ Services features:
 | dotfiles                      | `nixpkgs` wrappers                                                                                         |
 | auditing                      | `auditd`                                                                                                   |
 | secrets                       | `sops`, `sops-nix`                                                                                         |
+| usb policy                    | `usbguard`                                                                                                 |
+| network time security         | `chrony`                                                                                                   |
 | sandboxing                    | `firejail`                                                                                                 |
 | firewall                      | `iptables (nf_tables)`                                                                                     |
 | anonymity                     | `i2pd`, `oniux`                                                                                            |
