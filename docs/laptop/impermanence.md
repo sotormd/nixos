@@ -28,7 +28,7 @@ This document covers impermanence on the `laptop` role.
 3. Switch to the new configuration.
 
    ```bash
-   nixos switch
+   nixos apply switch
    ```
 
 # Implementation
@@ -90,7 +90,8 @@ fileSystems."/path/to/thing" = {
 > `x-gvfs-hide` prevents the bind-mounts from showing up as devices in the File
 > Manager.
 
-Several helper functions are provided to make bind mounts easily, and apply additional options using the following profiles:
+Several helper functions are provided to make bind mounts easily, and apply
+additional options using the following profiles:
 
 | Profile   | `nosuid` | `nodev` | `noexec` | `ro` |
 | --------- | -------- | ------- | -------- | ---- |
@@ -99,7 +100,8 @@ Several helper functions are provided to make bind mounts easily, and apply addi
 | Immutable | Yes      | Yes     | No       | Yes  |
 | Static    | Yes      | Yes     | Yes      | Yes  |
 
-These helpers are used throughout this flake, even in contexts other than impermanence, like general filesystem hardening.
+These helpers are used throughout this flake, even in contexts other than
+impermanence, like general filesystem hardening.
 
 The following directories are persisted by default:
 
@@ -127,4 +129,4 @@ At any given point, to see the files that will be thrown out by impermanence:
 ```console
 # zfs diff rpool/root@blank
 # zfs diff rpool/home@blank
-``` 
+```

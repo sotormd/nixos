@@ -38,7 +38,7 @@ This document covers setting up Secure Boot on the `laptop` role.
 4. Switch to the new configuration.
 
    ```bash
-   nixos switch
+   nixos apply switch
    ```
 
 5. Verify `sbctl verify` output.
