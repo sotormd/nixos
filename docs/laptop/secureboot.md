@@ -8,6 +8,10 @@ This document covers setting up Secure Boot on the `laptop` role.
 > WARNING: If dual booting with Windows, either disable bitlocker encryption or
 > keep the recovery keys handy.
 
+> NOTE: It is highly recommended to set a BIOS password on devices that support
+> this feature. Without a BIOS password, Secure Boot can simply be disabled and
+> is meaningless.
+
 1. System requirements.
 
    Ensure you have booted in UEFI mode and Secure Boot is supported.
