@@ -1,20 +1,25 @@
 { config, lib, ... }:
 
-lib.mkIf config.vars.features.impermanence.enable (
-  lib.persistDirs "/persist/root" [
-    # secure boot
-    "/var/lib/sbctl"
+lib.mkIf config.vars.features.impermanence.enable {
 
-    # needed by nixos
-    "/var/lib/nixos"
+  fileSystems =
 
-    # needed by systemd
-    "/var/lib/systemd"
+    # nosuid, nodev, noexec
+    lib.mkPersistData [
+      # secure boot
+      "/var/lib/sbctl"
 
-    # needed by ZFS
-    "/etc/zfs/zpool.cache"
+      # needed by nixos
+      "/var/lib/nixos"
 
-    # logs
-    "/var/log"
-  ]
-)
+      # needed by systemd
+      "/var/lib/systemd"
+
+      # needed by ZFS
+      "/etc/zfs/zpool.cache"
+
+      # logs
+      "/var/log"
+    ];
+
+}

@@ -271,7 +271,12 @@ elif [ "$1" == "vars" ]; then
 
   filesystem = {
     luks = { };
-    mount = { };
+    mount = {
+      raw = { };
+      harden = { };
+      data = { };
+      immutable = { };
+    };
     hdparm = [ ];
   };
 
@@ -381,7 +386,12 @@ EOF
 
   filesystem = {
     luks = { };
-    mount = { };
+    mount = {
+      raw = { };
+      harden = { };
+      data = { };
+      immutable = { };
+    };
     hdparm = [ ];
   };
 
