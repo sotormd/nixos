@@ -62,6 +62,7 @@
     # do not trust the proprietary cpu RNG
     # this RNG can not be audited
     "random.trust_cpu=off"
+    "random.trust_bootloader=off"
 
     # enable IOMMU
     # mitigates direct memory access attacks
