@@ -51,13 +51,15 @@
   fileSystems = {
 
     # boot partition
+    # nosuid,nodev,noexec
     "/boot" = {
       device = "/dev/disk/by-partuuid/${config.vars.partitions.boot}";
       fsType = "vfat";
       options = [
         "fmask=0022"
         "dmask=0022"
-      ];
+      ]
+      ++ lib.mountData;
     };
 
     # rpool/nixos/root -> /

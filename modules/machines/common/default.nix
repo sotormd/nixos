@@ -37,6 +37,9 @@
     # superuser do
     ./sudo
 
+    # usbguard daemon
+    ./usbguard
+
     # users
     ./users
   ];

@@ -45,11 +45,11 @@ in
     ;
 
   mkPersistRaw =
-    dirs:
+    options: dirs:
     persistDirs (
       map (dir: {
         path = dir;
-        options = [ ];
+        inherit options;
       }) dirs
     );
 
@@ -86,6 +86,15 @@ in
       map (dir: {
         path = dir;
         options = mountStatic;
+      }) dirs
+    );
+
+  mkLoopRaw =
+    options: dirs:
+    loopDirs (
+      map (dir: {
+        path = dir;
+        inherit options;
       }) dirs
     );
 

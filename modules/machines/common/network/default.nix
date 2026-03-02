@@ -10,9 +10,9 @@
 
     ./issue.nix
 
-    ./static.nix
+    ./nts.nix
 
-    ./timesyncd.nix
+    ./static.nix
 
     ./wifi.nix
   ];

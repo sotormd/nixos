@@ -8,4 +8,7 @@
 
   # limit entries to 10
   boot.loader.systemd-boot.configurationLimit = 20;
+
+  # prevent tampering boot parameters
+  boot.loader.systemd-boot.editor = false;
 }
