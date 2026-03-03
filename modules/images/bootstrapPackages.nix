@@ -28,4 +28,7 @@
   pkgs.nixfmt
 
   pkgs.systemd
+
+  pkgs.sudo
+  pkgs.man
 ]
