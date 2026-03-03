@@ -14,7 +14,6 @@ with lib;
         type = types.enum [
           "laptop"
           "server"
-          "laptop-nomad"
         ];
       };
 

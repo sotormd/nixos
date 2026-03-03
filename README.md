@@ -55,8 +55,6 @@ Desktop features:
   [wallpapers](https://github.com/sotormd/wallpapers)
 - XKCD lockscreen wallpapers with
   [xkcd-wall](https://github.com/sotormd/xkcd-wall)
-- Automatic behavior changes when outside trusted & reliable networks with
-  [Nomad Mode](./docs/laptop/usage.md#nomad-mode)
 
 Services features:
 
@@ -81,6 +79,7 @@ Comprehensive features list:
 | secure boot                   | `lanzaboote`                                                                                               |
 | filesystem                    | `zfs`                                                                                                      |
 | impermanence                  | `zfs(8)` `mount(8)`                                                                                        |
+| drive health                  | `smartmontools`                                                                                            |
 | ~ symlinks                    | `hjem`                                                                                                     |
 | dotfiles                      | `nixpkgs` wrappers                                                                                         |
 | auditing                      | `auditd`                                                                                                   |
@@ -89,23 +88,23 @@ Comprehensive features list:
 | network time security         | `chrony`                                                                                                   |
 | sandboxing                    | `firejail`                                                                                                 |
 | firewall                      | `iptables (nf_tables)`                                                                                     |
-| anonymity                     | `i2pd`, `oniux`                                                                                            |
+| anonymity                     | `i2pd`, `oniux`, `mat2`                                                                                    |
 | networking                    | `wpa_supplicant`                                                                                           |
 | dns                           | `unbound`                                                                                                  |
 | display server                | `wayland`                                                                                                  |
-| compositor                    | `swayfx`                                                                                                   |
+| compositor                    | `swayfx`, `cage`                                                                                           |
 | bar                           | `waybar`                                                                                                   |
 | widgets                       | `eww`                                                                                                      |
 | launcher                      | `rofi`                                                                                                     |
 | notifications                 | `dunst`                                                                                                    |
 | terminal emulator             | `foot`                                                                                                     |
 | file manager                  | `thunar`                                                                                                   |
-| audio                         | `pipewire`, `pavucontrol`                                                                                  |
+| audio                         | `pipewire`, `pavucontrol`, `playerctl`                                                                     |
 | media player                  | `mpv`                                                                                                      |
 | pdf reader                    | `zathura`                                                                                                  |
-| image viewer                  | `swayimg`                                                                                                  |
+| images                        | `swayimg`, `imagemagick`                                                                                   |
 | vector graphics editor        | `inkscape`                                                                                                 |
-| screenshots                   | `grimshot`                                                                                                 |
+| screenshots                   | `grimshot`, `grim`, `slurp`                                                                                |
 | clipboard                     | `cliphist`                                                                                                 |
 | browser                       | `brave`                                                                                                    |
 | web server                    | `nginx`                                                                                                    |
@@ -124,6 +123,7 @@ Comprehensive features list:
 | android                       | `nix-on-droid`                                                                                             |
 | themes, icons, cursors, fonts | [`colors`](https://github.com/sotormd/colors)                                                              |
 | wallpapers                    | [`wallpapers`](https://github.com/sotormd/wallpapers), [`xkcd-wall`](https://github.com/sotormd/xkcd-wall) |
+| terminal misc                 | `cava`, `fortune`                                                                                          |
 
 # Roles
 

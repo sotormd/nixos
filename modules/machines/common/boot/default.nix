@@ -2,6 +2,8 @@
   imports = [
     ./blacklist.nix
 
+    ./coredumps.nix
+
     ./hdparm.nix
 
     ./jitterentropy.nix

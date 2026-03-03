@@ -4,6 +4,8 @@
 
     ./feedback.nix
 
+    ./suid-wrappers.nix
+
     ./users.nix
   ];
 

@@ -51,9 +51,6 @@
     # inkscape vector graphics editor
     ./inkscape
 
-    # nomad mode & x mode
-    ./modes
-
     # mousepad text editor
     ./mousepad
 
