@@ -60,6 +60,9 @@
     # networking
     ./network
 
+    # nomad mode
+    ./nomad
+
     # packages
     ./packages
 

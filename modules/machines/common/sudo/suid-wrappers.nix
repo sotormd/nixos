@@ -1,6 +1,8 @@
 { lib, ... }:
 
 {
+  # disable suid wrappers
+  # for unused binaries
   security.wrappers = {
     su.enable = lib.mkForce false;
     sudoedit.enable = lib.mkForce false;
