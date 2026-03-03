@@ -105,9 +105,9 @@ let
       fi
 
       if [[ "$current_value" == "1" ]]; then
-        pkexec sysctl -w "$KEY=0" >/dev/null
+        run0 sysctl -w "$KEY=0" >/dev/null
       else
-        pkexec sysctl -w "$KEY=1" >/dev/null
+        run0 sysctl -w "$KEY=1" >/dev/null
       fi
     '';
     destination = "/namespaces-toggle.sh";

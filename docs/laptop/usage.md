@@ -10,7 +10,6 @@ This document covers using the `laptop` role.
 4. [Browsers](#browsers)
 5. [Other Applications](#other-applications)
 6. [Virtualisation and Containers](#virtualisation-and-containers)
-7. [Nomad Mode](#nomad-mode)
 
 # System Maintenance
 
@@ -666,29 +665,3 @@ man podman
 ```
 
 Podman is also used as the backend for Distrobox.
-
-# Nomad Mode
-
-Nomad Mode refers to the specialisation `nomad`, which sets up an environment
-ideal for usage away from home, in unreliable conditions.
-
-Notable changes from default `laptop` config:
-
-- sway window manager replaced by full GNOME desktop environment
-- wpa_supplicant replaced by NetworkManager
-- unbound from `server` replaced by cloudflare DNS
-- `kernel.unprivileged_userns_clone` set to 1 by default
-- librewolf browser is installed
-- flatpak is enabled, and flathub is added as a repo
-- apps can be installed from GNOME software
-
-Nomad Mode can be used by booting into the `nomad` specialisation from the boot
-menu.
-
-> Nomad Mode is available only if impermanence is enabled. This ensures that
-> activity under Nomad Mode does not affect the standard system.
-
-> **Does this clutter my device?** No, all GNOME-specific things (except some
-> logs) are thrown out by impermanence.
-
-You cannot use the `nixos` CLI from within the nomad specialisation.

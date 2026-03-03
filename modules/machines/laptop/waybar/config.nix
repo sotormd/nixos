@@ -120,8 +120,8 @@ let
             "format-disconnected": "<span size='13000'>󰤭</span>  <span rise='900'>Disconnected</span>",
             "format-linked": "{ifname} (No IP) ",
             "format-wifi": "<span size='13000'>󰤨</span>  <span rise='900'>{frequency}GHz</span>",
-            "on-click-middle": "pkexec wpa_cli disconnect",
-            "on-click-right": "pkexec wpa_cli reassociate",
+            "on-click-middle": "run0 wpa_cli disconnect",
+            "on-click-right": "run0 wpa_cli reassociate",
             "tooltip": false
           },
           "position": "top",

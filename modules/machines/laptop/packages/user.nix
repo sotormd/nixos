@@ -46,6 +46,9 @@
     # fortune cookies
     pkgs.fortune
 
+    # remove file metadata
+    pkgs.mat2
+
     # text editor
     inputs.neovim.packages.x86_64-linux.default
   ];
