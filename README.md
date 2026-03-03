@@ -55,6 +55,8 @@ Desktop features:
   [wallpapers](https://github.com/sotormd/wallpapers)
 - XKCD lockscreen wallpapers with
   [xkcd-wall](https://github.com/sotormd/xkcd-wall)
+- Automatic behavior changes when outside trusted & reliable networks with
+  [Nomad Mode](./docs/laptop/usage.md#nomad-mode)
 
 Services features:
 

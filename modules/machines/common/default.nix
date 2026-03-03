@@ -25,7 +25,7 @@
     # packages
     ./packages
 
-    # sandboxing with firejail, apparmor
+    # sandboxing with firejail
     ./sandbox
 
     # scripts
