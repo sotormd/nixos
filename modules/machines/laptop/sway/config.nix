@@ -365,7 +365,7 @@ let
       #
       # POLKIT AGENT
       #
-      exec ${pkgs.mate.mate-polkit}/libexec/polkit-mate-authentication-agent-1
+      exec ${pkgs.mate-polkit}/libexec/polkit-mate-authentication-agent-1
 
       #
       # DBUS
