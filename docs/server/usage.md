@@ -1,6 +1,6 @@
-# `server` Usage
+# Server Usage
 
-This document covers using the `server` role.
+This document covers using the Server role.
 
 # Contents
 
@@ -28,7 +28,8 @@ Manpage:
 man nixos
 ```
 
-See [cli.md](../cli.md) for the full command reference and workflow examples.
+See [CLI Documentation](/docs/cli.md) for the full command reference and
+workflow examples.
 
 ## Variables and Secrets
 

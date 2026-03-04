@@ -8,6 +8,8 @@
 
     ./settings.nix
 
+    ./sops.nix
+
     ./uwsgi.nix
   ];
 

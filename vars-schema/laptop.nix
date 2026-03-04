@@ -89,10 +89,6 @@ with lib;
         type = types.bool;
       };
 
-      impermanence.enable = mkOption {
-        type = types.bool;
-      };
-
       selfhosted.enable = mkOption {
         type = types.bool;
       };

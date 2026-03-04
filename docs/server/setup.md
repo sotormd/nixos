@@ -1,20 +1,23 @@
-# `server` Setup
+# Server Setup
 
-Bootstrap process for the `server` role.
+Bootstrap process for the Server role.
+
+Before proceeding, see [Server Requirements](/docs/server/requirements.md).
 
 # Contents
 
 1. [Obtaining a NixOS Image](#obtaining-a-nixos-image)
 2. [Preparing the Device](#preparing-the-device)
 3. [Applying Configuration](#applying-configuration)
-4. [Further Setup](#further-setup)
+4. [Setting up Impermanence](#setting-up-impermanence)
+5. [Further Reading](#further-reading)
 
 # Obtaining a NixOS Image
 
 1. Build either of the two included images for `aarch64-linux`: `sd` or
    `sd-remote`.
 
-   For more information, see [images.md](../images.md).
+   For more information, see [Images Documentation](/docs/images.md).
 
 2. Write the generated image to a sd-card using `dd` or any equivalent tool.
 
@@ -38,10 +41,7 @@ Bootstrap process for the `server` role.
 
    ```bash
    export NIXOS_ROLE=server
-   export NIXOS_DIR=/nixos
    ```
-
-> You can use any `NIXOS_DIR` you like
 
 # Applying Configuration
 
@@ -51,7 +51,7 @@ Bootstrap process for the `server` role.
    nixos bootstrap clone
    ```
 
-   The flake will be cloned to `$NIXOS_DIR`.
+   The flake will be cloned to `/persist/nixos`.
 
 2. Initialize variables & secrets.
 
@@ -73,10 +73,10 @@ Bootstrap process for the `server` role.
 
    Ensure all variables and secrets are properly defined.
 
-4. Switch to the new configuration.
+4. Make new configuration the boot default.
 
    ```bash
-   nixos apply switch
+   nixos apply boot
    ```
 
 5. Reboot.
@@ -128,11 +128,40 @@ Ensure all variables and secrets are properly defined.
 
 </details>
 
-# Further Setup
+# Setting up Impermanence
 
-At this stage, this flake has been installed on the device. For further setup,
-see:
+> NOTE: This is a post-install action.
 
-1. [Usage](./usage.md)
+1. Populate `/persist/root` with the default directories to persist.
 
-   For using the `server` role.
+   ```bash
+   nixos bootstrap impermanence
+   ```
+
+2. Set `impermanence.enable` to `true` in `features` section of the variables
+   file.
+
+   ```bash
+   nixos edit vars
+   ```
+
+3. Make new configuration the boot default.
+
+   ```bash
+   nixos apply boot
+   ```
+
+4. Reboot.
+
+   ```bash
+   sudo reboot
+   ```
+
+For more details, see
+[Filesystem and Impermanence Documentation](/docs//filesystems.md).
+
+# Further Reading
+
+1. [Server Usage Documentation](/docs/server/usage.md)
+
+   For using the Server role.

@@ -70,7 +70,7 @@
       perSystem =
         { pkgs, ... }:
         let
-          nixos = import ./modules/machines/common/scripts/bin.nix { inherit pkgs; };
+          nixos = import ./modules/machines/common/cli/bin.nix { inherit pkgs; };
         in
         {
           # formatter

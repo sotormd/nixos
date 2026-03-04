@@ -44,7 +44,7 @@ vars : edit variables
 sops : edit encrypted secrets using sops
 
 .TP
-.B push <host> <path>
+.B push <host>
 .br
 Push flake to a remote host via rsync.
 
@@ -52,7 +52,7 @@ Push flake to a remote host via rsync.
 If a command does not match one of the built-in subcommands,
 .B nixos
 executes it directly inside
-.BR $NIXOS_DIR .
+.BR /persist/nixos .
 
 This allows convenient interaction with the flake repository:
 
@@ -72,8 +72,8 @@ The wrapper respects the following environment variables:
 Configuration role.
 
 .TP
-.B NIXOS_DIR
-Flake path.
+.B NIXOS_MOUNT
+Root mount.
 
 .TP
 .B NIXOS_SCRIPTS
@@ -81,7 +81,16 @@ Commands path.
 
 .SH FILES
 .TP
-.B $NIXOS_DIR/docs/cli.md
+.B /persist/nixos
+NixOS flake.
+.TP
+.B /persist/sops-nix
+sops-nix secrets.
+.TP
+.B /persist/root
+Impermanence directories.
+.TP
+.B /persist/nixos/docs/cli.md
 Full documentation.
 
 .SH SEE ALSO

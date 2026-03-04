@@ -5,9 +5,7 @@ lib.mkIf config.vars.features.impermanence.enable {
   fileSystems =
 
     # nosuid, nodev, noexec
-    lib.mkPersistData [
-      # secure boot
-      "/var/lib/sbctl"
+    lib.mkPersistData "/persist/root" [
 
       # needed by nixos
       "/var/lib/nixos"
@@ -16,10 +14,14 @@ lib.mkIf config.vars.features.impermanence.enable {
       "/var/lib/systemd"
 
       # needed by ZFS
-      "/etc/zfs/zpool.cache"
+      "/etc/zfs"
 
       # logs
       "/var/log"
+
+      # secure boot
+      "/var/lib/sbctl"
+
     ];
 
 }

@@ -45,7 +45,7 @@ let
         ../../common/network/firewall.nix
         ../../common/network/host.nix
         ../../common/network/issue.nix
-        ../../common/network/nts.nix
+        ../../common/network/timesyncd.nix
 
         # nix
         # self-explanatory
@@ -58,6 +58,10 @@ let
         # sandbox
         # eh just firejail
         ../../common/sandbox
+
+        # sops-nix secrets
+        # we need it for user password
+        ../../common/sops
 
         # sudo
         # gotta have sudo
@@ -85,11 +89,6 @@ let
         ../impermanence/rollback-home.nix
         ../impermanence/bind-root.nix
 
-        # sops-nix secrets
-        # we need it for user password
-        ../../common/sops
-        ../sops
-
         # virtualization
         # might need this
         ../virtualization
@@ -103,7 +102,7 @@ let
         # we need to initialize variables ourselves
         # since ../../common/default.nix ix not imported
         vars = legacyVars // {
-          flake.nixosRole = "nomad";
+          role = "nomad";
         };
 
         networking = {
@@ -149,10 +148,10 @@ let
         fileSystems =
 
           # nosuid, nodev, noexec, ro
-          lib.mkLoopStatic [
+          lib.mkSelfStatic [
 
             # nixos flake
-            config.vars.flake.nixosDirectory
+            "/persist/nixos"
 
             # sops-nix
             "/persist/sops-nix"

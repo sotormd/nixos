@@ -3,8 +3,8 @@
 `nixos(1)` is a unified **wrapper** and general command **dispatcher** for
 maintaining this NixOS flake.
 
-This document covers the `nixos(1)` command line interface for `laptop` and
-`server` roles.
+This document covers the `nixos(1)` command line interface for Laptop and Server
+roles.
 
 This document does not cover the usage of `nixos bootstrap` which is covered in
 role-specific setup documentation.
@@ -40,8 +40,8 @@ When run with no commands, equivalent to:
 nixos tree --filesfirst
 ```
 
-When run with a command not mentioned below, the command is dispatched to
-`$NIXOS_DIR`:
+When run with a command not mentioned below, the command is dispatched to the
+flake directory `/persist/nixos`:
 
 ```bash
 nixos vi modules/machines/common/firewall.nix
@@ -170,20 +170,20 @@ Examples:
 Push local changes to a remote host using `rsync` over `ssh`.
 
 ```bash
-nixos push <host> <path>
+nixos push <host>
 ```
 
 Examples:
 
-1. To push to `server:/nixos`:
+1. To push to host `foobar`:
 
    ```bash
-   nixos push server /nixos
+   nixos push foobar
    ```
 
 # Miscellaneous
 
-Dispatch any command to `$NIXOS_DIR`:
+Dispatch any command to flake directory `/persist/nixos`:
 
 ```bash
 nixos <command>
@@ -223,10 +223,10 @@ Examples:
 
 # Implementation details
 
-All scripts are stored in `$NIXOS_DIR/cli/`.
+All scripts are stored in `/persist/nixos/cli/scripts`.
 
-The entry point is the `$NIXOS_DIR/cli/nixos` script, which is mainly a wrapper
-for all other scripts.
+The entry point is the `/persist/nixos/cli/nixos` script, which is mainly a
+wrapper for all other scripts.
 
 This wrapper is installed as a package to the system profile.
 
@@ -242,19 +242,23 @@ Additionally, `nixos(1)` also evaluates that the values for the following
 variables make sense:
 
 - `$NIXOS_ROLE` (configuration role)
-- `$NIXOS_DIR` (flake path)
+- `$NIXOS_MOUNT` (used for bootstrap)
 - `$NIXOS_SCRIPTS` (commands path)
 
 `nixos(1)` also passes on these variables to commands as:
 
 - `$__NIXOS_ROLE`
-- `$__NIXOS_DIR`
+- `$__NIXOS_MOUNT`
 - `$__NIXOS_SCRIPTS`
 
-Also, if `$NIXOS_ROOT_MOUNT` is passed (during bootstrap), then this information
-is added to `$NIXOS_DIR` as well.
+`nixos(1)` also passes on some globals to commands:
 
-`nixos(1)` runs all commands (*except `bootstrap`) in the `$NIXOS_DIR`, like so:
+- `$__NIXOS_GLOBALS_FLAKE`, the flake directory `/persist/nixos`
+- `$__NIXOS_GLOBALS_IMPERMANENCE`, the Impermanence directory, `/persist/root`
+- `$__NIXOS_GLOBALS_SOPS`, the sops-nix GnuPG home `/persist/sops-nix`
+
+`nixos(1)` runs all commands (*except `bootstrap`) in the flake directory
+`/persist/nixos`, like so:
 
 ```bash
 (
@@ -274,13 +278,13 @@ command in three places:
 
    `nixos(1)` runs `tree --filesfirst`
 
-2. A script present in `$NIXOS_DIR/cli/` provided
+2. A script present in `/persist/nixos/cli/scripts` provided
 
    ```bash
    nixos clean
    ```
 
-   `nixos(1)` runs `$NIXOS_DIR/cli/clean`
+   `nixos(1)` runs `/persist/nixos/cli/scripts/clean` in `/persist/nixos`
 
 3. Any other command provided
 
@@ -288,7 +292,7 @@ command in three places:
    nixos cat modules/machines/server/searxng/engines.nix
    ```
 
-   `nixos(1)` dispatches the provided command as-is in `$NIXOS_DIR`
+   `nixos(1)` dispatches the provided command as-is in `/persist/nixos`
 
 It is _generally_ safe to pipe into and out of the included scripts:
 

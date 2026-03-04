@@ -1,5 +1,7 @@
 #!/usr/bin/env bash
 
+set -euo pipefail
+
 # ask for sudo upfront
 if ! sudo -v; then
     echo "Error: sudo authentication failed" >&2
@@ -15,74 +17,44 @@ fi
     done
 ) 2>/dev/null &
 
-if [ -z "$NIXOS_ROLE" ]; then
-    echo "Error: NIXOS_ROLE is not set." >&2
-    exit 1
-fi
+# commandline args
+VERB="${1:-}"
+ARG1="${2:-}"
+ARG2="${3:-}"
 
-if ! [[ "$NIXOS_ROLE" =~ ^(server|laptop)$ ]]; then
-  echo "Error: unexpected role $NIXOS_ROLE" >&2
-  exit 1
-fi
+# basic environment
+ROLE="$__NIXOS_ROLE"
+MOUNT="$__NIXOS_MOUNT"
+DIR="$MOUNT$__NIXOS_GLOBALS_FLAKE"
 
-if [ -z "$NIXOS_ROOT_MOUNT" ]; then
-    NIXOS_ROOT_MOUNT=""
-fi
-
-if [ -z "$NIXOS_DIR" ]; then
-    echo "Error: NIXOS_DIR is not set." >&2
-    exit 1
-fi
-
-DIR="$NIXOS_ROOT_MOUNT$NIXOS_DIR"
-ROLE="$NIXOS_ROLE"
-
+# for variables
 VARS_DIR="$DIR/vars"
 VARS="$VARS_DIR/vars.nix"
 
-case "$ROLE" in
-  laptop)
-    SOPS_DIR="$NIXOS_ROOT_MOUNT/persist/sops-nix"
-    ;;
-  server)
-    SOPS_DIR="$NIXOS_ROOT_MOUNT/var/lib/sops-nix"
-    ;;
-  *)
-    echo "Error: unexpected role '$ROLE'" >&2
-    exit 1
-    ;;
-esac
-
+# for secrets
 SOPS_YAML="$DIR/.sops.yaml"
 SECRETS="$VARS_DIR/secrets.yaml"
 TEMP_SECRETS="/tmp/sops-nix-init.yaml"
+SOPS_DIR="$MOUNT$__NIXOS_GLOBALS_SOPS"
 
-PERSIST_DIR="/persist"
-PERSIST_DIR_ROOT="$PERSIST_DIR/root"
-PERSIST_DIR_HOME="$PERSIST_DIR_ROOT/home/$USER"
+# for impermanence: post-install
+REAL_ROOT=""
+REAL_HOME="/home/$USER"
+PERSIST_DIR_ROOT="$MOUNT$__NIXOS_GLOBALS_IMPERMANENCE"
+PERSIST_DIR_HOME="$MOUNT$__NIXOS_GLOBALS_IMPERMANENCE/home/$USER"
 
 ########
 # DISKS
-########
+######## laptop
 
-if [ "$1" == "disks" ]; then
-
+if [ "$VERB" == "disks" ]; then
 
     if ! [ "$ROLE" == "laptop" ]; then
         echo "Error: unexpected role $ROLE" >&2
         exit 1
     fi
 
-    if [ -z "$DISKS_DRY_RUN" ]; then
-        DISKS_DRY_RUN="true"
-    fi
-
-    if [ -z "$2" ]; then
-        echo "Error: expected argument (boot/swap/root/mount)" >&2
-        exit 1
-    fi
-
-    set -euo pipefail
+    : "${ARG1:?Error: expected argument (boot/swap/root/mount)}"
 
     : "${BOOT:?Error: BOOT is not set (e.g. /dev/disk/by-partuuid/xxx)}"
     echo "BOOT=$BOOT"
@@ -91,9 +63,24 @@ if [ "$1" == "disks" ]; then
     : "${ROOT:?Error: ROOT is not set (e.g. /dev/disk/by-partuuid/xxx)}"
     echo "ROOT=$ROOT"
 
-    DRY_RUN=$DISKS_DRY_RUN
-    if [ "$DRY_RUN" == "true" ]; then
-      echo "DRY RUN: no destructive actions will be performed. Re-run with DISKS_DRY_RUN=false to actually apply."
+    if ! [ -b "$BOOT" ]; then
+        echo "Error: $BOOT is not a block device"
+        exit 1
+    fi
+
+    if ! [ -b "$SWAP" ]; then
+        echo "Error: $SWAP is not a block device"
+        exit 1
+    fi
+
+    if ! [ -b "$ROOT" ]; then
+        echo "Error: $ROOT is not a block device"
+        exit 1
+    fi
+
+    APPLY=$ARG2
+    if [ "$APPLY" != "apply" ]; then
+      echo "DRY RUN: no destructive actions will be performed. Re-run with 'apply' at the end of command to actually apply."
     fi
 
     read -rp "Are you absolutely sure you want to proceed? Type 'I UNDERSTAND' to continue: " CONFIRM
@@ -104,39 +91,38 @@ if [ "$1" == "disks" ]; then
 
     # helper for running or echoing
     run() {
-    if [ "$DRY_RUN" == "true" ]; then
-        echo "+ $*"
-      else
-        echo "+ $*"; eval "$@"
+      echo "+ $*"
+      if [ "$APPLY" == "apply" ]; then
+          "$@"
       fi
     }
 
     # wait for udev
-    run "sudo udevadm settle"
+    run sudo udevadm settle
 
-    if [ "$2" == "boot" ]; then
+    if [ "$ARG1" == "boot" ]; then
 
         # 1) format boot as FAT32 (ESP)
-        run "sudo mkfs.vfat -F 32 -n BOOT ${BOOT}"
+        run sudo mkfs.vfat -F 32 -n BOOT "$BOOT"
 
-    elif [ "$2" == "swap" ]; then
+    elif [ "$ARG1" == "swap" ]; then
 
-        # 2) fetup swap
-        run "sudo mkswap ${SWAP}"
-        run "sudo swapon ${SWAP}"
+        # 2) setup swap
+        run sudo mkswap "$SWAP"
+        run sudo swapon "$SWAP"
 
-    elif [ "$2" == "root" ]; then
+    elif [ "$ARG1" == "root" ]; then
 
         # 3) wipe signatures on root before LUKS to avoid troubles
-        run "sudo wipefs -a ${ROOT} || true"
+        run sudo wipefs -a "$ROOT" || true
 
         # 4) LUKS encrypt root
         # - use LUKS2, pbkdf=argon2id defaults; prompts for passphrase
-        run "sudo cryptsetup luksFormat --type luks2 ${ROOT}"
-        run "sudo cryptsetup luksOpen ${ROOT} root"
+        run sudo cryptsetup luksFormat --type luks2 "$ROOT"
+        run sudo cryptsetup luksOpen "$ROOT" root
 
         # 5) wait for /dev/mapper/root
-        run "udevadm settle"
+        run udevadm settle
 
         # 6) create ZFS pool on /dev/mapper/root
         # if re-using disk, consider "zpool destroy -f rpool" first (user responsibility)
@@ -154,32 +140,32 @@ if [ "$1" == "disks" ]; then
         )
 
         # create pool
-        run "sudo zpool create ${ZPOOL_NAME} ${ZPOOL_ARGS[*]} ${ZPOOL_DEVICE}"
+        run sudo zpool create "$ZPOOL_NAME" "${ZPOOL_ARGS[@]}" "$ZPOOL_DEVICE"
 
         # 7) create datasets
-        run "sudo zfs create rpool/nixos"
-        run "sudo zfs create rpool/nixos/root -o mountpoint=legacy"
-        run "sudo zfs create rpool/nixos/home -o mountpoint=legacy"
-        run "sudo zfs create rpool/nixos/nix -o mountpoint=legacy"
-        run "sudo zfs create rpool/nixos/persist -o mountpoint=legacy"
+        run sudo zfs create rpool/nixos
+        run sudo zfs create rpool/nixos/root -o mountpoint=legacy
+        run sudo zfs create rpool/nixos/home -o mountpoint=legacy
+        run sudo zfs create rpool/nixos/nix -o mountpoint=legacy
+        run sudo zfs create rpool/nixos/persist -o mountpoint=legacy
 
         # 8) empty snapshots for impermanence
-        run "sudo zfs snapshot rpool/nixos/root@blank"
-        run "sudo zfs snapshot rpool/nixos/home@blank"
+        run sudo zfs snapshot rpool/nixos/root@blank
+        run sudo zfs snapshot rpool/nixos/home@blank
 
-    elif [ "$2" == "mount" ]; then
+    elif [ "$ARG1" == "mount" ]; then
 
         # 10) mount filesystems
-        run "sudo mkdir -p /mnt"
-        run "sudo mount -t zfs rpool/nixos/root /mnt"
-        run "sudo mkdir -p /mnt/home /mnt/nix /mnt/persist"
-        run "sudo mount -t zfs rpool/nixos/home /mnt/home"
-        run "sudo mount -t zfs rpool/nixos/nix /mnt/nix"
-        run "sudo mount -t zfs rpool/nixos/persist /mnt/persist"
+        run sudo mkdir -p /mnt
+        run sudo mount -t zfs rpool/nixos/root /mnt
+        run sudo mkdir -p /mnt/home /mnt/nix /mnt/persist
+        run sudo mount -t zfs rpool/nixos/home /mnt/home
+        run sudo mount -t zfs rpool/nixos/nix /mnt/nix
+        run sudo mount -t zfs rpool/nixos/persist /mnt/persist
 
         # 11) mount boot
-        run "sudo mkdir -p /mnt/boot"
-        run "sudo mount ${BOOT} /mnt/boot"
+        run sudo mkdir -p /mnt/boot
+        run sudo mount "$BOOT" /mnt/boot
 
     fi
 
@@ -187,28 +173,28 @@ if [ "$1" == "disks" ]; then
 
 ########
 # CLONE
-########
+######## laptop, server
 
-elif [ "$1" == "clone" ]; then
+elif [ "$VERB" == "clone" ]; then
 
-    if ! [[ "$NIXOS_ROLE" =~ ^(server|laptop)$ ]]; then
-        echo "Error: unexpected role $NIXOS_ROLE" >&2
+    if ! [[ "$ROLE" =~ ^(server|laptop)$ ]]; then
+        echo "Error: unexpected role $ROLE" >&2
         exit 1
     fi
 
     sudo mkdir -p "$DIR"
     sudo git clone https://github.com/sotormd/nixos "$DIR"
-    sudo chown $USER: -R "$DIR"
+    sudo chown "$USER": -R "$DIR"
 
 #######
 # VARS
-#######
+####### laptop, server
 
-elif [ "$1" == "vars" ]; then
+elif [ "$VERB" == "vars" ]; then
 
     mkdir -p "$VARS_DIR"
 
-    if [ -f "$VARS" ] && [[ "$2" != "replace" ]]; then
+    if [ -f "$VARS" ] && [[ "$ARG1" != "replace" ]]; then
         echo "Error: vars.nix already exists" >&2
         exit 1
     fi
@@ -252,10 +238,7 @@ elif [ "$1" == "vars" ]; then
         # create vars file
         cat > "$VARS" <<EOF
 {
-  flake = {
-    nixosDirectory = "$NIXOS_DIR";
-    nixosRole = "laptop";
-  };
+  role = "laptop";
 
   device = {
     hostName = "$VARS_DEVICE_HOSTNAME";
@@ -278,7 +261,6 @@ elif [ "$1" == "vars" ]; then
       immutable = { };
       static = { };
     };
-    hdparm = [ ];
   };
 
   user = {
@@ -312,8 +294,8 @@ elif [ "$1" == "vars" ]; then
     gateway = "$VARS_NETWORK_GATEWAY";
     address = "$VARS_NETWORK_ADDRESS";
     server = {
-      address = "$VARS_NETWORK_ADDRESS";
-      domain = "$VARS_NETWORK_DOMAIN";
+      address = "$VARS_NETWORK_SERVER_ADDRESS";
+      domain = "$VARS_NETWORK_SERVER_DOMAIN";
     };
   };
 
@@ -370,10 +352,7 @@ EOF
         # create vars file
         cat > "$VARS" <<EOF
 {
-  flake = {
-    nixosDirectory = "$NIXOS_DIR";
-    nixosRole = "server";
-  };
+  role = "server";
 
   device = {
     hostName = "$VARS_DEVICE_HOSTNAME";
@@ -394,7 +373,6 @@ EOF
       immutable = { };
       static = { };
     };
-    hdparm = [ ];
   };
 
   user = {
@@ -430,6 +408,10 @@ EOF
     qbt.enable = false;
     jellyfin.enable = false;
   };
+
+  features = {
+    impermanence.enable = false;
+  };
 }
 EOF
 
@@ -440,19 +422,19 @@ EOF
 
 #######
 # SOPS
-#######
+####### laptop, server
 
-elif [ "$1" == "sops" ]; then
+elif [ "$VERB" == "sops" ]; then
 
     mkdir -p "$VARS_DIR"
 
-    if [ -f "$SECRETS" ] && [[ "$2" != "replace" ]]; then
+    if [ -f "$SECRETS" ] && [[ "$ARG1" != "replace" ]]; then
         echo "Error: secrets.yaml already exists" >&2
         exit 1
     fi
 
     # check environment variables
-    if [ -z "$SECRETS_HASHED_PASSWORD" ]; then
+    if [ -z "${SECRETS_HASHED_PASSWORD:-}" ]; then
 
         while true; do
             echo
@@ -471,7 +453,7 @@ elif [ "$1" == "sops" ]; then
         done
     fi
 
-    if [ -z "$SECRETS_PSK" ]; then
+    if [ -z "${SECRETS_PSK:-}" ]; then
 
         while true; do
             echo
@@ -492,11 +474,11 @@ elif [ "$1" == "sops" ]; then
 
     if [ "$ROLE" == "server" ]; then
 
-        if [ -z "$SECRETS_DUCKDNS_TOKEN" ]; then
+        if [ -z "${SECRETS_DUCKDNS_TOKEN:-}" ]; then
             SECRETS_DUCKDNS_TOKEN=""
         fi
 
-        if [ -z "$SECRETS_SEARXNG_KEY" ]; then
+        if [ -z "${SECRETS_SEARXNG_KEY:-}" ]; then
             SECRETS_SEARXNG_KEY=$(head -c 64 /dev/urandom | sha256sum | cut -d ' ' -f1)
         fi
 
@@ -504,11 +486,11 @@ elif [ "$1" == "sops" ]; then
 
     # delete existing sops keys from gpg
     if [ -f "$SOPS_YAML" ]; then
-        FINGERPRINT=$(yq '.keys[0]' $SOPS_YAML)
+        FINGERPRINT=$(yq '.keys[0]' "$SOPS_YAML")
         FINGERPRINT="${FINGERPRINT#\"}"
         FINGERPRINT="${FINGERPRINT%\"}"
-        sudo GNUPGHOME=$SOPS_DIR gpg --batch --yes --delete-secret-keys $FINGERPRINT
-        sudo GNUPGHOME=$SOPS_DIR gpg --batch --yes --delete-key $FINGERPRINT
+        sudo GNUPGHOME="$SOPS_DIR" gpg --batch --yes --delete-secret-keys "$FINGERPRINT" || true
+        sudo GNUPGHOME="$SOPS_DIR" gpg --batch --yes --delete-key "$FINGERPRINT" || true
     fi
 
     # delete old sops-nix directory if exists
@@ -534,11 +516,11 @@ elif [ "$1" == "sops" ]; then
     fi
 
     # move key to the sops-nix directory
-    sudo cp -r /tmp/sops-nix/** "$SOPS_DIR"
+    sudo cp -r /tmp/sops-nix/. "$SOPS_DIR/"
 
     # export the gpg key from sops-nix directory
-    sudo GNUPGHOME=$SOPS_DIR gpg --export --armor > /tmp/sops-nix-pub.asc
-    sudo GNUPGHOME=$SOPS_DIR gpg --export-secret-keys --armor > /tmp/sops-nix-priv.asc
+    sudo GNUPGHOME="$SOPS_DIR" gpg --export --armor > /tmp/sops-nix-pub.asc
+    sudo GNUPGHOME="$SOPS_DIR" gpg --export-secret-keys --armor > /tmp/sops-nix-priv.asc
 
     # securely purge keys
     shred /tmp/sops-nix-pub.asc -u
@@ -551,7 +533,7 @@ elif [ "$1" == "sops" ]; then
 keys:
   - &personal $FINGERPRINT
 creation_rules:
-  - path_regex: $(echo $SECRETS | sed "s|^$DIR/||")
+  - path_regex: $(echo "$SECRETS" | sed "s|^$DIR/||")
     key_groups:
     - pgp:
       - *personal
@@ -587,7 +569,7 @@ EOF
     # open secrets file
     (
         cd "$DIR" || exit
-        sudo GNUPGHOME=$SOPS_DIR sops -e $TEMP_SECRETS > $SECRETS
+        sudo GNUPGHOME="$SOPS_DIR" sops -e "$TEMP_SECRETS" > "$SECRETS"
         shred "$TEMP_SECRETS" -u
     )
 
@@ -596,17 +578,17 @@ EOF
 
 ##########
 # INSTALL
-##########
+########## laptop
 
-elif [ "$1" == "install" ]; then
+elif [ "$VERB" == "install" ]; then
 
     if ! [ "$ROLE" == "laptop" ]; then
         echo "Error: unexpected role $ROLE" >&2
         exit 1
     fi
 
-    if ! [ "$NIXOS_ROOT_MOUNT" == "/mnt" ]; then
-        echo "Error: unexpected root mount $NIXOS_ROOT_MOUNT"
+    if ! [ "$MOUNT" == "/mnt" ]; then
+        echo "Error: unexpected root mount $MOUNT"
         exit 1
     fi
 
@@ -614,117 +596,129 @@ elif [ "$1" == "install" ]; then
         cd "$DIR"
         git add .
 
-        sudo nixos-install --root "$NIXOS_ROOT_MOUNT" --flake "$DIR#$ROLE" --no-root-passwd
+        sudo nixos-install --root "$MOUNT" --flake ".#machine-laptop" --no-root-passwd
 
         git reset -- vars/vars.nix vars/secrets.yaml .sops.yaml
     )
 
-#############
+############# post-install
 # LANZABOOTE
-#############
+############# laptop
 
-elif [ "$1" == "lanzaboote" ]; then
+elif [ "$VERB" == "lanzaboote" ]; then
 
     if ! [ "$ROLE" == "laptop" ]; then
         echo "Error: unexpected role $ROLE" >&2
         exit 1
     fi
 
-    if [ "$2" == "create" ]; then
+    if [ "$ARG1" == "create" ]; then
         nix shell nixpkgs#sbctl --command sudo sbctl create-keys
     fi
 
-    if [ "$2" == "enroll" ]; then
+    if [ "$ARG1" == "enroll" ]; then
         nix shell nixpkgs#sbctl --command sudo sbctl enroll-keys --microsoft
     fi
 
-###############
+############### post-install
 # IMPERMANENCE
-###############
+############### laptop, server
 
-elif [ "$1" == "impermanence" ]; then
-
-    if ! [ "$ROLE" == "laptop" ]; then
-        echo "Error: unexpected role $ROLE" >&2
-        exit 1
-    fi
-
-    if [ ! -d "$PERSIST_DIR" ]; then
-        echo "Error: $PERSIST_DIR doesn't exist" >&2
-        exit 1
-    fi
+elif [ "$VERB" == "impermanence" ]; then
 
     if [ -d "$PERSIST_DIR_ROOT" ]; then
         echo "Error: $PERSIST_DIR_ROOT already exists" >&2
-        exit 0
+        exit 1
     fi
 
     if [ -d "$PERSIST_DIR_HOME" ]; then
         echo "Error: $PERSIST_DIR_HOME already exists" >&2
-        exit 0
+        exit 1
     fi
 
     # ROOT
-    sudo mkdir "$PERSIST_DIR_ROOT"
+    sudo mkdir -p "$PERSIST_DIR_ROOT"
 
-    # zpool.cache
-    sudo mkdir -p "$PERSIST_DIR_ROOT/etc/zfs"
-    sudo cp -a /etc/zfs/zpool.cache "$PERSIST_DIR_ROOT/etc/zfs/zpool.cache"
+    # helper function
+    persist_dirs() {
+        local dest_base="$1"
+        local src_root="$2"
+        shift 2
+        local sources=("$@")
 
-    # /var/lib/nixos
-    sudo mkdir -p "$PERSIST_DIR_ROOT/var/lib"
-    sudo cp -a /var/lib/nixos "$PERSIST_DIR_ROOT/var/lib/nixos"
+        for src in "${sources[@]}"; do
+            # strip leading slash
+            local rel="${src#/}"
 
-    # /var/lib/systemd
-    sudo mkdir -p "$PERSIST_DIR_ROOT/var/lib"
-    sudo cp -a /var/lib/systemd "$PERSIST_DIR_ROOT/var/lib/systemd"
+            # real source path
+            local real_src="$src_root/$rel"
 
-    # /var/lib/sbctl
-    sudo mkdir -p "$PERSIST_DIR_ROOT/var/lib"
-    sudo cp -a /var/lib/sbctl "$PERSIST_DIR_ROOT/var/lib/sbctl"
+            # destination path
+            local dest="$dest_base/$rel"
 
-    # /var/log
-    sudo mkdir -p "$PERSIST_DIR_ROOT/var"
-    sudo cp -a /var/log "$PERSIST_DIR_ROOT/var/log"
+            # 1. create parent
+            sudo mkdir -p "$(dirname "$dest")"
 
+            # 2. copy if exists
+            if [ -e "$real_src" ]; then
+                sudo cp -a "$real_src" "$dest"
+            fi
+
+            # 3. ensure destination exists
+            sudo mkdir -p "$dest"
+        done
+    }
+
+    # set permissions
     sudo chown -R root: "$PERSIST_DIR_ROOT"
 
     # HOME
     sudo mkdir -p "$PERSIST_DIR_HOME"
 
-    # directories in $HOME
-    # may not exist yet, so
-    # we need to create empty
-    # directories with mkdir -p
+    if [ "$ROLE" == "laptop" ]; then
 
-    # Documents
-    sudo cp -a "$HOME/Documents" "$PERSIST_DIR_HOME/Documents"
-    sudo mkdir -p "$PERSIST_DIR_HOME/Documents"
+        # populate /persist/root/
+        persist_dirs "$PERSIST_DIR_ROOT" "$MOUNT$REAL_ROOT" \
+            "/var/lib/nixos" \
+            "/var/lib/systemd" \
+            "/etc/zfs" \
+            "/var/log"
+            "/var/lib/sbctl" \
 
-    # Downloads
-    sudo cp -a "$HOME/Downloads" "$PERSIST_DIR_HOME/Downloads"
-    sudo mkdir -p "$PERSIST_DIR_HOME/Downloads"
+        # populate /persist/root/home/
+        persist_dirs "$PERSIST_DIR_HOME" "$MOUNT$REAL_HOME" \
+            "/Documents" \
+            "/Downloads" \
+            "/Pictures" \
+            "/Projects" \
+            "/.config/BraveSoftware/Brave-Browser" \
+            "/.ssh"
 
-    # Pictures
-    sudo cp -a "$HOME/Pictures" "$PERSIST_DIR_HOME/Pictures"
-    sudo mkdir -p "$PERSIST_DIR_HOME/Pictures"
+    elif [ "$ROLE" == "server" ]; then
+        
+        # populate /persist/root/
+        persist_dirs "$PERSIST_DIR_ROOT" "$MOUNT$REAL_ROOT"  \
+            "/var/lib/nixos" \
+            "/var/lib/systemd" \
+            "/etc/zfs" \
+            "/var/log" \
+            "/etc/ssh" \
+            "/var/lib/unbound" \
+            "/var/lib/acme" \
+            "/var/lib/bitwarden_rs" \
+            "/var/lib/i2pd" \
+            "/var/lib/qbt" \
+            "/srv/torrents" \
+            "/var/lib/jellyfin" 
 
-    # Projects
-    sudo cp -a "$HOME/Projects" "$PERSIST_DIR_HOME/Projects"
-    sudo mkdir -p "$PERSIST_DIR_HOME/Projects"
+    fi
 
-    # Brave Browser
-    sudo mkdir -p "$PERSIST_DIR_HOME/.config/BraveSoftware"
-    sudo cp -a "$HOME/.config/BraveSoftware/Brave-Browser" "$PERSIST_DIR_HOME/.config/BraveSoftware/Brave-Browser"
-    sudo mkdir -p "$PERSIST_DIR_HOME/.config/BraveSoftware/Brave-Browser"
-
-    # SSH
-    sudo cp -a "$HOME/.ssh" "$PERSIST_DIR_HOME/.ssh"
-    sudo mkdir -p "$PERSIST_DIR_HOME/.ssh"
-
-    sudo chown -R $USER: "$PERSIST_DIR_HOME"
-
-    sudo chmod -R 600 "$PERSIST_DIR_HOME/.ssh"
-    sudo chmod 700 "$PERSIST_DIR_HOME/.ssh"
+    # set permissions
+    sudo chown -R "$USER": "$PERSIST_DIR_HOME"
+    if [ -d "$PERSIST_DIR_HOME/.ssh" ]; then
+        sudo chmod 700 "$PERSIST_DIR_HOME/.ssh"
+        sudo find "$PERSIST_DIR_HOME/.ssh" -type f -exec chmod 600 {} +
+        sudo find "$PERSIST_DIR_HOME/.ssh" -type d -exec chmod 700 {} +
+    fi
 
 fi

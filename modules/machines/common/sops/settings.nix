@@ -3,4 +3,5 @@
   sops.defaultSopsFormat = "yaml";
 
   sops.gnupg.sshKeyPaths = [ ];
+  sops.gnupg.home = "/persist/sops-nix";
 }

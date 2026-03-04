@@ -5,28 +5,26 @@
 
 Two images are offered for the `x86_64-linux` architecture:
 
-1. `minimal`: A minimal NixOS environment.
+1. **Minimal**: A minimal NixOS environment.
 
-2. `gnome`: NixOS with the GNOME desktop environment.
+2. **GNOME**: NixOS with the GNOME desktop environment.
 
-Two images are offered for the `aarch64-linux` architecture:
+Two images are offered for the `aarch64-linux` architecture (intended for
+Raspberry-Pi 4b):
 
-1. `sd`: NixOS for sdcard targets (intended for Raspberry-Pi 4b).
+1. **SD**: NixOS for sdcard targets.
 
-2. `sd-remote`: Same as `sd`, but for installation over WiFi.
+2. **SD Remote**: Same as SD, but for installation over WiFi.
 
-These images have an ideal environment for setting up this flake.
-
-These images have experimental features `flakes` and `nix-command` enabled.
-
-The images include several useful packages for installation, recovery, etc.
+These images have an ideal environment for setting up this flake and also
+include several useful packages for installation, recovery, etc.
 
 As with all NixOS installation images, the username for the live session is
 `nixos` and the password is empty.
 
 # Usage
 
-1. `minimal` image
+1. Minimal image
 
    If you do not wish to build this image, you can get one from the
    [Github Actions](https://github.com/sotormd/nixos/actions/workflows/build-minimal-iso.yml)
@@ -41,7 +39,7 @@ As with all NixOS installation images, the username for the live session is
 
    The resultant image will be available inside `/tmp/minimal-image/iso/`.
 
-2. `gnome` image
+2. GNOME image
 
    If you do not wish to build this image, you can get one from the
    [Github Actions](https://github.com/sotormd/nixos/actions/workflows/build-gnome-iso.yml)
@@ -56,7 +54,7 @@ As with all NixOS installation images, the username for the live session is
 
    The resultant image will be available inside `/tmp/gnome-image/iso/`.
 
-3. `sd` image
+3. SD image
 
    ```bash
    nix build github:sotormd/nixos#nixosConfigurations.image-sd.config.system.build.sdImage
@@ -64,7 +62,7 @@ As with all NixOS installation images, the username for the live session is
 
    The resultant image will be available inside `./result/sd-image/`.
 
-4. `sd-remote` image
+4. SD Remote image
 
    To build an image for a wireless remote install:
 

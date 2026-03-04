@@ -4,20 +4,12 @@ with lib;
 {
   options.vars = {
 
-    flake = {
-
-      nixosDirectory = mkOption {
-        type = types.path;
-      };
-
-      nixosRole = mkOption {
-        type = types.enum [
-          "laptop"
-          "server"
-          "nomad"
-        ];
-      };
-
+    role = mkOption {
+      type = types.enum [
+        "laptop"
+        "server"
+        "nomad"
+      ];
     };
 
     device = {
@@ -79,10 +71,6 @@ with lib;
         };
       };
 
-      hdparm = mkOption {
-        type = types.listOf types.str;
-      };
-
     };
 
     user = {
@@ -129,6 +117,14 @@ with lib;
 
       address = mkOption {
         type = types.str;
+      };
+
+    };
+
+    features = {
+
+      impermanence.enable = mkOption {
+        type = types.bool;
       };
 
     };

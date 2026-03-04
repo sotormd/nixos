@@ -9,31 +9,34 @@ VERB=$1
 
 set -euo pipefail
 
+DIR="$__NIXOS_MOUNT$__NIXOS_GLOBALS_FLAKE"
+ROLE="$__NIXOS_ROLE"
+
 (
 
-    cd "$__NIXOS_DIR"
+    cd "$DIR"
 
     # 1. FORMAT FLAKE
-    find "$__NIXOS_DIR" -type f -name '*.nix' -exec nix fmt {} +
+    find "$DIR" -type f -name '*.nix' -exec nix fmt {} +
 
     # 2. FIX FLAKE PERMISSIONS
-    find "$__NIXOS_DIR" -path "$__NIXOS_DIR/.git" -prune -o -exec chown "$USER": {} +
-    find "$__NIXOS_DIR" -path "$__NIXOS_DIR/.git" -prune -o -type d -exec chmod 700 {} \;
-    find "$__NIXOS_DIR" -path "$__NIXOS_DIR/.git" -prune -o -type f -exec chmod 600 {} \;
-    chmod 700 -R "$__NIXOS_DIR/cli"
+    find "$DIR" -path "$DIR/.git" -prune -o -exec chown "$USER": {} +
+    find "$DIR" -path "$DIR/.git" -prune -o -type d -exec chmod 700 {} \;
+    find "$DIR" -path "$DIR/.git" -prune -o -type f -exec chmod 600 {} \;
+    chmod 700 -R "$DIR/cli"
 
     # 3. STAGE CHANGES
     git add .
 
     # 4. SHOW DIFF
-    if [ "$__NIXOS_ROLE" == "laptop" ]; then
+    if [ "$ROLE" == "laptop" ]; then
         GIT_PAGER=cat git diff HEAD -- ':!vars/vars.nix' ':!vars/secrets.yaml' ':!.sops.yaml'
     fi
 
     # 5. SHOW DIGEST
     echo
-    vars_file="$__NIXOS_DIR/vars/vars.nix"
-    sops_file="$__NIXOS_DIR/vars/secrets.yaml"
+    vars_file="$DIR/vars/vars.nix"
+    sops_file="$DIR/vars/secrets.yaml"
     vars_hash=$(sha256sum "$vars_file" | awk '{print $1}')
     vars_r=$((16#${vars_hash:0:2}))
     vars_g=$((16#${vars_hash:2:2}))
@@ -52,7 +55,7 @@ set -euo pipefail
     # 7. APPLY CHANGES
     if [[ $confirm =~ ^[Yy]$ ]]; then
 
-        sudo nixos-rebuild $VERB --flake ".#machine-$__NIXOS_ROLE" --fallback
+        sudo nixos-rebuild $VERB --flake ".#machine-$ROLE" --fallback
 
     else
         echo "cancelled"

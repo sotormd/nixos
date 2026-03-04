@@ -12,11 +12,11 @@ let
       set -euo pipefail
 
       baseProfile="${profile}"
-      timestamp="$(${pkgs.coreutils}/bin/date +%s)"
+      timestamp="$(${pkgs.coreutils-full}/bin/date +%s)"
       tmpProfile="/tmp/i2p-browser-''${timestamp}"
 
-      ${pkgs.coreutils}/bin/mkdir -p "$tmpProfile"
-      ${pkgs.coreutils}/bin/cp -r --no-preserve=mode,ownership,timestamps "$baseProfile"/* "$tmpProfile"/
+      ${pkgs.coreutils-full}/bin/mkdir -p "$tmpProfile"
+      ${pkgs.coreutils-full}/bin/cp -r --no-preserve=mode,ownership,timestamps "$baseProfile"/* "$tmpProfile"/
 
       exec ${pkgs.wrapFirefox pkgs.firefox-unwrapped { extraPolicies = policies; }}/bin/firefox \
         --no-remote \

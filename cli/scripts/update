@@ -1,0 +1,5 @@
+#!/usr/bin/env bash
+
+set -euo pipefail
+
+nix flake update --flake "$__NIXOS_MOUNT$__NIXOS_GLOBALS_FLAKE" "$@"

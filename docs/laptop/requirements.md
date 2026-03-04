@@ -1,11 +1,11 @@
-# `laptop` Requirements
+# Laptop Requirements
 
-This document covers the requirements for the `laptop` role.
+This document covers the requirements for the Laptop role.
 
 > These requirements reflect the hardware this role is designed and tested for.
 > Other configurations may work but are not guaranteed.
 
-Required:
+# Required
 
 1. `x86_64-linux` architecture
 
@@ -15,10 +15,10 @@ Required:
 
 4. UEFI firmware
 
-5. Enough memory for ZFS (at least 8gb)
+5. Enough memory for ZFS (at least 8GB)
 
-6. Specific disk layout (handled by the install scripts)
+6. Specific disk layout (handled by the bootstrap scripts)
 
-Optional:
+# Optional
 
 1. Secure Boot support

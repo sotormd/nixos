@@ -7,66 +7,70 @@ if [ -z "$NIXOS_ROLE" ]; then
 fi
 
 # allowed roles: laptop, server
-if ! [[ "$NIXOS_ROLE" =~ ^(server|laptop)$ ]]; then
+if ! [[ "$NIXOS_ROLE" =~ ^(laptop|server)$ ]]; then
   echo "Error: unexpected role $NIXOS_ROLE" >&2
   exit 1
 fi
 
 ROLE="$NIXOS_ROLE"
 
-# NIXOS_ROOT_MOUNT is used for bootstrapping
+# NIXOS_MOUNT is used for bootstrapping
 # this flake to another machine
-if [ -z "$NIXOS_ROOT_MOUNT" ]; then
-    NIXOS_ROOT_MOUNT=""
+if [ -z "$NIXOS_MOUNT" ]; then
+    NIXOS_MOUNT=""
 fi
 
-# NIXOS_DIR is the flake directory
-if [ -z "$NIXOS_DIR" ]; then
-    echo "Error: NIXOS_DIR is not set." >&2
-    exit 1
-fi
-
-DIR="$NIXOS_ROOT_MOUNT$NIXOS_DIR"
+MOUNT="$NIXOS_MOUNT"
 
 # NIXOS_SCRIPTS is the directory
 # to look for scripts in
 if [ -z "$NIXOS_SCRIPTS" ]; then
-    SCRIPTS="$DIR/cli"
-else
-    SCRIPTS="$NIXOS_SCRIPTS"
+    NIXOS_SCRIPTS="$DIR/cli/scripts"
 fi
 
-# the rest of the script can use
-# $ROLE, $DIR and $SCRIPTS
+SCRIPTS="$NIXOS_SCRIPTS"
 
-# print directory tree when run with no arguments
+# at this point, we have a valid
+# $ROLE, $MOUNT and $SCRIPTS
+
+# globals to be used here and by other scripts
+FLAKE="/persist/nixos"
+IMPERMANENCE="/persist/root"
+SOPS="/persist/sops-nix"
+
+# the rest of the script can use
+# $ROLE, $MOUNT, $SCRIPTS,
+# $FLAKE, $IMPERMANENCE and $SOPS
+
+# CASE 1: print directory tree when run with no arguments
 if [ $# -eq 0 ]; then
     cmd=("tree" "--filesfirst")
 
-# run scripts
+# CASE 2: run commands
 elif [ -f "$SCRIPTS/$1" ]; then
 	cmd=("$SCRIPTS/$1" "${@:2}")
 
-# run commands
+# CASE 3: dispatch to flake
 else
 	cmd=("$@")
 fi
 
 (
-    # subshell into $DIR
+    # subshell into $FLAKE
     # unless bootstrap
     if [ "$1" != "bootstrap" ]; then
-       cd "$DIR" || exit 1
+       cd "$MOUNT$FLAKE" || exit 1
     fi
 
     # define context
     export __NIXOS_ROLE=$ROLE
-    export __NIXOS_DIR=$DIR
+    export __NIXOS_MOUNT=$MOUNT
     export __NIXOS_SCRIPTS=$SCRIPTS
 
-    # additional context for init script
-    export __NIXOS_INIT_ROOT_MOUNT=$NIXOS_ROOT_MOUNT
-    export __NIXOS_INIT_DIR=$NIXOS_DIR
+    # define globals
+   export __NIXOS_GLOBALS_FLAKE=$FLAKE
+   export __NIXOS_GLOBALS_IMPERMANENCE=$IMPERMANENCE
+   export __NIXOS_GLOBALS_SOPS=$SOPS
 
     # run required command
     "${cmd[@]}"

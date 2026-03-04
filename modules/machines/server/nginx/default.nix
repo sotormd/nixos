@@ -6,6 +6,8 @@
 
     ./settings.nix
 
+    ./sops.nix
+
     # ./staging.nix
   ];
 

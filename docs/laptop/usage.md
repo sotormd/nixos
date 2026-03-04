@@ -1,6 +1,6 @@
-# `laptop` Usage
+# Laptop Usage
 
-This document covers using the `laptop` role.
+This document covers using the Laptop role.
 
 # Contents
 
@@ -11,6 +11,7 @@ This document covers using the `laptop` role.
 5. [Other Applications](#other-applications)
 6. [Virtualisation and Containers](#virtualisation-and-containers)
 7. [Nomad Mode](#nomad-mode)
+8. [Further Reading](#further-reading)
 
 # System Maintenance
 
@@ -26,7 +27,8 @@ Manpage:
 man nixos
 ```
 
-See [cli.md](../cli.md) for the full command reference and workflow examples.
+See [CLI Documentation](/docs/cli.md) for the full command reference and
+workflow examples.
 
 ## Variables and Secrets
 
@@ -457,7 +459,7 @@ It can also be launched from [rofi](#launcher-rofi) or from the
 ### Configuration
 
 Note that the `~/.config/BraveSoftware/Brave-Browser/` directory is persisted by
-impermanence so all state is persisted across reboots.
+Impermanence so all state is persisted across reboots.
 
 The included brave browser is heavily policied via chromium enterprise policies.
 
@@ -594,9 +596,9 @@ virt-manager
 
 It can also be launched from [rofi](#launcher-rofi).
 
-Created virtual machines are lost on reboot, since impermanence does not persist
+Created virtual machines are lost on reboot, since Impermanence does not persist
 these directories. To persist across reboots, store these under `/persist` or
-add these directories to the impermanence setup.
+add these directories to the Impermanence setup.
 
 An alternative to creating persistent VM disks is to use ZFS ZVOLs to store
 them.
@@ -647,9 +649,9 @@ See the manpage for more information:
 man distrobox
 ```
 
-Created containers are lost on reboot, since impermanence does not persist these
+Created containers are lost on reboot, since Impermanence does not persist these
 directories. To persist across reboots, store these under `/persist` or add
-these directories to the impermanence setup.
+these directories to the Impermanence setup.
 
 `distrobox` requires the use of unprivileged user namespaces, which is disabled
 by default. It can be enabled by setting the `kernel.unprivileged_userns_clone`
@@ -669,26 +671,27 @@ Podman is also used as the backend for Distrobox.
 
 # Nomad Mode
 
-Nomad Mode refers to the specialisation `gnome`, which sets up an
-environment ideal for usage away from home, in unreliable conditions.
+Nomad Mode refers to the specialisation `gnome`, which sets up an environment
+ideal for usage away from home, in unreliable conditions.
 
-Notable changes from default `laptop` config:
+Notable changes from default config:
 
 - sway window manager replaced by full GNOME desktop environment
 - wpa_supplicant replaced by NetworkManager
 - unbound from `server` replaced by cloudflare DNS
 - `kernel.unprivileged_userns_clone` set to 1 by default
 - firejailed librewolf browser is installed
-- real `/home` is not mounted by impermanence
-- several directories under `/persist` are made read-only
+- real `/home` is not mounted by Impermanence
+- several directories under `/persist` are made read-only using
+  [Mount Profiles](/docs/filesystems.md#mount-profiles)
 
-Nomad Mode can be used by booting into the `gnome` specialisation from the
-boot menu.
+Nomad Mode can be used by booting into the `gnome` specialisation from the boot
+menu.
 
-> Nomad Mode is available only if impermanence is enabled. This ensures that
+> Nomad Mode is available only if Impermanence is enabled. This ensures that
 > activity under Nomad Mode does not affect the standard system.
 
 > **Does this clutter my device?** No, all GNOME-specific things (except some
-> logs) are thrown out by impermanence.
+> logs) are thrown out by Impermanence.
 
 You cannot use the `nixos` CLI from within the nomad specialisation.

@@ -69,9 +69,6 @@
     # rofi launcher
     ./rofi
 
-    # sops-nix secrets management
-    ./sops
-
     # sway wayland compositor
     ./sway
 

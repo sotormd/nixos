@@ -10,7 +10,7 @@
   </p>
 </p>
 
-![nixos](./docs/screenshots/nord.gif)
+![nixos](/docs/screenshots/nord.gif)
 
 ~~slighly overengineered~~ NixOS configuration flake for multiple hosts
 
@@ -25,8 +25,8 @@ Nix-specific features:
 - Symlinks in ~ managed using [hjem](https://github.com/feel-co/hjem)
 - Secrets managed using [sops-nix](https://github.com/Mic92/sops-nix)
 - Secure boot using [lanzaboote](https://github.com/nix-community/lanzaboote)
-- [Impermanence](./docs/laptop/impermanence.md#implementation) using ZFS
-  snapshots and bind mounts, without the library.
+- [Impermanence](/docs/filesystems.md#impermanence) using ZFS snapshots and bind
+  mounts, without the library.
 - Package management using [lix](https://lix.systems)
 - Android environment using
   [nix-on-droid](https://github.com/nix-community/nix-on-droid)
@@ -87,7 +87,6 @@ Comprehensive features list:
 | auditing                      | `auditd`                                                                                                   |
 | secrets                       | `sops`, `sops-nix`                                                                                         |
 | usb policy                    | `usbguard`                                                                                                 |
-| network time security         | `chrony`                                                                                                   |
 | sandboxing                    | `firejail`                                                                                                 |
 | firewall                      | `iptables (nf_tables)`                                                                                     |
 | anonymity                     | `i2pd`, `oniux`, `mat2`                                                                                    |
@@ -129,31 +128,27 @@ Comprehensive features list:
 
 # Roles
 
-This flake uses role-based configuration
+This flake uses role-based configuration.
 
-1. `laptop` role: Laptop configuration
+1. Laptop role: Laptop configuration
 
-   [Requirements](./docs/laptop/requirements.md)
+   [Requirements](/docs/laptop/requirements.md)
 
-   [Setup Documentation](./docs/laptop/setup.md)
+   [Setup Documentation](/docs/laptop/setup.md)
 
-   [Secure Boot Documentation](./docs/laptop/secureboot.md)
+   [Usage Documenation](/docs/laptop/usage.md)
 
-   [Impermanence Documentation](./docs/laptop/impermanence.md)
+2. Server role: Headless home server configuration
 
-   [Usage Documenation](./docs/laptop/usage.md)
+   [Requirements](/docs/server/requirements.md)
 
-2. `server` role: Headless home server configuration
+   [Setup Documentation](/docs/server/setup.md)
 
-   [Requirements](./docs/server/requirements.md)
+   [Usage Documentation](/docs/server/usage.md)
 
-   [Setup Documentation](./docs/server/setup.md)
+3. Droid role: nix-on-droid configuration
 
-   [Usage Documentation](./docs/server/usage.md)
-
-3. `droid` role: nix-on-droid configuration
-
-   [Setup & Usage Documentation](./docs/droid.md)
+   [Setup & Usage Documentation](/docs/droid.md)
 
 # Images
 
@@ -165,7 +160,7 @@ installation, recovery, etc.)
 
 These images have an ideal environment for setting up this flake.
 
-See [images](./docs/images.md) for more details.
+See [Images Documentation](/docs/images.md) for more details.
 
 # CLI
 
@@ -179,4 +174,5 @@ Manpage:
 man nixos
 ```
 
-See [CLI](./docs/cli.md) for the full command reference and workflow examples.
+See [CLI Documentation](/docs/cli.md) for the full command reference and
+workflow examples.

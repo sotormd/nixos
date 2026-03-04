@@ -13,6 +13,9 @@
     # bootloader, kernel parameters, sysctl options
     ./boot
 
+    # cli
+    ./cli
+
     # timezone, locales, keyboard layout
     ./internationalization
 
@@ -27,9 +30,6 @@
 
     # sandboxing with firejail
     ./sandbox
-
-    # scripts
-    ./scripts
 
     # sops-nix secrets management
     ./sops
