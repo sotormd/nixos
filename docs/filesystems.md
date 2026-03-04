@@ -136,6 +136,8 @@ On the Server role, the following directories are hardened without Impermanence:
 | ---------- | ------- |
 | `/persist` | Harden  |
 | `/tmp`     | Harden  |
+| `/bin`     | Data    |
+| `/lib64`   | Data    |
 
 Additionally, directories persisted using Impermanence are also hardened
 separately.
@@ -358,16 +360,14 @@ Impermanence is implemented using tmpfs and bind mounts.
 
 The following directories are mounted as tmpfs:
 
-| Path     | Profile |
-| -------- | ------- |
-| `/usr`   | Raw     |
-| `/bin`   | Data    |
-| `/etc`   | Data    |
-| `/home`  | Data    |
-| `/lib64` | Data    |
-| `/root`  | Data    |
-| `/srv`   | Data    |
-| `/var`   | Data    |
+| Path    | Profile |
+| ------- | ------- |
+| `/usr`  | Raw     |
+| `/etc`  | Data    |
+| `/home` | Data    |
+| `/root` | Data    |
+| `/srv`  | Data    |
+| `/var`  | Data    |
 
 Anything not bind mounted in these directories will not survive across reboots.
 However, things in other directories will.
