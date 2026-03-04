@@ -27,8 +27,8 @@ Manpage:
 man nixos
 ```
 
-See [CLI Documentation](/docs/cli.md) for the full command reference and
-workflow examples.
+See [CLI Documentation](../cli.md) for the full command reference and workflow
+examples.
 
 ## Variables and Secrets
 
@@ -683,7 +683,7 @@ Notable changes from default config:
 - firejailed librewolf browser is installed
 - real `/home` is not mounted by Impermanence
 - several directories under `/persist` are made read-only using
-  [Mount Profiles](/docs/filesystems.md#mount-profiles)
+  [Mount Profiles](../filesystems.md#mount-profiles)
 
 Nomad Mode can be used by booting into the `gnome` specialisation from the boot
 menu.

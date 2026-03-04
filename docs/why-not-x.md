@@ -124,8 +124,8 @@ I have found that I can replicate everything that it does with simple systemd
 services and bind mounts - a single [lambda](../lib/filesystems.nix) to create
 the `fileSystems` blocks.
 
-See [Filesystem and Impermanence Documentation](/docs/filesystems.md) for more
-information.
+See [Filesystem and Impermanence Documentation](./filesystems.md#impermanence)
+for more information.
 
 ## stylix
 
@@ -179,4 +179,4 @@ PSA: using GPG instead of age for encryption is worse in almost every case.
 
 I maintain my own scripts.
 
-See [CLI Documentation](/docs/cli.md) for more information.
+See [CLI Documentation](./cli.md) for more information.

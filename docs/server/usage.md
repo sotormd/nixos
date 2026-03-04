@@ -28,8 +28,8 @@ Manpage:
 man nixos
 ```
 
-See [CLI Documentation](/docs/cli.md) for the full command reference and
-workflow examples.
+See [CLI Documentation](../cli.md) for the full command reference and workflow
+examples.
 
 ## Variables and Secrets
 

@@ -2,7 +2,7 @@
 
 Bootstrap process for the Laptop role.
 
-Before proceeding, see [Laptop Requirements](/docs/laptop/requirements.md).
+Before proceeding, see [Laptop Requirements](./requirements.md).
 
 # Contents
 
@@ -19,7 +19,7 @@ Before proceeding, see [Laptop Requirements](/docs/laptop/requirements.md).
 1. Build either of the two included images for `x86_64-linux`: `minimal` or
    `gnome`.
 
-   For more information, see [Images Documentation](/docs/images.md).
+   For more information, see [Images Documentation](../images.md).
 
 2. Write the generated image to a removable medium (eg. a usb stick) using `dd`
    or any equivalent tool.
@@ -375,8 +375,8 @@ Ensure all variables and secrets are properly defined.
    ```
 
 For more details, see
-[Filesystem and Impermanence Documentation](/docs/filesystems.md).
+[Filesystem and Impermanence Documentation](../filesystems.md).
 
 # Further Reading
 
-- [Laptop Usage Documentation](/docs/laptop/usage.md)
+- [Laptop Usage Documentation](./usage.md)
