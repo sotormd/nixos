@@ -23,18 +23,12 @@
 
   }
 
-  # nosuid,nodev
-  // lib.mkLoopHarden [
-    "/tmp"
-  ]
+  # additional filesystem hardening:
 
-  # nosuid,nodev,noexec
-  // lib.mkLoopData [
-    "/etc"
-    "/home"
-    "/root"
-    "/srv"
-    "/var"
+  # nosuid,nodev
+  // lib.mkSelfHarden [
+    "/persist"
+    "/tmp"
   ];
 
   nixpkgs.hostPlatform = lib.mkDefault "aarch64-linux";

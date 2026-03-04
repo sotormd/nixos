@@ -160,10 +160,10 @@
   ];
 
   boot.extraModprobeConfig = ''
-    install dccp ${pkgs.coreutils}/bin/false
-    install sctp ${pkgs.coreutils}/bin/false
-    install rds ${pkgs.coreutils}/bin/false
-    install tipc ${pkgs.coreutils}/bin/false
+    install dccp ${pkgs.coreutils-full}/bin/false
+    install sctp ${pkgs.coreutils-full}/bin/false
+    install rds ${pkgs.coreutils-full}/bin/false
+    install tipc ${pkgs.coreutils-full}/bin/false
   '';
 
   # disable bluetooth

@@ -1,6 +1,8 @@
-# `laptop` Setup
+# Laptop Setup
 
-Bootstrap process for the `laptop` role.
+Bootstrap process for the Laptop role.
+
+Before proceeding, see [Laptop Requirements](/docs/laptop/requirements.md).
 
 # Contents
 
@@ -8,14 +10,16 @@ Bootstrap process for the `laptop` role.
 2. [Preparing the Device](#preparing-the-device)
 3. [Partitioning Disks](#partitioning-disks)
 4. [Installing NixOS](#installing-nixos)
-5. [Further Setup](#further-setup)
+5. [Setting up Secure Boot](#setting-up-secureboot)
+6. [Setting up Impermanence](#setting-up-impermanence)
+7. [Further Reading](#further-reading)
 
 # Obtaining a Live NixOS Image
 
 1. Build either of the two included images for `x86_64-linux`: `minimal` or
    `gnome`.
 
-   For more information, see [images.md](./images.md).
+   For more information, see [Images Documentation](/docs/images.md).
 
 2. Write the generated image to a removable medium (eg. a usb stick) using `dd`
    or any equivalent tool.
@@ -42,12 +46,10 @@ Bootstrap process for the `laptop` role.
 
    ```bash
    export NIXOS_ROLE=laptop
-   export NIXOS_DIR=/persist/nixos
-   export NIXOS_ROOT_MOUNT=/mnt
+   export NIXOS_MOUNT=/mnt
    ```
 
-   > You can use any `NIXOS_DIR` you like, but the `NIXOS_ROOT_MOUNT` must be
-   > set to `/mnt` for the install scripts to work.
+> NOTE: The installer will refuse to install NixOS if NIXOS_MOUNT is not /mnt.
 
 ## Partitioning Disks
 
@@ -82,11 +84,10 @@ Bootstrap process for the `laptop` role.
 3. Format and mount partitions for installation.
 
    ```bash
-   export DISKS_DRY_RUN=false
-   nixos bootstrap disks boot
-   nixos bootstrap disks swap
-   nixos bootstrap disks root
-   nixos bootstrap disks mount
+   nixos bootstrap disks boot apply
+   nixos bootstrap disks swap apply
+   nixos bootstrap disks root apply
+   nixos bootstrap disks mount apply
    ```
 
    Or alternatively, format and mount the partitions manually by following
@@ -94,7 +95,7 @@ Bootstrap process for the `laptop` role.
    over the process. For example: you already have a ZFS pool you wish to
    import, or you want to use different ZFS options while creating the
    pool/datasets. Remember that after everything is complete, the new system
-   should be available under `$NIXOS_ROOT_MOUNT`.
+   should be available under `$NIXOS_MOUNT`.
 
 <details>
 
@@ -156,7 +157,7 @@ Bootstrap process for the `laptop` role.
    ```
 
 8. Create empty snapshots of `rpool/nixos/root` and `rpool/nixos/home` for
-   impermanence.
+   Impermanence.
 
    ```bash
    sudo zfs snapshot rpool/nixos/root@blank
@@ -188,7 +189,7 @@ Bootstrap process for the `laptop` role.
    nixos bootstrap clone
    ```
 
-   The flake will be cloned to `$NIXOS_ROOT_MOUNT$NIXOS_DIR`.
+   The flake will be cloned to `$NIXOS_MOUNT/persist/nixos`.
 
 2. Initialize variables and secrets.
 
@@ -276,20 +277,106 @@ Ensure all variables and secrets are properly defined.
 
 </details>
 
-# Further Setup
+# Setting up Secure Boot
 
-At this point, this flake has been installed on the device.
+> NOTE: This is a post-install action.
 
-For further setup, see:
+> WARNING: Secure Boot for NixOS is under active development. Make sure you read
+> lanzaboote documentation before proceeding.
 
-1. [Secure Boot](./secureboot.md)
+> WARNING: If dual booting with Windows, either disable bitlocker encryption or
+> keep the recovery keys handy.
 
-   For setting up Secure Boot with lanzaboote.
+> NOTE: It is highly recommended to set a BIOS password on devices that support
+> this feature. Without a BIOS password, Secure Boot can simply be disabled and
+> is meaningless.
 
-2. [Impermanence](./impermanence.md)
+1. System requirements.
 
-   For setting up impermanence.
+   Ensure you have booted in UEFI mode and Secure Boot is supported.
 
-3. [Usage](./usage.md)
+   ```bash
+   bootctl status
+   ```
 
-   For using the `laptop` role.
+   Consider setting up a BIOS password if you haven't already.
+
+2. Create secure boot keys.
+
+   ```bash
+   nixos bootstrap lanzaboote create
+   ```
+
+3. Set `secureboot.enable` to `true` in the `features` section of the variables
+   file.
+
+   ```bash
+   nixos edit vars
+   ```
+
+4. Switch to the new configuration.
+
+   ```bash
+   nixos apply switch
+   ```
+
+5. Verify `sbctl verify` output.
+
+   ```bash
+   sbctl verify
+   ```
+
+   It is expected that `bzImage.efi` files are not signed.
+
+6. Enter Secure Boot setup mode in BIOS.
+
+   Boot into EFI firmware and clear existing plaform keys (setup mode).
+
+7. Boot into NixOS and enroll Secure Boot keys.
+
+   ```bash
+   nixos bootstrap lanzaboote enroll
+   ```
+
+8. Enable Secure Boot in BIOS.
+
+   Boot into EFI firmware and enable Secure Boot.
+
+9. Boot into NixOS and Secure Boot should be activated and in user mode.
+
+   ```bash
+   bootctl status
+   ```
+
+# Setting up Impermanence
+
+> NOTE: This is a post-install action.
+
+> NOTE: Impermanence requires Secure Boot to be set up and keys available at
+> `/var/lib/sbctl`.
+
+1. Populate `/persist/root` with the default directories to persist.
+
+   ```bash
+   nixos bootstrap impermanence
+   ```
+
+2. Set `impermanence.enable` to `true` in `features` section of the variables
+   file.
+
+   ```bash
+   nixos edit vars
+   ```
+
+3. Switch to the new configuration.
+
+   ```bash
+   nixos apply switch
+   ```
+
+For more details, see
+[Filesystem and Impermanence Documentation](/docs/filesystems.md).
+
+# Further Reading
+
+- [Laptop Usage Documentation](/docs/laptop/usage.md)

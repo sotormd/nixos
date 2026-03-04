@@ -13,4 +13,11 @@
       admin_space_left_action = SUSPEND
     '';
   };
+
+  # prevent the
+  # kaudit backlog overflow
+  boot.kernelParams = [
+    "audit_backlog_limit=8192"
+  ];
+  security.audit.backlogLimit = 8192;
 }

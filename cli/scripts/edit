@@ -2,7 +2,7 @@
 
 set -euo pipefail
 
-DIR="$__NIXOS_DIR"
+DIR="$__NIXOS_MOUNT$__NIXOS_GLOBALS_FLAKE"
 ROLE="$__NIXOS_ROLE"
 
 VARS_DIR="$DIR/vars"
@@ -10,25 +10,12 @@ VARS="$VARS_DIR/vars.nix"
 
 SECRETS="$VARS_DIR/secrets.yaml"
 
-case "$ROLE" in
-  laptop)
-    SOPS_DIR="/persist/sops-nix"
-    ;;
-  server)
-    SOPS_DIR="/var/lib/sops-nix"
-    ;;
-  *)
-    echo "Error: unexpected role '$ROLE'" >&2
-    exit 1
-    ;;
-esac
-
 case "$1" in
     vars)
-        "$EDITOR" "$VARS"
+        "${EDITOR:-vi}" "$VARS"
         ;;
     sops)
-        sudo GNUPGHOME="$SOPS_DIR" sops "$SECRETS"
+        sudo GNUPGHOME="$__NIXOS_GLOBALS_SOPS" sops "$SECRETS"
         ;;
     *)
     echo "Error: expected argument (vars/sops)" >&2

@@ -11,6 +11,9 @@
     # invisible internet protocol daemon
     ./i2pd
 
+    # ephemerality
+    ./impermanence
+
     # jellyfin media server
     ./jellyfin
 
@@ -25,9 +28,6 @@
 
     # qbittorrent torrent client
     ./qbt
-
-    # sops-nix secrets management
-    ./sops
 
     # secure shell
     ./ssh

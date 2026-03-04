@@ -7,7 +7,7 @@ let
         nix-on-droid switch --flake github:sotormd/nixos
   '';
 
-  purgeScript = pkgs.writeShellScriptBin "purge" ''
+  cleanScript = pkgs.writeShellScriptBin "clean" ''
     #!/usr/bin/env bash
 
         nix-collect-garbage --delete-old
@@ -16,6 +16,6 @@ in
 {
   environment.packages = [
     switchScript
-    purgeScript
+    cleanScript
   ];
 }

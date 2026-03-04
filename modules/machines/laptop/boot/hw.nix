@@ -94,13 +94,15 @@
   }
 
   # nosuid,nodev
-  // lib.mkLoopHarden [
+  // lib.mkSelfHarden [
     "/tmp"
   ]
 
   # nosuid,nodev,noexec
-  // lib.mkLoopData [
+  // lib.mkSelfData [
+    "/bin"
     "/etc"
+    "/lib64"
     "/root"
     "/srv"
     "/var"

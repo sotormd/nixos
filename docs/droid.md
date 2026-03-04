@@ -1,4 +1,4 @@
-# `droid` role
+# Droid role
 
 Personal [nix-on-droid](https://github.com/nix-community/nix-on-droid)
 configuration.
@@ -40,5 +40,5 @@ switch
 Garbage collect:
 
 ```bash
-purge
+clean
 ```

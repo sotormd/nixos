@@ -1,16 +1,8 @@
 #!/usr/bin/env bash
 
-if [ -z "$1" ]; then
-    echo "Error: expected target host" >&2
-    exit 1
-fi
-
-if [ -z "$2" ]; then
-    echo "Error: expected target directory" >&2
-    exit 1
-fi
-
 set -euo pipefail
+
+: "${1:?Error: expected target host}"
 
 rsync -avz --delete \
 --exclude='vars/vars.nix' \
@@ -18,5 +10,5 @@ rsync -avz --delete \
 --exclude='.sops.yaml' \
 --exclude='.git' \
 --exclude='.local' \
-"$NIXOS_DIR/" \
-$1:$2/
+"$__NIXOS_MOUNT$__NIXOS_GLOBALS_FLAKE/" \
+$1:$__NIXOS_GLOBALS_FLAKE

@@ -8,16 +8,19 @@ lib.mkIf config.vars.features.impermanence.enable {
   fileSystems =
 
     # nosuid, nodev
-    lib.mkPersistHarden [
+    lib.mkPersistHarden "/persist/root" [
+
       # Projects
       "${home}/Projects"
 
       # brave browser
       "${home}/.config/BraveSoftware/Brave-Browser"
+
     ]
 
     # nosuid, nodev, noexec
-    // lib.mkPersistData [
+    // lib.mkPersistData "/persist/root" [
+
       # Documents, Downloads, Pictures
       "${home}/Documents"
       "${home}/Downloads"
@@ -25,6 +28,7 @@ lib.mkIf config.vars.features.impermanence.enable {
 
       # ssh keys
       "${home}/.ssh"
+
     ];
 
 }

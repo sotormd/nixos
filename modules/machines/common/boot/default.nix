@@ -4,7 +4,9 @@
 
     ./coredumps.nix
 
-    ./hdparm.nix
+    ./fs.nix
+
+    ./io.nix
 
     ./jitterentropy.nix
 
@@ -25,7 +27,5 @@
     ./tmp.nix
 
     ./quiet.nix
-
-    ./zfs.nix
   ];
 }
