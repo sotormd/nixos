@@ -29,6 +29,12 @@
   // lib.mkSelfHarden [
     "/persist"
     "/tmp"
+  ]
+
+  # nosuid,nodev,noexec
+  // lib.mkSelfData [
+    "/bin"
+    "/lib64"
   ];
 
   nixpkgs.hostPlatform = lib.mkDefault "aarch64-linux";
