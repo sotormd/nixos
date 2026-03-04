@@ -265,9 +265,9 @@ This section covers the inner workings of Impermanence.
 
 Setting up Impermanence is covered in the role-specific setup documentation:
 
-[Laptop Setup Documentation](./laptop/setup.md)
+[Laptop Setup Documentation](./laptop/setup.md#settings-up-impermanence)
 
-[Server Setup Documentation](./server/setup.md)
+[Server Setup Documentation](./server/setup.md#setting-up-impermanence)
 
 ## Laptop
 
@@ -351,7 +351,7 @@ creating bind mounts as covered [above](#additional-disks-and-mounts).
 
 Another option is to create ZFS datasets for persistent things, like `rpool/vms`
 for VM disks as covered in the
-[Laptop Usage Documentation](./laptop/usage.md#virt-manager).
+[Laptop Usage Documentation](./laptop/usage.md#virtual-machines).
 
 ## Server
 

@@ -6,12 +6,11 @@ This document covers using the Laptop role.
 
 1. [System Maintenance](#system-maintenance)
 2. [Using the Sway desktop](#using-the-sway-desktop)
-3. [Adding External Disks](#adding-external-disks)
-4. [Browsers](#browsers)
-5. [Other Applications](#other-applications)
-6. [Virtualisation and Containers](#virtualisation-and-containers)
-7. [Nomad Mode](#nomad-mode)
-8. [Further Reading](#further-reading)
+3. [Browsers](#browsers)
+4. [Other Applications](#other-applications)
+5. [Virtualisation and Containers](#virtualisation-and-containers)
+6. [Nomad Mode](#nomad-mode)
+7. [Further Reading](#further-reading)
 
 # System Maintenance
 
@@ -678,7 +677,7 @@ Notable changes from default config:
 
 - sway window manager replaced by full GNOME desktop environment
 - wpa_supplicant replaced by NetworkManager
-- unbound from `server` replaced by cloudflare DNS
+- unbound from Server replaced by cloudflare DNS
 - `kernel.unprivileged_userns_clone` set to 1 by default
 - firejailed librewolf browser is installed
 - real `/home` is not mounted by Impermanence
