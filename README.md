@@ -10,13 +10,13 @@
   </p>
 </p>
 
-![nixos](/docs/screenshots/nord.gif)
+![nixos](./docs/screenshots/nord.gif)
 
 ~~slighly overengineered~~ NixOS configuration flake for multiple hosts
 
 # Features
 
-[Why do I not use some popular libraries?](/docs/why-not-x.md)
+[Why do I not use some popular libraries?](./docs/why-not-x.md)
 
 Nix-specific features:
 
@@ -25,8 +25,8 @@ Nix-specific features:
 - Symlinks in ~ managed using [hjem](https://github.com/feel-co/hjem)
 - Secrets managed using [sops-nix](https://github.com/Mic92/sops-nix)
 - Secure boot using [lanzaboote](https://github.com/nix-community/lanzaboote)
-- [Impermanence](/docs/filesystems.md#impermanence) using ZFS snapshots and bind
-  mounts, without the library.
+- [Impermanence](./docs/filesystems.md#impermanence) using ZFS snapshots and
+  bind mounts, without the library.
 - Package management using [lix](https://lix.systems)
 - Android environment using
   [nix-on-droid](https://github.com/nix-community/nix-on-droid)
@@ -132,35 +132,35 @@ This flake uses role-based configuration.
 
 1. Laptop role: Laptop configuration
 
-   [Requirements](/docs/laptop/requirements.md)
+   [Requirements](./docs/laptop/requirements.md)
 
-   [Setup Documentation](/docs/laptop/setup.md)
+   [Setup Documentation](./docs/laptop/setup.md)
 
-   [Usage Documenation](/docs/laptop/usage.md)
+   [Usage Documenation](./docs/laptop/usage.md)
 
 2. Server role: Headless home server configuration
 
-   [Requirements](/docs/server/requirements.md)
+   [Requirements](./docs/server/requirements.md)
 
-   [Setup Documentation](/docs/server/setup.md)
+   [Setup Documentation](./docs/server/setup.md)
 
-   [Usage Documentation](/docs/server/usage.md)
+   [Usage Documentation](./docs/server/usage.md)
 
 3. Droid role: nix-on-droid configuration
 
-   [Setup & Usage Documentation](/docs/droid.md)
+   [Setup & Usage Documentation](./docs/droid.md)
 
 # Images
 
 [![Build Minimal ISO](https://img.shields.io/github/actions/workflow/status/sotormd/nixos/build-minimal-iso.yml?style=for-the-badge&label=Build%20Minimal%20ISO)](https://github.com/sotormd/nixos/actions/workflows/build-minimal-iso.yml)
 [![Build GNOME ISO](https://img.shields.io/github/actions/workflow/status/sotormd/nixos/build-gnome-iso.yml?style=for-the-badge&label=Build%20GNOME%20ISO)](https://github.com/sotormd/nixos/actions/workflows/build-gnome-iso.yml)
 
-Four images: `minimal`, `gnome`, `sd` and `sd-remote` are included (for
-installation, recovery, etc.)
+Four images: Minimal, GNOME, SD and SD Remote are included (for installation,
+recovery, etc.)
 
 These images have an ideal environment for setting up this flake.
 
-See [Images Documentation](/docs/images.md) for more details.
+See [Images Documentation](./docs/images.md) for more details.
 
 # CLI
 
@@ -174,5 +174,5 @@ Manpage:
 man nixos
 ```
 
-See [CLI Documentation](/docs/cli.md) for the full command reference and
+See [CLI Documentation](./docs/cli.md) for the full command reference and
 workflow examples.

@@ -121,7 +121,7 @@ On the Laptop role, the following directories are hardened without Impermanence:
 | `/srv`     | Data    |
 | `/var`     | Data    |
 
-On the Laptop role during [Nomad Mode](/docs/laptop/usage.md#nomad-mode), the
+On the Laptop role during [Nomad Mode](./laptop/usage.md#nomad-mode), the
 following additional directories are hardened:
 
 | Path                 | Profile |
@@ -197,7 +197,7 @@ The `filesystem` section is used for adding disks and mounts.
 
    This is particularly useful on Server, where services expect specific
    directories are documented in
-   [Server Usage Documentation](/docs/server/usage.md).
+   [Server Usage Documentation](./server/usage.md).
 
    Example to use an external disk for Server service data:
 
@@ -265,9 +265,9 @@ This section covers the inner workings of Impermanence.
 
 Setting up Impermanence is covered in the role-specific setup documentation:
 
-[Laptop Setup Documentation](/docs/laptop/setup.md)
+[Laptop Setup Documentation](./laptop/setup.md)
 
-[Server Setup Documentation](/docs/server/setup.md)
+[Server Setup Documentation](./server/setup.md)
 
 ## Laptop
 
@@ -334,7 +334,8 @@ The following directories are persisted by default:
 > NOTE: Brave directory cannot be `noexec` since it stores Widevine executables.
 
 The directories are based on the recommendations in the NixOS
-[Manual](https://nixos.org/manual/nixos/stable/#ch-system-state).
+[Manual](https://nixos.org/manual/nixos/stable/#ch-system-state) and system
+services.
 
 At any given point, to see the files that will be thrown out by Impermanence:
 
@@ -350,7 +351,7 @@ creating bind mounts as covered [above](#additional-disks-and-mounts).
 
 Another option is to create ZFS datasets for persistent things, like `rpool/vms`
 for VM disks as covered in the
-[Laptop Usage Documentation](/docs/laptop/usage.md#virt-manager).
+[Laptop Usage Documentation](./laptop/usage.md#virt-manager).
 
 ## Server
 
@@ -414,7 +415,8 @@ The following directories are persisted by default:
 | `/var/lib/jellyfin`     | jellyfin data           | Data    |
 
 The directories are based on the recommendations in the NixOS
-[Manual](https://nixos.org/manual/nixos/stable/#ch-system-state).
+[Manual](https://nixos.org/manual/nixos/stable/#ch-system-state) and system
+services.
 
 ### Adding Directories
 

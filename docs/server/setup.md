@@ -2,7 +2,7 @@
 
 Bootstrap process for the Server role.
 
-Before proceeding, see [Server Requirements](/docs/server/requirements.md).
+Before proceeding, see [Server Requirements](./requirements.md).
 
 # Contents
 
@@ -17,7 +17,7 @@ Before proceeding, see [Server Requirements](/docs/server/requirements.md).
 1. Build either of the two included images for `aarch64-linux`: `sd` or
    `sd-remote`.
 
-   For more information, see [Images Documentation](/docs/images.md).
+   For more information, see [Images Documentation](../images.md).
 
 2. Write the generated image to a sd-card using `dd` or any equivalent tool.
 
@@ -158,8 +158,8 @@ Ensure all variables and secrets are properly defined.
    ```
 
 For more details, see
-[Filesystem and Impermanence Documentation](/docs//filesystems.md).
+[Filesystem and Impermanence Documentation](../filesystems.md).
 
 # Further Reading
 
-- [Server Usage Documentation](/docs/server/usage.md)
+- [Server Usage Documentation](./usage.md)
