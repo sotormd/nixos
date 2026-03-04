@@ -69,8 +69,8 @@ fi
 
     # define globals
    export __NIXOS_GLOBALS_FLAKE=$FLAKE
-   export __NIXOS_GLOBALS_IMPERMANENCE=$IMPERMANENCE
    export __NIXOS_GLOBALS_SOPS=$SOPS
+   export __NIXOS_GLOBALS_IMPERMANENCE=$IMPERMANENCE
 
     # run required command
     "${cmd[@]}"

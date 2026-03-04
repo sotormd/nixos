@@ -162,6 +162,4 @@ For more details, see
 
 # Further Reading
 
-1. [Server Usage Documentation](/docs/server/usage.md)
-
-   For using the Server role.
+- [Server Usage Documentation](/docs/server/usage.md)

@@ -254,8 +254,8 @@ variables make sense:
 `nixos(1)` also passes on some globals to commands:
 
 - `$__NIXOS_GLOBALS_FLAKE`, the flake directory `/persist/nixos`
-- `$__NIXOS_GLOBALS_IMPERMANENCE`, the Impermanence directory, `/persist/root`
 - `$__NIXOS_GLOBALS_SOPS`, the sops-nix GnuPG home `/persist/sops-nix`
+- `$__NIXOS_GLOBALS_IMPERMANENCE`, the Impermanence directory, `/persist/root`
 
 `nixos(1)` runs all commands (*except `bootstrap`) in the flake directory
 `/persist/nixos`, like so:
