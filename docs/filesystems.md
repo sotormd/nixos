@@ -137,6 +137,7 @@ On the Server role, the following directories are hardened without Impermanence:
 | `/persist` | Harden  |
 | `/tmp`     | Harden  |
 | `/bin`     | Data    |
+| `/lib`     | Data    |
 | `/lib64`   | Data    |
 
 Additionally, directories persisted using Impermanence are also hardened

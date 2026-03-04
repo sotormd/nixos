@@ -34,6 +34,7 @@
   # nosuid,nodev,noexec
   // lib.mkSelfData [
     "/bin"
+    "/lib"
     "/lib64"
   ];
 
