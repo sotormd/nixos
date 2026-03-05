@@ -11,8 +11,6 @@
     ../machines/common/boot/quiet.nix
   ];
 
-  nixpkgs.hostPlatform.system = "aarch64-linux";
-
   users.users.root.initialHashedPassword = "";
 
   users.users.nixos = {

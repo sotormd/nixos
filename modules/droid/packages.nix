@@ -1,50 +1,34 @@
 { pkgs, ... }:
 
 {
+  imports = [ ../machines/common/packages/system.nix ];
+
   # packages to appear in the system environment
-  environment.packages = with pkgs; [
-    micro
-    procps
-    killall
-    diffutils
-    util-linux
-    tzdata
-    hostname
-    man
-    gnugrep
-    gnupg
-    gnused
-    gnutar
-    bzip2
-    gzip
-    xz
-    zip
-    unzip
-    fastfetch
-    stack
-    cabal-install
-    ghc
-    cargo
-    rustc
-    go
-    openssh
-    git
-    python3
-    less
-    curl
-    wget
-    findutils
-    coreutils-full
-    less
-    htop
-    ncurses
-    nano
-    imagemagick
-    tree
-    which
-    rsync
-    binutils
-    acl
-    attr
+  environment.packages = [
+
+    # text editor with mouse/touch support
+    pkgs.micro
+
+    # haskell
+    pkgs.stack
+    pkgs.cabal-install
+    pkgs.ghc
+
+    # rust
+    pkgs.cargo
+    pkgs.rustc
+
+    # go
+    pkgs.go
+
+    # python
+    pkgs.python3
+
+    # image manipulation
+    pkgs.imagemagick
+
+    # metadata anonymization
+    pkgs.mat2
+
   ];
 }
