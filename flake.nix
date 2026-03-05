@@ -25,9 +25,16 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
+    nixpkgs-droid = {
+      # nix-on-droid breaks on unstable
+      # pin to last working commit instead
+      # https://github.com/nix-community/nix-on-droid/issues/495
+      url = "github:nixos/nixpkgs/88d3861";
+    };
+
     nix-on-droid = {
       url = "github:nix-community/nix-on-droid/release-24.05";
-      inputs.nixpkgs.follows = "nixpkgs";
+      inputs.nixpkgs.follows = "nixpkgs-droid";
     };
 
     hosts = {
