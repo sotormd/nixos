@@ -148,7 +148,7 @@
           # nix-on-droid
           nixOnDroidConfigurations.default = inputs.nix-on-droid.lib.nixOnDroidConfiguration {
             extraSpecialArgs = { inherit inputs; };
-            pkgs = import inputs.nixpkgs { system = "aarch64-linux"; };
+            pkgs = import inputs.nixpkgs-droid { system = "aarch64-linux"; };
             modules = [ (import ./hosts { role = "droid"; }) ];
           };
         };
