@@ -355,7 +355,7 @@
         "home-manager": "home-manager",
         "nix-formatter-pack": "nix-formatter-pack",
         "nixpkgs": [
-          "nixpkgs"
+          "nixpkgs-droid"
         ],
         "nixpkgs-docs": "nixpkgs-docs",
         "nixpkgs-for-bootstrap": "nixpkgs-for-bootstrap",
@@ -404,6 +404,22 @@
       "original": {
         "owner": "NixOS",
         "ref": "release-23.05",
+        "repo": "nixpkgs",
+        "type": "github"
+      }
+    },
+    "nixpkgs-droid": {
+      "locked": {
+        "lastModified": 1769018530,
+        "narHash": "sha256-MJ27Cy2NtBEV5tsK+YraYr2g851f3Fl1LpNHDzDX15c=",
+        "owner": "nixos",
+        "repo": "nixpkgs",
+        "rev": "88d3861acdd3d2f0e361767018218e51810df8a1",
+        "type": "github"
+      },
+      "original": {
+        "owner": "nixos",
+        "ref": "88d3861",
         "repo": "nixpkgs",
         "type": "github"
       }
@@ -581,6 +597,7 @@
         "neovim": "neovim",
         "nix-on-droid": "nix-on-droid",
         "nixpkgs": "nixpkgs_2",
+        "nixpkgs-droid": "nixpkgs-droid",
         "sops-nix": "sops-nix",
         "wallpapers": "wallpapers",
         "xkcd": "xkcd"
