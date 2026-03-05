@@ -24,7 +24,7 @@ let
   xkcdWrapped = pkgs.writeTextFile {
     name = "xkcd-wrapped";
     text = ''
-      #!/usr/bin/env bash
+      #!${pkgs.runtimeShell}
 
       ${inputs.xkcd.packages.x86_64-linux.default}/bin/xkcd-wall -t random -c "${configuration}/config.json" "${target}" || cp "${fallback}" "${target}"; chmod 777 "${target}"
     '';

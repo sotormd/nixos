@@ -11,7 +11,7 @@ let
   swayWrapperScript = pkgs.writeTextFile {
     name = "sway-wrapper-script";
     text = ''
-      #!/usr/bin/env bash
+      #!${pkgs.runtimeShell}
 
       ${pkgs.swayfx}/bin/sway --config ${configuration}/config "$@"
     '';

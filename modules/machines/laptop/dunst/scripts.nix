@@ -4,7 +4,7 @@ let
   volume = pkgs.writeTextFile {
     name = "dunst-scripts-volume";
     text = ''
-      #!/usr/bin/env bash
+      #!${pkgs.runtimeShell}
 
       # change this to +5% or -5% when binding keys
       change="$1"
@@ -25,7 +25,7 @@ let
   brightness = pkgs.writeTextFile {
     name = "dunst-scripts-brightness";
     text = ''
-      #!/usr/bin/env bash
+      #!${pkgs.runtimeShell}
 
       change="$1"
 

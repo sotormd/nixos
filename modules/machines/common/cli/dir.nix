@@ -2,7 +2,7 @@
 
 let
   script = pkgs.writeShellScript "nixos-dir-perms" ''
-    #!/usr/bin/env bash
+    #!${pkgs.runtimeShell}
 
         DIR="/persist/nixos"
         USER=${config.vars.user.name}

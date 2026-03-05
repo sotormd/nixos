@@ -6,7 +6,7 @@ let
   inkscapeWrapperScript = pkgs.writeTextFile {
     name = "inkscape-wrapper-script";
     text = ''
-      #!/usr/bin/env bash
+      #!${pkgs.runtimeShell}
 
       env INKSCAPE_PROFILE_DIR="${preferences}" ${pkgs.inkscape}/bin/inkscape "$@"
     '';

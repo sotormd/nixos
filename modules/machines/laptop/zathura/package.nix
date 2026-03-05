@@ -6,7 +6,7 @@ let
   zathuraWrapperScript = pkgs.writeTextFile {
     name = "zathura-wrapper-script";
     text = ''
-      #!/usr/bin/env bash
+      #!${pkgs.runtimeShell}
 
       ${pkgs.zathura}/bin/zathura --config-dir=${zathurarc} "$@"
     '';

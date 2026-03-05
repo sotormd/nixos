@@ -6,7 +6,7 @@ let
   mpvWrapperScript = pkgs.writeTextFile {
     name = "mpv-wrapper-script";
     text = ''
-      #!/usr/bin/env bash
+      #!${pkgs.runtimeShell}
 
       ${pkgs.mpv}/bin/mpv --config-dir=${configuration} "$@"
     '';

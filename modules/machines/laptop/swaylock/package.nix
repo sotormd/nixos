@@ -11,7 +11,7 @@ let
   swaylockWrapperScript = pkgs.writeTextFile {
     name = "swaylock-wrapper-script";
     text = ''
-      #!/usr/bin/env bash
+      #!${pkgs.runtimeShell}
 
       ${pkgs.swaylock}/bin/swaylock --config ${configuration}/config "$@"
       xkcd-refresh

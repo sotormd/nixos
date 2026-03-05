@@ -29,7 +29,6 @@ let
   webappTemplateScript =
     { name, url }:
     pkgs.writeShellScriptBin name ''
-      #!/usr/bin/env ${pkgs.runtimeShell}
       exec ${package.customBrave}/bin/brave --app=${url}
     '';
 
