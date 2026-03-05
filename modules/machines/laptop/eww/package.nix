@@ -7,7 +7,7 @@ let
   ewwWrapperScript = pkgs.writeTextFile {
     name = "eww-wrapper-script";
     text = ''
-      #!/usr/bin/env bash
+      #!${pkgs.runtimeShell}
 
       ${pkgs.eww}/bin/eww --config ${configuration} "$@"
     '';
@@ -18,7 +18,7 @@ let
   ewwWrapperCal = pkgs.writeTextFile {
     name = "eww-wrapper-cal";
     text = ''
-      #!/usr/bin/env bash
+      #!${pkgs.runtimeShell}
 
       ${scripts}/cal.sh
     '';
@@ -29,7 +29,7 @@ let
   ewwWrapperDock = pkgs.writeTextFile {
     name = "eww-wrapper-dock";
     text = ''
-      #!/usr/bin/env bash
+      #!${pkgs.runtimeShell}
 
       ${scripts}/dock.py
     '';

@@ -4,7 +4,7 @@ let
   musicSh = pkgs.writeTextFile {
     name = "eww-script-music";
     text = ''
-      #!/usr/bin/env bash
+      #!${pkgs.runtimeShell}
 
       COVER="/tmp/.music_cover.jpg"
       DEFAULT_COVER="images/music.png"
@@ -116,7 +116,7 @@ let
   calSh = pkgs.writeTextFile {
     name = "eww-script-cal";
     text = ''
-      #!/usr/bin/env bash
+      #!${pkgs.runtimeShell}
 
             (while (true) do
                 ${calPy}/cal.py
@@ -130,7 +130,7 @@ let
   doCalendarAction = pkgs.writeTextFile {
     name = "eww-script-calendar-action";
     text = ''
-      #!/usr/bin/env bash
+      #!${pkgs.runtimeShell}
 
       if [[ -z "$1" ]]; then
           echo You did not specify an action

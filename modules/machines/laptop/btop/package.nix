@@ -6,7 +6,7 @@ let
   btopWrapperScript = pkgs.writeTextFile {
     name = "btop-wrapper-script";
     text = ''
-      #!/usr/bin/env bash
+      #!${pkgs.runtimeShell}
 
       ${pkgs.btop}/bin/btop --config ${configuration}/btop.conf "$@"
     '';

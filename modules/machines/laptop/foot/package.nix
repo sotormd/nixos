@@ -6,7 +6,7 @@ let
   footWrapperScript = pkgs.writeTextFile {
     name = "foot-wrapper-script";
     text = ''
-      #!/usr/bin/env bash
+      #!${pkgs.runtimeShell}
 
       FOCUSED_OUT="$(swaymsg -t get_outputs -r | jq -r '.[] | select(.focused == true).name')"
 

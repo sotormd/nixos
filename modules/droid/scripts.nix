@@ -2,13 +2,13 @@
 
 let
   switchScript = pkgs.writeShellScriptBin "switch" ''
-    #!/usr/bin/env bash
+    #!${pkgs.runtimeShell}
 
         nix-on-droid switch --flake github:sotormd/nixos
   '';
 
   cleanScript = pkgs.writeShellScriptBin "clean" ''
-    #!/usr/bin/env bash
+    #!${pkgs.runtimeShell}
 
         nix-collect-garbage --delete-old
   '';

@@ -6,7 +6,7 @@ let
   rofiWrapperScript = pkgs.writeTextFile {
     name = "rofi-wrapper-script";
     text = ''
-      #!/usr/bin/env bash
+      #!${pkgs.runtimeShell}
 
       ${pkgs.rofi}/bin/rofi -config ${configuration}/config.rasi "$@"
     '';

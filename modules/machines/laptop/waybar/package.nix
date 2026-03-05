@@ -12,7 +12,7 @@ let
   waybarWrapperScript = pkgs.writeTextFile {
     name = "waybar-wrapper-script";
     text = ''
-      #!/usr/bin/env bash
+      #!${pkgs.runtimeShell}
 
       ${pkgs.waybar}/bin/waybar --config ${configuration}/config.json --style ${style}/style.css "$@"
     '';

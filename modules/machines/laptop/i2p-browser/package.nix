@@ -7,7 +7,7 @@ let
   i2pBrowser = pkgs.writeTextFile {
     name = "i2p-browser";
     text = ''
-      #!/usr/bin/env bash
+      #!${pkgs.runtimeShell}
 
       set -euo pipefail
 

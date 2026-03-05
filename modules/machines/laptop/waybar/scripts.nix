@@ -4,7 +4,7 @@ let
   playerctlScript = pkgs.writeTextFile {
     name = "waybar-script-playerctl";
     text = ''
-      #!/usr/bin/env bash
+      #!${pkgs.runtimeShell}
 
       STATUS="$(playerctl status)"
 
@@ -58,7 +58,7 @@ let
   animationScript = pkgs.writeTextFile {
     name = "waybar-script-animation";
     text = ''
-      #!/usr/bin/env bash
+      #!${pkgs.runtimeShell}
 
       FILE="$XDG_RUNTIME_DIR/waybar-noanimation"
 
@@ -75,7 +75,7 @@ let
   namespacesStatusScript = pkgs.writeTextFile {
     name = "waybar-script-namespaces-status";
     text = ''
-      #!/usr/bin/env bash
+      #!${pkgs.runtimeShell}
 
       STATUS="$(sysctl -n kernel.unprivileged_userns_clone)"
 
@@ -92,7 +92,7 @@ let
   namespacesToggleScript = pkgs.writeTextFile {
     name = "waybar-script-namespaces-toggle";
     text = ''
-      #!/usr/bin/env bash
+      #!${pkgs.runtimeShell}
 
       KEY="kernel.unprivileged_userns_clone"
 
