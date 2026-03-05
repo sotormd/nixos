@@ -1,7 +1,5 @@
 {
   imports = [
-    ./allowed-users.nix
-
     ./dirty-git.nix
 
     ./flakes.nix
@@ -17,5 +15,7 @@
     ./nixpkgs.nix
 
     ./system.nix
+
+    ./users.nix
   ];
 }
