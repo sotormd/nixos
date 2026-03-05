@@ -101,10 +101,10 @@ profiles, for example:
 1. Option lists which can be passed to `fileSystems.<name>.options` directly.
 
 2. Helper functions to create bind mounts, or mount as `tmpfs` using these
-   Profiles:
+   Profiles.
 
 Profiles are used for Impermanence as well as general hardening without
-Impermanence:
+Impermanence.
 
 On the Laptop role, the following directories are hardened without Impermanence:
 
@@ -197,8 +197,7 @@ The `filesystem` section is used for adding disks and mounts.
    The format of each mount is the same as the NixOS `fileSystems.*`.
 
    This is particularly useful on Server, where services expect specific
-   directories are documented in
-   [Server Usage Documentation](./server/usage.md).
+   directories documented in [Server Usage Documentation](./server/usage.md).
 
    Example to use an external disk for Server service data:
 
@@ -249,7 +248,7 @@ The `filesystem` section is used for adding disks and mounts.
    };
    ```
 
-   The above example is for use when Impermanence is disabled.
+   **The above example is for use when Impermanence is disabled.**
 
    If enabled, Impermanence creates binds for all these directories from
    `/persist/root`.
