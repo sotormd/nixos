@@ -4,8 +4,24 @@
   # do not install any packages by default
   environment.defaultPackages = lib.mkForce [ ];
 
+  # $EDITOR
+  environment.sessionVariables.EDITOR = "vi";
+
   # set of packages to appear in system environment
   environment.systemPackages = [
+
+    # text editors
+    pkgs.nano
+    pkgs.vim
+
+    # version control
+    pkgs.git
+
+    # resource monitor
+    pkgs.htop
+
+    # list contents of directories in a tree-like format
+    pkgs.tree
 
     # tools for manipulating access control lists
     pkgs.acl
@@ -59,17 +75,11 @@
     # GNU implemenation of tar archiver
     pkgs.gnutar
 
-    # GNU zip compression
-    pkgs.gzip
-
     # control the TCP/IP stack
     pkgs.iproute2
 
     # dig
     pkgs.dig
-
-    # general purpose compression
-    pkgs.xz
 
     # file pager
     pkgs.less
@@ -110,12 +120,21 @@
     # show full path of shell commands
     pkgs.which
 
+    # GNU zip compression
+    pkgs.gzip
+
+    # general purpose compression
+    pkgs.xz
+
     # zstandard compression
     pkgs.zstd
 
     # working with .zip archives
     pkgs.zip
     pkgs.unzip
+
+    # ssh client protocol
+    pkgs.openssh
 
     # list open files
     pkgs.lsof
@@ -135,6 +154,12 @@
 
     # luks
     pkgs.cryptsetup
+
+    # hostname
+    pkgs.hostname
+
+    # manpages
+    pkgs.man
 
   ];
 }

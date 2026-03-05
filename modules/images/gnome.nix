@@ -10,6 +10,7 @@
   ];
 
   services.desktopManager.gnome = {
+
     # set favorite apps
     favoriteAppsOverride = ''
       [org.gnome.shell]
@@ -42,11 +43,12 @@
   programs.partition-manager.enable = true;
 
   # install calamares
-  environment.systemPackages = with pkgs; [
-    calamares-nixos
-    calamares-nixos-extensions
-    glibcLocales
-    nerd-fonts.fira-code
+  environment.systemPackages = [
+    pkgs.gparted
+    pkgs.calamares-nixos
+    pkgs.calamares-nixos-extensions
+    pkgs.glibcLocales
+    pkgs.nerd-fonts.fira-code
   ];
 
   i18n.supportedLocales = [ "all" ];

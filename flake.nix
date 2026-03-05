@@ -92,6 +92,7 @@
           mkHost =
             {
               role,
+              system,
               withVars ? false,
             }:
             inputs.nixpkgs.lib.nixosSystem {
@@ -101,34 +102,40 @@
               }
               // lib.optionalAttrs withVars { inherit lib legacyVars; };
 
+              inherit system;
+
               modules = [ (import ./hosts { inherit role; }) ];
             };
 
           mkMachine =
-            role:
+            role: system:
             mkHost {
               role = "machine-${role}";
+              inherit system;
               withVars = true;
             };
 
           mkImage =
-            role:
+            role: system:
             mkHost {
               role = "image-${role}";
+              inherit system;
               withVars = false;
             };
         in
         {
           nixosConfigurations = {
+
             # machines
-            machine-laptop = mkMachine "laptop";
-            machine-server = mkMachine "server";
+            machine-laptop = mkMachine "laptop" "x86_64-linux";
+            machine-server = mkMachine "server" "aarch64-linux";
 
             # images
-            image-gnome = mkImage "gnome";
-            image-minimal = mkImage "minimal";
-            image-sd = mkImage "sd";
-            image-sd-remote = mkImage "sd-remote";
+            image-gnome = mkImage "gnome" "x86_64-linux";
+            image-minimal = mkImage "minimal" "x86_64-linux";
+            image-sd = mkImage "sd" "aarch64-linux";
+            image-sd-remote = mkImage "sd-remote" "aarch64-linux";
+
           };
 
           # nix-on-droid

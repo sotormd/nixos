@@ -37,6 +37,4 @@
     "/lib"
     "/lib64"
   ];
-
-  nixpkgs.hostPlatform = lib.mkDefault "aarch64-linux";
 }

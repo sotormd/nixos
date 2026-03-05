@@ -17,18 +17,22 @@
     ./scripts.nix
   ];
 
-  environment.etcBackupExtension = ".bak";
-
   nix.extraOptions = ''
     experimental-features = nix-command flakes
   '';
 
-  environment.sessionVariables = {
-    NIXOS_ROLE = "droid";
-    PS1 = ''\n\[\033[1;32m\][\w] λ\[\033[0m\] '';
-  };
+  environment = {
 
-  environment.motd = ''
-    nix-on-droid
-  '';
+    etcBackupExtension = ".bak";
+
+    sessionVariables = {
+      NIXOS_ROLE = "droid";
+      PS1 = ''\n\[\033[1;32m\][\w] λ\[\033[0m\] '';
+    };
+
+    motd = ''
+      nix-on-droid
+    '';
+
+  };
 }
