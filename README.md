@@ -95,6 +95,7 @@ Comprehensive features list:
 | anonymity                     | `i2pd`, `oniux`, `mat2`                                                                                    |
 | networking                    | `wpa_supplicant`                                                                                           |
 | dns                           | `unbound`                                                                                                  |
+| secure shell                  | `sshd`, `fail2ban`                                                                                         |
 | display server                | `wayland`                                                                                                  |
 | compositor                    | `swayfx`, `cage`                                                                                           |
 | bar                           | `waybar`                                                                                                   |
