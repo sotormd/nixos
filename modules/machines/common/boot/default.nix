@@ -16,16 +16,18 @@
 
     ./luks.nix
 
+    # ./malloc.nix
+
     ./mount.nix
 
     ./params.nix
+
+    ./quiet.nix
 
     ./sysctl.nix
 
     ./systemd.nix
 
     ./tmp.nix
-
-    ./quiet.nix
   ];
 }

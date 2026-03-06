@@ -8,7 +8,7 @@
 
     ./loader.nix
 
-    ./plymouth.nix
+    # ./plymouth.nix
 
     ./sysctl.nix
   ];
