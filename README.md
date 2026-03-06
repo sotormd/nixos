@@ -77,6 +77,8 @@ Comprehensive features list:
 | package manager               | `lix`                                                                                                      |
 | shell                         | `bash`                                                                                                     |
 | kernel                        | `linux-hardened`                                                                                           |
+| entropy                       | `jitterentropy`                                                                                            |
+| malloc                        | `graphene-hardened`                                                                                        |
 | bootloader                    | `systemd-boot`, `uboot`                                                                                    |
 | secure boot                   | `lanzaboote`                                                                                               |
 | filesystem                    | `zfs`                                                                                                      |
@@ -89,6 +91,7 @@ Comprehensive features list:
 | usb policy                    | `usbguard`                                                                                                 |
 | sandboxing                    | `firejail`                                                                                                 |
 | firewall                      | `iptables (nf_tables)`                                                                                     |
+| mac randomization             | `macchanger`                                                                                               |
 | anonymity                     | `i2pd`, `oniux`, `mat2`                                                                                    |
 | networking                    | `wpa_supplicant`                                                                                           |
 | dns                           | `unbound`                                                                                                  |
