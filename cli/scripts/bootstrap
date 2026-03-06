@@ -2,21 +2,6 @@
 
 set -euo pipefail
 
-# ask for sudo upfront
-if ! sudo -v; then
-    echo "Error: sudo authentication failed" >&2
-    exit 1
-fi
-
-# keep sudo alive while script runs
-(
-    while true; do
-        sudo -n true
-        sleep 60
-        kill -0 "$$" || exit
-    done
-) 2>/dev/null &
-
 # commandline args
 VERB="${1:-}"
 ARG1="${2:-}"

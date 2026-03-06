@@ -15,7 +15,7 @@ case "$1" in
         "${EDITOR:-vi}" "$VARS"
         ;;
     sops)
-        sudo GNUPGHOME="$__NIXOS_GLOBALS_SOPS" sops "$SECRETS"
+        run0 --setenv=GNUPGHOME="$__NIXOS_GLOBALS_SOPS" sops "$SECRETS"
         ;;
     *)
     echo "Error: expected argument (vars/sops)" >&2
