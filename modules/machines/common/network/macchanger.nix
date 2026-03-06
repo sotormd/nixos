@@ -1,14 +1,18 @@
-{ pkgs, ... }:
+{ config, pkgs, ... }:
 
 let
-  script = pkgs.writeShellScriptBin "macchanger-reload" ''
-    ${pkgs.iproute2}/bin/ip link set dev "$1" down
-    ${pkgs.macchanger}/bin/macchanger -r "$1"
-    ${pkgs.iproute2}/bin/ip link set dev "$1" up
-  '';
+  iface = config.vars.network.interface;
 in
 {
-  services.udev.extraRules = ''
-    ACTION=="add", SUBSYSTEM=="net", NAME!="lo", RUN+="${script}/bin/macchanger-reload %k"
-  '';
+  systemd.services.macchanger = {
+    enable = true;
+    description = "GNU MAC Changer for ${iface}";
+    before = [ "network-setup.service" ];
+    wantedBy = [ "multi-user.target" ];
+    path = [ pkgs.macchanger ];
+    serviceConfig.Type = "oneshot";
+    script = ''
+      macchanger -e ${iface} || true
+    '';
+  };
 }
