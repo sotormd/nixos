@@ -28,14 +28,14 @@
     # packages
     ./packages
 
+    # privilege elevation
+    ./privilege
+
     # sandboxing with firejail
     ./sandbox
 
     # sops-nix secrets management
     ./sops
-
-    # superuser do
-    ./sudo
 
     # usbguard daemon
     ./usbguard
