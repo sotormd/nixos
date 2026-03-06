@@ -23,6 +23,9 @@
         # ssh host keys
         "/etc/ssh"
 
+        # fail2ban data
+        "/var/lib/fail2ban"
+
         # unbound data
         "/var/lib/unbound"
 
