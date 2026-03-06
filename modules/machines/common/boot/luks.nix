@@ -9,7 +9,7 @@ let
 
   # generate text to put in /etc/crypttab
   crypttabText = builtins.concatStringsSep "\n" (
-    map (entry: "${entry.name} UUID=${entry.uuid} ${entry.keyfile} luks,nofail") luksList
+    map (entry: "${entry.name} UUID=${entry.uuid} ${entry.keyfile} luks,nofail,timeout=0") luksList
   );
 in
 {
