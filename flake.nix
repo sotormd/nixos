@@ -81,7 +81,7 @@
         in
         {
           # formatter
-          formatter = pkgs.nixfmt;
+          formatter = pkgs.nixfmt-tree;
 
           # cli devshell
           devShells.default = pkgs.mkShell {
