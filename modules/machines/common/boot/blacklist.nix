@@ -1,8 +1,8 @@
 { lib, pkgs, ... }:
 
-{
+let
   # blacklist certain kernel modules
-  boot.blacklistedKernelModules = [
+  list = [
     # datagram congestion control protocol
     # manages congestion without providing reliable data delivery
     # can blacklist unless using voice-over-IP
@@ -127,6 +127,8 @@
     "nfs"
     "nfsv3"
     "nfsv4"
+    "sunrpc"
+    "lockd"
     "ksmbd"
     "gfs2"
 
@@ -158,13 +160,14 @@
     # can blacklist unless deaf
     "pcspkr"
   ];
+in
+{
 
-  boot.extraModprobeConfig = ''
-    install dccp ${pkgs.coreutils-full}/bin/false
-    install sctp ${pkgs.coreutils-full}/bin/false
-    install rds ${pkgs.coreutils-full}/bin/false
-    install tipc ${pkgs.coreutils-full}/bin/false
-  '';
+  boot.blacklistedKernelModules = list;
+
+  boot.extraModprobeConfig = lib.concatStringsSep "\n" (
+    map (m: "install ${m} ${pkgs.coreutils-full}/bin/false") list
+  );
 
   # disable bluetooth
   # didn't we already blacklist it ??
