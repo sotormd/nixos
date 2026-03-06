@@ -10,6 +10,8 @@
 
     ./issue.nix
 
+    ./macchanger.nix
+
     ./static.nix
 
     ./timesyncd.nix

@@ -45,6 +45,7 @@ let
         ../../common/network/firewall.nix
         ../../common/network/host.nix
         ../../common/network/issue.nix
+        ../../common/network/macchanger.nix
         ../../common/network/timesyncd.nix
 
         # nix
