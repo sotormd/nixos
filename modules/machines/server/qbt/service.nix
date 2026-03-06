@@ -9,7 +9,6 @@
   config = lib.mkIf config.vars.services.qbt.enable {
     systemd.services.qbt = {
       description = "qbittorrent-nox service";
-      documentation = [ "man:qbittorrent-nox(1)" ];
 
       serviceConfig = {
         Type = "simple";
