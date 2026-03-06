@@ -14,16 +14,12 @@
         PROMPT_COLOR="1;32m"
       fi
 
-      # ---- foot-specific prompt ----
-      if [ "$TERM" = "foot" ]; then
-        # [noir:/directory] λ
+      if [ "$TERM" != "linux" ]; then
         PS1="\n\[\033[$PROMPT_COLOR\][\h:\w] λ\[\033[0m\] "
 
       else
-        # ---- all other terminals ----
         PS1="\n\[\033[$PROMPT_COLOR\][\h:\w] $\[\033[0m\] "
 
-        # xterm extra title
         if [ "$TERM" = "xterm" ]; then
           PS1="\[\033]2;\h:\u:\w\007\]$PS1"
         fi

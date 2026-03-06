@@ -353,9 +353,9 @@ let
       # SWAYIDLE
       #
       exec swayidle \
-      timeout 10 'swaylock && sudo systemctl start restore-default-route' \
+      timeout 10 'swaylock' \
       timeout 180 'systemctl suspend' \
-      before-sleep 'swaylock && sudo systemctl start restore-default-route'
+      before-sleep 'swaylock'
 
       #
       # XKCD-WALL
