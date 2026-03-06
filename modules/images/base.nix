@@ -10,4 +10,7 @@
   time.timeZone = "UTC";
 
   environment.sessionVariables.EDITOR = "vi";
+
+  # polkit for run0
+  security.polkit.enable = true;
 }
