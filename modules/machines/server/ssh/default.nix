@@ -2,6 +2,8 @@
   imports = [
     ./address.nix
 
+    ./fail2ban.nix
+
     ./settings.nix
   ];
 
