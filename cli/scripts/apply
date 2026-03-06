@@ -1,36 +1,41 @@
 #!/usr/bin/env bash
 
-if ! [[ "$1" =~ ^(test|boot|switch)$ ]]; then
-  echo "Error: expected verb (test/boot/switch)" >&2
-  exit 1
-fi
+set -euo pipefail
 
 VERB=$1
 
-set -euo pipefail
+if ! [[ "$VERB" =~ ^(test|boot|switch)$ ]]; then
+  echo "Error: expected verb (test/boot/switch)" >&2
+  exit 1
+fi
 
 DIR="$__NIXOS_MOUNT$__NIXOS_GLOBALS_FLAKE"
 ROLE="$__NIXOS_ROLE"
 
 (
-
     cd "$DIR"
 
-    # 1. FORMAT FLAKE
-    find "$DIR" -type f -name '*.nix' -exec nix fmt {} +
+    if [ "$VERB" != "test" ]; then
 
-    # 2. FIX FLAKE PERMISSIONS
-    find "$DIR" -path "$DIR/.git" -prune -o -exec chown "$USER": {} +
-    find "$DIR" -path "$DIR/.git" -prune -o -type d -exec chmod 700 {} \;
-    find "$DIR" -path "$DIR/.git" -prune -o -type f -exec chmod 600 {} \;
-    chmod 700 -R "$DIR/cli"
+        # 1. FORMAT FLAKE
+        find "$DIR" -type f -name '*.nix' -exec nix fmt {} +
+
+        # 2. FIX FLAKE PERMISSIONS
+        find "$DIR" -path "$DIR/.git" -prune -o -exec chown "$USER": {} +
+        find "$DIR" -path "$DIR/.git" -prune -o -type d -exec chmod 700 {} \;
+        find "$DIR" -path "$DIR/.git" -prune -o -type f -exec chmod 600 {} \;
+        chmod 700 -R "$DIR/cli"
+
+    fi
 
     # 3. STAGE CHANGES
     git add .
 
-    # 4. SHOW DIFF
     if [ "$ROLE" == "laptop" ]; then
+
+        # 4. SHOW DIFF
         GIT_PAGER=cat git diff HEAD -- ':!vars/vars.nix' ':!vars/secrets.yaml' ':!.sops.yaml'
+
     fi
 
     # 5. SHOW DIGEST
@@ -52,10 +57,10 @@ ROLE="$__NIXOS_ROLE"
     read -p "continue? [Y/n]: " confirm
     confirm=${confirm:-Y}
 
-    # 7. APPLY CHANGES
     if [[ $confirm =~ ^[Yy]$ ]]; then
 
-        sudo nixos-rebuild $VERB --flake ".#machine-$ROLE" --fallback
+        # 7. APPLY CHANGES
+        run0 nixos-rebuild $VERB --flake ".#machine-$ROLE" --fallback
 
     else
         echo "cancelled"
