@@ -105,7 +105,6 @@
     "/lib64"
     "/root"
     "/srv"
-    "/var"
   ];
 
   hardware.cpu.amd.updateMicrocode = lib.mkDefault config.hardware.enableRedistributableFirmware;

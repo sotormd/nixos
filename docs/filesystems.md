@@ -119,7 +119,6 @@ On the Laptop role, the following directories are hardened without Impermanence:
 | `/lib64`   | Data    |
 | `/root`    | Data    |
 | `/srv`     | Data    |
-| `/var`     | Data    |
 
 On the Laptop role during [Nomad Mode](./laptop/usage.md#nomad-mode), the
 following additional directories are hardened:
