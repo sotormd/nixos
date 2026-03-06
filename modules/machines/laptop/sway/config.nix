@@ -84,7 +84,7 @@ let
       # LAUNCH APPS
       #
       bindsym Mod4+d exec rofi -show run
-      bindsym Mod4+Return exec footclient
+      bindsym Mod4+Return exec foot
       bindsym Mod4+backslash exec brave
 
       #
@@ -371,11 +371,6 @@ let
       # DBUS
       #
       exec "dbus-update-activation-environment --systemd DISPLAY WAYLAND_DISPLAY SWAYSOCK XDG_CURRENT_DESKTOP XDG_SESSION_TYPE NIXOS_OZONE_WL XCURSOR_THEME XCURSOR_SIZE; systemctl --user reset-failed && systemctl --user start sway-session.target && swaymsg -mt subscribe '[]' || true && systemctl --user stop sway-session.target"
-
-      #
-      # FOOT SERVER
-      #
-      exec foot --server
 
       #
       # DISABLE XWAYLAND
