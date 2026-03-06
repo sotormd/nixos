@@ -405,6 +405,7 @@ The following directories are persisted by default:
 | `/etc/zfs`              | needed by ZFS           | Data    |
 | `/var/log`              | logs                    | Data    |
 | `/etc/ssh`              | ssh host keys           | Data    |
+| `/var/lib/fail2ban`     | fail2ban data           | Data    |
 | `/var/lib/unbound`      | unbound data            | Data    |
 | `/var/lib/acme`         | nginx acme certificates | Data    |
 | `/var/lib/bitwarden_rs` | vaultwarden vault       | Data    |

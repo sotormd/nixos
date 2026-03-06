@@ -703,6 +703,7 @@ elif [ "$VERB" == "impermanence" ]; then
             "/etc/zfs" \
             "/var/log" \
             "/etc/ssh" \
+            "/var/lib/fail2ban" \
             "/var/lib/unbound" \
             "/var/lib/acme" \
             "/var/lib/bitwarden_rs" \
