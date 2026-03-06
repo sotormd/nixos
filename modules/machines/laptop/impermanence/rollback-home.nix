@@ -36,6 +36,7 @@
       script = ''
         mkdir -p /home/${config.vars.user.name}/.config
         chown ${config.vars.user.name}: -R /home/${config.vars.user.name}
+        chmod 700 /home/${config.vars.user.name}
       '';
     };
 
