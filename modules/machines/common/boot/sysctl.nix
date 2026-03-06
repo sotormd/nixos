@@ -120,6 +120,11 @@
     "net.ipv6.conf.all.use_tempaddr" = lib.mkForce "2";
     "net.ipv6.conf.default.use_tempaddr" = lib.mkForce "2";
 
+    # tcp timestamps leak the system time
+    # kernel attempts to mitigate this by adding random offsets
+    # but that is not sufficient
+    "net.ipv4.tcp_timestamps" = lib.mkForce "0";
+
     # disable the often-abused userfaultfd() syscall
     "vm.unprivileged_userfaultfd" = lib.mkForce "0";
 

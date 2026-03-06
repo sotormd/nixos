@@ -27,6 +27,10 @@
     # mitigates meltdown and prevents some KASLR bypasses
     "pti=on"
 
+    # randomize kernel stack offset on each syscall
+    # mitigates attacks reliant on deterministic kernel stack layouts
+    "randomize_kstack_offset=on"
+
     # disable obsolete vsyscalls
     # replaced by vDSO calls
     "vsyscall=none"
