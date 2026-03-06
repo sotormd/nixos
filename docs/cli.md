@@ -65,12 +65,11 @@ nixos-rebuild <test|boot|switch>
 
 The `apply` command does the following extra things:
 
-1. formats the flake
-2. fixes flake permissions
-3. displays diff since last git commit
-4. displays checksum of variables and sops-nix secrets
-5. asks user for confirmation before rebuilding
-6. ensures variables and sops-nix secrets are unstaged after rebuild
+1. stages changes to git
+2. displays diff since last git commit
+3. displays checksum of variables and sops-nix secrets
+4. asks user for confirmation before rebuilding
+5. ensures variables and sops-nix secrets are unstaged after rebuild
 
 | Command  | Activate Configuration | Boot Entry |
 | -------- | ---------------------- | ---------- |

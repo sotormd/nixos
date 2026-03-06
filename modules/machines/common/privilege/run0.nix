@@ -4,7 +4,7 @@
   # inverted background for run0
   users.users.${config.vars.user.name}.packages = [
     (pkgs.writeShellScriptBin "run0" ''
-      /run/current-system/sw/bin/run0 --background="7" "$@"
+      /run/current-system/sw/bin/run0 --background="" "$@"
     '')
   ];
 
