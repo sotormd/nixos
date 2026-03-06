@@ -1,8 +1,8 @@
 {
   imports = [
-    ./binds.nix
-
     ./prompt.nix
+
+    ./umask.nix
   ];
 
   programs.bash.enable = true;
