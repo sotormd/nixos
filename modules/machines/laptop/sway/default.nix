@@ -14,8 +14,6 @@ in
 
     ./ozone.nix
 
-    ./polkit.nix
-
     ./screensharing.nix
 
     ./start.nix

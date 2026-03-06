@@ -64,9 +64,9 @@ let
         # we need it for user password
         ../../common/sops
 
-        # sudo
-        # gotta have sudo
-        ../../common/sudo
+        # privilege elevation
+        # polkit, run0, sudo
+        ../../common/privilege
 
         # usbguard
         # still gotta prevent badusbs

@@ -1,4 +1,4 @@
 {
-  # to run gui applications as root
+  # policykit
   security.polkit.enable = true;
 }
