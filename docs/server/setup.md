@@ -14,8 +14,8 @@ Before proceeding, see [Server Requirements](./requirements.md).
 
 # Obtaining a NixOS Image
 
-1. Build either of the two included images for `aarch64-linux`: `sd` or
-   `sd-remote`.
+1. Build either of the two included images for `aarch64-linux`: SD or
+   SD Remote.
 
    For more information, see [Images Documentation](../images.md).
 
