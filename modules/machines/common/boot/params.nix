@@ -70,7 +70,7 @@
 
     # enable IOMMU
     # mitigates direct memory access attacks
-    #"intel_iommu=on"
+    "intel_iommu=on"
     "amd_iommu=on"
 
     # fixes a hole in IOMMU
