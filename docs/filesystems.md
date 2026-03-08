@@ -264,7 +264,7 @@ This section covers the inner workings of Impermanence.
 
 Setting up Impermanence is covered in the role-specific setup documentation:
 
-[Laptop Setup Documentation](./laptop/setup.md#settings-up-impermanence)
+[Laptop Setup Documentation](./laptop/setup.md#setting-up-impermanence)
 
 [Server Setup Documentation](./server/setup.md#setting-up-impermanence)
 
