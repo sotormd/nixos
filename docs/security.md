@@ -1000,13 +1000,20 @@ Other tools like `su` and `pkexec` are disabled by removing their setuid bit.
 
 #### Roles: Laptop, Server
 
-TODO: add stuff here
+The Nix package manager and the Nix packaging model prevent various classes of
+supply chain attacks.
+
+The Nix package manager is hardened and can only be used by members of the wheel
+group. Furthermore, only the root user is trusted by the store uri.
+
+Nix is also set to only download and use cryptographically signed binaries.
 
 # SOPS
 
 #### Roles: Laptop, Server
 
-TODO: add stuff here
+[sops-nix](https://github.com/Mic92/sops-nix) is used to store secrets consumed
+by the NixOS modules.
 
 # USBGuard
 
@@ -1195,7 +1202,7 @@ uncommon MAC addresses which reduces anonymity.
 #### Roles: Server
 
 SSH is enabled on the Server. See
-[Server Usage Documentation](#./server/usage.md#ssh) for details about using a
+[Server Usage Documentation](./server/usage.md#ssh) for details about using a
 non-default port, authorized keys, etc.
 
 The SSH configuration is sufficiently hardened. The following options are set:
@@ -1378,14 +1385,15 @@ browsers.
 
 #### Roles: Laptop
 
-Three browsers are included. See
+Three hardened browsers are included. See
 [Laptop Usage Documentation](./laptop/usage.md#browsers) for more information.
 
 # Search Engine
 
 #### Roles: Server
 
-The SearXNG search engine is hosted on Server.
+The SearXNG metasearch engine is hosted on Server. This preserves user privacy
+while ensuring good quality results.
 
 #### Roles: Laptop
 
