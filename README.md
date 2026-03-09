@@ -18,6 +18,8 @@
 
 [Why do I not use some popular libraries?](./docs/why-not-x.md)
 
+[Security Features](./docs/security.md)
+
 Nix-specific features:
 
 - Completely reproducible, pure evaluation
@@ -89,7 +91,7 @@ Comprehensive features list:
 | auditing                      | `auditd`                                                                                                   |
 | secrets                       | `sops`, `sops-nix`                                                                                         |
 | usb policy                    | `usbguard`                                                                                                 |
-| sandboxing                    | `firejail`                                                                                                 |
+| sandboxing                    | `firejail`, `bubblewrap`                                                                                   |
 | firewall                      | `iptables (nf_tables)`                                                                                     |
 | mac randomization             | `macchanger`                                                                                               |
 | anonymity                     | `i2pd`, `oniux`, `mat2`                                                                                    |

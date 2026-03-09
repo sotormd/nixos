@@ -8,7 +8,7 @@ let
     # can blacklist unless using voice-over-IP
     "dccp"
 
-    # stream control trasmission protocol
+    # stream control transmission protocol
     # like tcp but with support for multiple streams
     # can blacklist unless involved in telecoms or signalling
     "sctp"
