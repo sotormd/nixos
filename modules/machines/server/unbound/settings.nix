@@ -21,7 +21,7 @@
     # harden against very small EDNS buffer sizes
     harden-short-bufsize = "yes";
 
-    # harden against unseemly large queries
+    # harden against large queries
     harden-large-queries = "yes";
 
     # harden against out of zone rrsets, to avoid spoofing attempts
@@ -43,7 +43,7 @@
     # harden against downgrades when multiple algorithms are advertised
     harden-algo-downgrade = "yes";
 
-    # harden against unkown records in the authority and additional sections
+    # harden against unknown records in the authority and additional sections
     harden-unknown-additional = "yes";
 
     # use the dnssec nsec chain

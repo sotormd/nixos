@@ -47,7 +47,7 @@
     # disable core dumps for setuid programs
     "fs.suid_dumpable" = lib.mkForce "0";
 
-    # restrics creation of hard links to files owned by other users
+    # restricts creation of hard links to files owned by other users
     "fs.protected_hardlinks" = lib.mkForce "1";
 
     # restricts creation of symlinks to files owned by other users
