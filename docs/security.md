@@ -1,4 +1,4 @@
-# security
+# Security
 
 This document covers the various security features for the Laptop and Server
 roles.
