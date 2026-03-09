@@ -16,7 +16,7 @@
 
     ./luks.nix
 
-    # ./malloc.nix
+    ./malloc.nix
 
     ./mount.nix
 
