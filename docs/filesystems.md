@@ -198,7 +198,7 @@ The `filesystem` section is used for adding disks and mounts.
    This is particularly useful on Server, where services expect specific
    directories documented in [Server Usage Documentation](./server/usage.md).
 
-   Example to use an external disk for Server service data:
+   Example to use an external disk for some Server service data:
 
    ```nix
    filesystems = {
@@ -249,8 +249,8 @@ The `filesystem` section is used for adding disks and mounts.
 
    **The above example is for use when Impermanence is disabled.**
 
-   If enabled, Impermanence creates binds for all these directories from
-   `/persist/root`.
+   If enabled, Impermanence creates binds for all these directories, and more,
+   from `/persist/root`.
 
    So binds must be created from the external disk to `/persist/root` instead,
    otherwise there will be mount collisions.
@@ -408,6 +408,7 @@ The following directories are persisted by default:
 | `/var/lib/fail2ban`     | fail2ban data           | Data    |
 | `/var/lib/unbound`      | unbound data            | Data    |
 | `/var/lib/acme`         | nginx acme certificates | Data    |
+| `/srv/static`           | nginx static data       | Data    |
 | `/var/lib/bitwarden_rs` | vaultwarden vault       | Data    |
 | `/var/lib/i2pd`         | i2pd router data        | Data    |
 | `/var/lib/qbt`          | qbittorrent data        | Data    |

@@ -14,8 +14,7 @@ Before proceeding, see [Server Requirements](./requirements.md).
 
 # Obtaining a NixOS Image
 
-1. Build either of the two included images for `aarch64-linux`: SD or
-   SD Remote.
+1. Build either of the two included images for `aarch64-linux`: SD or SD Remote.
 
    For more information, see [Images Documentation](../images.md).
 
@@ -137,6 +136,15 @@ Ensure all variables and secrets are properly defined.
    ```bash
    nixos bootstrap impermanence
    ```
+
+   This copies existing directories and creates directories that do not exist.
+   **It does not set permissions for the newly created directories.** Most
+   services require their directories to be owned by the service user. This
+   needs to be done manually. The bootstrap script can not do this since the
+   service may or may not exist when the bootstrap script is called.
+
+   If the service exists, in most cases, a setup service will set the required
+   permissions.
 
 2. Set `impermanence.enable` to `true` in `features` section of the variables
    file.

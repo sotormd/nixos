@@ -682,8 +682,8 @@ elif [ "$VERB" == "impermanence" ]; then
             "/var/lib/nixos" \
             "/var/lib/systemd" \
             "/etc/zfs" \
-            "/var/log"
-            "/var/lib/sbctl" \
+            "/var/log" \
+            "/var/lib/sbctl"
 
         # populate /persist/root/home/
         persist_dirs "$PERSIST_DIR_HOME" "$MOUNT$REAL_HOME" \
@@ -706,6 +706,7 @@ elif [ "$VERB" == "impermanence" ]; then
             "/var/lib/fail2ban" \
             "/var/lib/unbound" \
             "/var/lib/acme" \
+            "/srv/static" \
             "/var/lib/bitwarden_rs" \
             "/var/lib/i2pd" \
             "/var/lib/qbt" \
