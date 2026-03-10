@@ -17,7 +17,7 @@ let
     "ro"
   ];
 
-  bind = options: source: destination: {
+  bind = options: source: destination: extra: {
     ${destination} = {
       device = source;
       options = [
@@ -25,7 +25,8 @@ let
         "x-gvfs-hide"
       ]
       ++ options;
-    };
+    }
+    // extra;
   };
 
   tmp = options: dir: {
@@ -33,14 +34,19 @@ let
       device = "none";
       fsType = "tmpfs";
       options = [ "defaults" ] ++ options;
+      neededForBoot = true;
     };
   };
 
   persistDirs =
     root: dirs:
-    builtins.foldl' (acc: dir: acc // bind dir.options "${root}${dir.path}" dir.path) { } dirs;
+    builtins.foldl' (acc: dir: acc // bind dir.options "${root}${dir.path}" dir.path { }) { } dirs;
 
-  selfDirs = dirs: builtins.foldl' (acc: dir: acc // bind dir.options dir.path dir.path) { } dirs;
+  selfDirs =
+    dirs:
+    builtins.foldl' (
+      acc: dir: acc // bind dir.options dir.path dir.path { neededForBoot = true; }
+    ) { } dirs;
 
   tmpDirs = dirs: builtins.foldl' (acc: dir: acc // tmp dir.options dir.path) { } dirs;
 

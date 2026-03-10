@@ -110,15 +110,16 @@ On the Laptop role, the following directories are hardened without Impermanence:
 
 | Path       | Profile |
 | ---------- | ------- |
-| `/boot`    | Data    |
-| `/home`    | Data    |
-| `/persist` | Harden  |
-| `/tmp`     | Harden  |
 | `/bin`     | Data    |
+| `/boot`    | Data    |
 | `/etc`     | Data    |
+| `/home`    | Data    |
+| `/lib`     | Data    |
 | `/lib64`   | Data    |
+| `/persist` | Harden  |
 | `/root`    | Data    |
 | `/srv`     | Data    |
+| `/tmp`     | Harden  |
 
 On the Laptop role during [Nomad Mode](./laptop/usage.md#nomad-mode), the
 following additional directories are hardened:
@@ -135,9 +136,6 @@ On the Server role, the following directories are hardened without Impermanence:
 | ---------- | ------- |
 | `/persist` | Harden  |
 | `/tmp`     | Harden  |
-| `/bin`     | Data    |
-| `/lib`     | Data    |
-| `/lib64`   | Data    |
 
 Additionally, directories persisted using Impermanence are also hardened
 separately.
@@ -360,14 +358,17 @@ Impermanence is implemented using tmpfs and bind mounts.
 
 The following directories are mounted as tmpfs:
 
-| Path    | Profile |
-| ------- | ------- |
-| `/usr`  | Raw     |
-| `/etc`  | Data    |
-| `/home` | Data    |
-| `/root` | Data    |
-| `/srv`  | Data    |
-| `/var`  | Data    |
+| Path     | Profile |
+| -------- | ------- |
+| `/bin`   | Data    |
+| `/etc`   | Data    |
+| `/lib`   | Data    |
+| `/lib64` | Data    |
+| `/home`  | Data    |
+| `/root`  | Data    |
+| `/srv`   | Data    |
+| `/usr`   | Raw     |
+| `/var`   | Data    |
 
 Anything not bind mounted in these directories will not survive across reboots.
 However, things in other directories will.
