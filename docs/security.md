@@ -9,7 +9,7 @@ flake source should be referred to as the primary and only source of truth.
 
 # Resources
 
-- [Madaidan's Insecurities](madaidans-insecurities.github.io/guides/linux-hardening.html)
+- [Madaidan's Insecurities](https://madaidans-insecurities.github.io/guides/linux-hardening.html)
 - [Kicksecure System Hardening Checklist](https://www.kicksecure.com/wiki/System_Hardening_Checklist)
 - [Tails Kernel Hardening](https://tails.net/contribute/design/kernel_hardening/)
 - [ArchWiki - Security](https://wiki.archlinux.org/title/Security)
