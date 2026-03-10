@@ -137,6 +137,8 @@ Ensure all variables and secrets are properly defined.
    nixos bootstrap impermanence
    ```
 
+   It is recommended to setup impermanence _after_ services have been set up.
+
    This copies existing directories and creates directories that do not exist.
    **It does not set permissions for the newly created directories.** Most
    services require their directories to be owned by the service user. This
@@ -145,6 +147,12 @@ Ensure all variables and secrets are properly defined.
 
    If the service exists, in most cases, a setup service will set the required
    permissions.
+
+   Also note that if any directories were bind mounted using the variables file
+   from external disks to the locations where the services expect them to be,
+   then these have to be re-evaluated. Impermanence creates its own bind mounts,
+   so the variables file should be updated to bind mount things from the
+   external disks to `/persist/root` instead.
 
 2. Set `impermanence.enable` to `true` in `features` section of the variables
    file.
