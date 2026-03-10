@@ -126,13 +126,29 @@ reverse proxy pages.
 
 Reverse proxy is set up for the following services, if enabled:
 
-| Location       | Name                  | Description                 |
-| -------------- | --------------------- | --------------------------- |
-| `/searxng`     | SearXNG               | Search engine               |
-| `/vaultwarden` | Vaultwarden web vault | Password manager            |
-| `/i2pd`        | I2PD web console      | Invisible Internet Protocol |
-| `/qbt`         | qBittorrent webui     | Bittorrent client           |
-| `/jellyfin`    | Jellyfin              | Media server                |
+| Location        | Name                  | Description                 |
+| --------------- | --------------------- | --------------------------- |
+| `/searxng/`     | SearXNG               | Search engine               |
+| `/vaultwarden/` | Vaultwarden web vault | Password manager            |
+| `/i2pd/`        | I2PD web console      | Invisible Internet Protocol |
+| `/qbt/`         | qBittorrent webui     | Bittorrent client           |
+| `/jellyfin/`    | Jellyfin              | Media server                |
+
+## Static
+
+The `/static/` location points to files in `/srv/static` which can be used to
+serve static files.
+
+## Ad-Hoc Reverse Proxy
+
+The `/adhoc/*` locations can be used to reverse proxy services in an ad-hoc
+manner.
+
+Only ports from `10000` to `10999` are allowed. For example, `/adhoc/10111/`
+proxies to `http://127.0.0.1:10111`. Note that these ports are still blocked by
+the firewall (even on loopback) so the `nixos-firewall-tool` needs to be used to
+open them on a ad-hoc basis so that nginx can access them through the loopback
+interface.
 
 # SearXNG
 
@@ -240,7 +256,7 @@ Check the service status for the password.
 systemctl status qbt
 ```
 
-Then, in the web ui `https://<your-duckdns-domain>/qbt` under
+Then, in the web ui `https://<your-duckdns-domain>/qbt/` under
 `Tools > Options > WebUI > Authentication` set a username and password.
 
 # Jellyfin
@@ -263,7 +279,7 @@ Data is stored under `/var/lib/jellyfin`.
 
 ## Initial Setup
 
-Access the web interface at `https://<your-duckdns-domain>/jellyfin` and follow
+Access the web interface at `https://<your-duckdns-domain>/jellyfin/` and follow
 the wizard to set up your user and library.
 
 To use torrents from qBittorrent, add `/srv/torrents/movies` and
@@ -274,7 +290,7 @@ To use torrents from qBittorrent, add `/srv/torrents/movies` and
 If using only the `Download` and/or `Copy Stream URL` options, you can disable
 media playback by disallowing it for your user.
 
-1. Access the web interface at `https://<your-duckdns-domain>/jellyfin`
+1. Access the web interface at `https://<your-duckdns-domain>/jellyfin/`
 
 2. Uncheck `Allow media playback` under
    `Dashboard > Users > <your-user> > Profile > Media Playback`.
