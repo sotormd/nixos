@@ -11,21 +11,9 @@
     ../machines/common/boot/quiet.nix
   ];
 
+  environment.sessionVariables.NIXOS_ROLE = "server";
+
   users.users.root.initialHashedPassword = "";
-
-  users.users.nixos = {
-    isNormalUser = true;
-    initialHashedPassword = "";
-    extraGroups = [
-      "wheel"
-      "networkmanager"
-    ];
-  };
-
-  security.sudo = {
-    enable = true;
-    wheelNeedsPassword = false;
-  };
 
   networking.networkmanager.enable = true;
 }

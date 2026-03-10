@@ -19,8 +19,7 @@ Raspberry-Pi 4b):
 These images have an ideal environment for setting up this flake and also
 include several useful packages for installation, recovery, etc.
 
-As with all NixOS installation images, the username for the live session is
-`nixos` and the password is empty.
+For all images, the username is `nixos` and the password is also `nixos`.
 
 # Usage
 
