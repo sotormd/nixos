@@ -9,6 +9,9 @@
     ./base.nix
   ];
 
+  environment.sessionVariables.NIXOS_ROLE = "laptop";
+  environment.sessionVariables.NIXOS_MOUNT = "/mnt";
+
   services.desktopManager.gnome = {
 
     # set favorite apps

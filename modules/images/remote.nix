@@ -16,7 +16,7 @@ in
     networkmanager.enable = lib.mkForce false;
     wireless = {
       enable = true;
-      userControlled.enable = true;
+      userControlled = true;
       networks.${ssid}.psk = psk;
       interfaces = [ "wlan0" ];
     };
