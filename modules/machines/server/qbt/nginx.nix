@@ -2,7 +2,7 @@
 
 {
   config = lib.mkIf config.vars.services.qbt.enable {
-    services.nginx.virtualHosts."${config.vars.network.domain}" = {
+    services.nginx.virtualHosts.${config.vars.network.domain} = {
       locations."/qbt/" = {
         proxyPass = "http://127.0.0.1:8080";
         extraConfig = ''

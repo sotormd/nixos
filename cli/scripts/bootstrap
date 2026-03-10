@@ -709,6 +709,7 @@ elif [ "$VERB" == "impermanence" ]; then
             "/srv/static" \
             "/var/lib/bitwarden_rs" \
             "/var/lib/i2pd" \
+            "/srv/i2p" \
             "/var/lib/qbt" \
             "/srv/torrents" \
             "/var/lib/jellyfin" 

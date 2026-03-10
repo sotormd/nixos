@@ -1,5 +1,11 @@
 { config, ... }:
 
 {
-  services.nginx.defaultListenAddresses = [ config.vars.network.address ];
+  services.nginx.virtualHosts.${config.vars.network.domain}.listen = [
+    {
+      addr = config.vars.network.address;
+      port = 443;
+      ssl = true;
+    }
+  ];
 }

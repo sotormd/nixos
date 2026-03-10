@@ -30,6 +30,7 @@
 #      7656
 #      4447
 #      7070
+#      9999
 #
 # 5. qbittorrent: bittorrent client
 #
@@ -70,6 +71,7 @@
     (lib.optional config.vars.services.i2pd.enable 7656)
     (lib.optional config.vars.services.i2pd.enable 4447)
     (lib.optional config.vars.services.i2pd.enable 7070)
+    (lib.optional config.vars.services.i2pd.enable 9999)
 
     # qbittorrent bittorrent client
     (lib.optional config.vars.services.qbt.enable 8080)

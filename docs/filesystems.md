@@ -397,23 +397,24 @@ The various helper functions covered above are used to create these bind mounts.
 
 The following directories are persisted by default:
 
-| Path                    | Description             | Profile |
-| ----------------------- | ----------------------- | ------- |
-| `/var/lib/sbctl`        | secure boot keys        | Data    |
-| `/var/lib/nixos`        | needed by nixos         | Data    |
-| `/var/lib/systemd`      | needed by systemd       | Data    |
-| `/etc/zfs`              | needed by ZFS           | Data    |
-| `/var/log`              | logs                    | Data    |
-| `/etc/ssh`              | ssh host keys           | Data    |
-| `/var/lib/fail2ban`     | fail2ban data           | Data    |
-| `/var/lib/unbound`      | unbound data            | Data    |
-| `/var/lib/acme`         | nginx acme certificates | Data    |
-| `/srv/static`           | nginx static data       | Data    |
-| `/var/lib/bitwarden_rs` | vaultwarden vault       | Data    |
-| `/var/lib/i2pd`         | i2pd router data        | Data    |
-| `/var/lib/qbt`          | qbittorrent data        | Data    |
-| `/srv/torrents`         | qbittorrent torrents    | Data    |
-| `/var/lib/jellyfin`     | jellyfin data           | Data    |
+| Path                    | Description              | Profile |
+| ----------------------- | ------------------------ | ------- |
+| `/var/lib/sbctl`        | secure boot keys         | Data    |
+| `/var/lib/nixos`        | needed by nixos          | Data    |
+| `/var/lib/systemd`      | needed by systemd        | Data    |
+| `/etc/zfs`              | needed by ZFS            | Data    |
+| `/var/log`              | logs                     | Data    |
+| `/etc/ssh`              | ssh host keys            | Data    |
+| `/var/lib/fail2ban`     | fail2ban data            | Data    |
+| `/var/lib/unbound`      | unbound data             | Data    |
+| `/var/lib/acme`         | nginx acme certificates  | Data    |
+| `/srv/static`           | nginx static data        | Data    |
+| `/var/lib/bitwarden_rs` | vaultwarden vault        | Data    |
+| `/var/lib/i2pd`         | i2pd router data         | Data    |
+| `/srv/i2p`              | i2pd eepsite static data | Data    |
+| `/var/lib/qbt`          | qbittorrent data         | Data    |
+| `/srv/torrents`         | qbittorrent torrents     | Data    |
+| `/var/lib/jellyfin`     | jellyfin data            | Data    |
 
 The directories are based on the recommendations in the NixOS
 [Manual](https://nixos.org/manual/nixos/stable/#ch-system-state) and system

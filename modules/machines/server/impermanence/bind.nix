@@ -41,6 +41,9 @@
         # i2pd router data
         "/var/lib/i2pd"
 
+        # i2pd eepsite static data
+        "/srv/i2p"
+
         # qbt data
         "/var/lib/qbt"
 

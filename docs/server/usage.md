@@ -210,6 +210,7 @@ Open on `127.0.0.1`:
 1. `7656` SAM
 2. `4447` SOCKS proxy
 3. `7070` webconsole
+4. `9999` nginx server for eepsite
 
 Open on `vars.network.address` to `vars.network.range`:
 
@@ -218,6 +219,8 @@ Open on `vars.network.address` to `vars.network.range`:
 ## Data
 
 Data is stored under `/var/lib/i2pd`.
+
+Root for the eepsite is at `/srv/i2p`.
 
 # qBittorrent
 
