@@ -87,8 +87,8 @@
     "/persist" = {
       device = "rpool/nixos/persist";
       fsType = "zfs";
-      neededForBoot = true;
       options = lib.mountHarden;
+      neededForBoot = true;
     };
 
   }
@@ -102,6 +102,7 @@
   // lib.mkSelfData [
     "/bin"
     "/etc"
+    "/lib"
     "/lib64"
     "/root"
     "/srv"

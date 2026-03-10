@@ -29,12 +29,5 @@
   // lib.mkSelfHarden [
     "/persist"
     "/tmp"
-  ]
-
-  # nosuid,nodev,noexec
-  // lib.mkSelfData [
-    "/bin"
-    "/lib"
-    "/lib64"
   ];
 }

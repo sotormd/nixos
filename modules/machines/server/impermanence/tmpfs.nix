@@ -18,7 +18,10 @@
 
       # nosuid,nodev,noexec
       // lib.mkTmpData [
+        "/bin"
         "/etc"
+        "/lib"
+        "/lib64"
         "/home"
         "/root"
         "/srv"
