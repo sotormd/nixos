@@ -2,6 +2,8 @@
 
 {
   imports = [
+    ./eepsite.nix
+
     ./nginx.nix
 
     ./settings.nix

@@ -2,7 +2,7 @@
 
 {
   config = lib.mkIf config.vars.services.i2pd.enable {
-    services.nginx.virtualHosts."${config.vars.network.domain}" = {
+    services.nginx.virtualHosts.${config.vars.network.domain} = {
       locations."/i2pd/" = {
         proxyPass = "http://127.0.0.1:7070";
         extraConfig = ''
@@ -17,6 +17,18 @@
           sub_filter 'action="/' 'action="/i2pd/';
           sub_filter 'src="/' 'src="/i2pd/';
         '';
+      };
+    };
+
+    services.nginx.virtualHosts.eepsite = {
+      listen = [
+        {
+          addr = "127.0.0.1";
+          port = 9999;
+        }
+      ];
+      locations."/" = {
+        root = "/srv/i2p";
       };
     };
   };
