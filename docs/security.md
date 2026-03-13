@@ -24,6 +24,9 @@ Missing features:
 
 - AppArmor/SELinux support is not great under NixOS.
 - LKRG (Linux Kernel Runtime Guard) does not work under NixOS.
+- LOCKDOWN_LSM and MODULE_SIG are disabled in the kernel
+  [upstream](https://github.com/NixOS/nixpkgs/blob/baeac6edff1b03f0ecd063b8fe48e9742d0527e7/pkgs/os-specific/linux/kernel/common-config.nix#L830)
+  to ensure reproducibility.
 
 # Contents
 
@@ -243,6 +246,8 @@ Several kernel parameters are used to harden the kernel. They are covered below:
 
    virtualbox, nvidia modules may need manual signing
 
+   since MODULE_SIG is disabled on NixOS, this does nothing
+
    ```
    module.sig_enforce=1
    ```
@@ -255,6 +260,8 @@ Several kernel parameters are used to harden the kernel. They are covered below:
     boundary between userspace and kernel
 
     this implies `module.sig_enforce=1`
+
+    since LOCKDOWN_LSM is disabled on NixOS, this does nothing
 
     ```
     lockdown=confidentiality
