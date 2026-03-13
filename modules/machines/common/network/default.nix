@@ -12,6 +12,8 @@
 
     ./macchanger.nix
 
+    ./pki.nix
+
     ./static.nix
 
     ./timesyncd.nix
