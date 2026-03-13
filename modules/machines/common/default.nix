@@ -34,6 +34,9 @@
     # sandboxing with firejail
     ./sandbox
 
+    # seed
+    ./seed
+
     # sops-nix secrets management
     ./sops
 

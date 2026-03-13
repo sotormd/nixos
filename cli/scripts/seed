@@ -1,0 +1,26 @@
+#!/usr/bin/env bash
+
+set -euo pipefail
+
+KEY="/run/secrets/seed"
+
+HOST=${1:-}
+
+if [ "$HOST" == "" ]; then
+    
+    run0 cat "$KEY" | nix key convert-secret-to-public
+
+else
+
+    sourcedir=$(mktemp -d)
+    workdir=$(mktemp -d)
+    rsync -avz --exclude=".git" "$HOST:/persist/nixos/" "$sourcedir"
+    flake="$sourcedir#machine-$(nix eval --file "$sourcedir/vars/vars.nix" --raw role)"
+    (
+        cd "$workdir"
+        nixos-rebuild build --flake "$flake"
+        run0 nix store sign ./result -k "$KEY" --recursive
+        nix copy --to "ssh://$HOST" ./result
+    )
+
+fi

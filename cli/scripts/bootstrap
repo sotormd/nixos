@@ -322,6 +322,11 @@ elif [ "$VERB" == "vars" ]; then
     impermanence.enable = false;
     selfhosted.enable = false;
   };
+
+  seed = {
+    enable = false;
+    trusted-keys = [ ];
+  };
 }
 EOF
 
@@ -412,6 +417,11 @@ EOF
   features = {
     impermanence.enable = false;
   };
+
+  seed = {
+    enable = false;
+    trusted-keys = [ ];
+  };
 }
 EOF
 
@@ -470,6 +480,10 @@ elif [ "$VERB" == "sops" ]; then
                 echo "Passwords do not match, try again"
             fi
         done
+    fi
+
+    if [ -z "${SECRETS_SEED_KEY:-}" ]; then
+        SECRETS_SEED_KEY=$(nix key generate-secret --key-name seed)
     fi
 
     if [ "$ROLE" == "server" ]; then
@@ -548,18 +562,26 @@ EOF
 
         cat > "$TEMP_SECRETS" <<EOF
 hashedPassword: $SECRETS_HASHED_PASSWORD
+
 network: |
   psk=$SECRETS_PSK
+
+seed: $SECRETS_SEED_KEY
 EOF
 
     elif [ "$ROLE" == "server" ]; then
 
         cat > "$TEMP_SECRETS" <<EOF
 hashedPassword: $SECRETS_HASHED_PASSWORD
+
 network: |
   psk=$SECRETS_PSK
+
+seed: $SECRETS_SEED_KEY
+
 duckdns: |
   DUCKDNS_TOKEN=$SECRETS_DUCKDNS_TOKEN
+
 searxng: |
   SEARXNG_SECRET=$SECRETS_SEARXNG_KEY
 EOF

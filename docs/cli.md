@@ -17,8 +17,9 @@ role-specific setup documentation.
 4. [Garbage collect](#garbage-collect)
 5. [Edit variables and secrets](#edit-variables-and-secrets)
 6. [Push local changes](#push-local-changes)
-7. [Miscellaneous](#miscellaneous)
-8. [Implementation details](#implementation-details)
+7. [Build remote closures](#build-remote-closures)
+8. [Miscellaneous](#miscellaneous)
+9. [Implementation details](#implementation-details)
 
 # Overview
 
@@ -178,6 +179,48 @@ Examples:
 
    ```bash
    nixos push foobar
+   ```
+
+# Build remote closures
+
+Build, sign and copy a remote host's closure.
+
+```bash
+nixos seed [host]
+```
+
+This requires setting a private Nix key in the sops-nix secrets on the builder
+machine. Also, `seed` should be enabled and the builder's public key should be
+trusted in the variables file on the remote machine.
+
+If no host is specified, prints the builder’s public key for trusting on remote
+hosts.
+
+Examples:
+
+1. To seed the host `foobar`:
+
+   ```bash
+   nixos seed foobar
+   ```
+
+2. To copy the public key:
+
+   ```bash
+   nixos seed | wl-copy
+   ```
+
+3. To update the flake, push changes to `foobar`, seed `foobar` and switch
+   `foobar`:
+
+   ```console
+   $ nixos update
+   $ nixos push foobar
+   $ nixos seed foobar
+   $ ssh foobar
+   [foobar]$ nixos apply switch
+   [foobar]$ exit
+   $
    ```
 
 # Miscellaneous

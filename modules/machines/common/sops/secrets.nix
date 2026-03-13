@@ -1,6 +1,9 @@
 {
-  sops.secrets.hashedPassword = {
-    neededForUsers = true;
+  sops.secrets = {
+    hashedPassword = {
+      neededForUsers = true;
+    };
+    network = { };
+    seed = { };
   };
-  sops.secrets.network = { };
 }
