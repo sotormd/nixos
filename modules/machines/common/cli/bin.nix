@@ -7,6 +7,7 @@ let
     "clean"
     "edit"
     "push"
+    "seed"
 
     "bootstrap"
   ];

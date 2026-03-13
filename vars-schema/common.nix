@@ -129,5 +129,17 @@ with lib;
 
     };
 
+    seed = {
+
+      enable = mkOption {
+        type = types.bool;
+      };
+
+      trusted-keys = mkOption {
+        type = types.listOf types.str;
+      };
+
+    };
+
   };
 }

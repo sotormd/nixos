@@ -48,6 +48,13 @@ sops : edit encrypted secrets using sops
 .br
 Push flake to a remote host via rsync.
 
+.TP
+.B seed [host]
+.br
+Build, sign and copy a remote host's closure.
+.br
+If no arguments are passed, print public key.
+
 .SH DISPATCH
 If a command does not match one of the built-in subcommands,
 .B nixos
