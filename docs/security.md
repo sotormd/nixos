@@ -1015,6 +1015,8 @@ group. Furthermore, only the root user is trusted by the store uri.
 
 Nix is also set to only download and use cryptographically signed binaries.
 
+Nonfree packages and broken packages are disabled.
+
 # SOPS
 
 #### Roles: Laptop, Server
