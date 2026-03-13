@@ -900,85 +900,85 @@ covered below:
      NixOS must generate audit records when successful/unsuccessful attempts to
      modify security objects occur.
 
-   ```
-   -a always,exit -F path=/run/current-system/sw/bin/chage -F perm=x -F auid>=1000 -F auid!=unset -k compliance-privileged-chage
-   -a always,exit -F path=/run/current-system/sw/bin/chcon -F perm=x -F auid>=1000 -F auid!=unset -k compliance-perm-mod
-   -a always,exit -F arch=b32 -S setxattr,fsetxattr,lsetxattr,removexattr,fremovexattr,lremovexattr -F auid>=1000 -F auid!=-1 -k compliance-perm-mod
-   -a always,exit -F arch=b32 -S setxattr,fsetxattr,lsetxattr,removexattr,fremovexattr,lremovexattr -F auid=0 -k compliance-perm-mod
-   -a always,exit -F arch=b64 -S setxattr,fsetxattr,lsetxattr,removexattr,fremovexattr,lremovexattr -F auid>=1000 -F auid!=-1 -k compliance-perm-mod
-   -a always,exit -F arch=b64 -S setxattr,fsetxattr,lsetxattr,removexattr,fremovexattr,lremovexattr -F auid=0 -k compliance-perm-mod
-   ```
+     ```
+     -a always,exit -F path=/run/current-system/sw/bin/chage -F perm=x -F auid>=1000 -F auid!=unset -k compliance-privileged-chage
+     -a always,exit -F path=/run/current-system/sw/bin/chcon -F perm=x -F auid>=1000 -F auid!=unset -k compliance-perm-mod
+     -a always,exit -F arch=b32 -S setxattr,fsetxattr,lsetxattr,removexattr,fremovexattr,lremovexattr -F auid>=1000 -F auid!=-1 -k compliance-perm-mod
+     -a always,exit -F arch=b32 -S setxattr,fsetxattr,lsetxattr,removexattr,fremovexattr,lremovexattr -F auid=0 -k compliance-perm-mod
+     -a always,exit -F arch=b64 -S setxattr,fsetxattr,lsetxattr,removexattr,fremovexattr,lremovexattr -F auid>=1000 -F auid!=-1 -k compliance-perm-mod
+     -a always,exit -F arch=b64 -S setxattr,fsetxattr,lsetxattr,removexattr,fremovexattr,lremovexattr -F auid=0 -k compliance-perm-mod
+     ```
 
    - `https://stigviewer.com/stigs/anduril_nixos/2024-10-25/finding/V-268164`
 
      NixOS must generate audit records when successful/unsuccessful attempts to
      delete privileges occur.
 
-   ```
-   -a always,exit -F path=/run/current-system/sw/bin/usermod -F perm=x -F auid>=1000 -F auid!=unset -k compliance-privileged-usermod
-   ```
+     ```
+     -a always,exit -F path=/run/current-system/sw/bin/usermod -F perm=x -F auid>=1000 -F auid!=unset -k compliance-privileged-usermod
+     ```
 
    - `https://stigviewer.com/stigs/anduril_nixos/2024-10-25/finding/V-268166`
 
      NixOS must generate audit records when concurrent logins to the same
      account occur from different sources.
 
-   ```
-   -a always,exit -F path=/var/log/lastlog -F perm=wa -F key=logins
-   ```
+     ```
+     -a always,exit -F path=/var/log/lastlog -F perm=wa -F key=logins
+     ```
 
    - `https://stigviewer.com/stigs/anduril_nixos/2024-10-25/finding/V-268167`
 
      NixOS must generate audit records for all account creations, modifications,
      disabling, and termination events.
 
-   ```
-   -a always,exit -F path=/etc/passwd -F perm=wa -F key=compliance-identity
-   -a always,exit -F path=/etc/shadow -F perm=wa -F key=compliance-identity
-   -a always,exit -F path=/etc/group -F perm=wa -F key=compliance-identity
-   -a always,exit -F path=/etc/gshadow -F perm=wa -F key=compliance-identity
-   -a always,exit -F path=/etc/sudoers -F perm=wa -F key=compliance-identity
-   -a always,exit -F path=/etc/security/opasswd -F perm=wa -F key=compliance-identity
-   ```
+     ```
+     -a always,exit -F path=/etc/passwd -F perm=wa -F key=compliance-identity
+     -a always,exit -F path=/etc/shadow -F perm=wa -F key=compliance-identity
+     -a always,exit -F path=/etc/group -F perm=wa -F key=compliance-identity
+     -a always,exit -F path=/etc/gshadow -F perm=wa -F key=compliance-identity
+     -a always,exit -F path=/etc/sudoers -F perm=wa -F key=compliance-identity
+     -a always,exit -F path=/etc/security/opasswd -F perm=wa -F key=compliance-identity
+     ```
 
    - `https://www.stigviewer.com/stigs/anduril_nixos/2024-10-25/finding/V-268094`
 
      Successful/unsuccessful uses of the mount syscall in NixOS must generate an
      audit record.
 
-   ```
-   -a always,exit -F arch=b32 -S mount -F auid>=1000 -F auid!=unset -k compliance-privileged-mount
-   -a always,exit -F arch=b64 -S mount -F auid>=1000 -F auid!=unset -k compliance-privileged-mount
-   ```
+     ```
+     -a always,exit -F arch=b32 -S mount -F auid>=1000 -F auid!=unset -k compliance-privileged-mount
+     -a always,exit -F arch=b64 -S mount -F auid>=1000 -F auid!=unset -k compliance-privileged-mount
+     ```
 
    - `https://www.stigviewer.com/stigs/anduril_nixos/2024-10-25/finding/V-268091`
 
      NixOS must generate audit records for all usage of privileged commands.
 
-   ```
-   -a always,exit -F arch=b64 -S execve -C uid!=euid -F euid=0 -k compliance-execpriv
-   -a always,exit -F arch=b32 -S execve -C uid!=euid -F euid=0 -k compliance-execpriv
-   -a always,exit -F arch=b32 -S execve -C gid!=egid -F egid=0 -k compliance-execpriv
-   -a always,exit -F arch=b64 -S execve -C gid!=egid -F egid=0 -k compliance-execpriv
-   ```
+     ```
+     -a always,exit -F arch=b64 -S execve -C uid!=euid -F euid=0 -k compliance-execpriv
+     -a always,exit -F arch=b32 -S execve -C uid!=euid -F euid=0 -k compliance-execpriv
+     -a always,exit -F arch=b32 -S execve -C gid!=egid -F egid=0 -k compliance-execpriv
+     -a always,exit -F arch=b64 -S execve -C gid!=egid -F egid=0 -k compliance-execpriv
+     ```
 
    - `https://www.stigviewer.com/stigs/anduril_nixos/2024-10-25/finding/V-268096`
 
      Successful/unsuccessful uses of the init_module, finit_module, and
      delete_module system calls in NixOS must generate an audit record.
 
-   ```
-   -a always,exit -F arch=b32 -S init_module,finit_module,delete_module -F auid>=1000 -F auid!=unset -k compliance-module-chng
-   -a always,exit -F arch=b64 -S init_module,finit_module,delete_module -F auid>=1000 -F auid!=unset -k compliance-module-chng
-   ```
+     ```
+     -a always,exit -F arch=b32 -S init_module,finit_module,delete_module -F auid>=1000 -F auid!=unset -k compliance-module-chng
+     -a always,exit -F arch=b64 -S init_module,finit_module,delete_module -F auid>=1000 -F auid!=unset -k compliance-module-chng
+     ```
 
 2. Additional rules
 
    - log everytime a program is attempted to run
 
-   ```
-   -a exit,always -F arch=b64 -S execve -k rules-run
-   ```
+     ```
+     -a exit,always -F arch=b64 -S execve -k rules-run
+     ```
 
 # Coredumps
 
@@ -1393,14 +1393,280 @@ browsers.
 #### Roles: Laptop
 
 Three hardened browsers are included. See
-[Laptop Usage Documentation](./laptop/usage.md#browsers) for more information.
+[Laptop Usage Documentation](./laptop/usage.md#browsers) for more information
+about browser usage. This section covers the various hardening flags in the
+browsers.
+
+## Brave Browser and Brave WebApps
+
+1. Runs in a firejail with the following flags:
+
+   ```
+   --nonewprivs
+   --whitelist=/home/${config.vars.user.name}/.local/share/home.html
+
+   --caps.drop=all
+
+   --nodvd
+   --nogroups
+   --noprinters
+   --noroot
+   --nou2f
+
+   --private-cache
+   --private-cwd
+   --private-dev
+   --private-etc=chromium,brave,resolv.conf,hosts
+   ```
+
+2. Several
+   [Chromium Enterprise Policies](https://chromium.googlesource.com/chromium/src/+/HEAD/docs/enterprise/policies.md)
+   and some
+   [Brave-Specific Policies](https://support.brave.app/hc/en-us/articles/360039248271-Group-Policy)
+   are used to harden the browser. Some of them involve:
+
+   - Disabling several Brave anti-features like:
+     - Brave Rewards
+     - Brave Wallet
+     - Brave VPN
+     - Brave AI Chat
+     - Brave News
+     - Brave Talk
+     - Brave Speedreader
+     - Brave Wayback Machine
+     - Brave P3A (Privacy Preserving Product Analytics)
+     - Brave Stats Ping
+     - Brave Web Discovery
+     - Brave Playlist
+     - Tor (breaks anonymity)
+
+   - Enabling useful Brave features:
+     - Brave DeAmp
+     - Brave Debouncing
+     - Brave Reduce Language Fingerprinting
+
+   - Default block some permissions and content:
+     - Clipboard
+     - Geolocation
+     - Insecure Content
+     - Notifications
+     - Popups
+     - Sensors
+     - Bluetooth
+     - Hid
+     - Usb
+     - Intrusive Ads
+     - Non-Proxied UDP
+
+   - Disable telemetry, services that require sending data to Google, and other
+     features to reduce attack surface:
+     - V8 JavaScript JIT
+     - Metrics
+     - Feedback Surveys
+     - User Feedback
+     - Safe Browsing Extended Reporting
+     - Safe Browsing Deep Scanning
+     - Advanced Protection
+     - Domain Reliability
+     - Network Time Queries
+     - Keyed Anonymization Data Collection
+     - Accesibility Image Labels
+     - Media Recommendations
+     - Password Manager
+     - Autofill
+     - Add Profile
+     - PDF Reader
+     - External Extensions
+     - Shopping List
+     - Search Suggest
+     - Spellcheck
+     - Live Translate
+     - Media Router
+     - Sync
+     - Promotions
+     - Dinosaur Easter Egg
+     - Printing
+     - Bookmark Bar
+     - Third Party Cookies
+     - Background Apps
+     - Autoplay
+     - Payment Method Query
+
+   - Use Post Quantum Key Cryptography
+   - Use Site Per Process
+   - Use Strict HTTPS-Only Mode
+   - Use SearXNG as Search Engine
+
+3. Preferences file settings
+
+   - Auto redirect amp pages
+   - Auto redirect tracking URLs
+   - Prevent language fingerprinting
+   - Automatically remove unused permissions
+   - Aggressive trackers and ads blocking
+   - Block fingerprinting
+   - Block third party cookies
+   - Strict HTTPS upgrades
+   - Disable V8 JavaScript JIT
+   - Disable WebTorrent
+   - Disable social media components
+   - Disable Google push messaging services
+   - Disable saving contact information
+   - Disable search suggestions
+   - Limit autocompletions to history only
+
+4. Local state file settings
+
+   - Disable Brave P3A
+   - Disable Brave stats reporting
+   - Disable user experience metrics reporting
+
+5. Extensions
+
+   - Bitwarden (for use with selfhosted Vaultwarden)
+   - uBlock Origin (further configured using policies)
+   - Dark Reader
+   - Vimium
+
+## i2p-browser
+
+1. Runs in a firejail with the following flags:
+
+   ```
+   --nonewprivs
+
+   --caps.drop=all
+
+   --no3d
+   --nodbus
+   --nodvd
+   --nogroups
+   --noprinters
+   --noroot
+   --nosound
+   --nou2f
+   --novideo
+
+   --private-cache
+   --private-cwd
+   --private-dev
+   --private-etc
+   --private-tmp
+
+   --seccomp
+   ```
+
+2. Firefox policies:
+
+   - Disabled features:
+     - Auto update
+     - Autofill address
+     - Autofill credit card
+     - Background updates
+     - About addons page
+     - About config page
+     - About profiles page
+     - About support page
+     - Accounts
+     - PDF viewer
+     - Developer tools
+     - Feedback commands
+     - Firefox accounts
+     - Firefox screenshots
+     - Firefox studies
+     - Forget button
+     - Form history
+     - Master password creation
+     - Password reveal
+     - Pocket
+     - Profile import
+     - Profile refresh
+     - Security bypass
+     - Set desktop background
+     - System addon update
+     - Telemetry
+     - Bookmarks toolbar
+     - Check default browser
+     - Encrypted media extensions
+     - Firefox home items
+     - Firefox suggest
+     - HTTPS only mode (disabled for i2p)
+     - Install addons permission
+     - Microsoft Entra SSO
+     - Default bookmarks
+     - Save logins
+     - First run page
+     - Post update page
+     - Password manager
+     - PDFjs
+     - Picture-in-picture
+     - Printing
+     - Search suggest
+     - Home button
+     - Show terms of use
+     - Translate
+     - WindowsSSO
+
+   - Enabled features:
+     - Start downloads in temp directory
+     - Prompt for download location
+     - Sanitize on shutdown
+     - Post quantum key agreement
+     - Tracking protection from Cryptomining, Fingerprinting and Email Tracking
+     - Encrypted client hello
+
+3. Profile options
+
+   - Use I2P HTTP proxy
+   - Disable suggestions except history
+   - Enable resist fingerprinting
+   - Disable JavaScript
+
+   - Default deny permissions:
+     - Camera
+     - Desktop notification
+     - Geolocation
+     - Microphone
+     - Screen wake lock
+     - xr
+     - Shortcuts
+
+## vanilla-browser
+
+1. Runs in a firejail with the following flags:
+
+   ```
+   --nonewprivs
+
+   --private
+
+   --caps.drop=all
+
+   --noroot
+
+   --private-cache
+   --private-cwd
+   --private-dev
+   --private-etc
+   --private-tmp
+   ```
+
+2. Uses Windows 11 user agent. Other than these, the browser is mostly vanilla
+   and unconfigured.
+
+## Librewolf
+
+Available only under [Nomad Mode](./laptop/usage.md#nomad-mode). Vanilla
+unconfigured Librewolf.
 
 # Search Engine
 
 #### Roles: Server
 
 The SearXNG metasearch engine is hosted on Server. This preserves user privacy
-while ensuring good quality results.
+while ensuring good quality results. See
+[Server Usage Documentation](./server/usage.md#searxng) for information about
+default search engines.
 
 #### Roles: Laptop
 
