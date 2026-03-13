@@ -4,7 +4,7 @@ let
   configuration = pkgs.writeTextFile {
     name = "foot.ini";
     text = ''
-      [colors]
+      [colors-dark]
       background=${config.colors.foot.bg}
       foreground=${config.colors.foot.fg}
 

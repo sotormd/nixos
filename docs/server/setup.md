@@ -120,6 +120,7 @@ in step 3.
 | `VARS_NETWORK_SSH_KEY`    | Allowed public key.                  | (empty)                                           |
 | `SECRETS_HASHED_PASSWORD` | Hashed user password.                | (user input)                                      |
 | `SECRETS_PSK`             | PSK for the network.                 | (user input)                                      |
+| `SECRETS_SEED_KEY`        | Nix key for seed.                    | (randomly generated)                              |
 | `SECRETS_DUCKDNS_TOKEN`   | DuckDNS API token.                   | (empty)                                           |
 | `SECRETS_SEARXNG_KEY`     | SearXNG secret key.                  | (randomly generated)                              |
 

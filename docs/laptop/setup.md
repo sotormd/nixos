@@ -16,8 +16,7 @@ Before proceeding, see [Laptop Requirements](./requirements.md).
 
 # Obtaining a Live NixOS Image
 
-1. Build either of the two included images for `x86_64-linux`: Minimal or
-   GNOME.
+1. Build either of the two included images for `x86_64-linux`: Minimal or GNOME.
 
    For more information, see [Images Documentation](../images.md).
 
@@ -272,6 +271,7 @@ in step 3.
 | `VARS_DISPLAYS_MONITOR_POSITION`   | External monitor position.               | `"1920 0"`                                        |
 | `SECRETS_HASHED_PASSWORD`          | Hashed user password.                    | (user input)                                      |
 | `SECRETS_PSK`                      | PSK for the network.                     | (user input)                                      |
+| `SECRETS_SEED_KEY`                 | Nix key for seed.                        | (randomly generated)                              |
 
 Ensure all variables and secrets are properly defined.
 
