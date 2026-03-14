@@ -41,25 +41,27 @@ Missing features:
 9. [Module Blacklists](#module-blacklists)
 10. [Audit Subsystem](#audit-subsystem)
 11. [Coredumps](#coredumps)
-12. [Users and Privileges](#users-and-privileges)
-13. [Nix Package Manager](#nix-package-manager)
-14. [SOPS](#sops)
-15. [USBGuard](#usbguard)
-16. [Wireless Networking](#wireless-networking)
-17. [DNS](#dns)
-18. [Firewall](#firewall)
-19. [MAC Randomization](#mac-randomization)
-20. [Secure Shell](#secure-shell)
-21. [Fail2Ban](#fail2ban)
-22. [I2P and Anonymity](#i2p-and-anonymity)
-23. [Display Server](#display-server)
-24. [Session Locking](#session-locking)
-25. [Firejail](#firejail)
-26. [Bubblewrap](#bubblewrap)
-27. [Browsers](#browsers)
-28. [Search Engine](#search-engine)
-29. [Password Manager](#password-manager)
-30. [Virtualisation and Containers](#virtualisation-and-containers)
+12. [Emergency and Rescue](#emergency-and-rescue)
+13. [Systemd Services](#systemd-services)
+14. [Users and Privileges](#users-and-privileges)
+15. [Nix Package Manager](#nix-package-manager)
+16. [SOPS](#sops)
+17. [USBGuard](#usbguard)
+18. [Wireless Networking](#wireless-networking)
+19. [DNS](#dns)
+20. [Firewall](#firewall)
+21. [MAC Randomization](#mac-randomization)
+22. [Secure Shell](#secure-shell)
+23. [Fail2Ban](#fail2ban)
+24. [I2P and Anonymity](#i2p-and-anonymity)
+25. [Display Server](#display-server)
+26. [Session Locking](#session-locking)
+27. [Firejail](#firejail)
+28. [Bubblewrap](#bubblewrap)
+29. [Browsers](#browsers)
+30. [Search Engine](#search-engine)
+31. [Password Manager](#password-manager)
+32. [Virtualisation and Containers](#virtualisation-and-containers)
 
 # Secure Boot
 
@@ -988,6 +990,39 @@ Coredumps are disabled to prevent leaking sensitive information.
 
 This is by disabling systemd coredumps, using PAM login limits, and using some
 sysctl options.
+
+# Emergency and Rescue
+
+#### Roles: Laptop, Server
+
+The emergency and rescue targets and services are disabled.
+
+# Systemd Services
+
+#### Roles: Laptop, Server
+
+Upstream Nixpkgs already hardens several common service, especially
+network-facing ones. Some services are additionally hardened with low-breakage
+service options. These options are:
+
+```nix
+{
+  ProtectClock = true;
+  ProtectKernelTunables = true;
+  ProtectKernelModules = true;
+  ProtectKernelLogs = true;
+  ProtectControlGroups = true;
+  ProtectHome = "read-only";
+  ProtectHostname = true;
+  SystemCallArchitectures = "native";
+  LockPersonality = true;
+  NoNewPrivileges = true;
+  PrivateDevices = true;
+  PrivateTmp = true;
+  RestrictRealtime = true;
+  RestrictSUIDSGID = true;
+}
+```
 
 # Users and Privileges
 
