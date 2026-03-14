@@ -1011,11 +1011,17 @@ The Nix package manager and the Nix packaging model prevent various classes of
 supply chain attacks.
 
 The Nix package manager is hardened and can only be used by members of the wheel
-group. Furthermore, only the root user is trusted by the store uri.
+group. Furthermore, only the root user is trusted by the store uri. This is
+important because adding a trusted user is essentially passwordless root.
 
 Nix is also set to only download and use cryptographically signed binaries.
+Remote building and copying signed closures can be done using
+[seed](./cli.md#build-remote-closures).
 
 Nonfree packages and broken packages are disabled.
+
+Untrusted flake configuration settings are disabled. These may allow the flake
+to get root privileges.
 
 # SOPS
 
