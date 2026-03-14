@@ -1,13 +1,20 @@
 #!/usr/bin/env bash
 
+set -euo pipefail
+
+# globals to be used here and by other scripts
+FLAKE="/persist/nixos"
+IMPERMANENCE="/persist/root"
+SOPS="/persist/sops-nix"
+
 # NIXOS_ROLE is the configuration role
-if [ -z "$NIXOS_ROLE" ]; then
+if [ -z "${NIXOS_ROLE:-}" ]; then
     echo "Error: NIXOS_ROLE is not set." >&2
     exit 1
 fi
 
 # allowed roles: laptop, server
-if ! [[ "$NIXOS_ROLE" =~ ^(laptop|server)$ ]]; then
+if ! [[ "${NIXOS_ROLE:-}" =~ ^(laptop|server)$ ]]; then
   echo "Error: unexpected role $NIXOS_ROLE" >&2
   exit 1
 fi
@@ -16,7 +23,7 @@ ROLE="$NIXOS_ROLE"
 
 # NIXOS_MOUNT is used for bootstrapping
 # this flake to another machine
-if [ -z "$NIXOS_MOUNT" ]; then
+if [ -z "${NIXOS_MOUNT:-}" ]; then
     NIXOS_MOUNT=""
 fi
 
@@ -24,19 +31,11 @@ MOUNT="$NIXOS_MOUNT"
 
 # NIXOS_SCRIPTS is the directory
 # to look for scripts in
-if [ -z "$NIXOS_SCRIPTS" ]; then
-    NIXOS_SCRIPTS="$DIR/cli/scripts"
+if [ -z "${NIXOS_SCRIPTS:-}" ]; then
+    NIXOS_SCRIPTS="$MOUNT/$FLAKE/cli/scripts"
 fi
 
 SCRIPTS="$NIXOS_SCRIPTS"
-
-# at this point, we have a valid
-# $ROLE, $MOUNT and $SCRIPTS
-
-# globals to be used here and by other scripts
-FLAKE="/persist/nixos"
-IMPERMANENCE="/persist/root"
-SOPS="/persist/sops-nix"
 
 # the rest of the script can use
 # $ROLE, $MOUNT, $SCRIPTS,
@@ -47,8 +46,8 @@ if [ $# -eq 0 ]; then
     cmd=("tree" "--filesfirst")
 
 # CASE 2: run commands
-elif [ -f "$SCRIPTS/$1" ]; then
-	cmd=("$SCRIPTS/$1" "${@:2}")
+elif [ -f "$SCRIPTS/${1:-}" ]; then
+	cmd=("$SCRIPTS/${1:-}" "${@:2}")
 
 # CASE 3: dispatch to flake
 else
@@ -58,7 +57,7 @@ fi
 (
     # subshell into $FLAKE
     # unless bootstrap
-    if [ "$1" != "bootstrap" ]; then
+    if [ "${1:-}" != "bootstrap" ]; then
        cd "$MOUNT$FLAKE" || exit 1
     fi
 
