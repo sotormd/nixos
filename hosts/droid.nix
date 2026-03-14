@@ -1,3 +1,1 @@
-{
-  imports = [ ../modules/droid ];
-}
+{ imports = [ ../modules/droid ]; }

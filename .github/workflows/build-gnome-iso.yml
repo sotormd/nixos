@@ -23,9 +23,6 @@ jobs:
         id: ts
         run: echo "ts=$(date +%s)" >> $GITHUB_OUTPUT
 
-      # -----------------------------------------------------
-      # Build GNOME ISO
-      # -----------------------------------------------------
       - name: Build GNOME ISO
         run: |
           nix run nixpkgs#nixos-generators -- \
@@ -37,9 +34,6 @@ jobs:
           GNOME_DST="nixos-gnome-${{ steps.ts.outputs.ts }}.iso"
           cp "$GNOME_SRC" "$GNOME_DST"
 
-      # -----------------------------------------------------
-      # Upload Artifacts
-      # -----------------------------------------------------
       - name: Upload gnome ISO
         uses: actions/upload-artifact@v4
         with:
