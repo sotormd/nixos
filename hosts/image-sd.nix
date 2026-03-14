@@ -1,3 +1,1 @@
-{
-  imports = [ ../modules/images/sdcard.nix ];
-}
+{ imports = [ ../modules/images/sdcard.nix ]; }

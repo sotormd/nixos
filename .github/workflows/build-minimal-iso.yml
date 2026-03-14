@@ -23,9 +23,6 @@ jobs:
         id: ts
         run: echo "ts=$(date +%s)" >> $GITHUB_OUTPUT
 
-      # -----------------------------------
-      # Build Minimal ISO
-      # -----------------------------------
       - name: Build minimal ISO
         run: |
           nix run nixpkgs#nixos-generators -- \
@@ -37,9 +34,6 @@ jobs:
           MIN_DST="nixos-minimal-${{ steps.ts.outputs.ts }}.iso"
           cp "$MIN_SRC" "$MIN_DST"
 
-      # -----------------------------------
-      # Upload Artifacts
-      # -----------------------------------
       - name: Upload minimal ISO
         uses: actions/upload-artifact@v4
         with:

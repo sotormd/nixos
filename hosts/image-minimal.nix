@@ -1,3 +1,1 @@
-{
-  imports = [ ../modules/images/minimal.nix ];
-}
+{ imports = [ ../modules/images/minimal.nix ]; }

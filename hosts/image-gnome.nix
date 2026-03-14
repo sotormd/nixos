@@ -1,3 +1,1 @@
-{
-  imports = [ ../modules/images/gnome.nix ];
-}
+{ imports = [ ../modules/images/gnome.nix ]; }
