@@ -668,6 +668,15 @@ man podman
 
 Podman is also used as the backend for Distrobox.
 
+## MicroVM
+
+While there are no MicroVMs configured within this flake, it is highly
+recommended to use MicroVMs for virtualization tasks.
+
+[microvm-nix](https://github.com/microvm-nix/microvm.nix) can be used to run
+NixOS under MicroVMs on one of several Type 2 hypervisors, including `qemu`,
+`cloud-hypervisor`, `crosvm` and `firecracker`.
+
 # Nomad Mode
 
 Nomad Mode refers to the specialisation `gnome`, which sets up an environment
