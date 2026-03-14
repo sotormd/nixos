@@ -15,8 +15,6 @@
 
     "qbt"
 
-    "sshd"
-
     "systemd-ask-password-console"
 
     "systemd-ask-password-wall"
