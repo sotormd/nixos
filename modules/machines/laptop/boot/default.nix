@@ -11,5 +11,7 @@
     # ./plymouth.nix
 
     ./sysctl.nix
+
+    ./systemd.nix
   ];
 }
