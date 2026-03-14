@@ -1,5 +1,7 @@
 {
   imports = [
+    ./deny-flake-config.nix
+
     ./dirty-git.nix
 
     ./flakes.nix
