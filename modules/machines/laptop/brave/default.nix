@@ -1,19 +1,17 @@
+{ config, pkgs, ... }:
+
+let
+  inherit (import ./package.nix { inherit config pkgs; }) brave;
+in
 {
   imports = [
-    ./desktop.nix
-
     ./extensions.nix
 
-    ./firejail.nix
-
-    ./home.nix
-
     ./policies.nix
-
-    ./sandbox.nix
 
     ./state.nix
   ];
 
   programs.chromium.enable = true;
+  users.users.${config.vars.user.name}.packages = [ brave ];
 }

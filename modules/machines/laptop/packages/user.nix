@@ -15,6 +15,9 @@
     # mpris control
     pkgs.playerctl
 
+    # bash calculator
+    pkgs.bc
+
     # compression
     pkgs.file-roller
 

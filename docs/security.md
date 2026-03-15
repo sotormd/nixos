@@ -13,6 +13,7 @@ flake source should be referred to as the primary and only source of truth.
 - [Kicksecure System Hardening Checklist](https://www.kicksecure.com/wiki/System_Hardening_Checklist)
 - [Tails Kernel Hardening](https://tails.net/contribute/design/kernel_hardening/)
 - [ArchWiki - Security](https://wiki.archlinux.org/title/Security)
+- [Paranoid NixOS - Xe Iaso](https://xeiaso.net/blog/paranoid-nixos-2021-07-18/)
 
 # Known Issues
 
@@ -56,8 +57,8 @@ Missing features:
 24. [I2P and Anonymity](#i2p-and-anonymity)
 25. [Display Server](#display-server)
 26. [Session Locking](#session-locking)
-27. [Firejail](#firejail)
-28. [Bubblewrap](#bubblewrap)
+27. [Bubblewrap](#bubblewrap)
+28. [xdg-dbus-proxy](#xdg-dbus-proxy)
 29. [Browsers](#browsers)
 30. [Search Engine](#search-engine)
 31. [Password Manager](#password-manager)
@@ -65,7 +66,7 @@ Missing features:
 
 # Secure Boot
 
-#### Roles: Laptop
+> Laptop only
 
 Secure Boot is used to ensure that the bootloader is signed before loading.
 Secure Boot support for NixOS is provided by the
@@ -75,8 +76,6 @@ Note that Secure Boot can only be enabled post-installation. See
 [Setting up Secure Boot](./laptop/setup.md#setting-up-secure-boot).
 
 # Entropy
-
-#### Roles: Laptop, Server
 
 [Jitterentropy](https://github.com/smuellerDD/jitterentropy-library) is used to
 improve RNG quality by providing a noise source using the CPU execution jitter.
@@ -91,15 +90,11 @@ random.trust_bootloader=off
 
 # Memory Allocator
 
-#### Roles: Laptop, Server
-
 The [`graphene-hardened`](https://github.com/GrapheneOS/hardened_malloc) malloc
 from GrapheneOS is used. This provides substantial hardening against various
 vulnerabilities.
 
 # Filesystems
-
-#### Roles: Laptop, Server
 
 1. Mount Profiles
 
@@ -130,7 +125,7 @@ vulnerabilities.
 
    Several `fs.*` sysctls are set. See [sysctl Options](#sysctl-options).
 
-#### Roles: Laptop
+> Laptop only
 
 LUKS encryption with a passphrase is enabled for the root partition, containing
 the main ZFS rpool.
@@ -138,8 +133,6 @@ the main ZFS rpool.
 Random encryption is used on the swap partition.
 
 # Impermanence
-
-#### Roles: Laptop, Server
 
 Impermanence ensures a clean filesystem after every reboot. Only explicitly
 declared state survives across reboots, and anything else is purged. This
@@ -153,15 +146,11 @@ See [Impermanence](./filesystems.md#impermanence).
 
 # Kernel
 
-#### Roles: Laptop, Server
-
 The `linux-hardened` kernel from Nixpkgs is used.
 
 [Upstream URL](https://github.com/anthraxx/linux-hardened).
 
 # Kernel Parameters
-
-#### Roles: Laptop, Server
 
 Several kernel parameters are used to harden the kernel. They are covered below:
 
@@ -363,8 +352,6 @@ unused parameters due to high performance costs:
 ```
 
 # sysctl Options
-
-#### Roles: Laptop, Server
 
 Several kernel parameters are used to harden the kernel. They are covered below:
 
@@ -622,8 +609,6 @@ Several kernel parameters are used to harden the kernel. They are covered below:
     ```
 
 # Module Blacklists
-
-#### Roles: Laptop, Server
 
 Several kernel modules are blacklisted to reduce the attack surface. They are
 covered below:
@@ -885,8 +870,6 @@ covered below:
 
 # Audit Subsystem
 
-#### Roles: Laptop, Server
-
 The Linux audit subsystem is enabled with various STIG-compliant rules. They are
 covered below:
 
@@ -984,8 +967,6 @@ covered below:
 
 # Coredumps
 
-#### Roles: Laptop, Server
-
 Coredumps are disabled to prevent leaking sensitive information.
 
 This is by disabling systemd coredumps, using PAM login limits, and using some
@@ -993,13 +974,9 @@ sysctl options.
 
 # Emergency and Rescue
 
-#### Roles: Laptop, Server
-
 The emergency and rescue targets and services are disabled.
 
 # Systemd Services
-
-#### Roles: Laptop, Server
 
 Upstream Nixpkgs already hardens several common service, especially
 network-facing ones. Some services are additionally hardened with low-breakage
@@ -1026,8 +1003,6 @@ service options. These options are:
 
 # Users and Privileges
 
-#### Roles: Laptop, Server
-
 A single user is created, and is part of the wheel group.
 
 The root account is locked.
@@ -1039,8 +1014,6 @@ shell.
 Other tools like `su` and `pkexec` are disabled by removing their setuid bit.
 
 # Nix Package Manager
-
-#### Roles: Laptop, Server
 
 The Nix package manager and the Nix packaging model prevent various classes of
 supply chain attacks.
@@ -1060,14 +1033,11 @@ to get root privileges.
 
 # SOPS
 
-#### Roles: Laptop, Server
-
 [sops-nix](https://github.com/Mic92/sops-nix) is used to store secrets consumed
-by the NixOS modules.
+by the NixOS modules. This ensures that sensitive information does not end up in
+the world-readable Nix store.
 
 # USBGuard
-
-#### Roles: Laptop, Server
 
 USBGuard is used to protect against rogue USB devices like BadUSB.
 
@@ -1100,24 +1070,20 @@ USBGuard can be controlled using the `usbguard` command line interface. Only the
 
 # Wireless Networking
 
-#### Roles: Laptop, Server
-
 `wpa_supplicant` is used for wireless connections. Network secrets are stored
 using SOPS.
 
-#### Roles: Laptop
+> Laptop only
 
-WPA3 (SAE / dragonfly) is used for wireless authentication.
+WPA3 (SAE / dragonfly) is used for wireless authentication on Laptop.
 
 # DNS
-
-#### Roles: Laptop, Server
 
 Unbound DNS server hosted on Server is used as the default DNS server.
 
 Cloudflare is used as the fallback server.
 
-#### Roles: Server
+> Server only
 
 The Unbound DNS server hosted on Server is hardened. The following options are
 used:
@@ -1216,8 +1182,6 @@ used:
 
 # Firewall
 
-#### Roles: Laptop, Server
-
 The NixOS `networking.firewall` module is used, which uses the new `nf_tables`
 backend. The userspace tool `nixos-firewall-tool` can be used for ad-hoc
 changes.
@@ -1227,7 +1191,7 @@ interfaces are trusted, not even loopback.
 
 ICMP ping requests are also disallowed.
 
-#### Roles: Server
+> Server only
 
 Ports are open on the server based on the enabled services. See
 [Server Usage Documentation](./server/usage.md) which covers all ports.
@@ -1241,15 +1205,13 @@ specific IP addresses. For example, by setting it to `10.0.0.100/31`, only
 
 # MAC Randomization
 
-#### Roles: Laptop, Server
-
 GNU MAC Changer is used to randomize the MAC address. Only the non-vendor bits
 are randomized, since randomizing the entire MAC address may lead to extremely
 uncommon MAC addresses which reduces anonymity.
 
 # Secure Shell
 
-#### Roles: Server
+> Server only
 
 SSH is enabled on the Server. See
 [Server Usage Documentation](./server/usage.md#ssh) for details about using a
@@ -1294,13 +1256,13 @@ The SSH configuration is sufficiently hardened. The following options are set:
 
 # Fail2Ban
 
-#### Roles: Server
+> Server only
 
 Fail2Ban is used to limit brute force authentication attempts on SSH.
 
 # I2P and Anonymity
 
-#### Roles: Laptop
+> Laptop only
 
 1. I2P
 
@@ -1318,149 +1280,231 @@ Fail2Ban is used to limit brute force authentication attempts on SSH.
 
    `mat2` can be used to remove any identifying metadata from files.
 
-#### Roles: Server
+> Server only
 
 The I2PD router is hosted on Server. The qBittorrent torrent client also uses
 the I2P network via this router.
 
 # Display Server
 
-#### Roles: Laptop
+> Laptop only
 
 The desktop is 100% wayland, with no X or Xwayland.
 
 # Session Locking
 
-#### Roles: Laptop
+> Laptop only
 
 The session is locked using `swaylock` after 10 seconds of inactivity, and
 suspended after further inactivity. This behaviour can be controlled using the
 waybar [idle_inhibitor Module](./laptop/usage.md#idle_inhibitor-module).
 
-# Firejail
-
-#### Roles: Laptop, Server
-
-`firejail` can be used to sandbox programs.
-
-#### Roles: Laptop
-
-`firejail`, along with additional hardening flags, is used to sandbox browsers.
-Some of the flags used are listed below. Not all flags are used for all
-browsers.
-
-1. `--nonewprivs`
-
-   Ensures that child processes cannot acquire new privileges using execve. This
-   mitigates most of the vulnerabilities that arises due to `firejail` being a
-   suid binary.
-
-2. `--seccomp`
-
-   Enable the seccomp filter and blacklist the syscalls in the default list.
-
-3. `--caps.drop=all`
-
-   Drop all capabilities for the processes running in the sandbox.
-
-4. `--noroot`
-
-   Install a user namespace with a single user - the current user. root does not
-   exist in the new namespace.
-
-5. `--nodbus`
-
-   Disable D-Bus access for both the system and session buses.
-
-6. `--nogroups`
-
-   Disable supplementary groups.
-
-7. `--nodvd`
-
-   Disable DVD and audio CD devices.
-
-8. `--noprinters`
-
-   Disable printers.
-
-9. `--nou2f`
-
-   Disable U2F devices.
-
-10. `--no3d`
-
-    Disable 3D hardware acceleration.
-
-11. `--nosound`
-
-    Disable sound system.
-
-12. `--novideo`
-
-    Disable video devices.
-
-13. `--private`
-
-    Mount new `/root` and `/home/user` directories in temporary filesystems.
-
-14. `--private-cache`
-
-    Mount an empty temporary filesystem on top of the `.cache` directory in user
-    home.
-
-15. `--private-cwd`
-
-    Set working directory inside jail to the home directory.
-
-16. `--private-dev`
-
-    Create a new `/dev` with limited devices.
-
-17. `--private-tmp`
-
-    Mount a new temporary filesystem on top of `/tmp`.
-
-18. `--private-etc=...`
-
-    Use an empty `/etc` with specific files.
-
 # Bubblewrap
 
-#### Roles: Laptop, Server
+[Bubblewrap](https://github.com/containers/bubblewrap) is a low-level
+unprivileged sandbox utility that is used by projects like
+[Flatpak](https://flatpak.org/) and
+[rpm-ostree](https://github.com/coreos/rpm-ostree/pull/209).
 
-`bubblewrap` can be used to sandbox programs.
+It provides several useful sandboxing features while maintaining a small focused
+codebase to ensure a low overall attack surface. Furthermore, it is not a suid
+binary. [Firejail](https://github.com/netblue30/firejail), for example, is
+another sandboxing tool but uses suid binaries - which can act as a privilege
+escalation hole. Bubblewrap does not have these issues.
+
+Bubblewrap sandboxes can be created using the `bwrap(1)` command-line interface.
+While this is available on both Laptop and Server roles, this flake uses
+bubblewrap only for sandboxing browsers on the Laptop role. All the options used
+are covered in the browsers section.
+
+# xdg-dbus-proxy
+
+> Laptop only
+
+[xdg-dbus-proxy](https://github.com/flatpak/xdg-dbus-proxy) is a filtering proxy
+for D-Bus connections. It is used in conjunction with bubblewrap because it lets
+you selectively allow D-Bus connections. Without it, bubblewrap can only enable
+D-Bus completely or disable it completely.
+
+It is used on the Laptop role to let browsers use select D-Bus connections.
 
 # Browsers
 
-#### Roles: Laptop
+> Laptop only
 
-Three hardened browsers are included. See
+Two hardened browsers are included. See
 [Laptop Usage Documentation](./laptop/usage.md#browsers) for more information
 about browser usage. This section covers the various hardening flags in the
 browsers.
 
-## Brave Browser and Brave WebApps
+## Brave
 
-1. Runs in a firejail with the following flags:
+1. Runs in a bubblewrap sandbox with xdg-dbus-proxy
 
-   ```
-   --nonewprivs
-   --whitelist=/home/${config.vars.user.name}/.local/share/home.html
+   - Bubblewrap args:
 
-   --caps.drop=all
+     - Bind Nix Store as readonly
 
-   --nodvd
-   --nogroups
-   --noprinters
-   --noroot
-   --nou2f
+       ```
+       --ro-bind /nix/store /nix/store
+       ```
 
-   --private-cache
-   --private-cwd
-   --private-dev
-   --private-etc=chromium,brave,resolv.conf,hosts
-   ```
+     - Allow using Wayland
+
+       ```
+       --ro-bind "$XDG_RUNTIME_DIR/wayland-1" "$XDG_RUNTIME_DIR/wayland-1" \
+       ```
+
+     - Bind fake passwd and group files as readonly
+
+       ```bash
+       users=$(mktemp -d)
+       echo "${user}:x:1000:1000:${user}:/home/${user}:${pkgs.coreutils-full}/bin/false" > "$users/passwd"
+       echo "${user}:x:1000:" > "$users/group"
+       ```
+
+       ```
+       --ro-bind "$users/passwd" /etc/passwd
+       --ro-bind "$users/group" /etc/group
+       ```
+
+     - Bind resolvconf as readonly
+
+       ```
+       --ro-bind /etc/resolv.conf /etc/resolv.conf
+       ```
+
+     - Bind fonts as readonly
+
+       ```
+       --ro-bind /etc/fonts /etc/fonts
+       ```
+
+     - Mount /tmp as tmpfs
+
+       ```
+       --tmpfs /tmp
+       ```
+
+     - Mount $HOME as tmpfs
+
+       ```
+       --tmpfs /home/${user}
+       ```
+
+     - Bind GTK files as readonly
+
+       ```
+       --ro-bind /home/${user}/.gtkrc-2.0 /home/${user}/.gtkrc-2.0
+       --ro-bind /home/${user}/.config/gtk-3.0 /home/${user}/.config/gtk-3.0
+       --ro-bind /home/${user}/.config/gtk-4.0 /home/${user}/.config/gtk-4.0
+       --ro-bind /home/${user}/.icons /home/${user}/.icons
+       --ro-bind /home/${user}/.Xresources /home/${user}/.Xresources
+       --ro-bind /home/${user}/.local/share/fonts /home/${user}/.local/share/fonts
+       --ro-bind /home/${user}/.local/share/icons /home/${user}/.local/share/icons
+       --ro-bind /home/${user}/.local/share/themes /home/${user}/.local/share/themes
+       --ro-bind /home/${user}/.config/dconf /home/${user}/.config/dconf
+       ```
+
+     - Mount **new** procfs and dev
+
+       ```
+       --proc /proc
+       --dev /dev
+       ```
+
+     - Unshare all supported namespaces
+
+     ```
+     --unshare-all
+     ```
+
+     - Share network
+
+       ```
+       --share-net
+       ```
+
+     - SIGKILL child processes when bubblewrap dies
+
+       ```
+       --die-with-parent
+       ```
+
+     - Create a new terminal session. Also protects against out-of-sandbox
+       command execution.
+
+       ```
+       --new-session
+       ```
+
+     - Create **new** runtime directory
+
+       ```
+       --dir "$XDG_RUNTIME_DIR"
+       ```
+
+     - Graphics acceleration. Check `chrome://gpu` to verify status.
+
+       ```
+       --dev-bind /dev/dri /dev/dri
+       --ro-bind /sys/dev/char /sys/dev/char
+       --ro-bind /sys/devices /sys/devices
+       --ro-bind /run/opengl-driver /run/opengl-driver
+       ```
+
+     - Pipewire
+
+       ```
+       --ro-bind "$XDG_RUNTIME_DIR/pipewire-0" "$XDG_RUNTIME_DIR/pipewire-0"
+       --ro-bind "$XDG_RUNTIME_DIR/pulse" "$XDG_RUNTIME_DIR/pulse"
+       ```
+
+     - Bind /tmp
+
+       ```
+       --bind /tmp /tmp
+       ```
+
+     - Bind Enterprise Policies as readonly
+
+       ```
+       --ro-bind /etc/static/brave /etc/static/brave
+       --ro-bind /etc/brave /etc/brave
+       ```
+
+     - Bind configuration directory
+
+       ```
+       --bind /home/${user}/.config/BraveSoftware/Brave-Browser /home/${user}/.config/BraveSoftware/Brave-Browser
+       ```
+
+     - Bind downloads directory
+
+       ```
+       --bind /home/${user}/Downloads /home/${user}/Downloads
+       ```
+
+   - xdg-dbus-proxy:
+
+     - Allow `org.mpris.MediaPlayer2` for use with `playerctl`
+
+       ```bash
+       proxy_dir=$(mktemp -d)
+       proxy_socket="$proxy_dir/bus"
+
+       xdg-dbus-proxy "$DBUS_SESSION_BUS_ADDRESS" "$proxy_socket" \
+       --filter \
+       --own="org.mpris.MediaPlayer2.*" \
+       --talk="org.mpris.MediaPlayer2.*" & proxy_pid=$!
+       ```
+
+     - Bind this proxy directory using bubblewrap
+
+       ```
+       --bind "$proxy_socket" "$XDG_RUNTIME_DIR/bus"
+       --bind "$proxy_socket" "/run/dbus"
+       ```
 
 2. Several
    [Chromium Enterprise Policies](https://chromium.googlesource.com/chromium/src/+/HEAD/docs/enterprise/policies.md)
@@ -1571,33 +1615,106 @@ browsers.
    - Dark Reader
    - Vimium
 
-## i2p-browser
+## I2P Browser
 
-1. Runs in a firejail with the following flags:
+1. Runs in a bubblewrap sandbox
 
-   ```
-   --nonewprivs
+   - Bubblewrap args:
 
-   --caps.drop=all
+     - Bind Nix Store as readonly
 
-   --no3d
-   --nodbus
-   --nodvd
-   --nogroups
-   --noprinters
-   --noroot
-   --nosound
-   --nou2f
-   --novideo
+       ```
+       --ro-bind /nix/store /nix/store
+       ```
 
-   --private-cache
-   --private-cwd
-   --private-dev
-   --private-etc
-   --private-tmp
+     - Allow using Wayland
 
-   --seccomp
-   ```
+       ```
+       --ro-bind "$XDG_RUNTIME_DIR/wayland-1" "$XDG_RUNTIME_DIR/wayland-1" \
+       ```
+
+     - Bind fake passwd and group files as readonly
+
+       ```bash
+       users=$(mktemp -d)
+       echo "${user}:x:1000:1000:${user}:/home/${user}:${pkgs.coreutils-full}/bin/false" > "$users/passwd"
+       echo "${user}:x:1000:" > "$users/group"
+       ```
+
+       ```
+       --ro-bind "$users/passwd" /etc/passwd
+       --ro-bind "$users/group" /etc/group
+       ```
+
+     - Bind resolvconf as readonly
+
+       ```
+       --ro-bind /etc/resolv.conf /etc/resolv.conf
+       ```
+
+     - Bind fonts as readonly
+
+       ```
+       --ro-bind /etc/fonts /etc/fonts
+       ```
+
+     - Mount /tmp as tmpfs
+
+       ```
+       --tmpfs /tmp
+       ```
+
+     - Mount $HOME as tmpfs
+
+       ```
+       --tmpfs /home/${user}
+       ```
+
+     - Bind GTK files as readonly
+
+       ```
+       --ro-bind /home/${user}/.gtkrc-2.0 /home/${user}/.gtkrc-2.0
+       --ro-bind /home/${user}/.config/gtk-3.0 /home/${user}/.config/gtk-3.0
+       --ro-bind /home/${user}/.config/gtk-4.0 /home/${user}/.config/gtk-4.0
+       --ro-bind /home/${user}/.icons /home/${user}/.icons
+       --ro-bind /home/${user}/.Xresources /home/${user}/.Xresources
+       --ro-bind /home/${user}/.local/share/fonts /home/${user}/.local/share/fonts
+       --ro-bind /home/${user}/.local/share/icons /home/${user}/.local/share/icons
+       --ro-bind /home/${user}/.local/share/themes /home/${user}/.local/share/themes
+       --ro-bind /home/${user}/.config/dconf /home/${user}/.config/dconf
+       ```
+
+     - Mount **new** procfs and dev
+
+       ```
+       --proc /proc
+       --dev /dev
+       ```
+
+     - Unshare all supported namespaces
+
+     ```
+     --unshare-all
+     ```
+
+     - Share network
+
+       ```
+       --share-net
+       ```
+
+     - SIGKILL child processes when bubblewrap dies
+
+       ```
+       --die-with-parent
+       ```
+
+     - Create a new terminal session. Also protects against out-of-sandbox
+       command execution.
+
+       ```
+       --new-session
+       ```
 
 2. Firefox policies:
 
@@ -1674,61 +1791,23 @@ browsers.
      - xr
      - Shortcuts
 
-## vanilla-browser
-
-1. Runs in a firejail with the following flags:
-
-   ```
-   --nonewprivs
-
-   --private
-
-   --caps.drop=all
-
-   --noroot
-
-   --private-cache
-   --private-cwd
-   --private-dev
-   --private-etc
-   --private-tmp
-   ```
-
-2. Uses Windows 11 user agent. Other than these, the browser is mostly vanilla
-   and unconfigured.
-
-## Librewolf
-
-Available only under [Nomad Mode](./laptop/usage.md#nomad-mode). Vanilla
-unconfigured Librewolf.
-
 # Search Engine
-
-#### Roles: Server
 
 The SearXNG metasearch engine is hosted on Server. This preserves user privacy
 while ensuring good quality results. See
 [Server Usage Documentation](./server/usage.md#searxng) for information about
 default search engines.
 
-#### Roles: Laptop
-
 The Brave Browser uses SearXNG as the default search engine.
 
 # Password Manager
 
-#### Roles: Server
-
-The Vaultwarden password manager is hosted on Server.
-
-#### Roles: Laptop
-
-The Brave Browser uses the Bitwarden extension to access the vault hosted on
-Server.
+The Vaultwarden password manager is hosted on Server. The Brave Browser uses the
+Bitwarden extension to access the vault hosted on Server.
 
 # Virtualisation and Containers
 
-#### Roles: Laptop
+> Laptop only
 
 See
 [Virtualisation and Containers](./laptop/usage.md#virtualisation-and-containers).

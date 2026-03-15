@@ -1,7 +1,27 @@
-{ config, lib, ... }:
+{
+  config,
+  inputs,
+  lib,
+  pkgs,
+  ...
+}:
 
+let
+  inherit
+    (import ./home.nix {
+      inherit
+        config
+        inputs
+        lib
+        pkgs
+        ;
+    })
+    homepage
+    ;
+in
 {
   programs.chromium.extraOpts = {
+
     # permission settings
     DefaultClipboardSetting = 2;
     DefaultGeolocationSetting = 2;
@@ -107,8 +127,8 @@
 
     # homepage
     HomepageIsNewTabPage = false;
-    HomepageLocation = "file:///home/${config.vars.user.name}/.local/share/home.html";
-    NewTabPageLocation = "file:///home/${config.vars.user.name}/.local/share/home.html";
+    HomepageLocation = "file://${homepage}/share/home.html";
+    NewTabPageLocation = "file://${homepage}/share/home.html";
     ShowHomeButton = false;
 
     # new tab on startup
@@ -191,5 +211,6 @@
 
     # disable promotions
     PromotionsEnabled = false;
+
   };
 }

@@ -56,8 +56,7 @@ let
         # probably need these basic ones
         ../../common/packages
 
-        # sandbox
-        # eh just firejail
+        # sandboxing with bubblewrap
         ../../common/sandbox
 
         # sops-nix secrets
@@ -122,28 +121,8 @@ let
         # allow unprivileged user namespaces
         boot.kernel.sysctl."kernel.unprivileged_userns_clone" = lib.mkForce "1";
 
-        # firejailed librewolf browser
-        programs.firejail.wrappedBinaries.librewolf = {
-          executable = "${pkgs.librewolf}/bin/librewolf";
-          profile = "${pkgs.firejail}/etc/firejail/librewolf.profile";
-          extraArgs = [
-            "--nonewprivs"
-
-            "--private"
-
-            "--caps.drop=all"
-
-            "--noroot"
-
-            "--private-cache"
-            "--private-cwd"
-            "--private-dev"
-            "--private-etc"
-            "--private-tmp"
-
-            "--seccomp"
-          ];
-        };
+        # librewolf
+        environment.systemPackages = [ pkgs.librewolf ];
 
         # filesystem hardening
         fileSystems =
