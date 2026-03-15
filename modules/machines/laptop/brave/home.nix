@@ -2,6 +2,7 @@
   config,
   inputs,
   lib,
+  pkgs,
   ...
 }:
 
@@ -132,9 +133,14 @@ let
     };
     font = config.colors.fonts.normal;
   };
+
+  homepage = pkgs.writeTextFile {
+    name = "homepage";
+    text = homepageHtml;
+    destination = "/share/home.html";
+    executable = false;
+  };
 in
 {
-  hjem.users.${config.vars.user.name} = {
-    files.".local/share/home.html".text = homepageHtml;
-  };
+  inherit homepage;
 }

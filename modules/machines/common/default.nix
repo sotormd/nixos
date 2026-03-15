@@ -31,7 +31,7 @@
     # privilege elevation
     ./privilege
 
-    # sandboxing with firejail
+    # sandboxing with bubblewrap
     ./sandbox
 
     # seed

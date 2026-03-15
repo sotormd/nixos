@@ -49,6 +49,8 @@ Desktop features:
   history, workspace switchers, etc
 - [Brave](https://github.com/brave/brave-browser/) browser with tight policies
   to ensure security and protect user privacy
+- Sandboxing with [Bubblewrap](https://github.com/containers/bubblewrap) and
+  [xdg-dbus-proxy](https://github.com/flatpak/xdg-dbus-proxy).
 - NVF-powered [neovim](https://github.com/sotormd/neovim) configuration
 - Theming and colors with [colors](https://github.com/sotormd/colors)
 - Declarative browser homepage with
@@ -91,8 +93,8 @@ Comprehensive features list:
 | auditing                      | `auditd`                                                                                                   |
 | secrets                       | `sops`, `sops-nix`                                                                                         |
 | usb policy                    | `usbguard`                                                                                                 |
-| sandboxing                    | `firejail`, `bubblewrap`                                                                                   |
-| firewall                      | `iptables (nf_tables)`                                                                                     |
+| sandboxing                    | `bubblewrap`, `xdg-dbus-proxy`                                                                             |
+| firewall                      | `nf_tables`                                                                                                |
 | mac randomization             | `macchanger`                                                                                               |
 | anonymity                     | `i2pd`, `oniux`, `mat2`                                                                                    |
 | networking                    | `wpa_supplicant`                                                                                           |

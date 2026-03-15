@@ -1,7 +1,6 @@
 {
   "pinned_clients": [
     "brave-browser",
-    "brave-open.spotify.com__-Default",
     "foot",
     "org.inkscape.Inkscape",
     "Thunar",
@@ -28,11 +27,7 @@
       "exec": "inkscape",
       "symbol": ""
     },
-    "brave-open.spotify.com__-Default": {
-      "exec": "spotify",
-      "symbol": ""
-    },
-    "auto-cpufreq": {
+    "auto-cpufreq-gtk": {
       "symbol": ""
     },
     ".virt-manager-wrapped": {

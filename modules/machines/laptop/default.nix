@@ -84,9 +84,6 @@
     # users
     ./users
 
-    # sandboxed browser with windows user agent
-    ./vanilla-browser
-
     # virtualisation with qemu, distrobox, etc
     ./virtualization
 
