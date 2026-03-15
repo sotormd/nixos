@@ -81,7 +81,7 @@ let
           },
           "custom/playerctl": {
             "exec": "${scripts}/playerctl.sh",
-            "interval": 1,
+            "interval": 0.5,
             "max-length": 70,
             "on-click": "playerctl play-pause",
             "on-click-right": "${scripts}/animation.sh",

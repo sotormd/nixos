@@ -433,20 +433,19 @@ By default, the Nord palette is used.
 
 # Browsers
 
-Three web browsers: `brave`, `i2p-browser` and `vanilla-browser` are included.
+Two web browsers: Brave and I2P Browser are included.
 
-| Name              | Browser  | Description                                          |
-| ----------------- | -------- | ---------------------------------------------------- |
-| `brave`           | Brave    | Primary, hardened browser                            |
-| `i2p-browser`     | Firefox  | Browser for the I2P network                          |
-| `vanilla-browser` | Chromium | Ephemeral vanilla browser with Windows 11 user agent |
+| Name        | Based On | Description                 |
+| ----------- | -------- | --------------------------- |
+| Brave       | Brave    | Primary, hardened browser   |
+| I2P Browser | Firefox  | Browser for the I2P network |
 
 ## Brave
 
 ### Launching
 
-The Brave browser can be launched using the shortcut `$mod+backslash` or by
-executing the firejail wrapper:
+The Brave browser can be launched using the shortcut `$mod+backslash` or from
+the console:
 
 ```bash
 brave
@@ -455,18 +454,26 @@ brave
 It can also be launched from [rofi](#launcher-rofi) or from the
 [dock](#dock-widget)
 
+Because of how the sandbox is set up, Brave can only be launched once (to
+prevent concurrent writes to the data directory). If Brave is launched again, a
+notificiation informs the user that Brave is already running and suggests
+opening a new tab/window instead.
+
 ### Configuration
 
 Note that the `~/.config/BraveSoftware/Brave-Browser/` directory is persisted by
 Impermanence so all state is persisted across reboots.
 
-The included brave browser is heavily policied via chromium enterprise policies.
+The included brave browser is heavily policied using Chromium enterprise
+policies.
 
 The policies include options to disable several anti-features, particularly
 those related to crypto and web3.
 
 The included brave browser also strips out any telemetry by setting initial
 preferences and local state files.
+
+For a full comprehensive list, see [Security](../security.md#brave).
 
 ### Extensions
 
@@ -481,25 +488,17 @@ uBlock Origin is also configured further via chromium policies.
 
 ### Sandbox
 
-The `brave` executable provided is a firejail wrapper with several hardening
-flags.
+Brave runs in a sandbox using bubblewrap and xdg-dbus-proxy. See
+[Security](../security.md#brave) for more information.
 
 Note that to run the brave browser, you will have to enable unprivileged user
 namespaces, which is disabled by default. It can be enabled by setting the
 `kernel.unprivileged_userns_clone` sysctl to `1` or via the waybar
 [userns](#userns-module) module.
 
-### WebApps
+## I2P Browser
 
-The following websites are installed as web apps:
-
-- `spotify`
-
-Web apps can be launched like normal apps. The web apps also run under firejail.
-
-## i2p-browser
-
-The i2p-browser can be launched by executing the firejail wrapper:
+The i2p-browser can be launched from the console:
 
 ```bash
 i2p-browser
@@ -507,32 +506,13 @@ i2p-browser
 
 It can also be launched from [rofi](#launcher-rofi).
 
-The i2p-browser is just the Firefox browser with several configuration settings
+The I2P Browser is just the Firefox browser with several configuration settings
 to allow browsing the I2P network, along with hardened policies and preferences.
 
-The i2p-browser uses the I2P HTTP Proxy from `network.server.i2p.port` in the
-variables.
+The I2P Browser uses the I2P HTTP Proxy hosted on the Server.
 
-The included `i2p-browser` executable is a firejail wrapper with several
-hardening flags.
-
-## vanilla-browser
-
-The vanilla-browser can be launched by executing the firejail wrapper:
-
-```bash
-vanilla-browser
-```
-
-It can also be launched from [rofi](#launcher-rofi).
-
-The vanilla-browser runs in a `--private` firejail with several hardening flags.
-This means that it can't write to the user's home directory like Brave or
-i2p-browser.
-
-The vanilla-browser also sets the user agent to show Windows 11.
-
-It is not configured at all, and is mostly vanilla Chromium.
+The I2P Browser runs in a bubblewrap sandbox. See
+[Security](../security.md#i2p-browser) for more information.
 
 # Other Applications
 
@@ -679,7 +659,6 @@ Notable changes from default config:
 - wpa_supplicant replaced by NetworkManager
 - unbound from Server replaced by cloudflare DNS
 - `kernel.unprivileged_userns_clone` set to 1 by default
-- firejailed librewolf browser is installed
 - real `/home` is not mounted by Impermanence
 - several directories under `/persist` are made read-only using
   [Mount Profiles](../filesystems.md#mount-profiles)
