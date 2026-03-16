@@ -6,69 +6,49 @@ let
     text = ''
       #!${pkgs.runtimeShell}
 
-      STATUS="$(playerctl status)"
+      ${pkgs.playerctl}/bin/playerctl metadata --follow --format '{{status}}|{{title}}|{{artist}}' |
+      awk -F'|' '
+      function trim(s) {
+        gsub(/^[[:space:]]+|[[:space:]]+$/, "", s)
+        return s
+      }
 
-      TITLE="$(
-        playerctl metadata title |
-          sed -E '
-            s/ -.*//;
-            s/\(.*\)//g;
-            s/\[.*\]//g;
-            s/^[[:space:]]*//;
-            s/[[:space:]]*$//;
-            s/&/\&amp;/g;
-            s/</\&lt;/g;
-            s/>/\&gt;/g;
-            s/"/\\"/g
-          '
-      )"
+      function escape(s) {
+        gsub(/&/, "\\&amp;", s)
+        gsub(/</, "\\&lt;", s)
+        gsub(/>/, "\\&gt;", s)
+        gsub(/"/, "\\\"", s)
+        return s
+      }
 
-      ARTISTS="$(
-        playerctl metadata artist |
-          awk -F',' '{print $1 ", " $2}' |
-          sed -E '
-            s/^[[:space:]]*//;
-            s/[[:space:]]*$//;
-            s/, *$//;
-            s/&/\&amp;/g;
-            s/</\&lt;/g;
-            s/>/\&gt;/g;
-            s/"/\\"/g
-          '
-      )"
+      {
+        status=$1
+        title=$2
+        artist=$3
 
-      if [[ -e "$XDG_RUNTIME_DIR/waybar-noanimation" ]]; then
-        PLAYING_CLASS="playerctl-playing-noanimation"
-      else
-        PLAYING_CLASS="playerctl-playing"
-      fi
+        sub(/ -.*/, "", title)
+        gsub(/\(.*\)/, "", title)
+        gsub(/\[.*\]/, "", title)
+        title=trim(title)
 
-      if [[ -z "$TITLE" || "$TITLE" == "Advertisement" ]]; then
-        echo '{"text": "", "class": "playerctl-stopped"}'
-      elif [[ "$STATUS" == "Playing" ]]; then
-        echo "{\"text\": \"<span size='10000'></span> $TITLE - $ARTISTS\", \"class\": \"$PLAYING_CLASS\"}"
-      else
-        echo "{\"text\": \"<span size='10000'></span> $TITLE - $ARTISTS\", \"class\": \"playerctl-paused\"}"
-      fi
+        split(artist, a, ",")
+        artist=a[1]
+        if (a[2] != "") artist=artist ", " a[2]
+        artist=trim(artist)
+
+        title=escape(title)
+        artist=escape(artist)
+
+        if (status == "Playing") {
+            printf("{\"text\":\"<span size=\\\"10000\\\"></span> %s - %s\",\"class\":\"playerctl-playing\"}\n", title, artist)
+        } else {
+            printf("{\"text\":\"<span size=\\\"10000\\\"></span> %s - %s\",\"class\":\"playerctl-paused\"}\n", title, artist)
+        }
+
+        fflush()
+      }'
     '';
     destination = "/playerctl.sh";
-    executable = true;
-  };
-
-  animationScript = pkgs.writeTextFile {
-    name = "waybar-script-animation";
-    text = ''
-      #!${pkgs.runtimeShell}
-
-      FILE="$XDG_RUNTIME_DIR/waybar-noanimation"
-
-      if [[ -e "$FILE" ]]; then
-        rm "$FILE"
-      else
-        touch "$FILE"
-      fi
-    '';
-    destination = "/animation.sh";
     executable = true;
   };
 
@@ -118,7 +98,6 @@ let
     name = "waybar-scripts";
     paths = [
       playerctlScript
-      animationScript
       namespacesStatusScript
       namespacesToggleScript
     ];

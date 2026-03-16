@@ -139,11 +139,10 @@ All brightness commands are dispatched via `brightnessctl`.
 The `volume` and `brightness` commands are wrappers which display a `dunst`
 notification with a bar indicator.
 
-The media, audio and brightness can also be controlled via waybar:
+The media and audio can also be controlled via waybar:
 
 - Media: [playerctl Module](#playerctl-module)
 - Audio: [audio Module](#audio-module)
-- Brightness: [battery Module](#battery-module)
 
 ## Modes
 
@@ -216,13 +215,12 @@ Current workspace is highlighted in bold.
 
 Shows currently playing track.
 
-| Action           | Bind         |
-| ---------------- | ------------ |
-| Play / pause     | Left click   |
-| Stop             | Middle click |
-| Next             | Scroll up    |
-| Previous         | Scroll down  |
-| Toggle animation | Right click  |
+| Action       | Bind        |
+| ------------ | ----------- |
+| Play / pause | Left click  |
+| Stop         | Right click |
+| Next         | Scroll up   |
+| Previous     | Scroll down |
 
 ### mode Module
 
@@ -281,11 +279,9 @@ Shows current volume.
 
 Shows current battery percentage / remaining time.
 
-| Action                        | Bind        |
-| ----------------------------- | ----------- |
-| Toggle percentage / time view | Left click  |
-| Increase brightness           | Scroll up   |
-| Decrease brightness           | Scroll down |
+| Action                        | Bind       |
+| ----------------------------- | ---------- |
+| Toggle percentage / time view | Left click |
 
 ### clock Module
 
