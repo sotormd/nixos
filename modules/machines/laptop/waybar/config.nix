@@ -59,8 +59,6 @@ let
             ],
             "format-plugged": "<span size='13000'>󰂄</span> <span rise='800'>{capacity}%</span>",
             "format-warning": "<span size='13000'>{icon}</span> <span rise='800'>{capacity}%</span>",
-            "on-scroll-down": "brightness 5%-",
-            "on-scroll-up": "brightness 5%+",
             "states": {
               "critical": 15,
               "warning": 30
@@ -81,11 +79,10 @@ let
           },
           "custom/playerctl": {
             "exec": "${scripts}/playerctl.sh",
-            "interval": 0.5,
+            "restart-interval": 1,
             "max-length": 70,
             "on-click": "playerctl play-pause",
-            "on-click-right": "${scripts}/animation.sh",
-            "on-click-middle": "playerctl stop",
+            "on-click-right": "playerctl stop",
             "on-scroll-down": "playerctl previous",
             "on-scroll-up": "playerctl next",
             "return-type": "json"
