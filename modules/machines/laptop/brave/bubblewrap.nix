@@ -35,6 +35,9 @@ let
         --own="org.mpris.MediaPlayer2.*" \
         --talk="org.mpris.MediaPlayer2.*" & proxy_pid=$!
 
+      brave_tmp="$XDG_RUNTIME_DIR/bubblewrap-brave-tmp"
+      mkdir -p "$brave_tmp"
+
       cleanup() {
           rm -f "$LOCKFILE"
 
@@ -43,7 +46,7 @@ let
               wait "$proxy_pid" 2>/dev/null
           fi
 
-          rm -rf "$users" "$proxy_dir"
+          rm -rf "$users" "$proxy_dir" "$brave_tmp"
       }
       trap cleanup INT TERM EXIT
 
@@ -79,8 +82,7 @@ let
         --ro-bind "$XDG_RUNTIME_DIR/pipewire-0" "$XDG_RUNTIME_DIR/pipewire-0" \
         --ro-bind "$XDG_RUNTIME_DIR/pulse" "$XDG_RUNTIME_DIR/pulse" \
         --bind "$proxy_socket" "$XDG_RUNTIME_DIR/bus" \
-        --bind "$proxy_socket" "/run/dbus" \
-        --bind /tmp /tmp \
+        --bind "$brave_tmp" /tmp \
         --ro-bind /etc/static/brave /etc/static/brave \
         --ro-bind /etc/brave /etc/brave \
         --bind /home/${user}/.config/BraveSoftware/Brave-Browser /home/${user}/.config/BraveSoftware/Brave-Browser \

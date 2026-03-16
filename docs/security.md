@@ -1460,10 +1460,16 @@ browsers.
        --ro-bind "$XDG_RUNTIME_DIR/pulse" "$XDG_RUNTIME_DIR/pulse"
        ```
 
-     - Bind /tmp
+     - Bind /tmp to $XDG_RUNTIME_DIR/bubblewrap-brave-tmp so that MPRIS album
+       art can be used
+
+       ```bash
+       brave_tmp="$XDG_RUNTIME_DIR/bubblewrap-brave-tmp"
+       mkdir -p "$brave_tmp"
+       ```
 
        ```
-       --bind /tmp /tmp
+       --bind $brave_tmp /tmp
        ```
 
      - Bind Enterprise Policies as readonly
@@ -1503,7 +1509,6 @@ browsers.
 
        ```
        --bind "$proxy_socket" "$XDG_RUNTIME_DIR/bus"
-       --bind "$proxy_socket" "/run/dbus"
        ```
 
 2. Several

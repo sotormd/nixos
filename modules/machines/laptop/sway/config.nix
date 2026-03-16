@@ -85,7 +85,6 @@ let
       #
       bindsym Mod4+d exec rofi -show run
       bindsym Mod4+Return exec foot
-      bindsym Mod4+backslash exec brave
 
       #
       # FOCUS
@@ -167,10 +166,10 @@ let
       #
       # AUDIO
       #
-      bindsym XF86AudioPrev exec playerctl previous
-      bindsym XF86AudioPlay exec playerctl play-pause
-      bindsym Mod4+XF86AudioPlay exec playerctl stop
-      bindsym XF86AudioNext exec playerctl next
+      bindsym XF86AudioPrev exec media previous
+      bindsym XF86AudioPlay exec media play-pause
+      bindsym Mod4+XF86AudioPlay exec media stop
+      bindsym XF86AudioNext exec media next
       bindsym XF86AudioMute exec wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle
       bindsym XF86AudioLowerVolume exec volume 5%-
       bindsym XF86AudioRaiseVolume exec volume 5%+
@@ -283,8 +282,8 @@ let
       #
       # QUICK SCREENSHOT
       #
-      bindsym Mod4+shift+s exec grimshot copy area
-      bindsym Print exec grimshot save screen
+      bindsym Mod4+shift+s exec ${pkgs.sway-contrib.grimshot}/bin/grimshot copy area
+      bindsym Print exec ${pkgs.sway-contrib.grimshot}/bin/grimshot save screen
 
       #
       # SCREENSHOT MODE
@@ -294,7 +293,7 @@ let
         bindsym Escape mode default
         bindsym Return mode default
         bindsym c mode screenshot-copy
-        bindsym p mode default; exec slurp -p | grim -g - - | magick - txt: | awk 'NR==2 { print tolower($3) }' | wl-copy
+        bindsym p mode default; exec ${pkgs.slurp}/bin/slurp -p | ${pkgs.grim}/bin/grim -g - - | magick - txt: | awk 'NR==2 { print tolower($3) }' | wl-copy
         bindsym s mode screenshot-save
       }
 
@@ -304,9 +303,9 @@ let
       mode "screenshot-copy" {
         bindsym Escape mode default
         bindsym Return mode default
-        bindsym a mode default; exec grimshot copy area
-        bindsym s mode default; exec grimshot copy screen
-        bindsym w mode default; exec grimshot copy window
+        bindsym a mode default; exec ${pkgs.sway-contrib.grimshot}/bin/grimshot copy area
+        bindsym s mode default; exec ${pkgs.sway-contrib.grimshot}/bin/grimshot copy screen
+        bindsym w mode default; exec ${pkgs.sway-contrib.grimshot}/bin/grimshot copy window
       }
 
       #
@@ -315,9 +314,9 @@ let
       mode "screenshot-save" {
         bindsym Escape mode default
         bindsym Return mode default
-        bindsym a mode default; exec grimshot savecopy area
-        bindsym s mode default; exec grimshot savecopy screen
-        bindsym w mode default; exec grimshot savecopy window
+        bindsym a mode default; exec ${pkgs.sway-contrib.grimshot}/bin/grimshot savecopy area
+        bindsym s mode default; exec ${pkgs.sway-contrib.grimshot}/bin/grimshot savecopy screen
+        bindsym w mode default; exec ${pkgs.sway-contrib.grimshot}/bin/grimshot savecopy window
       }
 
       #
@@ -346,8 +345,9 @@ let
       #
       # CLIPHIST
       #
-      exec wl-paste --watch cliphist store
-      bindsym Mod4+c exec exec cliphist list | rofi -dmenu -p '' | cliphist decode | wl-copy
+      exec wl-paste --watch ${pkgs.cliphist}/bin/cliphist store
+      bindsym Mod4+c exec exec ${pkgs.cliphist}/bin/cliphist list | rofi -dmenu -p '' | ${pkgs.cliphist}/bin/cliphist decode | wl-copy
+      bindsym Mod4+shift+c exec ${pkgs.cliphist}/bin/cliphist wipe
 
       #
       # SWAYIDLE

@@ -20,7 +20,7 @@ This document covers using the Server role.
 
 Routine tasks such as updating the flake, switching configurations,
 garbage-collecting, and editing variables & secrets are handled through the
-unified `nixos(1)` helper CLI.
+bespoke unified `nixos(1)` wrapper CLI.
 
 Manpage:
 

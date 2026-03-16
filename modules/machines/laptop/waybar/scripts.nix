@@ -1,54 +1,20 @@
 { pkgs, ... }:
 
 let
-  playerctlScript = pkgs.writeTextFile {
-    name = "waybar-script-playerctl";
+  animationScript = pkgs.writeTextFile {
+    name = "waybar-script-animation";
     text = ''
       #!${pkgs.runtimeShell}
 
-      ${pkgs.playerctl}/bin/playerctl metadata --follow --format '{{status}}|{{title}}|{{artist}}' |
-      awk -F'|' '
-      function trim(s) {
-        gsub(/^[[:space:]]+|[[:space:]]+$/, "", s)
-        return s
-      }
+      FILE="$XDG_RUNTIME_DIR/waybar-noanimation"
 
-      function escape(s) {
-        gsub(/&/, "\\&amp;", s)
-        gsub(/</, "\\&lt;", s)
-        gsub(/>/, "\\&gt;", s)
-        gsub(/"/, "\\\"", s)
-        return s
-      }
-
-      {
-        status=$1
-        title=$2
-        artist=$3
-
-        sub(/ -.*/, "", title)
-        gsub(/\(.*\)/, "", title)
-        gsub(/\[.*\]/, "", title)
-        title=trim(title)
-
-        split(artist, a, ",")
-        artist=a[1]
-        if (a[2] != "") artist=artist ", " a[2]
-        artist=trim(artist)
-
-        title=escape(title)
-        artist=escape(artist)
-
-        if (status == "Playing") {
-            printf("{\"text\":\"<span size=\\\"10000\\\"></span> %s - %s\",\"class\":\"playerctl-playing\"}\n", title, artist)
-        } else {
-            printf("{\"text\":\"<span size=\\\"10000\\\"></span> %s - %s\",\"class\":\"playerctl-paused\"}\n", title, artist)
-        }
-
-        fflush()
-      }'
+      if [[ -e "$FILE" ]]; then
+        rm "$FILE"
+      else
+        touch "$FILE"
+      fi
     '';
-    destination = "/playerctl.sh";
+    destination = "/animation.sh";
     executable = true;
   };
 
@@ -97,7 +63,7 @@ let
   scripts = pkgs.symlinkJoin {
     name = "waybar-scripts";
     paths = [
-      playerctlScript
+      animationScript
       namespacesStatusScript
       namespacesToggleScript
     ];

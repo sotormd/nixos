@@ -12,12 +12,6 @@
     # audio visualizer
     pkgs.cava
 
-    # mpris control
-    pkgs.playerctl
-
-    # bash calculator
-    pkgs.bc
-
     # compression
     pkgs.file-roller
 
@@ -26,11 +20,6 @@
 
     # image manipulation
     pkgs.imagemagick
-
-    # screenshots
-    pkgs.slurp
-    pkgs.grim
-    pkgs.sway-contrib.grimshot
 
     # wayland clipboard
     pkgs.wl-clipboard
@@ -43,9 +32,6 @@
 
     # sway idle daemon
     pkgs.swayidle
-
-    # clipboard history
-    pkgs.cliphist
 
     # fortune cookies
     pkgs.fortune

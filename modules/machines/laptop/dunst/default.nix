@@ -9,6 +9,7 @@ in
     package.dunstWrapped
     scripts.volume
     scripts.brightness
+    scripts.media
     pkgs.libnotify
   ];
 }
