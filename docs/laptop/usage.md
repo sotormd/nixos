@@ -18,7 +18,7 @@ This document covers using the Laptop role.
 
 Routine tasks such as updating the flake, switching configurations,
 garbage-collecting, and editing variables & secrets are handled through the
-unified `nixos(1)` helper CLI.
+bespoke unified `nixos(1)` wrapper CLI.
 
 Manpage:
 
@@ -105,11 +105,10 @@ Workspaces can also be changed using the `rofi` launcher, see
 
 ## Launching Apps
 
-| Action                 | Keybind          |
-| ---------------------- | ---------------- |
-| Launch terminal `foot` | `$mod+Return`    |
-| Launch browser `brave` | `$mod+backslash` |
-| Launch launcher `rofi` | `$mod+d`         |
+| Action                 | Keybind       |
+| ---------------------- | ------------- |
+| Launch terminal `foot` | `$mod+Return` |
+| Launch launcher `rofi` | `$mod+d`      |
 
 The `rofi` launcher has several other uses, see:
 [Launcher, rofi](#launcher-rofi)
@@ -215,12 +214,13 @@ Current workspace is highlighted in bold.
 
 Shows currently playing track.
 
-| Action       | Bind        |
-| ------------ | ----------- |
-| Play / pause | Left click  |
-| Stop         | Right click |
-| Next         | Scroll up   |
-| Previous     | Scroll down |
+| Action           | Bind         |
+| ---------------- | ------------ |
+| Play / pause     | Left click   |
+| Stop             | Middle click |
+| Next             | Scroll up    |
+| Previous         | Scroll down  |
+| Toggle animation | Right click  |
 
 ### mode Module
 
@@ -401,6 +401,8 @@ Shows complete clipboard history using `cliphist`.
 
 Select an item to copy it to the clipboard.
 
+Clipboard history can be cleared using `$mod+Shift+c`
+
 Along with the traditional keybinds, you can use `wl-copy` or `wl-paste` to add
 things to / paste things from the clipboard.
 
@@ -440,8 +442,7 @@ Two web browsers: Brave and I2P Browser are included.
 
 ### Launching
 
-The Brave browser can be launched using the shortcut `$mod+backslash` or from
-the console:
+The Brave browser can be launched from the console:
 
 ```bash
 brave
