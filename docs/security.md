@@ -1041,8 +1041,20 @@ the world-readable Nix store.
 
 USBGuard is used to protect against rogue USB devices like BadUSB.
 
-The policy is set to allow only devices that existed before the daemon started.
-All other devices are blocked.
+The policy is set to allow only patterns defined in the `usbs` list in the
+variables file. All other devices are blocked. For example, to allow a keyboard:
+
+```nix
+usbs = [
+  ''id 05f0:0217 serial "" name "Keychron K2" hash "a0ef07fceb6fb77698f79a44a450121m" parent-hash "69d19c1a5733a31e7e6d9530e6k434a6" via-port "1-2" with-interface { 03:01:01 03:01:02 } with-connect-type "hotplug"''
+];
+```
+
+These descriptors can be found using the `usbguard(1)` command-line interface:
+
+```bash
+run0 usbguard list-devices
+```
 
 Additionally, devices with the following identifiers are explicitly rejected:
 

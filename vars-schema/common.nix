@@ -73,6 +73,10 @@ with lib;
 
     };
 
+    usbs = mkOption {
+      type = types.listOf types.str;
+    };
+
     user = {
 
       name = mkOption {

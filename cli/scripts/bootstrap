@@ -263,6 +263,8 @@ elif [ "$VERB" == "vars" ]; then
     };
   };
 
+  usbs = [ ];
+
   user = {
     name = "$VARS_USER_NAME";
     email = "$VARS_USER_EMAIL";
@@ -379,6 +381,8 @@ EOF
       static = { };
     };
   };
+
+  usbs = [ ];
 
   user = {
     name = "$VARS_USER_NAME";
