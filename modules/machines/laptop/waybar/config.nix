@@ -59,8 +59,6 @@ let
             ],
             "format-plugged": "<span size='13000'>󰂄</span> <span rise='800'>{capacity}%</span>",
             "format-warning": "<span size='13000'>{icon}</span> <span rise='800'>{capacity}%</span>",
-            "on-scroll-down": "brightness 5%-",
-            "on-scroll-up": "brightness 5%+",
             "states": {
               "critical": 15,
               "warning": 30
