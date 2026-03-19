@@ -66,6 +66,11 @@ let
           url = "https://lichess.org";
         }
         {
+          short = "fm";
+          full = "lastfm";
+          url = "https://last.fm";
+        }
+        {
           short = "gh";
           full = "github";
           url = "https://github.com";
@@ -79,11 +84,6 @@ let
           short = "mt";
           full = "monkeytype";
           url = "https://monkeytype.com";
-        }
-        {
-          short = "wk";
-          full = "wikipedia";
-          url = "https://en.wikipedia.org/wiki/Main_Page";
         }
         {
           short = "ch";
