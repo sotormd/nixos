@@ -4,7 +4,7 @@
     "foot",
     "org.inkscape.Inkscape",
     "Thunar",
-    "mousepad"
+    "org.xfce.mousepad"
   ],
   "known_clients": {
     "brave-browser": {
@@ -39,7 +39,7 @@
     "org.pwmt.zathura": {
       "symbol": ""
     },
-    "mousepad": {
+    "org.xfce.mousepad": {
       "exec": "mousepad",
       "symbol": "󱩼"
     },
