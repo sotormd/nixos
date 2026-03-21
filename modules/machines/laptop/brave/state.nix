@@ -1,4 +1,4 @@
-{ config, ... }:
+{ pkgs, ... }:
 
 let
   # configuration at '~/.config/BraveSoftware/Brave-Browser/Local State'
@@ -14,9 +14,14 @@ let
     # enable widevine cdm
     brave.widevine_opted_in = true;
   };
+
+  state = pkgs.writeTextFile {
+    name = "brave-state";
+    text = builtins.toJSON localState;
+    destination = "/Local State";
+    executable = false;
+  };
 in
 {
-  hjem.users.${config.vars.user.name} = {
-    files.".config/BraveSoftware/Brave-Browser/Local State".text = builtins.toJSON localState;
-  };
+  inherit state;
 }

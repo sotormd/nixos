@@ -129,7 +129,14 @@ let
       global = false;
     };
   };
+
+  preferences = pkgs.writeTextFile {
+    name = "brave-preferences";
+    text = builtins.toJSON initialPreferences;
+    destination = "/initial_preferences";
+    executable = false;
+  };
 in
 {
-  preferencesFile = pkgs.writeText "intial_preferences" (builtins.toJSON initialPreferences);
+  inherit preferences;
 }

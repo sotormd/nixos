@@ -1497,6 +1497,12 @@ browsers.
        --bind /home/${user}/.config/BraveSoftware/Brave-Browser /home/${user}/.config/BraveSoftware/Brave-Browser
        ```
 
+     - Bind local state as readonly
+
+       ```
+       --ro-bind "${state}/Local State" "/home/${user}/.config/BraveSoftware/Brave-Browser/Local State"
+       ```
+
      - Bind downloads directory
 
        ```

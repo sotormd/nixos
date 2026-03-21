@@ -1,16 +1,16 @@
 { config, pkgs, ... }:
 
 let
-  preferences = import ./preferences.nix { inherit config pkgs; };
-  args = import ./args.nix;
+  inherit (import ./preferences.nix { inherit config pkgs; }) preferences;
+  inherit (import ./args.nix) commandLineArgs;
 
   executable =
     (pkgs.brave.overrideAttrs (oldAttrs: {
       installPhase =
         oldAttrs.installPhase
-        + "cp ${preferences.preferencesFile} $out/opt/brave.com/brave/initial_preferences";
+        + "cp ${preferences}/initial_preferences $out/opt/brave.com/brave/initial_preferences";
     })).override
-      { inherit (args) commandLineArgs; };
+      { inherit commandLineArgs; };
 in
 {
   inherit executable;
