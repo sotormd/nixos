@@ -2,6 +2,7 @@
 
 let
   inherit (import ./executable.nix { inherit config pkgs; }) executable;
+  inherit (import ./state.nix { inherit pkgs; }) state;
   user = config.vars.user.name;
 
   jail = pkgs.writeTextFile {
@@ -86,6 +87,7 @@ let
         --ro-bind /etc/static/brave /etc/static/brave \
         --ro-bind /etc/brave /etc/brave \
         --bind /home/${user}/.config/BraveSoftware/Brave-Browser /home/${user}/.config/BraveSoftware/Brave-Browser \
+        --ro-bind "${state}/Local State" "/home/${user}/.config/BraveSoftware/Brave-Browser/Local State" \
         --bind /home/${user}/Downloads /home/${user}/Downloads \
         ${executable}/bin/brave
     '';

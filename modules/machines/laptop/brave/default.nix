@@ -8,8 +8,6 @@ in
     ./extensions.nix
 
     ./policies.nix
-
-    ./state.nix
   ];
 
   programs.chromium.enable = true;
