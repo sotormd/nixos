@@ -55,6 +55,11 @@
 { config, lib, ... }:
 
 {
+  ######################
+  # trust no interfaces
+  ######################
+  networking.firewall.trustedInterfaces = lib.mkForce [ ];
+
   #################
   # loopback ports
   #################

@@ -7,9 +7,6 @@
   # disallow pings
   networking.firewall.allowPing = false;
 
-  # trust no interfaces
-  networking.firewall.trustedInterfaces = lib.mkForce [ ];
-
   # open zero ports
   networking.firewall.allowedTCPPorts = lib.mkForce [ ];
   networking.firewall.allowedUDPPorts = lib.mkForce [ ];
