@@ -1095,6 +1095,9 @@ Unbound DNS server hosted on Server is used as the default DNS server.
 
 Cloudflare is used as the fallback server.
 
+Additionally, [StevenBlack's host list](http://github.com/StevenBlack/hosts) is
+used to filter malicious domains.
+
 > Server only
 
 The Unbound DNS server hosted on Server is hardened. The following options are
@@ -1390,6 +1393,12 @@ browsers.
        --ro-bind /etc/resolv.conf /etc/resolv.conf
        ```
 
+     - Bind hosts as readonly
+
+       ```
+       --ro-bind /etc/hosts /etc/hosts
+       ```
+
      - Bind fonts as readonly
 
        ```
@@ -1677,6 +1686,12 @@ browsers.
 
        ```
        --ro-bind /etc/resolv.conf /etc/resolv.conf
+       ```
+
+     - Bind hosts as readonly
+
+       ```
+       --ro-bind /etc/hosts /etc/hosts
        ```
 
      - Bind fonts as readonly

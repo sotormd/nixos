@@ -57,6 +57,7 @@ let
         --ro-bind "$users/passwd" /etc/passwd \
         --ro-bind "$users/group" /etc/group \
         --ro-bind /etc/resolv.conf /etc/resolv.conf \
+        --ro-bind /etc/hosts /etc/hosts \
         --ro-bind /etc/fonts /etc/fonts \
         --tmpfs /tmp \
         --tmpfs /home/${user} \
