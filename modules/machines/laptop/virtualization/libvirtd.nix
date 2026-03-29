@@ -1,10 +1,13 @@
-{ config, ... }:
+{ config, pkgs, ... }:
 
 {
   # enable libvirtd with swtpm support
   virtualisation.libvirtd = {
     enable = true;
-    qemu.swtpm.enable = true;
+    qemu = {
+      swtpm.enable = true;
+      vhostUserPackages = [ pkgs.virtiofsd ];
+    };
   };
 
   # enable the virt-manager gui
