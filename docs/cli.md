@@ -131,7 +131,7 @@ Examples:
 
 # Garbage collect
 
-> WARNING: Destructive command: deletes all non-current generations.
+> Destructive command: deletes all non-current generations.
 
 ```bash
 nixos clean

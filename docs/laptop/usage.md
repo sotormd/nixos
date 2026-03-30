@@ -572,12 +572,11 @@ virt-manager
 
 It can also be launched from [rofi](#launcher-rofi).
 
-Created virtual machines are lost on reboot, since Impermanence does not persist
-these directories. To persist across reboots, store these under `/persist` or
-add these directories to the Impermanence setup.
+Created virtual machines are persisted across reboots since `/var/lib/libvirt`
+is persisted under the [Impermanence](../filesystems.md#impermanence)
+configuration.
 
-An alternative to creating persistent VM disks is to use ZFS ZVOLs to store
-them.
+ZFS ZVOLs can also be used for virtual machine disks.
 
 For example, to create a 1TB ZVOL:
 
@@ -625,9 +624,9 @@ See the manpage for more information:
 man distrobox
 ```
 
-Created containers are lost on reboot, since Impermanence does not persist these
-directories. To persist across reboots, store these under `/persist` or add
-these directories to the Impermanence setup.
+Created distroboxes are persisted across reboots since
+`~/.local/share/containers` is persisted under the
+[Impermanence](../filesystems.md#impermanence) configuration.
 
 `distrobox` requires the use of unprivileged user namespaces, which is disabled
 by default. It can be enabled by setting the `kernel.unprivileged_userns_clone`
@@ -656,8 +655,7 @@ Notable changes from default config:
 - wpa_supplicant replaced by NetworkManager
 - unbound from Server replaced by cloudflare DNS
 - `kernel.unprivileged_userns_clone` set to 1 by default
-- real `/home` is not mounted by Impermanence
-- several directories under `/persist` are made read-only using
+- `/persist/nixos` and `/persist/sops-nix` are made read-only using
   [Mount Profiles](../filesystems.md#mount-profiles)
 
 Nomad Mode can be used by booting into the `gnome` specialisation from the boot
@@ -669,4 +667,5 @@ menu.
 > **Does this clutter my device?** No, all GNOME-specific things (except some
 > logs) are thrown out by Impermanence.
 
-You cannot use the `nixos` CLI from within the nomad specialisation.
+The bespoke `nixos` CLI and various other `nixos-*` tooling cannot be used from
+within the nomad specialisation.

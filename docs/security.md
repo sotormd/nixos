@@ -425,9 +425,9 @@ Several kernel parameters are used to harden the kernel. They are covered below:
     kernel.unprivileged_userns_clone=0
     ```
 
-    > NOTE: Browsers and distrobox containers require this feature to be
-    > enabled, and it can be enabled on demand on a as-needed basis by the user
-    > using the waybar [userns](./laptop/usage/md#userns-module) module.
+    > Browsers and distrobox containers require this feature to be enabled, and
+    > it can be enabled on demand on a as-needed basis by the user using the
+    > waybar [userns](./laptop/usage/md#userns-module) module.
 
 12. disable function tracing
 

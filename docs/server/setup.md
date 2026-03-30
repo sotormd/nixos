@@ -130,7 +130,7 @@ Ensure all variables and secrets are properly defined.
 
 # Setting up Impermanence
 
-> NOTE: This is a post-install action.
+> This is a post-install action.
 
 1. Populate `/persist/root` with the default directories to persist.
 

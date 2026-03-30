@@ -22,6 +22,9 @@ lib.mkIf config.vars.features.impermanence.enable {
       # secure boot
       "/var/lib/sbctl"
 
+      # libvirt virtual machines
+      "/var/lib/libvirt"
+
     ];
 
 }

@@ -83,11 +83,9 @@
     };
 
     # rpool/nixos/persist -> /persist
-    # nosuid,nodev
     "/persist" = {
       device = "rpool/nixos/persist";
       fsType = "zfs";
-      options = lib.mountHarden;
       neededForBoot = true;
     };
 
@@ -95,7 +93,7 @@
 
   # nosuid,nodev
   // lib.mkSelfHarden [
-    "/tmp"
+    "/persist/nixos"
   ]
 
   # nosuid,nodev,noexec
@@ -104,8 +102,10 @@
     "/etc"
     "/lib"
     "/lib64"
+    "/persist/sops-nix"
     "/root"
     "/srv"
+    "/tmp"
   ];
 
   hardware.cpu.amd.updateMicrocode = lib.mkDefault config.hardware.enableRedistributableFirmware;

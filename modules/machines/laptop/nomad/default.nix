@@ -83,11 +83,8 @@ let
         # systems gotta boot
         ../boot
 
-        # impermanence - rollbacks + bind root
-        # we will not persist anything in /home
-        ../impermanence/rollback-root.nix
-        ../impermanence/rollback-home.nix
-        ../impermanence/bind-root.nix
+        # impermanence
+        ../impermanence
 
         # virtualization
         # might need this
@@ -136,13 +133,21 @@ let
             # sops-nix
             "/persist/sops-nix"
 
-            # original home directory
-            "/persist/root/home"
-
           ];
 
-        # use the same state version
-        system.stateVersion = "24.05";
+        system = {
+          switch.enable = false;
+          tools = {
+            nixos-version.enable = false;
+            nixos-rebuild.enable = false;
+            nixos-option.enable = false;
+            nixos-install.enable = false;
+            nixos-generate-config.enable = false;
+            nixos-enter.enable = false;
+            nixos-build-vms.enable = false;
+          };
+          stateVersion = "24.05";
+        };
 
       };
     };

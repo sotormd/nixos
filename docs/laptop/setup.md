@@ -48,7 +48,7 @@ Before proceeding, see [Laptop Requirements](./requirements.md).
    export NIXOS_MOUNT=/mnt
    ```
 
-> NOTE: The installer will refuse to install NixOS if NIXOS_MOUNT is not /mnt.
+> The installer will refuse to install NixOS if NIXOS_MOUNT is not /mnt.
 
 ## Partitioning Disks
 
@@ -279,17 +279,17 @@ Ensure all variables and secrets are properly defined.
 
 # Setting up Secure Boot
 
-> NOTE: This is a post-install action.
+> This is a post-install action.
 
-> WARNING: Secure Boot for NixOS is under active development. Make sure you read
+> Secure Boot for NixOS is under active development. Make sure you read
 > lanzaboote documentation before proceeding.
 
-> WARNING: If dual booting with Windows, either disable bitlocker encryption or
-> keep the recovery keys handy.
+> If dual booting with Windows, either disable bitlocker encryption or keep the
+> recovery keys handy.
 
-> NOTE: It is highly recommended to set a BIOS password on devices that support
-> this feature. Without a BIOS password, Secure Boot can simply be disabled and
-> is meaningless.
+> It is highly recommended to set a BIOS password on devices that support this
+> feature. Without a BIOS password, Secure Boot can simply be disabled and is
+> meaningless.
 
 1. System requirements.
 
@@ -350,9 +350,9 @@ Ensure all variables and secrets are properly defined.
 
 # Setting up Impermanence
 
-> NOTE: This is a post-install action.
+> This is a post-install action.
 
-> NOTE: Impermanence requires Secure Boot to be set up and keys available at
+> Impermanence requires Secure Boot to be set up and keys available at
 > `/var/lib/sbctl`.
 
 1. Populate `/persist/root` with the default directories to persist.

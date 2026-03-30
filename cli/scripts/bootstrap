@@ -709,7 +709,8 @@ elif [ "$VERB" == "impermanence" ]; then
             "/var/lib/systemd" \
             "/etc/zfs" \
             "/var/log" \
-            "/var/lib/sbctl"
+            "/var/lib/sbctl" \
+            "/var/lib/libvirt"
 
         # populate /persist/root/home/
         persist_dirs "$PERSIST_DIR_HOME" "$MOUNT$REAL_HOME" \
@@ -718,7 +719,8 @@ elif [ "$VERB" == "impermanence" ]; then
             "/Pictures" \
             "/Projects" \
             "/.config/BraveSoftware/Brave-Browser" \
-            "/.ssh"
+            "/.ssh" \
+            "/.local/share/containers"
 
     elif [ "$ROLE" == "server" ]; then
         
