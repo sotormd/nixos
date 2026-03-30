@@ -1291,9 +1291,8 @@ Fail2Ban is used to limit brute force authentication attempts on SSH.
 
 2. Tor
 
-   `oniux` can be used to run binaries in a Tor sandbox. Do not use `oniux` to
-   run browsers, use the Tor Browser instead. The Tor Browser is not installed
-   by default but can be used by installing it in an ad-hoc Nix shell.
+   No Tor tooling is installed by default. The Tor Browser and oniux can be
+   installed and used in an ad-hoc Nix Shell.
 
 3. Metadata Anonymization
 
