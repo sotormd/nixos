@@ -323,6 +323,12 @@ elif [ "$VERB" == "vars" ]; then
     secureboot.enable = false;
     impermanence.enable = false;
     selfhosted.enable = false;
+    nomad = {
+      gnome.enable = false;
+      plasma.enable = false;
+      mate.enable = false;
+      xfce.enable = false;
+    };
   };
 
   seed = {
