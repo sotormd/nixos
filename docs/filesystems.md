@@ -108,34 +108,35 @@ Impermanence.
 
 On the Laptop role, the following directories are hardened without Impermanence:
 
-| Path       | Profile |
-| ---------- | ------- |
-| `/bin`     | Data    |
-| `/boot`    | Data    |
-| `/etc`     | Data    |
-| `/home`    | Data    |
-| `/lib`     | Data    |
-| `/lib64`   | Data    |
-| `/persist` | Harden  |
-| `/root`    | Data    |
-| `/srv`     | Data    |
-| `/tmp`     | Harden  |
+| Path                | Profile |
+| ------------------- | ------- |
+| `/bin`              | Data    |
+| `/boot`             | Data    |
+| `/etc`              | Data    |
+| `/home`             | Data    |
+| `/lib`              | Data    |
+| `/lib64`            | Data    |
+| `/persist/nixos`    | Harden  |
+| `/persist/sops-nix` | Data    |
+| `/root`             | Data    |
+| `/srv`              | Data    |
+| `/tmp`              | Data    |
 
 On the Laptop role during [Nomad Mode](./laptop/usage.md#nomad-mode), the
 following additional directories are hardened:
 
-| Path                 | Profile |
-| -------------------- | ------- |
-| `/persist/nixos`     | Static  |
-| `/persist/sops-nix`  | Static  |
-| `/persist/root/home` | Static  |
+| Path                | Profile |
+| ------------------- | ------- |
+| `/persist/nixos`    | Static  |
+| `/persist/sops-nix` | Static  |
 
 On the Server role, the following directories are hardened without Impermanence:
 
-| Path       | Profile |
-| ---------- | ------- |
-| `/persist` | Harden  |
-| `/tmp`     | Harden  |
+| Path                | Profile |
+| ------------------- | ------- |
+| `/persist`          | Harden  |
+| `/persist/sops-nix` | Data    |
+| `/tmp`              | Data    |
 
 Additionally, directories persisted using Impermanence are also hardened
 separately.
@@ -307,8 +308,8 @@ fileSystems."/path/to/thing" = {
 };
 ```
 
-> NOTE: `x-gvfs-hide` prevents the bind-mounts from showing up as devices in the
-> File Manager.
+> `x-gvfs-hide` prevents the bind-mounts from showing up as devices in the File
+> Manager.
 
 The various helper functions covered above are used to create these bind mounts.
 
@@ -321,14 +322,19 @@ The following directories are persisted by default:
 | `/var/lib/systemd`                      | needed by systemd           | Data    |
 | `/etc/zfs`                              | needed by ZFS               | Data    |
 | `/var/log`                              | logs                        | Data    |
+| `/var/lib/libvirt`                      | libvirt vms                 | Data    |
 | `~/Documents`                           | user documents              | Data    |
 | `~/Downloads`                           | user downloaders            | Data    |
 | `~/Pictures`                            | user pictures               | Data    |
 | `~/Projects`                            | user projects               | Harden  |
 | `~/.config/BraveSoftware/Brave-Browser` | Brave browser configuration | Harden  |
 | `~/.ssh`                                | user ssh data               | Data    |
+| `~/.local/share/containers`             | distrobox containers        | Raw     |
 
-> NOTE: Brave directory cannot be `noexec` since it stores Widevine executables.
+> Brave directory cannot be `noexec` since it stores Widevine executables.
+
+> Distrobox containers directory cannot be `nosuid` since `sudo` needs to be
+> usable within containers.
 
 The directories are based on the recommendations in the NixOS
 [Manual](https://nixos.org/manual/nixos/stable/#ch-system-state) and system
@@ -391,8 +397,8 @@ fileSystems."/path/to/thing" = {
 };
 ```
 
-> NOTE: `x-gvfs-hide` prevents the bind-mounts from showing up as devices in the
-> File Manager.
+> `x-gvfs-hide` prevents the bind-mounts from showing up as devices in the File
+> Manager.
 
 The various helper functions covered above are used to create these bind mounts.
 

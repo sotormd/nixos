@@ -7,8 +7,15 @@ lib.mkIf config.vars.features.impermanence.enable {
 
   fileSystems =
 
+    lib.mkPersistRaw [ ] "/persist/root" [
+
+      # distrobox containers
+      "${home}/.local/share/containers"
+
+    ]
+
     # nosuid, nodev
-    lib.mkPersistHarden "/persist/root" [
+    // lib.mkPersistHarden "/persist/root" [
 
       # Projects
       "${home}/Projects"
