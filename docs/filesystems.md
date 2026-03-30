@@ -122,14 +122,6 @@ On the Laptop role, the following directories are hardened without Impermanence:
 | `/srv`              | Data    |
 | `/tmp`              | Data    |
 
-On the Laptop role during [Nomad Mode](./laptop/usage.md#nomad-mode), the
-following additional directories are hardened:
-
-| Path                | Profile |
-| ------------------- | ------- |
-| `/persist/nixos`    | Static  |
-| `/persist/sops-nix` | Static  |
-
 On the Server role, the following directories are hardened without Impermanence:
 
 | Path                | Profile |

@@ -93,6 +93,26 @@ with lib;
         type = types.bool;
       };
 
+      nomad = {
+
+        gnome.enable = mkOption {
+          type = types.bool;
+        };
+
+        plasma.enable = mkOption {
+          type = types.bool;
+        };
+
+        mate.enable = mkOption {
+          type = types.bool;
+        };
+
+        xfce.enable = mkOption {
+          type = types.bool;
+        };
+
+      };
+
     };
 
   };

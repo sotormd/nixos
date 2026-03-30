@@ -646,25 +646,40 @@ Podman is also used as the backend for Distrobox.
 
 # Nomad Mode
 
-Nomad Mode refers to the specialisation `gnome`, which sets up an environment
-ideal for usage away from home, in unreliable conditions.
+Nomad Mode refers to the various specialisations that which sets up an
+environment ideal for usage away from home, in unreliable conditions.
 
-Notable changes from default config:
+Nomad Mode also allows using several desktop environments. The following desktop
+environments are available:
 
-- sway window manager replaced by full GNOME desktop environment
+- GNOME
+- KDE Plasma
+- MATE
+- XFCE
+
+This functionality is disabled by default, but can be enabled using the
+`features.nomad.*` options in the variables file. For example, to use the GNOME
+desktop:
+
+1. Set `features.nomad.gnome.enable` to `true` in the variables file.
+2. Boot into the `gnome` specialization in the boot menu.
+
+Notable changes from the default configuration:
+
+- only bare minimum components are kept (including virtualization & containers)
+- sway window manager replaced by a full desktop environment
 - wpa_supplicant replaced by NetworkManager
 - unbound from Server replaced by cloudflare DNS
+- all selfhosted features are disabled
 - `kernel.unprivileged_userns_clone` set to 1 by default
-- `/persist/nixos` and `/persist/sops-nix` are made read-only using
-  [Mount Profiles](../filesystems.md#mount-profiles)
-
-Nomad Mode can be used by booting into the `gnome` specialisation from the boot
-menu.
+- the traditional libc malloc memory allocator is used instead of
+  graphene-hardened
+- the librewolf browser is installed
 
 > Nomad Mode is available only if Impermanence is enabled. This ensures that
 > activity under Nomad Mode does not affect the standard system.
 
-> **Does this clutter my device?** No, all GNOME-specific things (except some
+> **Does this clutter my device?** No, all desktop-specific things (except some
 > logs) are thrown out by Impermanence.
 
 The bespoke `nixos` CLI and various other `nixos-*` tooling cannot be used from
