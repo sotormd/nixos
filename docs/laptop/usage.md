@@ -672,6 +672,7 @@ Notable changes from the default configuration:
 - unbound from Server replaced by cloudflare DNS
 - all selfhosted features are disabled
 - `kernel.unprivileged_userns_clone` set to 1 by default
+- real home directory is not mounted
 - the traditional libc malloc memory allocator is used instead of
   graphene-hardened
 - the librewolf browser is installed

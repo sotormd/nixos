@@ -86,7 +86,10 @@ let
         ../boot
 
         # impermanence
-        ../impermanence
+        # no home directory though
+        ../impermanence/rollback-root.nix
+        ../impermanence/rollback-home.nix
+        ../impermanence/bind-root.nix
 
         # virtualization
         # might need this
