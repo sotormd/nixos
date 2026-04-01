@@ -1291,8 +1291,11 @@ Fail2Ban is used to limit brute force authentication attempts on SSH.
 
 2. Tor
 
-   No Tor tooling is installed by default. The Tor Browser and oniux can be
-   installed and used in an ad-hoc Nix Shell.
+   No Tor tooling is installed by default.
+
+   The Tor Browser and oniux can be installed and used in an ad-hoc Nix Shell.
+   However, this is discouraged and it is recommended to use Whonix instead. See
+   [Virtualisation and Containers](#virtualisation-and-containers).
 
 3. Metadata Anonymization
 
@@ -1851,4 +1854,9 @@ Bitwarden extension to access the vault hosted on Server.
 > Laptop only
 
 See
-[Virtualisation and Containers](./laptop/usage.md#virtualisation-and-containers).
+[Laptop Usage Documentation](./laptop/usage.md#virtualisation-and-containers)
+for information about virtualisation with QEMU/KVM and libvirt/virt-manager.
+
+It is recommended to set up [Whonix](https://www.whonix.org/) for accessing the
+Tor network in an isolated environment. [This](https://www.whonix.org/wiki/KVM)
+official wiki page covers setting up Whonix in QEMU/KVM using libvirt.
