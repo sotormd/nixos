@@ -9,7 +9,7 @@ This document covers using the Laptop role.
 3. [Browsers](#browsers)
 4. [Other Applications](#other-applications)
 5. [Virtualisation and Containers](#virtualisation-and-containers)
-6. [Nomad Mode](#nomad-mode)
+6. [Roaming Mode](#roaming-mode)
 7. [Further Reading](#further-reading)
 
 # System Maintenance
@@ -644,43 +644,20 @@ man podman
 
 Podman is also used as the backend for Distrobox.
 
-# Nomad Mode
+# Roaming Mode
 
-Nomad Mode refers to the various specialisations that which sets up an
+Roaming Mode refers to the `roaming` specialisation that which sets up an
 environment ideal for usage away from home, in unreliable conditions.
-
-Nomad Mode also allows using several desktop environments. The following desktop
-environments are available:
-
-- GNOME
-- KDE Plasma
-- MATE
-
-This functionality is disabled by default, but can be enabled using the
-`features.nomad.*` options in the variables file. For example, to use the GNOME
-desktop:
-
-1. Set `features.nomad.gnome.enable` to `true` in the variables file.
-2. Boot into the `gnome` specialization in the boot menu.
 
 Notable changes from the default configuration:
 
-- only bare minimum components are kept (including virtualization & containers)
-- sway window manager replaced by a full desktop environment
 - wpa_supplicant replaced by NetworkManager
-- unbound from Server replaced by cloudflare DNS
 - all selfhosted features are disabled
-- `kernel.unprivileged_userns_clone` set to 1 by default
-- real home directory is not mounted
-- the traditional libc malloc memory allocator is used instead of
-  graphene-hardened
-- the librewolf browser is installed
 
-> Nomad Mode is available only if Impermanence is enabled. This ensures that
-> activity under Nomad Mode does not affect the standard system.
+Roaming Mode can be used by booting into the `roaming` specialisation from the
+boot menu.
 
-> **Does this clutter my device?** No, all desktop-specific things (except some
-> logs) are thrown out by Impermanence.
+> Roaming Mode is available only if Impermanence is enabled. This ensures that
+> NetworkManager-specific files do not persist across reboots.
 
-The bespoke `nixos` CLI and various other `nixos-*` tooling cannot be used from
-within the nomad specialisation.
+The bespoke `nixos` CLI cannot be used within Roaming Mode.

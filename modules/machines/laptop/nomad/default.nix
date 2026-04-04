@@ -7,10 +7,9 @@
 }:
 
 let
-  desktops =
-    (lib.optional config.vars.features.nomad.gnome.enable "gnome")
-    ++ (lib.optional config.vars.features.nomad.plasma.enable "plasma")
-    ++ (lib.optional config.vars.features.nomad.mate.enable "mate");
+  desktops = [
+    "gnome"
+  ];
 
   mkSpec = desktop: {
     inheritParentConfig = false;
@@ -85,10 +84,7 @@ let
         ../boot
 
         # impermanence
-        # no home directory though
-        ../impermanence/rollback-root.nix
-        ../impermanence/rollback-home.nix
-        ../impermanence/bind-root.nix
+        ../impermanence
 
         # virtualization
         # might need this
@@ -102,9 +98,8 @@ let
 
         # we need to initialize variables ourselves
         # since ../../common/default.nix ix not imported
-        vars = lib.recursiveUpdate legacyVars {
+        vars = legacyVars // {
           role = "nomad";
-          features.selfhosted.enable = false;
         };
 
         networking = {
@@ -123,9 +118,22 @@ let
         # allow unprivileged user namespaces
         boot.kernel.sysctl."kernel.unprivileged_userns_clone" = lib.mkForce "1";
 
-        # librewolf - doesnt work with graphene-hardened malloc
+        # librewolf
         environment.systemPackages = [ pkgs.librewolf ];
-        environment.memoryAllocator.provider = lib.mkForce "libc";
+
+        # filesystem hardening
+        fileSystems =
+
+          # nosuid, nodev, noexec, ro
+          lib.mkSelfStatic [
+
+            # nixos flake
+            "/persist/nixos"
+
+            # sops-nix
+            "/persist/sops-nix"
+
+          ];
 
         system = {
           switch.enable = false;
