@@ -1202,18 +1202,12 @@ backend. The userspace tool `nixos-firewall-tool` can be used for ad-hoc
 changes.
 
 By default, **NO** ports are open on **ANY** interface. ICMP ping requests are
-also disallowed.
-
-> Laptop only
-
-Only the loopback interface is trusted.
+also disallowed. Additionally, **NO** interfaces are trusted, not even loopback.
 
 > Server only
 
 Ports are open on the server based on the enabled services. See
 [Server Usage Documentation](./server/usage.md) which covers all ports.
-
-Additionally, **NO** interfaces are trusted, not even loopback.
 
 Most ports are opened only to the loopback interface since services are
 reverse-proxied via NGINX. For the few ports that are opened to LAN, the ports
