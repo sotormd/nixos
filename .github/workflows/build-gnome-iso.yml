@@ -19,10 +19,6 @@ jobs:
         with:
           nix_path: nixpkgs=channel:nixos-unstable
 
-      - name: Generate timestamp
-        id: ts
-        run: echo "ts=$(date +%s)" >> $GITHUB_OUTPUT
-
       - name: Build GNOME ISO
         run: |
           nix run nixpkgs#nixos-generators -- \
@@ -30,12 +26,8 @@ jobs:
             --flake .#image-gnome \
             -o gnome-image
 
-          GNOME_SRC=$(echo gnome-image/iso/*.iso)
-          GNOME_DST="nixos-gnome-${{ steps.ts.outputs.ts }}.iso"
-          cp "$GNOME_SRC" "$GNOME_DST"
-
-      - name: Upload gnome ISO
+      - name: Upload GNOME ISO
         uses: actions/upload-artifact@v4
         with:
           name: nixos-gnome
-          path: nixos-gnome-${{ steps.ts.outputs.ts }}.iso
+          path: gnome-image/iso/*.iso
