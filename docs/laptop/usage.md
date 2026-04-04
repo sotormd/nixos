@@ -661,3 +661,9 @@ boot menu.
 > NetworkManager-specific files do not persist across reboots.
 
 The bespoke `nixos` CLI cannot be used within Roaming Mode.
+
+# Further Reading
+
+- [Security Features](../security.md)
+- [Filesystem and Impermanence Documentation](../filesystems.md)
+- [CLI Documentation](../cli.md)
