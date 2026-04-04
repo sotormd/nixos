@@ -9,9 +9,8 @@
 let
   desktops =
     (lib.optional config.vars.features.nomad.gnome.enable "gnome")
-    ++ (lib.optional config.vars.features.nomad.mate.enable "mate")
-    ++ (lib.optional config.vars.features.nomad.xfce.enable "xfce")
-    ++ (lib.optional config.vars.features.nomad.plasma.enable "plasma");
+    ++ (lib.optional config.vars.features.nomad.plasma.enable "plasma")
+    ++ (lib.optional config.vars.features.nomad.mate.enable "mate");
 
   mkSpec = desktop: {
     inheritParentConfig = false;

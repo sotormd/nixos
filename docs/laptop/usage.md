@@ -655,7 +655,6 @@ environments are available:
 - GNOME
 - KDE Plasma
 - MATE
-- XFCE
 
 This functionality is disabled by default, but can be enabled using the
 `features.nomad.*` options in the variables file. For example, to use the GNOME
