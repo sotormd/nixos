@@ -107,10 +107,6 @@ with lib;
           type = types.bool;
         };
 
-        xfce.enable = mkOption {
-          type = types.bool;
-        };
-
       };
 
     };
