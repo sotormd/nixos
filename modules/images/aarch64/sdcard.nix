@@ -8,12 +8,8 @@
     ./base.nix
 
     # quiet boot
-    ../machines/common/boot/quiet.nix
+    ../../machines/common/boot/quiet.nix
   ];
-
-  environment.sessionVariables.NIXOS_ROLE = "server";
-
-  users.users.root.initialHashedPassword = "";
 
   networking.networkmanager.enable = true;
 }

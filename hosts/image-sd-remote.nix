@@ -1,1 +1,1 @@
-{ imports = [ ../modules/images/sdremote.nix ]; }
+{ imports = [ ../modules/images/aarch64/sdremote.nix ]; }
