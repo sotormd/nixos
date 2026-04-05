@@ -12,5 +12,5 @@
     inputs.mate.nixosModules.mate
   ];
 
-  isoImage.edition = "sotormd-mate";
+  isoImage.edition = "mate";
 }
