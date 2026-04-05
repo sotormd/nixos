@@ -9,5 +9,5 @@
     ./base.nix
   ];
 
-  isoImage.edition = "sotormd-minimal";
+  isoImage.edition = "minimal";
 }
