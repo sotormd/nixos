@@ -9,7 +9,7 @@
     ./base.nix
   ];
 
-  isoImage.edition = "sotormd-gnome";
+  isoImage.edition = "gnome";
 
   services.desktopManager.gnome = {
 
