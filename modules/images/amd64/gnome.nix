@@ -9,8 +9,7 @@
     ./base.nix
   ];
 
-  environment.sessionVariables.NIXOS_ROLE = "laptop";
-  environment.sessionVariables.NIXOS_MOUNT = "/mnt";
+  isoImage.edition = "sotormd-gnome";
 
   services.desktopManager.gnome = {
 
@@ -41,18 +40,4 @@
     enable = true;
 
   };
-
-  # required for calamares
-  programs.partition-manager.enable = true;
-
-  # install calamares
-  environment.systemPackages = [
-    pkgs.gparted
-    pkgs.calamares-nixos
-    pkgs.calamares-nixos-extensions
-    pkgs.glibcLocales
-    pkgs.nerd-fonts.fira-code
-  ];
-
-  i18n.supportedLocales = [ "all" ];
 }

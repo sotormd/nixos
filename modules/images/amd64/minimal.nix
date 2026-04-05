@@ -9,6 +9,5 @@
     ./base.nix
   ];
 
-  environment.sessionVariables.NIXOS_ROLE = "laptop";
-  environment.sessionVariables.NIXOS_MOUNT = "/mnt";
+  isoImage.edition = "sotormd-minimal";
 }

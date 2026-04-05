@@ -1,13 +1,17 @@
 # Images
 
-[![Build Minimal ISO](https://img.shields.io/github/actions/workflow/status/sotormd/nixos/build-minimal-iso.yml?style=for-the-badge&label=Build%20Minimal%20ISO)](https://github.com/sotormd/nixos/actions/workflows/build-minimal-iso.yml)
+[![Build MATE ISO](https://img.shields.io/github/actions/workflow/status/sotormd/nixos/build-mate-iso.yml?style=for-the-badge&label=Build%20MATE%20ISO)](https://github.com/sotormd/nixos/actions/workflows/build-mate-iso.yml)
 [![Build GNOME ISO](https://img.shields.io/github/actions/workflow/status/sotormd/nixos/build-gnome-iso.yml?style=for-the-badge&label=Build%20GNOME%20ISO)](https://github.com/sotormd/nixos/actions/workflows/build-gnome-iso.yml)
+[![Build Minimal ISO](https://img.shields.io/github/actions/workflow/status/sotormd/nixos/build-minimal-iso.yml?style=for-the-badge&label=Build%20Minimal%20ISO)](https://github.com/sotormd/nixos/actions/workflows/build-minimal-iso.yml)
 
-Two images are offered for the `x86_64-linux` architecture:
+Three images are offered for the `x86_64-linux` architecture:
 
-1. **Minimal**: A minimal NixOS environment.
+1. **MATE**: NixOS with
+   [my MATE configuration](https://github.com/sotormd/nixos-mate).
 
 2. **GNOME**: NixOS with the GNOME desktop environment.
+
+3. **Minimal**: A minimal NixOS environment.
 
 Two images are offered for the `aarch64-linux` architecture (intended for
 Raspberry-Pi 4b):
@@ -23,20 +27,17 @@ For all images, the username is `nixos` and the password is also `nixos`.
 
 # Usage
 
-1. Minimal image
+1. MATE image
 
    If you do not wish to build this image, you can get one from the
-   [Github Actions](https://github.com/sotormd/nixos/actions/workflows/build-minimal-iso.yml)
+   [Github Actions](https://github.com/sotormd/nixos/actions/workflows/build-mate-iso.yml)
    build artifacts.
 
    ```bash
    nix run nixpkgs#nixos-generators -- \
    --format iso \
-   --flake github:sotormd/nixos#image-minimal \
-   -o /tmp/minimal-image
+   --flake github:sotormd/nixos#image-mate
    ```
-
-   The resultant image will be available inside `/tmp/minimal-image/iso/`.
 
 2. GNOME image
 
@@ -47,13 +48,22 @@ For all images, the username is `nixos` and the password is also `nixos`.
    ```bash
    nix run nixpkgs#nixos-generators -- \
    --format iso \
-   --flake github:sotormd/nixos#image-gnome \
-   -o /tmp/gnome-image
+   --flake github:sotormd/nixos#image-gnome
    ```
 
-   The resultant image will be available inside `/tmp/gnome-image/iso/`.
+3. Minimal image
 
-3. SD image
+   If you do not wish to build this image, you can get one from the
+   [Github Actions](https://github.com/sotormd/nixos/actions/workflows/build-minimal-iso.yml)
+   build artifacts.
+
+   ```bash
+   nix run nixpkgs#nixos-generators -- \
+   --format iso \
+   --flake github:sotormd/nixos#image-minimal
+   ```
+
+4. SD image
 
    ```bash
    nix build github:sotormd/nixos#nixosConfigurations.image-sd.config.system.build.sdImage
@@ -61,7 +71,7 @@ For all images, the username is `nixos` and the password is also `nixos`.
 
    The resultant image will be available inside `./result/sd-image/`.
 
-4. SD Remote image
+5. SD Remote image
 
    To build an image for a wireless remote install:
 

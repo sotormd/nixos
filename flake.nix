@@ -89,6 +89,11 @@
       url = "github:sotormd/homepage";
     };
 
+    # for the mate image
+    mate = {
+      url = "github:sotormd/nixos-mate";
+    };
+
   };
 
   outputs =
@@ -116,7 +121,7 @@
           # not documented, but this can be used instead of
           # the included images for installation
           devShells.default = pkgs.mkShell {
-            packages = import ./modules/images/bootstrapPackages.nix { inherit pkgs; } ++ [
+            packages = import ./modules/images/common/bootstrap.nix { inherit pkgs; } ++ [
               nixos.nixosWrapper
             ];
           };
@@ -179,6 +184,7 @@
             machine-server = mkMachine "server" "aarch64-linux";
 
             # images
+            image-mate = mkImage "mate" "x86_64-linux";
             image-gnome = mkImage "gnome" "x86_64-linux";
             image-minimal = mkImage "minimal" "x86_64-linux";
             image-sd = mkImage "sd" "aarch64-linux";
