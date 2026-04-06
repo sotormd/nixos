@@ -51,7 +51,7 @@ Before proceeding, see [Laptop Requirements](./requirements.md).
 
 > The installer will refuse to install NixOS if NIXOS_MOUNT is not /mnt.
 
-## Partitioning Disks
+# Partitioning Disks
 
 > **disko:** This flake doesn't use disko keeping dual booting in mind.
 
