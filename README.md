@@ -5,7 +5,8 @@
       <a href="#features">Features</a> |
       <a href="#roles">Roles</a> |
       <a href="#images">Images</a> |
-      <a href="#cli">CLI</a>
+      <a href="#cli">CLI</a> |
+      <a href="#related">Related</a>
     </strong>
   </p>
 </p>
@@ -30,8 +31,6 @@ Nix-specific features:
 - [Impermanence](./docs/filesystems.md#impermanence) using ZFS snapshots and
   bind mounts, without the library.
 - Package management using [lix](https://lix.systems)
-- Android environment using
-  [nix-on-droid](https://github.com/nix-community/nix-on-droid)
 - Role based modules
 - Variables system for device-specific configuration
 - Flake helper [CLI](#cli)
@@ -129,7 +128,6 @@ Comprehensive features list:
 | virtualization                | `qemu`, `virt-manager`, `distrobox`, `podman`                                                              |
 | cpu optimizations             | `auto-cpufreq`                                                                                             |
 | resource monitor              | `btop`, `htop`                                                                                             |
-| android                       | `nix-on-droid`                                                                                             |
 | themes, icons, cursors, fonts | [`colors`](https://github.com/sotormd/colors)                                                              |
 | wallpapers                    | [`wallpapers`](https://github.com/sotormd/wallpapers), [`xkcd-wall`](https://github.com/sotormd/xkcd-wall) |
 | terminal misc                 | `cava`, `fortune`                                                                                          |
@@ -153,10 +151,6 @@ This flake uses role-based configuration.
    [Setup Documentation](./docs/server/setup.md)
 
    [Usage Documentation](./docs/server/usage.md)
-
-3. Droid role: nix-on-droid configuration
-
-   [Setup & Usage Documentation](./docs/droid.md)
 
 # Images
 
@@ -187,3 +181,33 @@ man nixos
 
 See [CLI Documentation](./docs/cli.md) for the full command reference and
 workflow examples.
+
+# Related
+
+Here are some of my other repos that are related to my NixOS tooling:
+
+- [neovim](https://github.com/sotormd/neovim), Neovim configuration flake (ft.
+  nvf)
+- [neovim-nixvim](https://github.com/sotormd/neovim-nixvim), Neovim
+  configuration flake (ft. nixvim)
+- [colors](https://github.com/sotormd/colors), Colorscheme flake
+- [wallpapers](https://github.com/sotormd/wallpapers), Expose wallpapers as Nix
+  expressions
+- [homepage](https://github.com/sotormd/homepage), A pure Nix static homepage
+  generator
+- [droid](https://github.com/sotormd/droid), nix-on-droid configuration
+- [pattern](https://github.com/sotormd/pattern), Atomic, image-based systems
+  with A/B updates, provisioned using Nix
+- [flag](https://github.com/sotormd/flag),
+  [pattern](https://github.com/sotormd/pattern) for my VMs
+- [nixos-mate](https://github.com/sotormd/nixos-mate), MATE desktop for my NixOS
+  needs
+- [minimal-openbox](https://github.com/sotormd/minimal-openbox), A very minimal
+  openbox configuration
+- [nixos-image-flakes](https://github.com/sotormd/nixos-image-flakes), NixOS
+  installer images with Flakes enabled
+- [nixos-image-latest](https://github.com/sotormd/nixos-image-latest), NixOS
+  installer image with the latest kernel
+
+Some of these repos were previously part of this repo, but separated due to
+being out-of-scope.
