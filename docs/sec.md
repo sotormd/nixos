@@ -1731,9 +1731,9 @@ browsers.
 
      - Unshare all supported namespaces
 
-     ```
-     --unshare-all
-     ```
+       ```
+       --unshare-all
+       ```
 
      - Share network
 
