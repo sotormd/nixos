@@ -408,8 +408,8 @@ things to / paste things from the clipboard.
 
 ## Wallpapers
 
-The `oc.wave` wallpaper from [wallpapers](https://github.com/sotormd/wallpapers)
-is used for the desktop.
+The `nord.space` wallpaper from
+[wallpapers](https://github.com/sotormd/wallpapers) is used for the desktop.
 
 A random XKCD comic is used as the lockscreen wallpaper, with
 [xkcd-wall](https://github.com/sotormd/xkcd-wall). The comic is refreshed after

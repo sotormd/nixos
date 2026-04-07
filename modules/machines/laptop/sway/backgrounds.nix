@@ -1,5 +1,5 @@
 { config, ... }:
 
 {
-  wallpaper = config.wallpapers.oc.wave;
+  wallpaper = config.wallpapers.nord.space;
 }
