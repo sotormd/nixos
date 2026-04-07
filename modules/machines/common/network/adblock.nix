@@ -1,15 +1,13 @@
-{ inputs, ... }:
+{ inputs, lib, ... }:
 
+let
+  combined = builtins.readFile (inputs.hosts.outPath + "/alternates/fakenews-gambling-porn/hosts");
+
+  cleaned = lib.concatStringsSep "\n" (
+    lib.filter (line: !(lib.hasInfix "::" line)) (lib.splitString "\n" combined)
+  );
+
+in
 {
-  imports = [ inputs.hosts.nixosModule ];
-
-  # use Steven Black's hostlists
-  # to block bad content
-  networking.stevenBlackHosts = {
-    enable = true;
-    blockFakenews = true;
-    blockGambling = true;
-    blockPorn = true;
-    blockSocial = false;
-  };
+  networking.extraHosts = cleaned;
 }
