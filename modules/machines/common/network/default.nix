@@ -1,7 +1,5 @@
 {
   imports = [
-    ./adblock.nix
-
     ./disable-ipv6.nix
 
     ./firewall.nix
