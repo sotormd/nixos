@@ -25,6 +25,11 @@
     ];
   };
 
+  services.displayManager.autoLogin = {
+    enable = true;
+    user = "nixos";
+  };
+
   security.sudo = {
     enable = true;
     wheelNeedsPassword = false;
