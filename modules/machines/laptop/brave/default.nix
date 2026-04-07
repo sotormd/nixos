@@ -1,7 +1,12 @@
-{ config, pkgs, ... }:
+{
+  config,
+  inputs,
+  pkgs,
+  ...
+}:
 
 let
-  inherit (import ./package.nix { inherit config pkgs; }) brave;
+  inherit (import ./package.nix { inherit config inputs pkgs; }) brave;
 in
 {
   imports = [

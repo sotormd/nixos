@@ -1,8 +1,14 @@
-{ config, pkgs, ... }:
+{
+  config,
+  inputs,
+  pkgs,
+  ...
+}:
 
 let
   inherit (import ./executable.nix { inherit config pkgs; }) executable;
   inherit (import ./state.nix { inherit pkgs; }) state;
+
   user = config.vars.user.name;
 
   jail = pkgs.writeTextFile {
@@ -57,7 +63,7 @@ let
         --ro-bind "$users/passwd" /etc/passwd \
         --ro-bind "$users/group" /etc/group \
         --ro-bind /etc/resolv.conf /etc/resolv.conf \
-        --ro-bind /etc/hosts /etc/hosts \
+        --ro-bind ${inputs.hosts.outPath}/alternates/fakenews-gambling-porn/hosts /etc/hosts \
         --ro-bind /etc/fonts /etc/fonts \
         --tmpfs /tmp \
         --tmpfs /home/${user} \
