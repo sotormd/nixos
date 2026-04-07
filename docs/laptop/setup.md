@@ -16,7 +16,8 @@ Before proceeding, see [Laptop Requirements](./requirements.md).
 
 # Obtaining a Live NixOS Image
 
-1. Build either of the two included images for `x86_64-linux`: Minimal or GNOME.
+1. Build either of the three included images for `x86_64-linux`: MATE, GNOME or
+   Minimal.
 
    For more information, see [Images Documentation](../images.md).
 
