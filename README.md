@@ -18,7 +18,7 @@
 
 [Why do I not use some popular libraries?](./docs/why-not-x.md)
 
-[Security Features](./docs/security.md)
+[Security Features](./docs/sec.md)
 
 Nix-specific features:
 
