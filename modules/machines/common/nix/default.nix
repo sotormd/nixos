@@ -2,6 +2,8 @@
   imports = [
     ./deny-flake-config.nix
 
+    ./deny-ifd.nix
+
     ./dirty-git.nix
 
     ./flakes.nix
