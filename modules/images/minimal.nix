@@ -6,7 +6,10 @@
     "${modulesPath}/installer/cd-dvd/installation-cd-minimal.nix"
 
     # base configuration
-    ./base.nix
+    ./base
+
+    # additional configuration
+    ./additional/laptop.nix
   ];
 
   isoImage.edition = "minimal";

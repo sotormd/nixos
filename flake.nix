@@ -107,8 +107,9 @@
           # containes everything for the cli to work
           # not documented, but this can be used instead of
           # the included images for installation
+          # note that you may need a running gnupg agent to edit created sops secrets
           devShells.default = pkgs.mkShell {
-            packages = import ./modules/images/common/bootstrap.nix { inherit pkgs; } ++ [
+            packages = import ./modules/images/base/bootstrap.nix { inherit pkgs; } ++ [
               nixos.nixosWrapper
             ];
           };
