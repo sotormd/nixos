@@ -5,8 +5,8 @@
     # nix package manager configuration
     ../../machines/common/nix
 
-    # list of packages
-    ./packages.nix
+    # list of all basic packages
+    ./all-packages.nix
   ];
 
   time.timeZone = "UTC";
@@ -25,18 +25,19 @@
     ];
   };
 
-  services.displayManager.autoLogin = {
-    enable = true;
-    user = "nixos";
-  };
-
   security.sudo = {
     enable = true;
     wheelNeedsPassword = false;
   };
 
-  security.run0.wheelNeedsPassword = true;
+  security.run0.wheelNeedsPassword = false;
 
   # polkit for run0
   security.polkit.enable = true;
+
+  # gnupg for sops
+  programs.gnupg.agent.enable = true;
+
+  # networkmanager
+  networking.networkmanager.enable = true;
 }

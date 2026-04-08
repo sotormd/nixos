@@ -6,7 +6,11 @@
     "${modulesPath}/installer/cd-dvd/installation-cd-graphical-gnome.nix"
 
     # base configuration
-    ./base.nix
+    ./base
+
+    # additional configuration
+    ./additional/graphical.nix
+    ./additional/laptop.nix
   ];
 
   isoImage.edition = "gnome";

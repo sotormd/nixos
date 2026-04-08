@@ -1,1 +1,1 @@
-{ imports = [ ../modules/images/amd64/mate.nix ]; }
+{ imports = [ ../modules/images/mate.nix ]; }

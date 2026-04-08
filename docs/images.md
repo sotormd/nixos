@@ -36,9 +36,7 @@ include several useful packages for installation, recovery, etc.
    build artifacts.
 
    ```bash
-   nix run nixpkgs#nixos-generators -- \
-   --format iso \
-   --flake github:sotormd/nixos#image-mate
+   nix build github:sotormd/nixos#nixosConfigurations.image-mate.config.system.build.isoImage
    ```
 
 2. GNOME image
@@ -48,9 +46,7 @@ include several useful packages for installation, recovery, etc.
    build artifacts.
 
    ```bash
-   nix run nixpkgs#nixos-generators -- \
-   --format iso \
-   --flake github:sotormd/nixos#image-gnome
+   nix build github:sotormd/nixos#nixosConfigurations.image-gnome.config.system.build.isoImage
    ```
 
 3. Minimal image
@@ -60,9 +56,7 @@ include several useful packages for installation, recovery, etc.
    build artifacts.
 
    ```bash
-   nix run nixpkgs#nixos-generators -- \
-   --format iso \
-   --flake github:sotormd/nixos#image-minimal
+   nix build github:sotormd/nixos#nixosConfigurations.image-minimal.config.system.build.isoImage
    ```
 
 4. SD image
@@ -70,8 +64,6 @@ include several useful packages for installation, recovery, etc.
    ```bash
    nix build github:sotormd/nixos#nixosConfigurations.image-sd.config.system.build.sdImage
    ```
-
-   The resultant image will be available inside `./result/sd-image/`.
 
 5. SD Remote image
 
@@ -86,8 +78,4 @@ include several useful packages for installation, recovery, etc.
    nix build github:sotormd/nixos#nixosConfigurations.image-sd-remote.config.system.build.sdImage --impure
    ```
 
-   > `--impure` is needed to access environment variables
-
-   Change the environment variables for your environment.
-
-   The resultant image will be available inside `./result/sd-image`.
+   Replace the values for your environment.

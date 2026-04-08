@@ -1,1 +1,1 @@
-{ imports = [ ../modules/images/amd64/gnome.nix ]; }
+{ imports = [ ../modules/images/gnome.nix ]; }

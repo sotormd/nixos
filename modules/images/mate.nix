@@ -6,7 +6,11 @@
     "${modulesPath}/installer/cd-dvd/installation-cd-graphical-calamares.nix"
 
     # base configuration
-    ./base.nix
+    ./base
+
+    # additional configuration
+    ./additional/laptop.nix
+    ./additional/graphical.nix
 
     # mate desktop
     inputs.nate.nixosModules.nate
