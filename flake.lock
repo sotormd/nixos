@@ -222,21 +222,6 @@
         "type": "github"
       }
     },
-    "mate": {
-      "locked": {
-        "lastModified": 1775328694,
-        "narHash": "sha256-Hr1U+QwCUCwVVbwi69MHy6GsYb7PCQ6VYzY/hpS2u0k=",
-        "owner": "sotormd",
-        "repo": "nixos-mate",
-        "rev": "14bb14fa7bada139098dacacfc6318a78d05fc44",
-        "type": "github"
-      },
-      "original": {
-        "owner": "sotormd",
-        "repo": "nixos-mate",
-        "type": "github"
-      }
-    },
     "mnw": {
       "locked": {
         "lastModified": 1768701608,
@@ -249,6 +234,21 @@
       "original": {
         "owner": "Gerg-L",
         "repo": "mnw",
+        "type": "github"
+      }
+    },
+    "nate": {
+      "locked": {
+        "lastModified": 1775622121,
+        "narHash": "sha256-0o8ipRLg2n0am/SoKa7Wvzilpvg4yOai8eNJXlHIfJg=",
+        "owner": "sotormd",
+        "repo": "nate",
+        "rev": "2ce723cd9e7c422d95b6f35f25313d49471b1fea",
+        "type": "github"
+      },
+      "original": {
+        "owner": "sotormd",
+        "repo": "nate",
         "type": "github"
       }
     },
@@ -437,7 +437,7 @@
         "homepage": "homepage",
         "hosts": "hosts",
         "lanzaboote": "lanzaboote",
-        "mate": "mate",
+        "nate": "nate",
         "neovim": "neovim",
         "nixpkgs": "nixpkgs_2",
         "sops-nix": "sops-nix",

@@ -9,7 +9,7 @@
 Three images are offered for the `x86_64-linux` architecture:
 
 1. **MATE**: NixOS with
-   [my MATE configuration](https://github.com/sotormd/nixos-mate).
+   [my MATE configuration](https://github.com/sotormd/nate).
 
 2. **GNOME**: NixOS with the GNOME desktop environment.
 
