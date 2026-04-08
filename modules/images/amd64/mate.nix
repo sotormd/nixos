@@ -9,7 +9,7 @@
     ./base.nix
 
     # mate desktop
-    inputs.mate.nixosModules.mate
+    inputs.nate.nixosModules.nate
   ];
 
   isoImage.edition = "mate";

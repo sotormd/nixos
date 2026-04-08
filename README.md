@@ -200,14 +200,9 @@ Here are some of my other repos that are related to my NixOS tooling:
   with A/B updates, provisioned using Nix
 - [flag](https://github.com/sotormd/flag),
   [pattern](https://github.com/sotormd/pattern) for my VMs
-- [nixos-mate](https://github.com/sotormd/nixos-mate), MATE desktop for my NixOS
-  needs
-- [minimal-openbox](https://github.com/sotormd/minimal-openbox), A very minimal
-  openbox configuration
-- [nixos-image-flakes](https://github.com/sotormd/nixos-image-flakes), NixOS
-  installer images with Flakes enabled
-- [nixos-image-latest](https://github.com/sotormd/nixos-image-latest), NixOS
-  installer image with the latest kernel
+- [nate](https://github.com/sotormd/nate), MATE desktop for my NixOS needs
+- [coffee](https://github.com/sotormd/coffee), A very minimal openbox
+  configuration
 
 Some of these repos were previously part of this repo, but separated due to
 being out-of-scope.

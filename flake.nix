@@ -77,8 +77,8 @@
     };
 
     # for the mate image
-    mate = {
-      url = "github:sotormd/nixos-mate";
+    nate = {
+      url = "github:sotormd/nate";
     };
 
   };
