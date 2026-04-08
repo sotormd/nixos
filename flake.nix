@@ -141,7 +141,7 @@
 
               inherit system;
 
-              modules = [ (import ./hosts { inherit role; }) ];
+              modules = [ (import ./roles { inherit role; }) ];
             };
 
           # create a "machine"
