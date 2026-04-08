@@ -199,10 +199,12 @@ Here are some of my other repos that are related to my NixOS tooling:
 - [pattern](https://github.com/sotormd/pattern), Atomic, image-based systems
   with A/B updates, provisioned using Nix
 - [flag](https://github.com/sotormd/flag),
-  [pattern](https://github.com/sotormd/pattern) for my VMs
+ A [pattern](https://github.com/sotormd/pattern) for my VMs
 - [nate](https://github.com/sotormd/nate), MATE desktop for my NixOS needs
 - [coffee](https://github.com/sotormd/coffee), A very minimal openbox
   configuration
 
 Some of these repos were previously part of this repo, but separated due to
-being out-of-scope.
+being out-of-scope (eg, [pattern](https://github.com/sotormd/pattern)).
+
+Others are still in-scope, but are maintained separately for simplicity (eg, [wallpapers](https://github.com/sotormd/wallpapers)).
