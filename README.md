@@ -79,7 +79,6 @@ Comprehensive features list:
 | packages                      | `nixos-unstable`                                                                                           |
 | package manager               | `lix`                                                                                                      |
 | shell                         | `bash`                                                                                                     |
-| kernel                        | `linux-hardened`                                                                                           |
 | entropy                       | `jitterentropy`                                                                                            |
 | malloc                        | `graphene-hardened`                                                                                        |
 | bootloader                    | `systemd-boot`, `uboot`                                                                                    |
