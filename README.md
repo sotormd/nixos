@@ -78,6 +78,7 @@ Comprehensive features list:
 | distro                        | `NixOS`                                                                                                    |
 | packages                      | `nixos-unstable`                                                                                           |
 | package manager               | `lix`                                                                                                      |
+| kernel                        | `linux`                                                                                                    |
 | shell                         | `bash`                                                                                                     |
 | entropy                       | `jitterentropy`                                                                                            |
 | malloc                        | `graphene-hardened`                                                                                        |
