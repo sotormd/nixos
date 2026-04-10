@@ -20,6 +20,7 @@ let
   bind = options: source: destination: extra: {
     ${destination} = {
       device = source;
+      fsType = "none";
       options = [
         "bind"
         "x-gvfs-hide"

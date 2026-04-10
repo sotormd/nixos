@@ -1,3 +1,9 @@
+{ config, lib, ... }:
+
 {
-  sops.secrets.duckdns = { };
+  config = lib.mkIf config.vars.services.nginx.enable {
+
+    sops.secrets.duckdns = { };
+
+  };
 }

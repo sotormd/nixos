@@ -11,15 +11,15 @@
   </p>
 </p>
 
-![nixos](./docs/screenshots/nord.gif)
+![nixos](./doc/screenshots/nord.gif)
 
 ~~slighly overengineered~~ NixOS configuration flake for multiple hosts
 
 # Features
 
-[Why do I not use some popular libraries?](./docs/why-not-x.md)
+[Why do I not use some popular libraries?](./doc/why-not-x.md)
 
-[Security Features](./docs/sec.md)
+[Security Features](./doc/security.md)
 
 Nix-specific features:
 
@@ -28,10 +28,10 @@ Nix-specific features:
 - Symlinks in ~ managed using [hjem](https://github.com/feel-co/hjem)
 - Secrets managed using [sops-nix](https://github.com/Mic92/sops-nix)
 - Secure boot using [lanzaboote](https://github.com/nix-community/lanzaboote)
-- [Impermanence](./docs/filesystems.md#impermanence) using ZFS snapshots and
-  bind mounts, without the library.
+- [Impermanence](./doc/filesystems.md#impermanence) using ZFS snapshots and bind
+  mounts, without the library.
 - Package management using [lix](https://lix.systems)
-- Role based modules
+- Role-based modules
 - Variables system for device-specific configuration
 - Flake helper [CLI](#cli)
 - Flake-enabled installation [images](#images)
@@ -59,7 +59,7 @@ Desktop features:
 - XKCD lockscreen wallpapers with
   [xkcd-wall](https://github.com/sotormd/xkcd-wall)
 - Automatic behavior changes when outside trusted & reliable networks with
-  [Roaming Mode](./docs/laptop/usage.md#roaming-mode)
+  [Roaming Mode](./doc/laptop/usage.md#roaming-mode)
 
 Services features:
 
@@ -136,36 +136,30 @@ Comprehensive features list:
 
 This flake uses role-based configuration.
 
-1. Laptop role: Laptop configuration
+| Role   | Description                         | Documentation                                                                                                                                |
+| ------ | ----------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------- |
+| Laptop | Personal laptop configuration.      | [Requirements](./doc/laptop/requirements.md)<br>[Setup Documentation](./doc/laptop/setup.md)<br>[Usage Documentation](./doc/laptop/usage.md) |
+| Server | Headless home-server configuration. | [Requirements](./doc/server/requirements.md)<br>[Setup Documentation](./doc/server/setup.md)<br>[Usage Documentation](./doc/server/usage.md) |
 
-   [Requirements](./docs/laptop/requirements.md)
-
-   [Setup Documentation](./docs/laptop/setup.md)
-
-   [Usage Documenation](./docs/laptop/usage.md)
-
-2. Server role: Headless home server configuration
-
-   [Requirements](./docs/server/requirements.md)
-
-   [Setup Documentation](./docs/server/setup.md)
-
-   [Usage Documentation](./docs/server/usage.md)
+Some previous roles have been moved to separate repos, see [Related](#related).
 
 # Images
-
-[![Build MATE ISO](https://img.shields.io/github/actions/workflow/status/sotormd/nixos/build-mate-iso.yml?style=for-the-badge&label=Build%20MATE%20ISO)](https://github.com/sotormd/nixos/actions/workflows/build-mate-iso.yml)
 
 [![Build GNOME ISO](https://img.shields.io/github/actions/workflow/status/sotormd/nixos/build-gnome-iso.yml?style=for-the-badge&label=Build%20GNOME%20ISO)](https://github.com/sotormd/nixos/actions/workflows/build-gnome-iso.yml)
 
 [![Build Minimal ISO](https://img.shields.io/github/actions/workflow/status/sotormd/nixos/build-minimal-iso.yml?style=for-the-badge&label=Build%20Minimal%20ISO)](https://github.com/sotormd/nixos/actions/workflows/build-minimal-iso.yml)
 
-Five images: MATE, GNOME, Minimal, SD and SD Remote are included (for
-installation, recovery, etc.)
+Three images: GNOME, Minimal and SD are included (for installation, recovery,
+etc.)
 
-These images have an ideal environment for setting up this flake.
+These images have an ideal environment for bootstrapping and installing this
+flake.
 
-See [Images Documentation](./docs/images.md) for more details.
+It is also possible to further configure these images for specific installation
+setups. Modules for remote installation over a wireless network are also
+provided.
+
+See [Images Documentation](./doc/images.md) for more details.
 
 # CLI
 
@@ -179,7 +173,7 @@ Manpage:
 man nixos
 ```
 
-See [CLI Documentation](./docs/cli.md) for the full command reference and
+See [CLI Documentation](./doc/cli.md) for the full command reference and
 workflow examples.
 
 # Related
@@ -198,8 +192,8 @@ Here are some of my other repos that are related to my NixOS tooling:
 - [droid](https://github.com/sotormd/droid), nix-on-droid configuration
 - [pattern](https://github.com/sotormd/pattern), Atomic, image-based systems
   with A/B updates, provisioned using Nix
-- [flag](https://github.com/sotormd/flag),
- A [pattern](https://github.com/sotormd/pattern) for my VMs
+- [flag](https://github.com/sotormd/flag), A
+  [pattern](https://github.com/sotormd/pattern) for my VMs
 - [nate](https://github.com/sotormd/nate), MATE desktop for my NixOS needs
 - [coffee](https://github.com/sotormd/coffee), A very minimal openbox
   configuration
@@ -207,4 +201,5 @@ Here are some of my other repos that are related to my NixOS tooling:
 Some of these repos were previously part of this repo, but separated due to
 being out-of-scope (eg, [pattern](https://github.com/sotormd/pattern)).
 
-Others are still in-scope, but are maintained separately for simplicity (eg, [wallpapers](https://github.com/sotormd/wallpapers)).
+Others are still in-scope, but are maintained separately for simplicity (eg,
+[wallpapers](https://github.com/sotormd/wallpapers)).

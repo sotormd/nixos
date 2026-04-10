@@ -9,31 +9,31 @@
 let
   homepageText = inputs.homepage.lib.makeHomepage {
     layout = [
-      (lib.concatMap (x: x) [
+      (lib.flatten [
         (lib.optional config.vars.services.searxng.enable {
           short = "sx";
           full = "searxng";
-          url = "https://${config.vars.network.domain}/searxng/";
+          url = "https://${config.vars.services.nginx.domain}/searxng/";
         })
         (lib.optional config.vars.services.vaultwarden.enable {
           short = "vw";
           full = "vaultwarden";
-          url = "https://${config.vars.network.domain}/vaultwarden/";
+          url = "https://${config.vars.services.nginx.domain}/vaultwarden/";
         })
         (lib.optional config.vars.services.i2pd.enable {
           short = "ip";
           full = "i2pd";
-          url = "https://${config.vars.network.domain}/i2pd/";
+          url = "https://${config.vars.services.nginx.domain}/i2pd/";
         })
         (lib.optional config.vars.services.qbt.enable {
           short = "qb";
           full = "qbittorrent";
-          url = "https://${config.vars.network.domain}/qbt/";
+          url = "https://${config.vars.services.nginx.domain}/qbt/";
         })
         (lib.optional config.vars.services.jellyfin.enable {
           short = "jf";
           full = "jellyfin";
-          url = "https://${config.vars.network.domain}/jellyfin/";
+          url = "https://${config.vars.services.nginx.domain}/jellyfin/";
         })
       ])
     ];
@@ -52,10 +52,14 @@ let
   };
 in
 {
-  services.nginx.virtualHosts.${config.vars.network.domain} = {
-    locations."/" = {
-      root = homepageDir;
-      index = "home.html";
+  config = lib.mkIf config.vars.services.nginx.enable {
+
+    services.nginx.virtualHosts.${config.vars.services.nginx.domain} = {
+      locations."/" = {
+        root = homepageDir;
+        index = "home.html";
+      };
     };
+
   };
 }

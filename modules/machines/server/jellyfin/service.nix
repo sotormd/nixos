@@ -48,6 +48,7 @@ let
 in
 {
   config = lib.mkIf config.vars.services.jellyfin.enable {
+
     systemd.services.jellyfin-setup = {
       enable = true;
       before = [ "jellyfin.service" ];
@@ -57,5 +58,6 @@ in
         ExecStart = "${jellyfinSetup}";
       };
     };
+
   };
 }

@@ -17,9 +17,6 @@
         # needed by ZFS
         "/etc/zfs"
 
-        # logs
-        "/var/log"
-
         # ssh host keys
         "/etc/ssh"
 
@@ -52,6 +49,9 @@
 
         # jellyfin data
         "/var/lib/jellyfin"
+
+        # logs
+        "/var/log"
 
       ];
 

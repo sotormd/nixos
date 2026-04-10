@@ -1,0 +1,19 @@
+name: Evaluate GNOME Image
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  nix-checks:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+
+      - name: Install Nix
+        uses: cachix/install-nix-action@v25
+
+      - name: GNOME image evaluation
+        run: nix eval .#nixosConfigurations.image-gnome.config.system.build.toplevel
+

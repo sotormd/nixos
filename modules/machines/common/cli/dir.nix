@@ -1,45 +1,47 @@
 { config, pkgs, ... }:
 
 let
-  script = pkgs.writeShellScript "nixos-dir-perms" ''
-    #!${pkgs.runtimeShell}
+  script = ''
+    set -euo pipefail
 
-        DIR="/persist/nixos"
-        USER=${config.vars.user.name}
+    mkdir -p /persist/nixos
+    mkdir -p /persist/sops-nix
+    mkdir -p /persist/root
+    mkdir -p /persist/keys
 
-        # chown directory
-        ${pkgs.coreutils-full}/bin/chown $USER: -R $DIR
+    chown root: /persist/sops-nix
+    chown root: /persist/root
+    chown root: /persist/keys
 
-        # chown everything except .git
-        ${pkgs.findutils}/bin/find "$DIR" \
-          -path "$DIR/.git" -prune -o \
-          -exec ${pkgs.coreutils-full}/bin/chown "$USER:$USER" {} +
+    chmod 700 /persist/sops-nix
+    chmod 700 /persist/root
+    chmod 700 /persist/keys
 
-        # directories: 700 (except .git)
-        ${pkgs.findutils}/bin/find "$DIR" \
-          -path "$DIR/.git" -prune -o \
-          -type d -exec ${pkgs.coreutils-full}/bin/chmod 700 {} +
+    USER="${config.vars.user.name}"
 
-        # files: 600 (except .git)
-        ${pkgs.findutils}/bin/find "$DIR" \
-          -path "$DIR/.git" -prune -o \
-          -type f -exec ${pkgs.coreutils-full}/bin/chmod 600 {} +
+    # chown directory
+    ${pkgs.coreutils-full}/bin/chown "$USER": -R "/persist/nixos"
 
-        # scripts explicitly executable
-        ${pkgs.coreutils-full}/bin/chmod -R 700 "$DIR/cli"
+    # directories: 700 (except .git)
+    ${pkgs.findutils}/bin/find "/persist/nixos" \
+      -path "/persist/nixos/.git" -prune -o \
+      -type d -exec ${pkgs.coreutils-full}/bin/chmod 700 {} +
+
+    # files: 600 (except .git)
+    ${pkgs.findutils}/bin/find "/persist/nixos" \
+      -path "/persist/nixos/.git" -prune -o \
+      -type f -exec ${pkgs.coreutils-full}/bin/chmod 600 {} +
+
+    # scripts explicitly executable
+    ${pkgs.coreutils-full}/bin/chmod -R 700 "/persist/nixos/cli"
   '';
 in
 {
-  systemd.services.fix-nixos-dir-perms = {
-    description = "Fix ownership and permissions of nixos directory";
+  systemd.services.persist-dir-setup = {
+    description = "Set persist directory permissions";
     wantedBy = [ "multi-user.target" ];
     after = [ "local-fs.target" ];
-
-    serviceConfig = {
-      Type = "oneshot";
-      ExecStart = ''
-        !${script}
-      '';
-    };
+    serviceConfig.Type = "oneshot";
+    inherit script;
   };
 }

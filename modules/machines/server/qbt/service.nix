@@ -7,6 +7,7 @@
 
 {
   config = lib.mkIf config.vars.services.qbt.enable {
+
     systemd.services.qbt = {
       description = "qbittorrent-nox service";
 
@@ -121,5 +122,6 @@
         '';
       };
     };
+
   };
 }

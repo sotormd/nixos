@@ -1,13 +1,15 @@
 { config, pkgs, ... }:
 
 let
+  proxy = config.vars.selfhosted.i2pd.address;
+
   userJs = pkgs.writeTextFile {
     name = "i2p-browser-userjs";
     text = ''
       user_pref("network.proxy.type", 1);
-      user_pref("network.proxy.http", "${config.vars.network.server.address}");
+      user_pref("network.proxy.http", "${proxy}");
       user_pref("network.proxy.http_port", 4444);
-      user_pref("network.proxy.ssl", "${config.vars.network.server.address}");
+      user_pref("network.proxy.ssl", "${proxy}");
       user_pref("network.proxy.ssl_port", 4444);
       user_pref("network.proxy.no_proxies_on", "");
 

@@ -1,15 +1,8 @@
-{ inputs, pkgs, ... }:
-
 {
   imports = [
-    inputs.sops-nix.nixosModules.sops
-
+    ./enable.nix
     ./gpg.nix
-
     ./secrets.nix
-
     ./settings.nix
   ];
-
-  environment.systemPackages = [ pkgs.sops ];
 }

@@ -1,11 +1,8 @@
 {
   imports = [
+    ./disable-suid.nix
     ./polkit.nix
-
     ./run0.nix
-
-    ./suid-wrappers.nix
-
     ./sudo.nix
   ];
 }
