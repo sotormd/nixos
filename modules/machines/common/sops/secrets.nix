@@ -3,7 +3,7 @@
     hashedPassword = {
       neededForUsers = true;
     };
-    network = { };
+    wireless = { };
     seed = { };
   };
 }

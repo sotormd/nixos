@@ -30,7 +30,6 @@ let
       #workspaces,
       .playerctl-paused, .playerctl-playing, .playerctl-playing-noanimation,
       #idle_inhibitor,
-      .userns-enabled, .userns-disabled,
       #network,
       #pulseaudio,
       #battery,
@@ -40,23 +39,10 @@ let
         padding: 0px 9px;
       }
 
-      #idle_inhibitor {
-        border-radius: 7px 0px 0px 7px;
-        margin-right: 0;
-        padding-right: 5px;
-      }
-
-      .userns-enabled, .userns-disabled {
-        border-radius: 0px 7px 7px 0px;
-        margin-left: 0;
-        padding-left: 5px;
-      }
-
       .playerctl-paused, .playerctl-playing, .playerctl-playing-noanimation,
       #mode,
       #window,
       #idle_inhibitor,
-      .userns-enabled, .userns-disabled,
       #network,
       #pulseaudio,
       #battery,
@@ -123,7 +109,6 @@ let
 
       .playerctl-paused, .playerctl-playing, .playerctl-playing-noanimation,
       #idle_inhibitor,
-      .userns-enabled, .userns-disabled,
       #network,
       #pulseaudio,
       #battery,
@@ -131,8 +116,7 @@ let
         color: #${config.colors.waybar.modules.text};
       }
 
-      #idle_inhibitor,
-      .userns-enabled, .userns-disabled {
+      #idle_inhibitor {
         background-color: #${config.colors.waybar.util.bg};
       }
 

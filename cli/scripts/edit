@@ -8,6 +8,7 @@ ROLE="$__NIXOS_ROLE"
 VARS_DIR="$DIR/vars"
 VARS="$VARS_DIR/vars.nix"
 
+SOPS_DIR="$__NIXOS_MOUNT$__NIXOS_GLOBALS_SOPS"
 SECRETS="$VARS_DIR/secrets.yaml"
 
 case "$1" in
@@ -15,7 +16,7 @@ case "$1" in
         "${EDITOR:-vi}" "$VARS"
         ;;
     sops)
-        run0 --setenv=GNUPGHOME="$__NIXOS_GLOBALS_SOPS" sops "$SECRETS"
+        run0 --setenv=GNUPGHOME="$SOPS_DIR" sops "$SECRETS"
         ;;
     *)
     echo "Error: expected argument (vars/sops)" >&2

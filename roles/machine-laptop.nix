@@ -1,7 +1,6 @@
 {
   imports = [
-    ../vars-schema/common.nix
-    ../vars-schema/laptop.nix
+    ../modules/common
     ../modules/machines/common
     ../modules/machines/laptop
   ];

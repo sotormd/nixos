@@ -1,9 +1,6 @@
-{ config, pkgs, ... }:
-
 {
   imports = [
     ./config.nix
+    ./enable.nix
   ];
-
-  users.users.${config.vars.user.name}.packages = [ pkgs.mousepad ];
 }

@@ -1,14 +1,7 @@
-{ pkgs, ... }:
-
-let
-  package = import ./bin.nix { inherit pkgs; };
-in
 {
   imports = [
     ./dir.nix
-
     ./env.nix
+    ./enable.nix
   ];
-
-  environment.systemPackages = [ package.nixosWrapper ];
 }

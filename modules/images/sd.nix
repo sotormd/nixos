@@ -2,15 +2,12 @@
 
 {
   imports = [
+
+    # sdcard aarch64 image
     "${modulesPath}/installer/sd-card/sd-image-aarch64.nix"
 
-    # base configuration
-    ./base
-
     # additional configuration
-    ./additional/sdcard.nix
+    ./compose/server.nix
 
-    # quiet boot
-    ../machines/common/boot/quiet.nix
   ];
 }

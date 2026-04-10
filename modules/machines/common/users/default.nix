@@ -1,13 +1,9 @@
 {
   imports = [
     ./compliance.nix
-
-    ./git.nix
-
     ./immutable.nix
-
+    ./lock-root.nix
     ./main.nix
-
     ./xdg.nix
   ];
 }

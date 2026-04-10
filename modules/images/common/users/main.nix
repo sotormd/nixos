@@ -1,0 +1,15 @@
+{ lib, ... }:
+
+{
+  users.users.nixos = {
+    isNormalUser = true;
+
+    # password: nixos
+    initialHashedPassword = lib.mkForce "$y$j9T$EcXwZmlJcTbO2yjHu4xOy.$.M/ehO.13pAGk1rzJD4XAwpYzCay8una0iKIgZW7vc8";
+
+    extraGroups = [
+      "wheel"
+      "networkmanager"
+    ];
+  };
+}

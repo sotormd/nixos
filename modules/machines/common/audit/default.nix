@@ -1,12 +1,7 @@
 {
   imports = [
-    ./compliance.nix
-
+    ./enable.nix
     ./rules.nix
-
     ./settings.nix
   ];
-
-  security.audit.enable = true;
-  security.auditd.enable = true;
 }

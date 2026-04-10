@@ -1,5 +1,3 @@
 {
-  imports = [
-    ./auto-cpufreq.nix
-  ];
+  imports = [ ./auto-cpufreq.nix ];
 }

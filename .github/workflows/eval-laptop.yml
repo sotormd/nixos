@@ -1,0 +1,36 @@
+name: Evaluate Laptop Role
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  nix-checks:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+
+      - name: Install Nix
+        uses: cachix/install-nix-action@v25
+
+      - name: Ensure variables and secrets are not present
+        run: |
+          if [ -f "./.sops.yaml" ]; then
+            exit 1
+          fi
+          if [ -d "./vars/" ]; then
+            exit 1
+          fi
+
+      - name: Generate stub vars for checks
+        run: |
+          mkdir -p vars
+          cp .github/stubvars.nix vars/vars.nix
+          touch vars/secrets.yaml
+
+      - name: Stage changes
+        run: git add .
+
+      - name: Laptop evaluation
+        run: nix eval .#nixosConfigurations.machine-laptop.config.system.build.toplevel

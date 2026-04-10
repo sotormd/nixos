@@ -2,10 +2,14 @@
 
 {
   config = lib.mkIf config.vars.services.qbt.enable {
-    services.nginx.virtualHosts.${config.vars.network.domain} = {
+
+    services.nginx.virtualHosts.${config.vars.services.nginx.domain} = {
       locations."/qbt/" = {
         proxyPass = "http://127.0.0.1:8080";
         extraConfig = ''
+          allow ${config.vars.services.qbt.allow};
+          deny all;
+
           proxy_set_header Host $proxy_host;
           proxy_set_header X-Forwarded-Host $http_host;
           proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
@@ -15,5 +19,6 @@
         '';
       };
     };
+
   };
 }

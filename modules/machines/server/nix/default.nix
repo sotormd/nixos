@@ -1,5 +1,3 @@
 {
-  imports = [
-    ./limits.nix
-  ];
+  imports = [ ./limits.nix ];
 }

@@ -2,12 +2,15 @@
 
 {
   imports = [
+
+    # drop unnecessary variables
+    ./vars-drop.nix
+
     # assertions - ensure no tomfoolery
     ./assertions.nix
 
-    # nixos modules
+    # input modules
     inputs.colors.nixosModules.colors
-
     inputs.wallpapers.nixosModules.wallpapers
 
     # MODULES - sorted alphabetically
@@ -15,7 +18,7 @@
     # audio with pipewire
     ./audio
 
-    # secureboot, plymouth, sysctl options, etc
+    # bootloader, secureboot, plymouth, etc
     ./boot
 
     # brave web browser
@@ -29,6 +32,9 @@
 
     # development tools
     ./dev
+
+    # distrobox
+    ./distrobox
 
     # dunst notification daemon
     ./dunst
@@ -51,6 +57,12 @@
     # inkscape vector graphics editor
     ./inkscape
 
+    # sysctl options
+    ./kernel
+
+    # libvirt with qemu/kvm and virt-manager
+    ./libvirt
+
     # modes
     ./modes
 
@@ -60,14 +72,14 @@
     # mpv media player
     ./mpv
 
-    # networking
-    ./network
-
     # packages
     ./packages
 
     # rofi launcher
     ./rofi
+
+    # sandboxing with bubblewrap and xdg-dbus-proxy
+    ./sandbox
 
     # sway wayland compositor
     ./sway
@@ -75,19 +87,23 @@
     # swaylock session locker
     ./swaylock
 
+    # systemd hardening
+    ./systemd
+
     # thunar file manager
     ./thunar
 
     # users
     ./users
 
-    # virtualisation with qemu, distrobox, etc
-    ./virtualization
-
     # waybar wayland panel
     ./waybar
 
+    # dns, wpa3, etc
+    ./wireless
+
     # zathura pdf reader
     ./zathura
+
   ];
 }

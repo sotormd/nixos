@@ -1,15 +1,9 @@
-{ config, pkgs, ... }:
-
 {
   imports = [
     ./actions.nix
-
+    ./disable-tumbler.nix
+    ./enable.nix
     ./gvfs.nix
-
-    ./tumbler.nix
-
     ./xfconf.nix
   ];
-
-  users.users.${config.vars.user.name}.packages = [ pkgs.thunar ];
 }

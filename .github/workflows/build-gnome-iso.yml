@@ -1,9 +1,6 @@
 name: Build GNOME ISO
 
 on:
-  push:
-    paths:
-      - 'modules/images/**'
   workflow_dispatch:
 
 jobs:

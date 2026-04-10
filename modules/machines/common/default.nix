@@ -2,6 +2,10 @@
 
 {
   imports = [
+
+    # variables schema
+    ./vars-schema.nix
+
     # MODULES - sorted alphabetically
 
     # linux audit subsystem
@@ -10,29 +14,44 @@
     # bash shell
     ./bash
 
-    # bootloader, kernel parameters, sysctl options
-    ./boot
-
-    # cli
+    # bespoke `nixos` cli
     ./cli
 
+    # filesystems, luks, mounts
+    ./disks
+
+    # jitterentropy
+    ./entropy
+
+    # iptables-nft firewall
+    ./firewall
+
+    # git version control system
+    ./git
+
+    # hostname, hostid, issue
+    ./host
+
+    # kernel release, kernel parameters, sysctl options, module blacklists
+    ./kernel
+
     # timezone, locales, keyboard layout
-    ./internationalization
+    ./localization
 
-    # networking
-    ./network
+    # gnu macchanger
+    ./macchanger
 
-    # nix package manager
-    ./nix
+    # graphene hardened malloc
+    ./malloc
 
     # packages
     ./packages
 
+    # pki certificates
+    ./pki
+
     # privilege elevation
     ./privilege
-
-    # sandboxing with bubblewrap
-    ./sandbox
 
     # seed
     ./seed
@@ -40,12 +59,23 @@
     # sops-nix secrets management
     ./sops
 
+    # openssh server
+    ./sshd
+
+    # journald, timesyncd, etc
+    ./systemd
+
     # usbguard daemon
     ./usbguard
 
-    # users
+    # users and groups
     ./users
+
+    # wpa_supplicant
+    ./wireless
+
   ];
 
+  # populate the variables
   config.vars = legacyVars;
 }
