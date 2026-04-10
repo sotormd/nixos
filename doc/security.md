@@ -7,6 +7,8 @@ This is a larger document than other documents in this flake. It is possible
 that errors may have crept in while writing this document. In any case, the
 flake source should be referred to as the primary and only source of truth.
 
+# Threat Model
+
 Secure without a threat model is meaningless. The threat model for this flake is
 general desktop / home usage, and NOT anything requiring specialized security,
 advanced privacy or defence against sophisticated targeted attacks. Consider
@@ -65,13 +67,15 @@ Missing features:
 23. [NGINX](#nginx)
 24. [I2P and Anonymity](#i2p-and-anonymity)
 25. [Display Server](#display-server)
-26. [Session Locking](#session-locking)
-27. [Bubblewrap](#bubblewrap)
-28. [xdg-dbus-proxy](#xdg-dbus-proxy)
-29. [Browsers](#browsers)
-30. [Search Engine](#search-engine)
-31. [Password Manager](#password-manager)
-32. [Virtualisation and Containers](#virtualisation-and-containers)
+26. [Desktop](#desktop)
+27. [Session Locking](#session-locking)
+28. [Thumbnails](#thumbnails)
+29. [Bubblewrap](#bubblewrap)
+30. [xdg-dbus-proxy](#xdg-dbus-proxy)
+31. [Browsers](#browsers)
+32. [Search Engine](#search-engine)
+33. [Password Manager](#password-manager)
+34. [Virtualisation and Containers](#virtualisation-and-containers)
 
 # Secure Boot
 
@@ -1454,6 +1458,15 @@ the I2P network via this router.
 
 The desktop is 100% wayland, with no X or Xwayland.
 
+# Desktop
+
+> Laptop only
+
+The swayfx compositor is used with minimal bells and whistles, a simple bar and
+some widgets.
+
+XDG desktop portals are disabled.
+
 # Session Locking
 
 > Laptop only
@@ -1461,6 +1474,12 @@ The desktop is 100% wayland, with no X or Xwayland.
 The session is locked using `swaylock` after 60 seconds of inactivity, and
 suspended after further inactivity. This behaviour can be controlled using the
 waybar [idle_inhibitor Module](./laptop/usage.md#idle_inhibitor-module).
+
+# Thumbnails
+
+> Laptop only
+
+Tumbler thumbnails are disabled in Thunar to prevent various exploits.
 
 # Bubblewrap
 
