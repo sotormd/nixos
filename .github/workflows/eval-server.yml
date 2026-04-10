@@ -5,14 +5,14 @@ on:
   pull_request:
 
 jobs:
-  nix-checks:
+  nix-eval:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repo
         uses: actions/checkout@v4
 
       - name: Install Nix
-        uses: cachix/install-nix-action@v25
+        uses: DeterminateSystems/nix-installer-action@main
 
       - name: Ensure variables and secrets are not present
         run: |
