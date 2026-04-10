@@ -1,11 +1,11 @@
-name: checks
+name: Check
 
 on:
   push:
   pull_request:
 
 jobs:
-  nix-checks:
+  nix-flake-check:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repo
@@ -34,9 +34,3 @@ jobs:
 
       - name: Check
         run: nix flake check
-
-      - name: Laptop evaluation
-        run: nix eval .#nixosConfigurations.machine-laptop.system.config.build.toplevel
-
-      - name: Server evaluation
-        run: nix eval .#nixosConfigurations.machine-server.system.config.build.toplevel
