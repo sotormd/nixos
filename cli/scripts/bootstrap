@@ -2,6 +2,10 @@
 
 set -euo pipefail
 
+# required for bootstrapping from
+# existing machines that use umask 0077
+umask 0022
+
 # ask for sudo upfront
 if ! sudo -v; then
     echo "Error: sudo authentication failed" >&2
@@ -183,14 +187,17 @@ elif [ "$VERB" == "clone" ]; then
     fi
 
     sudo mkdir -p "$DIR"
-    sudo git clone https://github.com/sotormd/nixos "$DIR"
-    sudo chown "$USER": -R "$DIR"
+    sudo chown "$USER:" "$DIR"
+    git clone https://github.com/sotormd/nixos "$DIR"
 
 #######
 # VARS
 ####### laptop, server
 
 elif [ "$VERB" == "vars" ]; then
+
+    MACHINE_ID="$(tr -d '\n' < /etc/machine-id)"
+    HOST_ID="${MACHINE_ID:0:8}"
 
     mkdir -p "$VARS_DIR"
 
@@ -201,55 +208,37 @@ elif [ "$VERB" == "vars" ]; then
 
     if [ "$ROLE" == "laptop" ]; then
 
-        : "${VARS_DEVICE_HOSTNAME:="$(uname -n)"}"
-        : "${VARS_DEVICE_MACHINEID:="$(cat /etc/machine-id)"}"
-        : "${VARS_DEVICE_HOSTID:="$(head -c 8 /etc/machine-id)"}"
-
-        : "${VARS_PARTITIONS_BOOT:="${BOOT##*/}"}"
-        : "${VARS_PARTITIONS_SWAP:="${SWAP##*/}"}"
-        : "${VARS_PARTITIONS_ROOT:="${ROOT##*/}"}"
-
-        : "${VARS_USER_NAME:="$USER"}"
-        : "${VARS_USER_EMAIL:="$USER@$VARS_DEVICE_HOSTNAME"}"
-        : "${VARS_USER_GITHUB_KEYFILE:="/home/$VARS_USER_NAME/.ssh/id_ed25519_github"}"
-        : "${VARS_USER_CODEBERG_KEYFILE:="/home/$VARS_USER_NAME/.ssh/id_ed25519_codeberg"}"
-
-        : "${VARS_I18N_TIMEZONE:="$(timedatectl show --property=Timezone --value)"}"
-        : "${VARS_I18N_KEYBOARD:="us"}"
-        : "${VARS_I18N_LOCALE:="en_US.UTF-8"}"
-
-        : "${VARS_NETWORK_INTERFACE:="wlp1s0"}"
-        : "${VARS_NETWORK_SSID:="net"}"
-        : "${VARS_NETWORK_GATEWAY:="192.168.0.1"}"
-        : "${VARS_NETWORK_ADDRESS:="192.168.0.100"}"
-        : "${VARS_NETWORK_SERVER_ADDRESS:="192.168.0.200"}"
-        : "${VARS_NETWORK_SERVER_DOMAIN:="example.duckdns.org"}"
-
-        : "${VARS_DISPLAYS_LAPTOP_IDENTIFIER:="eDP-1"}"
-        : "${VARS_DISPLAYS_LAPTOP_RESOLUTION:="1920x1200"}"
-        : "${VARS_DISPLAYS_LAPTOP_REFRESH:="60Hz"}"
-        : "${VARS_DISPLAYS_LAPTOP_POSITION:="0 0"}"
-
-        : "${VARS_DISPLAYS_MONITOR_IDENTIFIER:="HDMI-A-1"}"
-        : "${VARS_DISPLAYS_MONITOR_RESOLUTION:="1920x1080"}"
-        : "${VARS_DISPLAYS_MONITOR_REFRESH:="60Hz"}"
-        : "${VARS_DISPLAYS_MONITOR_POSITION:="1920 0"}"
+        BOOT=${BOOT:-}
+        SWAP=${SWAP:-}
+        ROOT=${ROOT:-}
 
         # create vars file
         cat > "$VARS" <<EOF
+# variables are used to capture differences in hosts using the same role
+
+# this file was automatically generated during bootstrap
+# use this file to store variables consumed by the flake
+
+# note that variables end up in the world-readable nix store
+# use sops-nix secrets for sensitive information
+
+# before rebuilding, ensure that all variables are properly defined
+# invalid / inaccurate variables can lead to a broken system
+# bootstrap DOES NOT POPULATE VARIABLES with sane values, only examples
+
 {
   role = "laptop";
 
   device = {
-    hostName = "$VARS_DEVICE_HOSTNAME";
-    machineId = "$VARS_DEVICE_MACHINEID";
-    hostId = "$VARS_DEVICE_HOSTID";
+    hostName = "nixos";
+    machineId = "$MACHINE_ID";
+    hostId = "$HOST_ID";
   };
 
   partitions = {
-    boot = "$VARS_PARTITIONS_BOOT";
-    swap = "$VARS_PARTITIONS_SWAP";
-    root = "$VARS_PARTITIONS_ROOT";
+    boot = "${BOOT##*/}";
+    swap = "${SWAP##*/}";
+    root = "${ROOT##*/}";
   };
 
   filesystem = {
@@ -266,54 +255,37 @@ elif [ "$VERB" == "vars" ]; then
   usbs = [ ];
 
   user = {
-    name = "$VARS_USER_NAME";
-    email = "$VARS_USER_EMAIL";
-    sshAliases = {
-      github = {
-        user = "git";
-        host = "github.com";
-        port = 22;
-        keyfile = "$VARS_USER_GITHUB_KEYFILE";
-      };
-      codeberg = {
-        user = "git";
-        host = "codeberg.org";
-        port = 22;
-        keyfile = "$VARS_USER_CODEBERG_KEYFILE";
-      };
-    };
+    name = "nixos";
+    email = "example@example";
+    sshAliases = { };
   };
 
-  i18n = {
-    timeZone = "$VARS_I18N_TIMEZONE";
-    keyboard = "$VARS_I18N_KEYBOARD";
-    locale = "$VARS_I18N_LOCALE";
+  localization = {
+    timeZone = "UTC";
+    keyboard = "us";
+    locale = "en_US.UTF-8";
   };
 
-  network = {
-    interface = "$VARS_NETWORK_INTERFACE";
-    ssid = "$VARS_NETWORK_SSID";
-    gateway = "$VARS_NETWORK_GATEWAY";
-    address = "$VARS_NETWORK_ADDRESS";
-    server = {
-      address = "$VARS_NETWORK_SERVER_ADDRESS";
-      domain = "$VARS_NETWORK_SERVER_DOMAIN";
-    };
+  wireless = {
+    interface = "wlp1s0";
+    ssid = "example";
+    gateway = "10.0.0.1";
+    address = "10.0.0.2";
   };
 
   displays = {
     outputs = {
       laptop = {
-        identifier = "$VARS_DISPLAYS_LAPTOP_IDENTIFIER";
-        resolution = "$VARS_DISPLAYS_LAPTOP_RESOLUTION";
-        refresh = "$VARS_DISPLAYS_LAPTOP_REFRESH";
-        position = "$VARS_DISPLAYS_LAPTOP_POSITION";
+        identifier = "eDP-1";
+        resolution = "1920x1200";
+        refresh = "60Hz";
+        position = "0 0";
       };
       monitor = {
-        identifier = "$VARS_DISPLAYS_MONITOR_IDENTIFIER";
-        resolution = "$VARS_DISPLAYS_MONITOR_RESOLUTION";
-        refresh = "$VARS_DISPLAYS_MONITOR_REFRESH";
-        position = "$VARS_DISPLAYS_MONITOR_POSITION";
+        identifier = "HDMI-A-1";
+        resolution = "1920x1080";
+        refresh = "60Hz";
+        position = "1920 0";
       };
     };
     primary = "monitor";
@@ -322,7 +294,43 @@ elif [ "$VERB" == "vars" ]; then
   features = {
     secureboot.enable = false;
     impermanence.enable = false;
-    selfhosted.enable = false;
+  };
+
+  selfhosted = {
+    unbound = {
+      enable = false;
+      address = "10.0.0.3";
+    };
+    searxng = {
+      enable = false;
+      domain = "example.duckdns.org";
+    };
+    vaultwarden = {
+      enable = false;
+      domain = "example.duckdns.org";
+    };
+    i2pd = {
+      enable = false;
+      address = "10.0.0.3";
+      domain = "example.duckdns.org";
+    };
+    qbt = {
+      enable = false;
+      domain = "example.duckdns.org";
+    };
+    jellyfin = {
+      enable = false;
+      domain = "example.duckdns.org";
+    };
+  };
+
+  services = {
+    ssh = {
+      enable = false;
+      allow = "10.0.0.4/32";
+      port = 22;
+      trusted-keys = [ ];
+    };
   };
 
   seed = {
@@ -334,41 +342,31 @@ EOF
 
     elif [ "$ROLE" == "server" ]; then
 
-        : "${VARS_DEVICE_HOSTNAME:="$(uname -n)"}"
-        : "${VARS_DEVICE_MACHINEID:="$(cat /etc/machine-id)"}"
-        : "${VARS_DEVICE_HOSTID:="$(head -c 8 /etc/machine-id)"}"
-
-        : "${VARS_PARTITIONS_ROOT:="2178694e-02"}"
-
-        : "${VARS_USER_NAME:="$USER"}"
-        : "${VARS_USER_EMAIL:="$USER@$VARS_DEVICE_HOSTNAME"}"
-
-        : "${VARS_I18N_TIMEZONE:="$(timedatectl show --property=Timezone --value)"}"
-        : "${VARS_I18N_KEYBOARD:="us"}"
-        : "${VARS_I18N_LOCALE:="en_US.UTF-8"}"
-
-        : "${VARS_NETWORK_INTERFACE:="wlan0"}"
-        : "${VARS_NETWORK_SSID:="net"}"
-        : "${VARS_NETWORK_GATEWAY:="192.168.0.1"}"
-        : "${VARS_NETWORK_ADDRESS:="192.168.0.200"}"
-        : "${VARS_NETWORK_RANGE:="192.168.0.0/24"}"
-        : "${VARS_NETWORK_DOMAIN:="$VARS_DEVICE_HOSTNAME-server.duckdns.org"}"
-        : "${VARS_NETWORK_SSH_PORT:="22"}"
-        : "${VARS_NETWORK_SSH_KEY:=}"
-
         # create vars file
         cat > "$VARS" <<EOF
+# variables are used to capture differences in hosts using the same role
+
+# this file was automatically generated during bootstrap
+# use this file to store variables consumed by the flake
+
+# note that variables end up in the world-readable nix store
+# use sops-nix secrets for sensitive information
+
+# before rebuilding, ensure that all variables are properly defined
+# invalid / inaccurate variables can lead to a broken system
+# bootstrap DOES NOT POPULATE VARIABLES with sane values, only examples
+
 {
   role = "server";
 
   device = {
-    hostName = "$VARS_DEVICE_HOSTNAME";
-    machineId = "$VARS_DEVICE_MACHINEID";
-    hostId = "$VARS_DEVICE_HOSTID";
+    hostName = "nixos";
+    machineId = "$MACHINE_ID";
+    hostId = "$HOST_ID";
   };
 
   partitions = {
-    root = "$VARS_PARTITIONS_ROOT";
+    root = "2178694e-02";
   };
 
   filesystem = {
@@ -385,37 +383,59 @@ EOF
   usbs = [ ];
 
   user = {
-    name = "$VARS_USER_NAME";
-    email = "$VARS_USER_EMAIL";
+    name = "nixos";
+    email = "example@example";
   };
 
-  i18n = {
-    timeZone = "$VARS_I18N_TIMEZONE";
-    keyboard = "$VARS_I18N_KEYBOARD";
-    locale = "$VARS_I18N_LOCALE";
+  localization = {
+    timeZone = "Asia/Kolkata";
+    keyboard = "us";
+    locale = "en_US.UTF-8";
   };
 
-  network = {
-    interface = "$VARS_NETWORK_INTERFACE";
-    ssid = "$VARS_NETWORK_SSID";
-    gateway = "$VARS_NETWORK_GATEWAY";
-    address = "$VARS_NETWORK_ADDRESS";
-    range = "$VARS_NETWORK_RANGE";
-    domain = "$VARS_NETWORK_DOMAIN";
-    ssh = {
-      port = $VARS_NETWORK_SSH_PORT;
-      keys = [ "$VARS_NETWORK_SSH_KEY" ];
-    };
+  wireless = {
+    interface = "wlan0";
+    ssid = "example";
+    gateway = "10.0.0.1";
+    address = "10.0.0.3";
   };
 
   services = {
-    unbound.enable = false;
-    nginx.enable = false;
-    searxng.enable = false;
-    vaultwarden.enable = false;
-    i2pd.enable = false;
-    qbt.enable = false;
-    jellyfin.enable = false;
+    ssh = {
+      enable = false;
+      allow = "10.0.0.2/32";
+      port = 22;
+      trusted-keys = [ ];
+    };
+    unbound = {
+      enable = false;
+      allow = "10.0.0.2/32";
+    };
+    nginx = {
+      enable = false;
+      domain = "example.duckdns.org";
+      allow = "10.0.0.2/32";
+    };
+    searxng = {
+      enable = false;
+      allow = "10.0.0.2/32";
+    };
+    vaultwarden = {
+      enable = false;
+      allow = "10.0.0.2/32";
+    };
+    i2pd = {
+      enable = false;
+      allow = "10.0.0.2/32";
+    };
+    qbt = {
+      enable = false;
+      allow = "10.0.0.2/32";
+    };
+    jellyfin = {
+      enable = false;
+      allow = "10.0.0.2/32";
+    };
   };
 
   features = {
@@ -567,7 +587,7 @@ EOF
         cat > "$TEMP_SECRETS" <<EOF
 hashedPassword: $SECRETS_HASHED_PASSWORD
 
-network: |
+wireless: |
   psk=$SECRETS_PSK
 
 seed: $SECRETS_SEED_KEY
@@ -578,7 +598,7 @@ EOF
         cat > "$TEMP_SECRETS" <<EOF
 hashedPassword: $SECRETS_HASHED_PASSWORD
 
-network: |
+wireless: |
   psk=$SECRETS_PSK
 
 seed: $SECRETS_SEED_KEY
@@ -708,9 +728,11 @@ elif [ "$VERB" == "impermanence" ]; then
             "/var/lib/nixos" \
             "/var/lib/systemd" \
             "/etc/zfs" \
-            "/var/log" \
+            "/etc/ssh" \
+            "/var/lib/fail2ban" \
             "/var/lib/sbctl" \
-            "/var/lib/libvirt"
+            "/var/lib/libvirt" \
+            "/var/log"
 
         # populate /persist/root/home/
         persist_dirs "$PERSIST_DIR_HOME" "$MOUNT$REAL_HOME" \
@@ -729,8 +751,8 @@ elif [ "$VERB" == "impermanence" ]; then
             "/var/lib/nixos" \
             "/var/lib/systemd" \
             "/etc/zfs" \
-            "/var/log" \
             "/etc/ssh" \
+            "/var/log" \
             "/var/lib/fail2ban" \
             "/var/lib/unbound" \
             "/var/lib/acme" \

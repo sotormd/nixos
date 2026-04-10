@@ -70,13 +70,6 @@ let
             "on-click": "eww open --toggle calendar --screen $(swaymsg -t get_outputs | jq -r '.[] | select(.focused) | .name')",
             "tooltip": false
           },
-          "custom/namespaces": {
-            "exec": "${scripts}/namespaces-status.sh",
-            "interval": 1,
-            "on-click": "${scripts}/namespaces-toggle.sh",
-            "return-type": "json",
-            "tooltip": false
-          },
           "custom/playerctl": {
             "exec": "media waybar",
             "interval": 1,
@@ -107,7 +100,6 @@ let
           ],
           "modules-right": [
             "idle_inhibitor",
-            "custom/namespaces",
             "network",
             "pulseaudio",
             "battery",

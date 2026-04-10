@@ -1,1 +1,7 @@
-{ imports = [ ../modules/images/minimal.nix ]; }
+{
+  imports = [
+    ../modules/common
+    ../modules/images/common
+    ../modules/images/minimal.nix
+  ];
+}

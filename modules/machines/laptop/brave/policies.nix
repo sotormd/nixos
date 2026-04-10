@@ -75,22 +75,22 @@ in
     DefaultSearchProviderEnabled = true;
 
     DefaultSearchProviderImageURL = lib.concatStrings (
-      lib.choose config.vars.features.selfhosted.enable
-        "https://${config.vars.network.server.domain}/searxng/static/themes/simple/img/favicon.svg"
+      lib.choose config.vars.selfhosted.searxng.enable
+        "https://${config.vars.selfhosted.searxng.domain}/searxng/static/themes/simple/img/favicon.svg"
         "https://duckduckgo.com/assets/logo_header_mobile.alt.v109.svg"
     );
 
     DefaultSearchProviderKeyword = lib.concatStrings (
-      lib.choose config.vars.features.selfhosted.enable ":sx" ":ddg"
+      lib.choose config.vars.selfhosted.searxng.enable ":sx" ":ddg"
     );
 
     DefaultSearchProviderName = lib.concatStrings (
-      lib.choose config.vars.features.selfhosted.enable "SearXNG" "DuckDuckGo"
+      lib.choose config.vars.selfhosted.searxng.enable "SearXNG" "DuckDuckGo"
     );
 
     DefaultSearchProviderSearchURL = lib.concatStrings (
-      lib.choose config.vars.features.selfhosted.enable
-        "https://${config.vars.network.server.domain}/searxng/search?q={searchTerms}"
+      lib.choose config.vars.selfhosted.searxng.enable
+        "https://${config.vars.selfhosted.searxng.domain}/searxng/search?q={searchTerms}"
         "https://duckduckgo.com/?q={searchTerms}"
     );
 
@@ -207,7 +207,7 @@ in
 
     # disable V8
     DefaultJavaScriptJitSetting = 2;
-    JavaScriptJitAllowedForSites = [ config.vars.network.server.domain ];
+    JavaScriptJitAllowedForSites = [ config.vars.selfhosted.vaultwarden.domain ];
 
     # disable promotions
     PromotionsEnabled = false;

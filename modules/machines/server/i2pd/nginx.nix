@@ -2,10 +2,14 @@
 
 {
   config = lib.mkIf config.vars.services.i2pd.enable {
-    services.nginx.virtualHosts.${config.vars.network.domain} = {
+
+    services.nginx.virtualHosts.${config.vars.services.nginx.domain} = {
       locations."/i2pd/" = {
         proxyPass = "http://127.0.0.1:7070";
         extraConfig = ''
+          allow ${config.vars.services.i2pd.allow};
+          deny all;
+
           proxy_set_header Host $host;
           proxy_set_header X-Real-IP $remote_addr;
           proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
@@ -20,16 +24,5 @@
       };
     };
 
-    services.nginx.virtualHosts.eepsite = {
-      listen = [
-        {
-          addr = "127.0.0.1";
-          port = 9999;
-        }
-      ];
-      locations."/" = {
-        root = "/srv/i2p";
-      };
-    };
   };
 }

@@ -1,1 +1,7 @@
-{ imports = [ ../modules/images/sd.nix ]; }
+{
+  imports = [
+    ../modules/common
+    ../modules/images/common
+    ../modules/images/sd.nix
+  ];
+}

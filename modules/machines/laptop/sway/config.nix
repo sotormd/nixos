@@ -353,8 +353,8 @@ let
       # SWAYIDLE
       #
       exec swayidle \
-      timeout 10 'swaylock' \
-      timeout 180 'systemctl suspend' \
+      timeout 60 'swaylock' \
+      timeout 120 'systemctl suspend' \
       before-sleep 'swaylock'
 
       #

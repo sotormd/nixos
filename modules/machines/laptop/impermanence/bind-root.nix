@@ -16,14 +16,20 @@ lib.mkIf config.vars.features.impermanence.enable {
       # needed by ZFS
       "/etc/zfs"
 
-      # logs
-      "/var/log"
+      # ssh host keys
+      "/etc/ssh"
+
+      # fail2ban data
+      "/var/lib/fail2ban"
 
       # secure boot
       "/var/lib/sbctl"
 
       # libvirt virtual machines
       "/var/lib/libvirt"
+
+      # logs
+      "/var/log"
 
     ];
 

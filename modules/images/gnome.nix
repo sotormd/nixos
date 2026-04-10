@@ -2,15 +2,14 @@
 
 {
   imports = [
-    # gnome installer cd module
+
+    # installation cd module
     "${modulesPath}/installer/cd-dvd/installation-cd-graphical-gnome.nix"
 
-    # base configuration
-    ./base
-
     # additional configuration
-    ./additional/graphical.nix
-    ./additional/laptop.nix
+    ./compose/graphical.nix
+    ./compose/laptop.nix
+
   ];
 
   isoImage.edition = "gnome";

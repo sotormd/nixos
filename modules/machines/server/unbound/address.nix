@@ -1,11 +1,15 @@
-{ config, ... }:
+{ config, lib, ... }:
 
 {
-  services.unbound.settings.server = {
-    interface = [
-      config.vars.network.address
-      "127.0.0.1"
-    ];
-    port = 53;
+  config = lib.mkIf config.vars.services.unbound.enable {
+
+    services.unbound.settings.server = {
+      interface = [
+        config.vars.wireless.address
+        "127.0.0.1"
+      ];
+      port = 53;
+    };
+
   };
 }

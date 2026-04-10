@@ -76,11 +76,6 @@
       url = "github:sotormd/homepage";
     };
 
-    # for the mate image
-    nate = {
-      url = "github:sotormd/nate";
-    };
-
   };
 
   outputs =
@@ -109,10 +104,12 @@
           # the included images for installation
           # note that you may need a running gnupg agent to edit created sops secrets
           devShells.default = pkgs.mkShell {
-            packages = import ./modules/images/base/bootstrap.nix { inherit pkgs; } ++ [
+            packages = import ./modules/images/common/packages/bootstrap.nix { inherit pkgs; } ++ [
               nixos.nixosWrapper
             ];
           };
+
+          # packages to build images easily
 
         };
 
@@ -125,61 +122,87 @@
           # the old variables interface, now using options!
           legacyVars = import ./vars/vars.nix;
 
-          # create a "host"
-          mkHost =
-            {
-              role,
-              system,
-              withVars ? false,
-            }:
-            inputs.nixpkgs.lib.nixosSystem {
-              specialArgs = {
-                inherit inputs;
-                inherit self;
-              }
-              // lib.optionalAttrs withVars { inherit lib legacyVars; };
-
-              inherit system;
-
-              modules = [ (import ./roles { inherit role; }) ];
-            };
-
           # create a "machine"
           mkMachine =
             role: system:
-            mkHost {
-              role = "machine-${role}";
+            inputs.nixpkgs.lib.nixosSystem {
+              specialArgs = {
+                inherit
+                  inputs
+                  self
+                  lib
+                  legacyVars
+                  ;
+              };
               inherit system;
-              withVars = true;
+              modules = [ (import ./roles { role = "machine-${role}"; }) ];
             };
+
+          # create an image module
+          mkImageModule = role: (import ./roles { role = "image-${role}"; });
 
           # create an "image"
           mkImage =
             role: system:
-            mkHost {
-              role = "image-${role}";
+            inputs.nixpkgs.lib.nixosSystem {
+              specialArgs = { inherit inputs self lib; };
               inherit system;
-              withVars = false;
+              modules = [ (mkImageModule role) ];
             };
+
+          # targets
+          spec = {
+            machines = [
+              {
+                name = "laptop";
+                arch = "x86_64-linux";
+              }
+              {
+                name = "server";
+                arch = "aarch64-linux";
+              }
+            ];
+            images = [
+              {
+                name = "gnome";
+                arch = "x86_64-linux";
+              }
+              {
+                name = "minimal";
+                arch = "x86_64-linux";
+              }
+              {
+                name = "sd";
+                arch = "aarch64-linux";
+              }
+            ];
+          };
+
+          nixosConfigurations =
+            lib.listToAttrs (
+              map (m: lib.nameValuePair "machine-${m.name}" (mkMachine m.name m.arch)) spec.machines
+            )
+            // lib.listToAttrs (
+              map (i: lib.nameValuePair "image-${i.name}" (mkImage i.name i.arch)) spec.images
+            );
+
+          nixosModules =
+            lib.listToAttrs (map (i: lib.nameValuePair "image-${i.name}" (mkImageModule i.name)) spec.images)
+            // lib.listToAttrs (
+              map (
+                i:
+                lib.nameValuePair "image-${i.name}-remote" {
+                  imports = [
+                    (mkImageModule i.name)
+                    ./modules/images/compose/remote.nix
+                  ];
+                }
+              ) spec.images
+            );
 
         in
         {
-
-          nixosConfigurations = {
-
-            # machines
-            machine-laptop = mkMachine "laptop" "x86_64-linux";
-            machine-server = mkMachine "server" "aarch64-linux";
-
-            # images
-            image-mate = mkImage "mate" "x86_64-linux";
-            image-gnome = mkImage "gnome" "x86_64-linux";
-            image-minimal = mkImage "minimal" "x86_64-linux";
-            image-sd = mkImage "sd" "aarch64-linux";
-            image-sd-remote = mkImage "sd-remote" "aarch64-linux";
-
-          };
-
+          inherit nixosConfigurations nixosModules;
         };
     };
 }

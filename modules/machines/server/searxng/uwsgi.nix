@@ -1,7 +1,13 @@
+{ config, lib, ... }:
+
 {
-  services.searx.configureUwsgi = true;
-  services.searx.uwsgiConfig = {
-    socket = "/run/searx/searx.sock";
-    chmod-socket = "660";
+  config = lib.mkIf config.vars.services.searxng.enable {
+
+    services.searx.configureUwsgi = true;
+    services.searx.uwsgiConfig = {
+      socket = "/run/searx/searx.sock";
+      chmod-socket = "660";
+    };
+
   };
 }

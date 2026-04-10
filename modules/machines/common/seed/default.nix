@@ -1,5 +1,3 @@
 {
-  imports = [
-    ./keys.nix
-  ];
+  imports = [ ./keys.nix ];
 }
