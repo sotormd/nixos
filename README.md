@@ -15,6 +15,8 @@
 
 ~~slighly overengineered~~ NixOS configuration flake for multiple hosts
 
+[See all screenshots](./doc/screenshots.md)
+
 # Features
 
 [Why do I not use some popular libraries?](./doc/why-not-x.md)
@@ -136,10 +138,10 @@ Comprehensive features list:
 
 This flake uses role-based configuration.
 
-| Role   | Description                         | Documentation                                                                                                                                |
-| ------ | ----------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------- |
-| Laptop | Personal laptop configuration.      | [Requirements](./doc/laptop/requirements.md)<br>[Setup Documentation](./doc/laptop/setup.md)<br>[Usage Documentation](./doc/laptop/usage.md) |
-| Server | Headless home-server configuration. | [Requirements](./doc/server/requirements.md)<br>[Setup Documentation](./doc/server/setup.md)<br>[Usage Documentation](./doc/server/usage.md) |
+| Role   | Description                         | Documentation                                                                                                                                        |
+| ------ | ----------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Laptop | Personal laptop configuration.      | [Requirements](./doc/laptop/requirements.md)<br><br>[Setup Documentation](./doc/laptop/setup.md)<br><br>[Usage Documentation](./doc/laptop/usage.md) |
+| Server | Headless home-server configuration. | [Requirements](./doc/server/requirements.md)<br><br>[Setup Documentation](./doc/server/setup.md)<br><br>[Usage Documentation](./doc/server/usage.md) |
 
 Some previous roles have been moved to separate repos, see [Related](#related).
 
