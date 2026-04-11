@@ -1,4 +1,4 @@
-name: Evaluate Image: GNOME
+name: Evaluate Image - GNOME
 
 on:
   push:

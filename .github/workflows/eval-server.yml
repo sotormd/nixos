@@ -1,4 +1,4 @@
-name: Evaluate Machine: Server
+name: Evaluate Machine - Server
 
 on:
   push:

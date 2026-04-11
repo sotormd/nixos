@@ -1,4 +1,4 @@
-name: Evaluate Image: Minimal
+name: Evaluate Image - Minimal
 
 on:
   push:

@@ -1,4 +1,4 @@
-name: Evaluate Image: SD
+name: Evaluate Image - SD
 
 on:
   push:
