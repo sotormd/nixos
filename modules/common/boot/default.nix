@@ -1,6 +1,3 @@
 {
-  imports = [
-    ./systemd.nix
-    ./quiet.nix
-  ];
+  imports = [ ./quiet.nix ];
 }
