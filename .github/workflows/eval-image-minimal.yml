@@ -1,11 +1,11 @@
-name: Evaluate Minimal Image
+name: Evaluate Image: Minimal
 
 on:
   push:
   pull_request:
 
 jobs:
-  nix-eval:
+  eval:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repo

@@ -1,11 +1,11 @@
-name: Evaluate GNOME Image
+name: Evaluate Image: GNOME
 
 on:
   push:
   pull_request:
 
 jobs:
-  nix-eval:
+  eval:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repo

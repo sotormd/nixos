@@ -1,4 +1,4 @@
-name: Build Minimal ISO
+name: Build Image: Minimal
 
 on:
   workflow_dispatch:

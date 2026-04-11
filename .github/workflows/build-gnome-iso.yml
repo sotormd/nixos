@@ -1,4 +1,4 @@
-name: Build GNOME ISO
+name: Build Image: GNOME
 
 on:
   workflow_dispatch:

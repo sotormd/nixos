@@ -80,7 +80,7 @@ For example, to build a GNOME image with NH enabled.
     nixos-config.url = "github:sotormd/nixos";
   };
 
-  outputs = inputs: {
+  outputs = { self, ... }@inputs: {
     nixosConfigurations.my-gnome-image = inputs.nixpkgs.lib.nixosSystem {
       specialArgs = { inherit inputs self; };
       system = "x86_64-linux";
@@ -132,7 +132,7 @@ wireless network:
     nixos-config.url = "github:sotormd/nixos";
   };
 
-  outputs = inputs: {
+  outputs = { self, ... }@inputs: {
     nixosConfigurations.my-remote-sd-image = inputs.nixpkgs.lib.nixosSystem {
       specialArgs = { inherit inputs self; };
       system = "aarch64-linux";
