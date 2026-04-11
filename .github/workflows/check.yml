@@ -5,7 +5,7 @@ on:
   pull_request:
 
 jobs:
-  nix-flake-check:
+  check:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repo
@@ -33,4 +33,4 @@ jobs:
         run: git add .
 
       - name: Check
-        run: nix flake check
+        run: nix flake check --all-systems
