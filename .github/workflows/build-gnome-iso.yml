@@ -1,4 +1,4 @@
-name: Build Image: GNOME
+name: Build Image - GNOME
 
 on:
   workflow_dispatch:

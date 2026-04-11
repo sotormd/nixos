@@ -1,4 +1,4 @@
-name: Build Image: Minimal
+name: Build Image - Minimal
 
 on:
   workflow_dispatch:
