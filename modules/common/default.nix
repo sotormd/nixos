@@ -3,7 +3,7 @@
 
     # MODULES - sorted alphabetically
 
-    # boot options, initrd, etc
+    # boot options
     ./boot
 
     # nix package manager
