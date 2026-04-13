@@ -39,9 +39,6 @@
     # searxng metasearch engine
     ./searxng
 
-    # systemd hardening
-    ./systemd
-
     # unbound validating recursive dns server
     ./unbound
 
