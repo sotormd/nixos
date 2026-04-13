@@ -97,7 +97,7 @@ Comprehensive features list:
 | sandboxing                    | `bubblewrap`, `xdg-dbus-proxy`                                                                             |
 | firewall                      | `nf_tables`                                                                                                |
 | mac randomization             | `macchanger`                                                                                               |
-| anonymity                     | `i2pd`, `mat2`                                                                                             |
+| anonymity                     | `i2pd`                                                                                                     |
 | networking                    | `wpa_supplicant`                                                                                           |
 | dns                           | `unbound`                                                                                                  |
 | secure shell                  | `sshd`, `fail2ban`                                                                                         |

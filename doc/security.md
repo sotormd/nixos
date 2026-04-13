@@ -1443,10 +1443,6 @@ See [Server Usage Documenation](./server/usage.md#nginx) for more information.
    However, this is discouraged and it is recommended to use Whonix instead. See
    [Virtualisation and Containers](#virtualisation-and-containers).
 
-3. Metadata Anonymization
-
-   `mat2` can be used to remove any identifying metadata from files.
-
 > Server only
 
 The I2PD router is hosted on Server. The qBittorrent torrent client also uses
