@@ -658,7 +658,7 @@ Enabled using `vars.services.ssh.enable`.
 
 ## Ports
 
-Open on LAN to the private CIDR defined by `vars.services.ssh.apply`:
+Open on LAN to the private CIDR defined by `vars.services.ssh.allow`:
 
 1. `vars.services.ssh.port`
 
