@@ -5,4 +5,5 @@ let
 in
 {
   users.users.${config.vars.user.name}.packages = [ package.footWrapped ];
+  nixpkgs.overlays = [ (_: _: { foot0 = package.footWrapped; }) ];
 }

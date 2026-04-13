@@ -15,4 +15,8 @@ in
     package.swaylockWrapped
     xkcd.xkcdWrapped
   ];
+  nixpkgs.overlays = [
+    (_: _: { swaylock0 = package.swaylockWrapped; })
+    (_: _: { xkcd0 = xkcd.xkcdWrapped; })
+  ];
 }

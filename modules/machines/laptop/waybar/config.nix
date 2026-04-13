@@ -71,14 +71,14 @@ let
             "tooltip": false
           },
           "custom/playerctl": {
-            "exec": "media waybar",
+            "exec": "${pkgs.media0}/bin/media waybar",
             "interval": 1,
             "max-length": 70,
-            "on-click": "media play-pause",
+            "on-click": "${pkgs.media0}/bin/media play-pause",
             "on-click-right": "${scripts}/animation.sh",
-            "on-click-middle": "media stop",
-            "on-scroll-down": "media previous",
-            "on-scroll-up": "media next",
+            "on-click-middle": "${pkgs.media0}/bin/media stop",
+            "on-scroll-down": "${pkgs.media0}/bin/media previous",
+            "on-scroll-up": "${pkgs.media0}/bin/media next",
             "return-type": "json"
           },
           "height": 32,
@@ -132,8 +132,8 @@ let
             "format-muted": "<span size='12000'></span>  <span>Muted</span>",
             "on-click": "wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle",
             "on-click-right": "pavucontrol",
-            "on-scroll-up": "volume 1%+",
-            "on-scroll-down": "volume 1%-",
+            "on-scroll-up": "${pkgs.volume0}/bin/volume 1%+",
+            "on-scroll-down": "${pkgs.volume0}/bin/volume 1%-",
             "tooltip": false
           },
           "sway/window": {
