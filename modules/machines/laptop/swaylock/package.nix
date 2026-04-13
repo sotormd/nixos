@@ -14,7 +14,7 @@ let
       #!${pkgs.runtimeShell}
 
       ${pkgs.swaylock}/bin/swaylock --config ${configuration}/config "$@"
-      xkcd-refresh
+      ${pkgs.xkcd0}/bin/xkcd-refresh
     '';
     destination = "/bin/swaylock";
     executable = true;

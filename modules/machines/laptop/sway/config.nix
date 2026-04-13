@@ -83,8 +83,8 @@ let
       #
       # LAUNCH APPS
       #
-      bindsym Mod4+d exec rofi -show run
-      bindsym Mod4+Return exec foot
+      bindsym Mod4+d exec ${pkgs.rofi0}/bin/rofi -show run
+      bindsym Mod4+Return exec ${pkgs.foot0}/bin/foot
 
       #
       # FOCUS
@@ -154,31 +154,31 @@ let
       bindsym Mod4+Page_Up workspace prev
       bindsym Mod4+ctrl+Right workspace next
       bindsym Mod4+ctrl+Left workspace prev
-      bindsym Mod4+g exec swaymsg workspace $(swaymsg -t get_workspaces -r | jq -r '.[].name' | rofi -dmenu -p "")
+      bindsym Mod4+g exec swaymsg workspace $(swaymsg -t get_workspaces -r | jq -r '.[].name' | ${pkgs.rofi0}/bin/rofi -dmenu -p "")
       ${workspaceFocusLines}
 
       #
       # MOVE TO WORKSPACE
       #
-      bindsym Mod4+shift+g exec swaymsg move workspace $(swaymsg -t get_workspaces -r | jq -r '.[].name' | rofi -dmenu -p "")
+      bindsym Mod4+shift+g exec swaymsg move workspace $(swaymsg -t get_workspaces -r | jq -r '.[].name' | ${pkgs.rofi0}/bin/rofi -dmenu -p "")
       ${workspaceMoveLines}
 
       #
       # AUDIO
       #
-      bindsym XF86AudioPrev exec media previous
-      bindsym XF86AudioPlay exec media play-pause
-      bindsym Mod4+XF86AudioPlay exec media stop
-      bindsym XF86AudioNext exec media next
+      bindsym XF86AudioPrev exec ${pkgs.media0}/bin/media previous
+      bindsym XF86AudioPlay exec ${pkgs.media0}/bin/media play-pause
+      bindsym Mod4+XF86AudioPlay exec ${pkgs.media0}/bin/media stop
+      bindsym XF86AudioNext exec ${pkgs.media0}/bin/media next
       bindsym XF86AudioMute exec wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle
-      bindsym XF86AudioLowerVolume exec volume 5%-
-      bindsym XF86AudioRaiseVolume exec volume 5%+
+      bindsym XF86AudioLowerVolume exec ${pkgs.volume0}/bin/volume 5%-
+      bindsym XF86AudioRaiseVolume exec ${pkgs.volume0}/bin/volume 5%+
 
       #
       # BRIGHTNESS
       #
-      bindsym XF86MonBrightnessDown exec brightness 5%-
-      bindsym XF86MonBrightnessUp exec brightness +5%
+      bindsym XF86MonBrightnessDown exec ${pkgs.brightness0}/bin/brightness 5%-
+      bindsym XF86MonBrightnessUp exec ${pkgs.brightness0}/bin/brightness +5%
 
       #
       # FLOATING
@@ -251,15 +251,15 @@ let
       #
       # LEAVE MODE
       #
-      bindsym Mod4+Escape mode leave; exec eww open leavewindow --screen $(swaymsg -t get_outputs | jq -r '.[] | select(.focused) | .name')
+      bindsym Mod4+Escape mode leave; exec ${pkgs.eww0}/bin/eww open leavewindow --screen $(swaymsg -t get_outputs | jq -r '.[] | select(.focused) | .name')
       mode "leave" {
-        bindsym Escape mode default; exec eww close leavewindow
-        bindsym Return mode default; exec eww close leavewindow
-        bindsym l mode default; exec eww close leavewindow; exec swaylock
-        bindsym r mode default; exec eww close leavewindow; exec systemctl reboot
-        bindsym s mode default; exec eww close leavewindow; exec systemctl suspend
-        bindsym u mode default; exec eww close leavewindow; exec systemctl poweroff
-        bindsym x mode default; exec eww close leavewindow; exec swaymsg exit
+        bindsym Escape mode default; exec ${pkgs.eww0}/bin/eww close leavewindow
+        bindsym Return mode default; exec ${pkgs.eww0}/bin/eww close leavewindow
+        bindsym l mode default; exec ${pkgs.eww0}/bin/eww close leavewindow; exec ${pkgs.swaylock0}/bin/swaylock
+        bindsym r mode default; exec ${pkgs.eww0}/bin/eww close leavewindow; exec systemctl reboot
+        bindsym s mode default; exec ${pkgs.eww0}/bin/eww close leavewindow; exec systemctl suspend
+        bindsym u mode default; exec ${pkgs.eww0}/bin/eww close leavewindow; exec systemctl poweroff
+        bindsym x mode default; exec ${pkgs.eww0}/bin/eww close leavewindow; exec swaymsg exit
       }
 
       #
@@ -325,17 +325,17 @@ let
       bar {
         font pango:monospace 8.000000
         position top
-        swaybar_command waybar
+        swaybar_command ${pkgs.waybar0}/bin/waybar
       }
 
       #
       # EWW
       #
-      exec eww daemon
-      exec eww-cal-init
-      exec eww-dock-init
-      bindsym Mod4+Tab exec eww open dock --toggle --screen $(swaymsg -t get_outputs | jq -r '.[] | select(.focused) | .name')
-      bindsym Mod4+grave exec eww open start --toggle --screen $(swaymsg -t get_outputs | jq -r '.[] | select(.focused) | .name')
+      exec ${pkgs.eww0}/bin/eww daemon
+      exec ${pkgs.eww0}/bin/eww-cal-init
+      exec ${pkgs.eww0}/bin/eww-dock-init
+      bindsym Mod4+Tab exec ${pkgs.eww0}/bin/eww open dock --toggle --screen $(swaymsg -t get_outputs | jq -r '.[] | select(.focused) | .name')
+      bindsym Mod4+grave exec ${pkgs.eww0}/bin/eww open start --toggle --screen $(swaymsg -t get_outputs | jq -r '.[] | select(.focused) | .name')
 
       #
       # DUNST
@@ -346,21 +346,21 @@ let
       # CLIPHIST
       #
       exec wl-paste --watch ${pkgs.cliphist}/bin/cliphist store
-      bindsym Mod4+c exec exec ${pkgs.cliphist}/bin/cliphist list | rofi -dmenu -p '' | ${pkgs.cliphist}/bin/cliphist decode | wl-copy
+      bindsym Mod4+c exec exec ${pkgs.cliphist}/bin/cliphist list | ${pkgs.rofi0}/bin/rofi -dmenu -p '' | ${pkgs.cliphist}/bin/cliphist decode | wl-copy
       bindsym Mod4+shift+c exec ${pkgs.cliphist}/bin/cliphist wipe
 
       #
       # SWAYIDLE
       #
       exec swayidle \
-      timeout 60 'swaylock' \
+      timeout 60 '${pkgs.swaylock0}/bin/swaylock' \
       timeout 120 'systemctl suspend' \
-      before-sleep 'swaylock'
+      before-sleep '${pkgs.swaylock0}/bin/swaylock'
 
       #
       # XKCD-WALL
       #
-      exec xkcd-refresh
+      exec ${pkgs.xkcd0}/bin/xkcd-refresh
 
       #
       # POLKIT AGENT
