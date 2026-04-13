@@ -53,29 +53,28 @@ Missing features:
 9. [Audit Subsystem](#audit-subsystem)
 10. [Coredumps](#coredumps)
 11. [Emergency and Rescue](#emergency-and-rescue)
-12. [Systemd Services](#systemd-services)
-13. [Users and Privileges](#users-and-privileges)
-14. [Nix Package Manager](#nix-package-manager)
-15. [SOPS](#sops)
-16. [USBGuard](#usbguard)
-17. [Wireless Networking](#wireless-networking)
-18. [DNS](#dns)
-19. [Firewall](#firewall)
-20. [MAC Randomization](#mac-randomization)
-21. [Secure Shell](#secure-shell)
-22. [Fail2Ban](#fail2ban)
-23. [NGINX](#nginx)
-24. [I2P and Anonymity](#i2p-and-anonymity)
-25. [Display Server](#display-server)
-26. [Desktop](#desktop)
-27. [Session Locking](#session-locking)
-28. [Thumbnails](#thumbnails)
-29. [Bubblewrap](#bubblewrap)
-30. [xdg-dbus-proxy](#xdg-dbus-proxy)
-31. [Browsers](#browsers)
-32. [Search Engine](#search-engine)
-33. [Password Manager](#password-manager)
-34. [Virtualisation and Containers](#virtualisation-and-containers)
+12. [Users and Privileges](#users-and-privileges)
+13. [Nix Package Manager](#nix-package-manager)
+14. [SOPS](#sops)
+15. [USBGuard](#usbguard)
+16. [Wireless Networking](#wireless-networking)
+17. [DNS](#dns)
+18. [Firewall](#firewall)
+19. [MAC Randomization](#mac-randomization)
+20. [Secure Shell](#secure-shell)
+21. [Fail2Ban](#fail2ban)
+22. [NGINX](#nginx)
+23. [I2P and Anonymity](#i2p-and-anonymity)
+24. [Display Server](#display-server)
+25. [Desktop](#desktop)
+26. [Session Locking](#session-locking)
+27. [Thumbnails](#thumbnails)
+28. [Bubblewrap](#bubblewrap)
+29. [xdg-dbus-proxy](#xdg-dbus-proxy)
+30. [Browsers](#browsers)
+31. [Search Engine](#search-engine)
+32. [Password Manager](#password-manager)
+33. [Virtualisation and Containers](#virtualisation-and-containers)
 
 # Secure Boot
 
@@ -981,31 +980,6 @@ sysctl options.
 # Emergency and Rescue
 
 The emergency and rescue targets and services are disabled.
-
-# Systemd Services
-
-Upstream Nixpkgs already hardens several common service, especially
-network-facing ones. Some services are additionally hardened with low-breakage
-service options. These options are:
-
-```nix
-{
-  ProtectClock = true;
-  ProtectKernelTunables = true;
-  ProtectKernelModules = true;
-  ProtectKernelLogs = true;
-  ProtectControlGroups = true;
-  ProtectHome = "read-only";
-  ProtectHostname = true;
-  SystemCallArchitectures = "native";
-  LockPersonality = true;
-  NoNewPrivileges = true;
-  PrivateDevices = true;
-  PrivateTmp = true;
-  RestrictRealtime = true;
-  RestrictSUIDSGID = true;
-}
-```
 
 # Users and Privileges
 
