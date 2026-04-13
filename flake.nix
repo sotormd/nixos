@@ -79,7 +79,7 @@
   };
 
   outputs =
-    { self, ... }@inputs:
+    inputs:
     inputs.flake-parts.lib.mkFlake { inherit inputs; } {
 
       systems = [
@@ -126,14 +126,7 @@
           mkMachine =
             role: system:
             inputs.nixpkgs.lib.nixosSystem {
-              specialArgs = {
-                inherit
-                  inputs
-                  self
-                  lib
-                  legacyVars
-                  ;
-              };
+              specialArgs = { inherit inputs lib legacyVars; };
               inherit system;
               modules = [ (import ./roles { role = "machine-${role}"; }) ];
             };
@@ -145,7 +138,7 @@
           mkImage =
             role: system:
             inputs.nixpkgs.lib.nixosSystem {
-              specialArgs = { inherit inputs self lib; };
+              specialArgs = { inherit inputs lib; };
               inherit system;
               modules = [ (mkImageModule role) ];
             };
