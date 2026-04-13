@@ -12,4 +12,9 @@ in
     scripts.media
     pkgs.libnotify
   ];
+  nixpkgs.overlays = [
+    (_: _: { volume0 = scripts.volume; })
+    (_: _: { brightness0 = scripts.brightness; })
+    (_: _: { media0 = scripts.media; })
+  ];
 }

@@ -12,12 +12,12 @@ let
       in
       ''
         (defvar dock-items-json "[]")
-        (defpoll SONG :interval "1s" `media title`)
-        (defpoll ARTIST :interval "1s" `media artist`)
-        (defpoll STATUS :interval "1s" `media status`)
-        (defpoll CURRENT :interval "1s" `media perc`)
-        (defpoll COVER :interval "1s" `media art`)
-        (defpoll LYRICS :interval "1s" `media lyrics`)
+        (defpoll SONG :interval "1s" `${pkgs.media0}/bin/media title`)
+        (defpoll ARTIST :interval "1s" `${pkgs.media0}/bin/media artist`)
+        (defpoll STATUS :interval "1s" `${pkgs.media0}/bin/media status`)
+        (defpoll CURRENT :interval "1s" `${pkgs.media0}/bin/media perc`)
+        (defpoll COVER :interval "1s" `${pkgs.media0}/bin/media art`)
+        (defpoll LYRICS :interval "1s" `${pkgs.media0}/bin/media lyrics`)
         (defvar calendar-json "[]")
         (defvar calendar-selected-month "")
         (defvar calendar-selected-month-pretty "")
@@ -252,7 +252,7 @@ let
                        (eventbox
                          :class "leave-box"
                          :cursor "hand2"
-                         :onclick "swaylock &"
+                         :onclick "${pkgs.swaylock0}/bin/swaylock &"
                          (box :class "lock" "󰌾"))
                        (eventbox
                          :class "leave-box"
@@ -286,7 +286,7 @@ let
                      (eventbox
                        :class "leave-box"
                        :cursor "hand2"
-                       :onclick "eww close leavewindow; swaymsg mode default; swaylock &"
+                       :onclick "eww close leavewindow; swaymsg mode default; ${pkgs.swaylock0}/bin/swaylock &"
                        (box :class "lock" "󰌾"))
                      (eventbox
                        :class "leave-box"

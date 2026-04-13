@@ -5,4 +5,5 @@ let
 in
 {
   users.users.${config.vars.user.name}.packages = [ package.rofiWrapped ];
+  nixpkgs.overlays = [ (_: _: { rofi0 = package.rofiWrapped; }) ];
 }
