@@ -1420,7 +1420,7 @@ CIDR as defined by `vars.services.nginx.allow`.
 Furthermore, all the reverse proxy locations are restricted using NGINX `allow`
 rules.
 
-For example, only the private CIDR `vars.services.vaultwarden.apply` is allowed
+For example, only the private CIDR `vars.services.vaultwarden.allow` is allowed
 on the `/vaultwarden/` location.
 
 See [Server Usage Documenation](./server/usage.md#nginx) for more information.

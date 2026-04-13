@@ -72,7 +72,7 @@ Enabled using `vars.services.ssh.enable`.
 
 ## Ports
 
-Open on LAN to the private CIDR defined by `vars.services.ssh.apply`:
+Open on LAN to the private CIDR defined by `vars.services.ssh.allow`:
 
 1. `vars.services.ssh.port`
 
@@ -116,7 +116,7 @@ Enabled using `vars.services.nginx.enable`.
 
 ## Ports
 
-Open on LAN to private CIDR defined by `vars.services.nginx.apply`:
+Open on LAN to private CIDR defined by `vars.services.nginx.allow`:
 
 1. `443` https
 
