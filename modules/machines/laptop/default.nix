@@ -87,9 +87,6 @@
     # swaylock session locker
     ./swaylock
 
-    # systemd hardening
-    ./systemd
-
     # thunar file manager
     ./thunar
 
