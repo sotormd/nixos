@@ -23,7 +23,7 @@ include several useful packages for installation, recovery, etc.
 # Contents
 
 1. [Usage](#usage)
-2. [Further Configuration](#configuration)
+2. [Further Configuration](#further-configuration)
 3. [Remote Installs](#remote-installs)
 
 # Usage
