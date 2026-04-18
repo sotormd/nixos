@@ -183,8 +183,7 @@ The following search engines are enabled by default on the general tab:
 2. DuckDuckGo
 3. Google
 4. Startpage
-5. Yahoo
-6. Wikipedia
+5. Wikipedia
 
 ## Key
 
