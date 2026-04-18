@@ -109,8 +109,6 @@
             ];
           };
 
-          # packages to build images easily
-
         };
 
       flake =
