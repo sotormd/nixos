@@ -23,6 +23,7 @@
         results_on_new_tab = false;
         search_on_category_select = false;
         url_formatting = "full";
+        categories_as_tabs = [ "general" ];
       };
 
       search = {
