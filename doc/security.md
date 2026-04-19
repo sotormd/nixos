@@ -1479,6 +1479,8 @@ Tumbler thumbnails are disabled in Thunar to prevent various exploits.
 
 # Bubblewrap
 
+> Laptop only
+
 [Bubblewrap](https://github.com/containers/bubblewrap) is a low-level
 unprivileged sandbox utility that is used by projects like
 [Flatpak](https://flatpak.org/) and
@@ -1491,9 +1493,7 @@ another sandboxing tool but uses suid binaries - which can act as a privilege
 escalation hole. Bubblewrap does not have these issues.
 
 Bubblewrap sandboxes can be created using the `bwrap(1)` command-line interface.
-While this is available on both Laptop and Server roles, this flake uses
-bubblewrap only for sandboxing browsers on the Laptop role. All the options used
-are covered in the browsers section.
+All the options used are covered in the browsers section.
 
 # xdg-dbus-proxy
 
