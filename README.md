@@ -93,6 +93,7 @@ Comprehensive features list:
 | dotfiles                      | `nixpkgs` wrappers                                                                                         |
 | auditing                      | `auditd`                                                                                                   |
 | secrets                       | `sops`, `sops-nix`                                                                                         |
+| keys                          | `age`, `signify`, `gpg`                                                                                    |
 | usb policy                    | `usbguard`                                                                                                 |
 | sandboxing                    | `bubblewrap`, `xdg-dbus-proxy`                                                                             |
 | firewall                      | `nf_tables`                                                                                                |
