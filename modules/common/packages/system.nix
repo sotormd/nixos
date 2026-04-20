@@ -164,5 +164,11 @@
     # manpages
     pkgs.man
 
+    # modern encryption tool
+    pkgs.age
+
+    # openbsd signing tool
+    pkgs.signify
+
   ];
 }

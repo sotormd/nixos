@@ -57,25 +57,26 @@ Missing features:
 13. [Users and Privileges](#users-and-privileges)
 14. [Nix Package Manager](#nix-package-manager)
 15. [SOPS](#sops)
-16. [USBGuard](#usbguard)
-17. [Wireless Networking](#wireless-networking)
-18. [DNS](#dns)
-19. [Firewall](#firewall)
-20. [MAC Randomization](#mac-randomization)
-21. [Secure Shell](#secure-shell)
-22. [Fail2Ban](#fail2ban)
-23. [NGINX](#nginx)
-24. [I2P and Anonymity](#i2p-and-anonymity)
-25. [Display Server](#display-server)
-26. [Desktop](#desktop)
-27. [Session Locking](#session-locking)
-28. [Thumbnails](#thumbnails)
-29. [Bubblewrap](#bubblewrap)
-30. [xdg-dbus-proxy](#xdg-dbus-proxy)
-31. [Browsers](#browsers)
-32. [Search Engine](#search-engine)
-33. [Password Manager](#password-manager)
-34. [Virtualisation and Containers](#virtualisation-and-containers)
+16. [Encryption and Signing](#encryption-and-signing)
+17. [USBGuard](#usbguard)
+18. [Wireless Networking](#wireless-networking)
+19. [DNS](#dns)
+20. [Firewall](#firewall)
+21. [MAC Randomization](#mac-randomization)
+22. [Secure Shell](#secure-shell)
+23. [Fail2Ban](#fail2ban)
+24. [NGINX](#nginx)
+25. [I2P and Anonymity](#i2p-and-anonymity)
+26. [Display Server](#display-server)
+27. [Desktop](#desktop)
+28. [Session Locking](#session-locking)
+29. [Thumbnails](#thumbnails)
+30. [Bubblewrap](#bubblewrap)
+31. [xdg-dbus-proxy](#xdg-dbus-proxy)
+32. [Browsers](#browsers)
+33. [Search Engine](#search-engine)
+34. [Password Manager](#password-manager)
+35. [Virtualisation and Containers](#virtualisation-and-containers)
 
 # Secure Boot
 
@@ -1041,10 +1042,15 @@ to get root privileges.
 
 [sops-nix](https://github.com/Mic92/sops-nix) is used to store secrets consumed
 by the NixOS modules. This ensures that sensitive information does not end up in
-the world-readable Nix store.
+the world-readable Nix store. These secrets are encrypted using GPG.
 
 Also, the CLI ensures that the variables file and sops-nix secrets are never
 committed / pushed to a remote by always unstaging them after rebuilds.
+
+# Encryption and Signing
+
+Age is available for modern encryption. The OpenBSD signify is available for
+signing and verification.
 
 # USBGuard
 
