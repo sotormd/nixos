@@ -1,7 +1,9 @@
+{ inputs, ... }:
+
 {
   imports = [
     ./dir.nix
     ./env.nix
-    ./enable.nix
+    inputs.nixosModules.cli-bin
   ];
 }

@@ -88,17 +88,20 @@
       # the old variables interface, now using options!
       legacyVars = import ./vars/vars.nix;
 
+      # features as modules - DENDRITIC!
+      modules = import ./modules;
+
       # create a "machine"
       mkMachine =
         role: system:
         inputs.nixpkgs.lib.nixosSystem {
           specialArgs = { inherit inputs lib legacyVars; };
           inherit system;
-          modules = [ (import ./roles { role = "machine-${role}"; }) ];
+          modules = [ (import ./roles { role = "machine-${role}"; } { inherit inputs; }) ];
         };
 
       # create an image module
-      mkImageModule = role: (import ./roles { role = "image-${role}"; });
+      mkImageModule = role: (import ./roles { role = "image-${role}"; } { inherit inputs; });
 
       # create an "image"
       mkImage =
@@ -110,7 +113,7 @@
         };
 
       # targets
-      spec = {
+      targets = {
         machines = [
           {
             name = "laptop";
@@ -139,20 +142,25 @@
 
       nixosConfigurations =
         lib.listToAttrs (
-          map (m: lib.nameValuePair "machine-${m.name}" (mkMachine m.name m.arch)) spec.machines
+          map (m: lib.nameValuePair "machine-${m.name}" (mkMachine m.name m.arch)) targets.machines
         )
         // lib.listToAttrs (
-          map (i: lib.nameValuePair "image-${i.name}" (mkImage i.name i.arch)) spec.images
+          map (i: lib.nameValuePair "image-${i.name}" (mkImage i.name i.arch)) targets.images
         );
 
       nixosModules =
-        lib.listToAttrs (map (i: lib.nameValuePair "image-${i.name}" (mkImageModule i.name)) spec.images)
+        modules
         // lib.listToAttrs (
-          map (i: lib.nameValuePair "image-${i.name}-remote" (mkImageModule "${i.name}-remote")) spec.images
+          map (i: lib.nameValuePair "image-${i.name}" (mkImageModule i.name)) targets.images
+        )
+        // lib.listToAttrs (
+          map (
+            i: lib.nameValuePair "image-${i.name}-remote" (mkImageModule "${i.name}-remote")
+          ) targets.images
         );
 
     in
     {
-      inherit nixosConfigurations nixosModules formatter;
+      inherit formatter nixosConfigurations nixosModules;
     };
 }

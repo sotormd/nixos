@@ -1,9 +1,10 @@
 {
-  role ? "laptop",
+  role ? "machine-laptop",
+  inputs,
 }:
 
 let
-  roleConfig = import ./${role}.nix;
+  roleConfig = import ./${role}/default.nix { inherit inputs; };
 in
 {
   system.stateVersion = "24.05";

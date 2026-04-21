@@ -140,7 +140,7 @@ wireless network:
         inputs.nixos-config.nixosModules.image-sd-remote
         {
           remote = {
-            sshKey = "ssh-ed25519 AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA example@example";
+            sshKey = "ssh-ed25519 AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA test@test";
             wireless = {
               interface = "wlan0";
               ssid = "example-net";

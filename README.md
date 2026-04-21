@@ -2,6 +2,7 @@
   <h1 align="center">NixOS Configuration Flake</h1>
   <p align="center" style="font-size: 0.3rem;">
     <strong>
+      <a href="#architecture">Architecture</a> |
       <a href="#features">Features</a> |
       <a href="#configuration-roles">Configuration Roles</a> |
       <a href="#bootstrap-images">Bootstrap Images</a> |
@@ -13,9 +14,12 @@
 
 ![nixos](./doc/screenshots/nord.gif)
 
-~~slighly overengineered~~ NixOS configuration flake for multiple hosts
+~~slighly overengineered~~ dendritic NixOS configuration flake for multiple
+hosts
 
 [See all screenshots](./doc/screenshots.md)
+
+# Architecture
 
 # Features
 
@@ -26,17 +30,17 @@
 Nix-specific features:
 
 - Completely reproducible, pure evaluation
-- Dotfiles managed using wrappers implemented from basic nixpkgs functions
+- Role-based outputs with features as dendritic modules
+- Variables system for device-specific configuration
+- Bespoke [CLI](#cli)
+- Flake-enabled bootstrap [images](#images) Dotfiles managed using wrappers
+  implemented from basic nixpkgs functions
 - Symlinks in ~ managed using [hjem](https://github.com/feel-co/hjem)
 - Secrets managed using [sops-nix](https://github.com/Mic92/sops-nix)
 - Secure boot using [lanzaboote](https://github.com/nix-community/lanzaboote)
 - [Impermanence](./doc/filesystems.md#impermanence) using ZFS snapshots and bind
   mounts, without the library.
 - Package management using [lix](https://lix.systems)
-- Role-based modules
-- Variables system for device-specific configuration
-- Flake helper [CLI](#cli)
-- Flake-enabled installation [images](#images)
 
 Desktop features:
 
