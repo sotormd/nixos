@@ -3,10 +3,10 @@
   <p align="center" style="font-size: 0.3rem;">
     <strong>
       <a href="#features">Features</a> |
-      <a href="#roles">Roles</a> |
-      <a href="#images">Images</a> |
-      <a href="#cli">CLI</a> |
-      <a href="#related">Related</a>
+      <a href="#configuration-roles">Configuration Roles</a> |
+      <a href="#bootstrap-images">Bootstrap Images</a> |
+      <a href="#bespoke-cli">Bespoke CLI</a> |
+      <a href="#related-flakes">Related Flakes</a>
     </strong>
   </p>
 </p>
@@ -135,7 +135,7 @@ Comprehensive features list:
 | wallpapers                    | [`wallpapers`](https://github.com/sotormd/wallpapers), [`xkcd-wall`](https://github.com/sotormd/xkcd-wall) |
 | terminal misc                 | `cava`, `fortune`                                                                                          |
 
-# Roles
+# Configuration Roles
 
 This flake uses role-based configuration.
 
@@ -146,7 +146,7 @@ This flake uses role-based configuration.
 
 Some previous roles have been moved to separate repos, see [Related](#related).
 
-# Images
+# Bootstrap Images
 
 [![Build GNOME ISO](https://img.shields.io/github/actions/workflow/status/sotormd/nixos/build-gnome-iso.yml?style=for-the-badge&label=Build%20GNOME%20ISO)](https://github.com/sotormd/nixos/actions/workflows/build-gnome-iso.yml)
 
@@ -164,7 +164,7 @@ provided.
 
 See [Images Documentation](./doc/images.md) for more details.
 
-# CLI
+# Bespoke CLI
 
 Routine tasks such as updating the flake, switching configurations,
 garbage-collecting, and editing variables & secrets are handled through the
@@ -179,9 +179,9 @@ man nixos
 See [CLI Documentation](./doc/cli.md) for the full command reference and
 workflow examples.
 
-# Related
+# Related Flakes
 
-Here are some of my other repos that are related to my NixOS tooling:
+Here are some of my other flakes that are related to my NixOS tooling:
 
 - [neovim](https://github.com/sotormd/neovim), Neovim configuration flake (ft.
   nvf)
