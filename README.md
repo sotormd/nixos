@@ -139,10 +139,10 @@ Comprehensive features list:
 
 This flake uses role-based configuration.
 
-| Role   | Description                         | Documentation                                                                                                  |
-| ------ | ----------------------------------- | -------------------------------------------------------------------------------------------------------------- |
-| Laptop | Personal laptop configuration.      | [Requirements](./doc/laptop/requirements.md) - [Setup](./doc/laptop/setup.md) - [Usage](./doc/laptop/usage.md) |
-| Server | Headless home-server configuration. | [Requirements](./doc/server/requirements.md) - [Setup](./doc/server/setup.md) - [Usage](./doc/server/usage.md) |
+| Role   | Description                        | Documentation                                                                                                  |
+| ------ | ---------------------------------- | -------------------------------------------------------------------------------------------------------------- |
+| Laptop | Configuration for my laptops.      | [Requirements](./doc/laptop/requirements.md) - [Setup](./doc/laptop/setup.md) - [Usage](./doc/laptop/usage.md) |
+| Server | Configuration for my home-servers. | [Requirements](./doc/server/requirements.md) - [Setup](./doc/server/setup.md) - [Usage](./doc/server/usage.md) |
 
 Some previous roles have been moved to separate repos, see [Related](#related).
 
