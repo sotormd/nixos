@@ -192,8 +192,8 @@ workflow examples.
 This flake provides layers 1 and 2. Layer 0 comes from upstream and layer 3 is
 defined per-deployment.
 
-Additionally, there are some helper functions in [`./lib`](./lib) and the
-bespoke CLI lives in [`./cli`](./cli).
+Additionally, there are some helper functions in [`./lib/`](./lib) and the
+bespoke CLI lives in [`./cli/`](./cli).
 
 # Related Flakes
 
