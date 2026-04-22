@@ -68,7 +68,7 @@
       stevenblack
       # sway
       # swaylock
-      systemd-boot
+      # systemd-boot
       # thunar
       timesyncd
       uboot
