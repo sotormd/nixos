@@ -2,6 +2,7 @@ name: Evaluate Machine - Laptop
 
 on:
   push:
+    branches: [master]
   pull_request:
 
 jobs:
