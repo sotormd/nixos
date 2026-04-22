@@ -27,7 +27,7 @@ let
         (defpoll cpu-ghz :interval "1s" "cat /proc/cpuinfo | grep \"cpu MHz\" | head -n 1 | awk '{printf \"%.1fGHz\\n\", \$4/1000}'")
         (defpoll zfs-perc :interval "1s" "zpool iostat | awk '/rpool/ {print 100 * \$2 / (\$2 + \$3)}'")
         (defpoll zfs-gib :interval "1s" "zpool iostat | awk '/rpool/ {print \$2}'")
-        (defpoll fortune :interval "600s" "fortune -n 35 -s")
+        (defpoll fortune :interval "600s" "${pkgs.fortune}/bin/fortune -n 35 -s")
 
         (defwidget calendar-custom []
                    (box :class "calendar"
@@ -244,7 +244,7 @@ let
                          :class "fortune-refresh"
                          :cursor "hand2"
                          :halign "end"
-                         :onclick "eww update fortune=\"\$(fortune -n 30 -s)\""
+                         :onclick "eww update fortune=\"\$(${pkgs.fortune}/bin/fortune -n 30 -s)\""
                          (box :class "fortune-refresh-inner" :orientation "v" "󱛬")))
                      (box
                        :class "start-inner-box"

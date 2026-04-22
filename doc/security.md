@@ -1100,9 +1100,6 @@ USBGuard can be controlled using the `usbguard` command line interface. Only the
 `wpa_supplicant` is used for wireless connections. Network secrets are stored
 using SOPS.
 
-Additionally, several untrusted / suspicious certificate authorities are
-blacklisted.
-
 > Laptop only
 
 WPA3 (SAE / dragonfly) is used for wireless authentication on Laptop.

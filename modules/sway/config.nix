@@ -216,11 +216,11 @@ let
       #
       # GTK 4.0 SETTINGS
       #
-      exec dconf write /org/gnome/desktop/interface/font-name "'${config.colors.fonts.normal} 10'"
-      exec dconf write /org/gnome/desktop/interface/icon-theme "'${config.colors.gtk.icons.name}'"
-      exec dconf write /org/gnome/desktop/interface/gtk-theme "'${config.colors.gtk.theme.name}'"
-      exec dconf write /org/gnome/desktop/interface/color-scheme "'prefer-dark'"
-      exec dconf write /org/gnome/desktop/wm/preferences/button-layout "':'"
+      exec ${pkgs.dconf}/bin/dconf write /org/gnome/desktop/interface/font-name "'${config.colors.fonts.normal} 10'"
+      exec ${pkgs.dconf}/bin/dconf write /org/gnome/desktop/interface/icon-theme "'${config.colors.gtk.icons.name}'"
+      exec ${pkgs.dconf}/bin/dconf write /org/gnome/desktop/interface/gtk-theme "'${config.colors.gtk.theme.name}'"
+      exec ${pkgs.dconf}/bin/dconf write /org/gnome/desktop/interface/color-scheme "'prefer-dark'"
+      exec ${pkgs.dconf}/bin/dconf write /org/gnome/desktop/wm/preferences/button-layout "':'"
 
       #
       # MOUSE & TOUCHPAD
@@ -352,7 +352,7 @@ let
       #
       # SWAYIDLE
       #
-      exec swayidle \
+      exec ${pkgs.swayidle}/bin/swayidle \
       timeout 60 '${pkgs.swaylock0}/bin/swaylock' \
       timeout 120 'systemctl suspend' \
       before-sleep '${pkgs.swaylock0}/bin/swaylock'

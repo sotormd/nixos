@@ -1,7 +1,0 @@
-{
-  imports = [
-    ./network
-    ./packages
-    ./users
-  ];
-}

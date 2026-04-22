@@ -67,7 +67,7 @@ let
           },
           "clock": {
             "format": "<span size='12000' rise='-1000'>󰥔</span> <span rise='-1000'>{:%I:%M %p}</span>",
-            "on-click": "eww open --toggle calendar --screen $(swaymsg -t get_outputs | jq -r '.[] | select(.focused) | .name')",
+            "on-click": "${pkgs.eww0}/bin/eww open --toggle calendar --screen $(swaymsg -t get_outputs | jq -r '.[] | select(.focused) | .name')",
             "tooltip": false
           },
           "custom/playerctl": {
