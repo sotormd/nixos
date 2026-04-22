@@ -1,25 +1,39 @@
-<p align="center" style="display: flex; align-items: center; justify-content: center; gap: 10px;">
-  <h1 align="center">NixOS Configuration Flake</h1>
-  <p align="center" style="font-size: 0.3rem;">
-    <strong>
-      <a href="#architecture">Architecture</a> |
-      <a href="#features">Features</a> |
-      <a href="#configuration-roles">Configuration Roles</a> |
-      <a href="#bootstrap-images">Bootstrap Images</a> |
-      <a href="#bespoke-cli">Bespoke CLI</a> |
-      <a href="#related-flakes">Related Flakes</a>
-    </strong>
-  </p>
+<h1 align="center">NixOS Configuration Flake</h1>
+<p align="center" style="font-size: 0.3rem;">
+    <a href="#architecture">Architecture</a> &bull;
+    <a href="#features">Features</a> &bull;
+    <a href="#configuration-roles">Configuration Roles</a> &bull;
+    <a href="#bootstrap-images">Bootstrap Images</a> &bull;
+    <a href="#bespoke-cli">Bespoke CLI</a> &bull;
+    <a href="#related-flakes">Related Flakes</a>
 </p>
 
-![nixos](./doc/screenshots/nord.gif)
+![screenshots gif](./doc/screenshots/nord.gif)
 
 ~~slighly overengineered~~ dendritic NixOS configuration flake for multiple
 hosts
 
 [See all screenshots](./doc/screenshots.md)
 
+> Parallel to writing this flake, I have tried my best to document most aspects
+> of it. I consider the documentation to be largely stable and error-free,
+> however, erroneous/old information might be present in certain parts. I've
+> written the documentation for future-me as a reference.
+
 # Architecture
+
+![architecture diagram](./doc/screenshots/architecture.png)
+
+0. Upstream inputs - most importantly `nixpkgs` which provides the NixOS module
+   system, which rest of the flake builds upon.
+1. Dendritic features as modules, which are exposed as `nixosModules` and can be
+   consumed by roles.
+2. Roles are compositions of modules that define generalized system shapes.
+3. Variables and secrets that capture differences between multiple deployments
+   of the same role.
+
+This flake provides layers 1 and 2. Layer 0 comes from upstream and layer 3 is
+defined per-deployment.
 
 # Features
 
