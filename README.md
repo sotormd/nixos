@@ -71,7 +71,9 @@ Services features:
 - [i2pd](https://github.com/PurpleI2P/i2pd) I2P router
 - [Jellyfin](https://jellyfin.org/) media server
 
-Comprehensive features list:
+<details>
+
+<summary>Click to expand: Comprehensive features list</summary>
 
 | Category                      | Stack                                                                                                      |
 | ----------------------------- | ---------------------------------------------------------------------------------------------------------- |
@@ -132,6 +134,8 @@ Comprehensive features list:
 | themes, icons, cursors, fonts | [`colors`](https://github.com/sotormd/colors)                                                              |
 | wallpapers                    | [`wallpapers`](https://github.com/sotormd/wallpapers), [`xkcd-wall`](https://github.com/sotormd/xkcd-wall) |
 | terminal misc                 | `cava`, `fortune`                                                                                          |
+
+</details>
 
 # Configuration Roles
 
