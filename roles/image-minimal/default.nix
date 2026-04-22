@@ -7,6 +7,5 @@
     inputs.self.nixosModules.cli-bin
     inputs.self.nixosModules.nix
     inputs.self.nixosModules.packages
-    inputs.self.nixosModules.quietboot
   ];
 }
