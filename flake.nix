@@ -97,11 +97,21 @@
         inputs.nixpkgs.lib.nixosSystem {
           specialArgs = { inherit inputs lib legacyVars; };
           inherit system;
-          modules = [ (import ./roles { role = "machine-${role}"; } { inherit inputs; }) ];
+          modules = [
+            (import ./roles {
+              role = "machine-${role}";
+              inherit inputs;
+            })
+          ];
         };
 
       # create an image module
-      mkImageModule = role: (import ./roles { role = "image-${role}"; } { inherit inputs; });
+      mkImageModule =
+        role:
+        (import ./roles {
+          role = "image-${role}";
+          inherit inputs;
+        });
 
       # create an "image"
       mkImage =

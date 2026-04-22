@@ -12,14 +12,23 @@
   # bash shell
   bash = _: { imports = [ ./bash ]; };
 
+  # bootstrap images
+  bootstrap-image = _: { imports = [ ./bootstrap-image ]; };
+
+  # bootstrap remotely
+  bootstrap-remote = _: { imports = [ ./bootstrap-remote ]; };
+
   # brave web browser
   brave = _: { imports = [ ./brave ]; };
 
   # btop system resources monitor
   btop = _: { imports = [ ./btop ]; };
 
-  # bespoke `nixos` cli
-  cli = _: { imports = [ ./cli ]; };
+  # bespoke `nixos` cli - binaries
+  cli-bin = _: { imports = [ ./cli-bin ]; };
+
+  # bespoke `nixos` cli - environment and directories
+  cli-env = _: { imports = [ ./cli-env ]; };
 
   # development tools
   dev = _: { imports = [ ./dev ]; };

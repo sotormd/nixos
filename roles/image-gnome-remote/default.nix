@@ -2,7 +2,7 @@
 
 {
   imports = [
-    inputs.nixosModules.bootstrap-remote
-    inputs.nixosModules.image-gnome
+    inputs.self.nixosModules.bootstrap-remote
+    inputs.self.nixosModules.image-gnome
   ];
 }

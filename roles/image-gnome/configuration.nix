@@ -33,8 +33,8 @@
   };
 
   environment = {
-    environment = {
-      sessionVariables.NIXOS_ROLE = "laptop";
+    sessionVariables = {
+      NIXOS_ROLE = "laptop";
       NIXOS_MOUNT = "/mnt";
     };
   };
