@@ -4,7 +4,6 @@
     <a href="#configuration-roles">Configuration Roles</a> &bull;
     <a href="#bootstrap-images">Bootstrap Images</a> &bull;
     <a href="#bespoke-cli">Bespoke CLI</a> &bull;
-    <a href="#architecture">Architecture</a> &bull;
     <a href="#related-flakes">Related Flakes</a>
 </p>
 
@@ -180,24 +179,6 @@ man nixos
 
 See [CLI Documentation](./doc/cli.md) for the full command reference and
 workflow examples.
-
-# Architecture
-
-![architecture diagram](./doc/screenshots/architecture.png)
-
-0. **Inputs** like nixpkgs, which rest of the flake builds upon.
-1. **Modules**, which are dendritic features exposed as NixOS modules and
-   consumed by roles. Modules can be found in [`./modules/`](./modules/).
-2. **Roles**, which are compositions of modules that define generalized system
-   shapes. Roles can be found in [`./roles/`](./roles/).
-3. **Variables** and secrets that capture differences between multiple
-   deployments of the same role.
-
-This flake provides layers 1 and 2. Layer 0 comes from upstream and layer 3 is
-defined per-deployment.
-
-Additionally, there are some helper functions in [`./lib/`](./lib) and the
-bespoke CLI lives in [`./cli/`](./cli).
 
 # Related Flakes
 
