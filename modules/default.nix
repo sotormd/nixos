@@ -118,6 +118,9 @@
     # build, sign and copy remote closures
     network.seed = _: { imports = [ ./network/seed ]; };
 
+    # stevenblack's host lists
+    network.stevenblack = _: { imports = [ ./network/stevenblack ]; };
+
     # wpa_supplicant wireless networking
     network.wireless = _: { imports = [ ./network/wireless ]; };
 
