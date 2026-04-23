@@ -27,7 +27,6 @@ let
       #!${pkgs.runtimeShell}
 
       ${inputs.xkcd.packages.x86_64-linux.default}/bin/xkcd-wall -t random -c "${configuration}/config.json" "${target}" || cp "${fallback}" "${target}"; chmod 777 "${target}"
-      dunstify "xkcd" "refreshed comics"
     '';
     destination = "/bin/xkcd-refresh";
     executable = true;
