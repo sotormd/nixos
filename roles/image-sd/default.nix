@@ -3,7 +3,7 @@
 {
   imports = [
     ./configuration.nix
-    inputs.self.nixosModules.modules.quietboot
+    inputs.self.nixosModules.modules.boot.quiet
     inputs.self.nixosModules.profiles.image
   ];
 }
