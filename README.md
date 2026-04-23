@@ -25,10 +25,10 @@ Nix-specific features:
 - Completely reproducible, pure evaluation
 - Role-based outputs with features as dendritic modules
 - Variables system for device-specific configuration
-- Bespoke [CLI](#cli) for maintaining this flake
-- Flake-enabled bootstrap [images](#images)
-- Dotfiles managed using wrappers implemented from basic nixpkgs functions --
-  [Impermanence](./doc/filesystems.md#impermanence) using ZFS snapshots and bind
+- [Bespoke CLI](#bespoke-cli) for maintaining this flake
+- Flake-enabled [bootstrap images](#bootstrap-images)
+- Dotfiles managed using wrappers implemented from basic nixpkgs functions
+- [Impermanence](./doc/filesystems.md#impermanence) using ZFS snapshots and bind
   mounts, without the library.
 - Secrets managed using [sops-nix](https://github.com/Mic92/sops-nix)
 - Secure boot using [lanzaboote](https://github.com/nix-community/lanzaboote)
