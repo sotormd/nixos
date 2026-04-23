@@ -25,14 +25,13 @@ Nix-specific features:
 - Completely reproducible, pure evaluation
 - Role-based outputs with features as dendritic modules
 - Variables system for device-specific configuration
-- Bespoke [CLI](#cli)
-- Flake-enabled bootstrap [images](#images) Dotfiles managed using wrappers
-  implemented from basic nixpkgs functions
-- Symlinks in ~ managed using [hjem](https://github.com/feel-co/hjem)
+- Bespoke [CLI](#cli) for maintaining this flake
+- Flake-enabled bootstrap [images](#images)
+- Dotfiles managed using wrappers implemented from basic nixpkgs functions --
+  [Impermanence](./doc/filesystems.md#impermanence) using ZFS snapshots and bind
+  mounts, without the library.
 - Secrets managed using [sops-nix](https://github.com/Mic92/sops-nix)
 - Secure boot using [lanzaboote](https://github.com/nix-community/lanzaboote)
-- [Impermanence](./doc/filesystems.md#impermanence) using ZFS snapshots and bind
-  mounts, without the library.
 - Package management using [lix](https://lix.systems)
 
 Desktop features:
@@ -88,8 +87,8 @@ Services features:
 | filesystem                    | `zfs`                                                                                                      |
 | impermanence                  | `zfs(8)` `mount(8)`                                                                                        |
 | drive health                  | `smartmontools`                                                                                            |
-| ~ symlinks                    | `hjem`                                                                                                     |
 | dotfiles                      | `nixpkgs` wrappers                                                                                         |
+| ~ symlinks                    | `systemd-tmpfiles`                                                                                         |
 | auditing                      | `auditd`                                                                                                   |
 | secrets                       | `sops`, `sops-nix`                                                                                         |
 | keys                          | `age`, `signify`, `gpg`                                                                                    |
