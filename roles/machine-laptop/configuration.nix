@@ -119,14 +119,6 @@
   # environment variables
   environment.sessionVariables = {
     NIXOS_ROLE = "laptop";
-    XDG_DOCUMENTS_DIR = "/home/${config.vars.user.name}/Documents";
-    XDG_DOWNLOAD_DIR = "/home/${config.vars.user.name}/Downloads";
-    XDG_PICTURES_DIR = "/home/${config.vars.user.name}/Pictures";
-    XDG_DESKTOP_DIR = null;
-    XDG_MUSIC_DIR = null;
-    XDG_PUBLICSHARE_DIR = null;
-    XDG_TEMPLATES_DIR = null;
-    XDG_VIDEOS_DIR = null;
   };
 
   # drop unnecessary variables

@@ -1,213 +1,200 @@
 {
+  modules = {
 
-  # audio with pipewire
-  audio = _: { imports = [ ./audio ]; };
+    # bash shell
+    apps.bash = _: { imports = [ ./apps/bash ]; };
 
-  # linux audit subsystem
-  audit = _: { imports = [ ./audit ]; };
+    # brave web browser
+    apps.brave = _: { imports = [ ./apps/brave ]; };
 
-  # automatic cpu speed & power optimizer
-  auto-cpufreq = _: { imports = [ ./auto-cpufreq ]; };
+    # btop system resources monitor
+    apps.btop = _: { imports = [ ./apps/btop ]; };
 
-  # bash shell
-  bash = _: { imports = [ ./bash ]; };
+    # automatic cpu speed & power optimizer
+    apps.cpufreq = _: { imports = [ ./apps/cpufreq ]; };
 
-  # bootstrap images
-  bootstrap-image = _: { imports = [ ./bootstrap-image ]; };
+    # development tools
+    apps.dev = _: { imports = [ ./apps/dev ]; };
 
-  # bootstrap remotely
-  bootstrap-remote = _: { imports = [ ./bootstrap-remote ]; };
+    # distrobox containers
+    apps.distrobox = _: { imports = [ ./apps/distrobox ]; };
 
-  # brave web browser
-  brave = _: { imports = [ ./brave ]; };
+    # foot terminal emulator
+    apps.foot = _: { imports = [ ./apps/foot ]; };
 
-  # btop system resources monitor
-  btop = _: { imports = [ ./btop ]; };
+    # git version control system
+    apps.git = _: { imports = [ ./apps/git ]; };
 
-  # bespoke `nixos` cli
-  cli = _: { imports = [ ./cli ]; };
+    # browse the i2p network
+    apps.i2p-browser = _: { imports = [ ./apps/i2p-browser ]; };
 
-  # disable coredumps
-  coredumps = _: { imports = [ ./coredumps ]; };
+    # inkscape vector graphics editor
+    apps.inkscape = _: { imports = [ ./apps/inkscape ]; };
 
-  # development tools
-  dev = _: { imports = [ ./dev ]; };
+    # mousepad text editor
+    apps.mousepad = _: { imports = [ ./apps/mousepad ]; };
 
-  # filesystems, external disks, luks, mounts
-  disks = _: { imports = [ ./disks ]; };
+    # mpv media player
+    apps.mpv = _: { imports = [ ./apps/mpv ]; };
 
-  # distrobox containers
-  distrobox = _: { imports = [ ./distrobox ]; };
+    # neovim text editor
+    apps.neovim = _: { imports = [ ./apps/neovim ]; };
 
-  # dunst notification daemon
-  dunst = _: { imports = [ ./dunst ]; };
+    # sandboxing with bubblewrap and xdg-dbus-proxy
+    apps.sandbox = _: { imports = [ ./apps/sandbox ]; };
 
-  # disable emergency & rescue
-  emergency-rescue = _: { imports = [ ./emergency-rescue ]; };
+    # thunar file manager
+    apps.thunar = _: { imports = [ ./apps/thunar ]; };
 
-  # binfmt emulated architectures
-  emulated = _: { imports = [ ./emulated ]; };
+    # zathura pdf reader
+    apps.zathura = _: { imports = [ ./apps/zathura ]; };
 
-  # eww wm-agnostic widgets
-  eww = _: { imports = [ ./eww ]; };
+    # filesystems, external disks, luks, mounts
+    boot.disks = _: { imports = [ ./boot/disks ]; };
 
-  # iptables-nft firewall
-  firewall = _: { imports = [ ./firewall ]; };
+    # binfmt emulated architectures
+    boot.emulated = _: { imports = [ ./boot/emulated ]; };
 
-  # foot terminal emulator
-  foot = _: { imports = [ ./foot ]; };
+    # hardware rng based on cpu timing jitter
+    boot.jitterentropy = _: { imports = [ ./boot/jitterentropy ]; };
 
-  # git version control system
-  git = _: { imports = [ ./git ]; };
+    # kernel release, kernel parameters, sysctl options, module blacklists
+    boot.kernel = _: { imports = [ ./boot/kernel ]; };
 
-  # graphene hardened malloc
-  graphene-malloc = _: { imports = [ ./graphene-malloc ]; };
+    # timezone, locales, keyboard layout
+    boot.localization = _: { imports = [ ./boot/localization ]; };
 
-  # gtk theming
-  gtk = _: { imports = [ ./gtk ]; };
+    # graphene hardened malloc
+    boot.malloc = _: { imports = [ ./boot/malloc ]; };
 
-  # hjem symlinks in $HOME
-  hjem = _: { imports = [ ./hjem ]; };
+    # /persist directory
+    boot.persist = _: { imports = [ ./boot/persist ]; };
 
-  # hostname, hostid, machineid, issue
-  host = _: { imports = [ ./host ]; };
+    # quiet, non-verbose boot
+    boot.quiet = _: { imports = [ ./boot/quiet ]; };
 
-  # browse the i2p network
-  i2p-browser = _: { imports = [ ./i2p-browser ]; };
+    # secureboot with lanzaboote
+    boot.secureboot = _: { imports = [ ./boot/secureboot ]; };
 
-  # invisible internet protocol daemon
-  i2pd = _: { imports = [ ./i2pd ]; };
+    # systemd stage-1
+    boot.stage-1 = _: { imports = [ ./boot/stage-1 ]; };
 
-  # inkscape vector graphics editor
-  inkscape = _: { imports = [ ./inkscape ]; };
+    # systemd-boot bootloader
+    boot.systemd-boot = _: { imports = [ ./boot/systemd-boot ]; };
 
-  # jellyfin media server
-  jellyfin = _: { imports = [ ./jellyfin ]; };
+    # generic extlinux bootloader
+    boot.uboot = _: { imports = [ ./boot/uboot ]; };
 
-  # hardware rng based on cpu timing jitter
-  jitterentropy = _: { imports = [ ./jitterentropy ]; };
+    # users and other nsswitch options
+    boot.users = _: { imports = [ ./boot/users ]; };
 
-  # systemd-journald
-  journald = _: { imports = [ ./journald ]; };
+    # bootstrap images
+    bootstrap.image = _: { imports = [ ./bootstrap/image ]; };
 
-  # kernel release, kernel parameters, sysctl options, module blacklists
-  kernel = _: { imports = [ ./kernel ]; };
+    # bootstrap remotely
+    bootstrap.remote = _: { imports = [ ./bootstrap/remote ]; };
 
-  # libvirt with qemu/kvm and virt-manager
-  libvirt = _: { imports = [ ./libvirt ]; };
+    # bespoke `nixos` cli
+    core.cli = _: { imports = [ ./core/cli ]; };
 
-  # timezone, locales, keyboard layout
-  localization = _: { imports = [ ./localization ]; };
+    # nix package manager
+    core.nix = _: { imports = [ ./core/nix ]; };
 
-  # gnu macchanger
-  macchanger = _: { imports = [ ./macchanger ]; };
+    # base packages collection
+    core.packages = _: { imports = [ ./core/packages ]; };
 
-  # mousepad text editor
-  mousepad = _: { imports = [ ./mousepad ]; };
+    # iptables-nft firewall
+    network.firewall = _: { imports = [ ./network/firewall ]; };
 
-  # mpv media player
-  mpv = _: { imports = [ ./mpv ]; };
+    # hostname, hostid, machineid, issue, ssh host aliases
+    network.host = _: { imports = [ ./network/host ]; };
 
-  # nginx web server
-  nginx = _: { imports = [ ./nginx ]; };
+    # gnu macchanger
+    network.macchanger = _: { imports = [ ./network/macchanger ]; };
 
-  # nix package manager
-  nix = _: { imports = [ ./nix ]; };
+    # roaming mode
+    network.roaming = _: { imports = [ ./network/roaming ]; };
 
-  # base packages collection
-  packages = _: { imports = [ ./packages ]; };
+    # build, sign and copy remote closures
+    network.seed = _: { imports = [ ./network/seed ]; };
 
-  # /persist directory
-  persist = _: { imports = [ ./persist ]; };
+    # wpa_supplicant wireless networking
+    network.wireless = _: { imports = [ ./network/wireless ]; };
 
-  # plymouth flicker-free graphical boot
-  plymouth = _: { imports = [ ./plymouth ]; };
+    # wpa3 dragonfly authentication
+    network.wpa3 = _: { imports = [ ./network/wpa3 ]; };
 
-  # qbittorrent torrent client
-  qbt = _: { imports = [ ./qbt ]; };
+    # linux audit subsystem
+    services.auditd = _: { imports = [ ./services/auditd ]; };
 
-  # quiet, non-verbose boot
-  quietboot = _: { imports = [ ./quietboot ]; };
+    # invisible internet protocol daemon
+    services.i2pd = _: { imports = [ ./services/i2pd ]; };
 
-  # roaming mode
-  roaming = _: { imports = [ ./roaming ]; };
+    # jellyfin media server
+    services.jellyfin = _: { imports = [ ./services/jellyfin ]; };
 
-  # rofi launcher
-  rofi = _: { imports = [ ./rofi ]; };
+    # systemd-journald
+    services.journald = _: { imports = [ ./services/journald ]; };
 
-  # run0 privilege elevation
-  run0 = _: { imports = [ ./run0 ]; };
+    # libvirt with qemu/kvm and virt-manager
+    services.libvirtd = _: { imports = [ ./services/libvirtd ]; };
 
-  # sandboxing with bubblewrap and xdg-dbus-proxy
-  sandbox = _: { imports = [ ./sandbox ]; };
+    # nginx web server
+    services.nginx = _: { imports = [ ./services/nginx ]; };
 
-  # searxng metasearch engine
-  searxng = _: { imports = [ ./searxng ]; };
+    # audio with pipewire
+    services.pipewire = _: { imports = [ ./services/pipewire ]; };
 
-  # secureboot with lanzaboote
-  secureboot = _: { imports = [ ./secureboot ]; };
+    # qbittorrent torrent client
+    services.qbt = _: { imports = [ ./services/qbt ]; };
 
-  # build, sign and copy remote closures
-  seed = _: { imports = [ ./seed ]; };
+    # run0 privilege elevation
+    services.run0 = _: { imports = [ ./services/run0 ]; };
 
-  # sops-nix secrets management
-  sops = _: { imports = [ ./sops ]; };
+    # searxng metasearch engine
+    services.searxng = _: { imports = [ ./services/searxng ]; };
 
-  # openssh client
-  ssh = _: { imports = [ ./ssh ]; };
+    # openssh server
+    services.sshd = _: { imports = [ ./services/sshd ]; };
 
-  # openssh server
-  sshd = _: { imports = [ ./sshd ]; };
+    # systemd-timesyncd ntp
+    services.timesyncd = _: { imports = [ ./services/timesyncd ]; };
 
-  # systemd stage-1
-  stage-1 = _: { imports = [ ./stage-1 ]; };
+    # unbound validating recursive dns server
+    services.unbound = _: { imports = [ ./services/unbound ]; };
 
-  # stevenblack's host lists
-  stevenblack = _: { imports = [ ./stevenblack ]; };
+    # usbguard daemon
+    services.usbguard = _: { imports = [ ./services/usbguard ]; };
 
-  # sway wayland compositor
-  sway = _: { imports = [ ./sway ]; };
+    # vaultwarden password manager
+    services.vaultwarden = _: { imports = [ ./services/vaultwarden ]; };
 
-  # swaylock session locker
-  swaylock = _: { imports = [ ./swaylock ]; };
+    # dunst notification daemon
+    sway.dunst = _: { imports = [ ./sway/dunst ]; };
 
-  # systemd-boot bootloader
-  systemd-boot = _: { imports = [ ./systemd-boot ]; };
+    # eww wm-agnostic widgets
+    sway.eww = _: { imports = [ ./sway/eww ]; };
 
-  # thunar file manager
-  thunar = _: { imports = [ ./thunar ]; };
+    # gtk theming
+    sway.gtk = _: { imports = [ ./sway/gtk ]; };
 
-  # systemd-timesyncd ntp
-  timesyncd = _: { imports = [ ./timesyncd ]; };
+    # sway packages collection
+    sway.packages = _: { imports = [ ./sway/packages ]; };
 
-  # generic extlinux bootloader
-  uboot = _: { imports = [ ./uboot ]; };
+    # rofi launcher
+    sway.rofi = _: { imports = [ ./sway/rofi ]; };
 
-  # unbound validating recursive dns server
-  unbound = _: { imports = [ ./unbound ]; };
+    # swaylock session locker
+    sway.swaylock = _: { imports = [ ./sway/swaylock ]; };
 
-  # usbguard daemon
-  usbguard = _: { imports = [ ./usbguard ]; };
+    # sway wayland compositor
+    sway.swaywm = _: { imports = [ ./sway/swaywm ]; };
 
-  # users and other nsswitch options
-  users = _: { imports = [ ./users ]; };
+    # waybar wayland panel
+    sway.waybar = _: { imports = [ ./sway/waybar ]; };
 
-  # schema for the variables system
-  vars-schema = _: { imports = [ ./vars-schema ]; };
+    # schema for the variables system
+    vars-schema = _: { imports = [ ./vars-schema ]; };
 
-  # vaultwarden password manager
-  vaultwarden = _: { imports = [ ./vaultwarden ]; };
-
-  # waybar wayland panel
-  waybar = _: { imports = [ ./waybar ]; };
-
-  # wpa_supplicant wireless networking
-  wireless = _: { imports = [ ./wireless ]; };
-
-  # wpa3 dragonfly authentication
-  wpa3 = _: { imports = [ ./wpa3 ]; };
-
-  # zathura pdf reader
-  zathura = _: { imports = [ ./zathura ]; };
-
+  };
 }

@@ -1,3 +1,0 @@
-{
-  imports = [ ./disable-coredumps.nix ];
-}

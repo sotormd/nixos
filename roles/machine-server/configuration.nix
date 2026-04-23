@@ -23,14 +23,12 @@
 
   }
 
-  # additional filesystem hardening:
-
   # nosuid,nodev
   // lib.mkSelfHarden [
     "/persist"
   ]
 
-  # nosuid,nodev,noexec
+  # nosuid,nodev
   // lib.mkSelfData [
     "/persist/sops-nix"
     "/tmp"
@@ -60,6 +58,11 @@
       Type = "oneshot";
       ExecStart = "/run/current-system/sw/bin/ip link set ${config.vars.wireless.interface} up";
     };
+  };
+
+  # environment variables
+  environment.sessionVariables = {
+    NIXOS_ROLE = "server";
   };
 
   # drop unnecessary variables

@@ -10,14 +10,6 @@
       url = "github:nixos/nixpkgs/nixos-unstable";
     };
 
-    # simple symlinking to $HOME
-    # because some apps dont fw wrappers
-    # used only on laptop
-    hjem = {
-      url = "github:feel-co/hjem";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
-
     # secrets for nixos
     # because we dont want them ending
     # up in the world-readable Nix store
@@ -91,6 +83,9 @@
       # features as modules - DENDRITIC!
       modules = import ./modules;
 
+      # profiles, collections of modules
+      profiles = import ./profiles;
+
       # create a "machine"
       mkMachine =
         role: system:
@@ -160,6 +155,7 @@
 
       nixosModules =
         modules
+        // profiles
         // lib.listToAttrs (
           map (i: lib.nameValuePair "image-${i.name}" (mkImageModule i.name)) targets.images
         )
