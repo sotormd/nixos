@@ -2,7 +2,7 @@
 
 {
   imports = [
-    inputs.self.nixosModules.bootstrap-remote
     inputs.self.nixosModules.image-minimal
+    inputs.self.nixosModules.modules.bootstrap.remote
   ];
 }
