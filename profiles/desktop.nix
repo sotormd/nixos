@@ -9,6 +9,7 @@ in
     m.apps.btop
     m.apps.dev
     m.apps.distrobox
+    m.apps.file-roller
     m.apps.foot
     m.apps.i2p-browser
     m.apps.inkscape

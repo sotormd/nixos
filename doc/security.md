@@ -70,13 +70,12 @@ Missing features:
 26. [Display Server](#display-server)
 27. [Desktop](#desktop)
 28. [Session Locking](#session-locking)
-29. [Thumbnails](#thumbnails)
-30. [Bubblewrap](#bubblewrap)
-31. [xdg-dbus-proxy](#xdg-dbus-proxy)
-32. [Browsers](#browsers)
-33. [Search Engine](#search-engine)
-34. [Password Manager](#password-manager)
-35. [Virtualisation and Containers](#virtualisation-and-containers)
+29. [Bubblewrap](#bubblewrap)
+30. [xdg-dbus-proxy](#xdg-dbus-proxy)
+31. [Browsers](#browsers)
+32. [Search Engine](#search-engine)
+33. [Password Manager](#password-manager)
+34. [Virtualisation and Containers](#virtualisation-and-containers)
 
 # Secure Boot
 
@@ -1386,12 +1385,6 @@ XDG desktop portals are disabled.
 The session is locked using `swaylock` after 60 seconds of inactivity, and
 suspended after further inactivity. This behaviour can be controlled using the
 waybar [idle_inhibitor Module](./laptop/usage.md#idle_inhibitor-module).
-
-# Thumbnails
-
-> Laptop only
-
-Tumbler thumbnails are disabled in Thunar to prevent various exploits.
 
 # Bubblewrap
 

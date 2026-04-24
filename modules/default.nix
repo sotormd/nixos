@@ -19,6 +19,9 @@
     # distrobox containers
     apps.distrobox = _: { imports = [ ./apps/distrobox ]; };
 
+    # file-roller archive manager
+    apps.file-roller = _: { imports = [ ./apps/file-roller ]; };
+
     # foot terminal emulator
     apps.foot = _: { imports = [ ./apps/foot ]; };
 
