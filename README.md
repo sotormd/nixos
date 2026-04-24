@@ -1,19 +1,17 @@
-<p align="center" style="display: flex; align-items: center; justify-content: center; gap: 10px;">
-  <h1 align="center">NixOS Configuration Flake</h1>
-  <p align="center" style="font-size: 0.3rem;">
-    <strong>
-      <a href="#features">Features</a> |
-      <a href="#configuration-roles">Configuration Roles</a> |
-      <a href="#bootstrap-images">Bootstrap Images</a> |
-      <a href="#bespoke-cli">Bespoke CLI</a> |
-      <a href="#related-flakes">Related Flakes</a>
-    </strong>
-  </p>
+<h1 align="center">NixOS Configuration Flake</h1>
+<p align="center" style="font-size: 0.3rem;">
+    <a href="#features">Features</a> &bull;
+    <a href="#configuration-roles">Configuration Roles</a> &bull;
+    <a href="#bootstrap-images">Bootstrap Images</a> &bull;
+    <a href="#bespoke-cli">Bespoke CLI</a> &bull;
+    <a href="#architecture">Architecture</a> &bull;
+    <a href="#related-flakes">Related Flakes</a>
 </p>
 
-![nixos](./doc/screenshots/nord.gif)
+![screenshots gif](./doc/screenshots/nord.gif)
 
-~~slighly overengineered~~ NixOS configuration flake for multiple hosts
+~~slightly overengineered~~ dendritic NixOS configuration flake for multiple
+hosts
 
 [See all screenshots](./doc/screenshots.md)
 
@@ -26,17 +24,16 @@
 Nix-specific features:
 
 - Completely reproducible, pure evaluation
+- Role-based outputs with features as dendritic modules
+- Variables system for device-specific configuration
+- [Bespoke CLI](#bespoke-cli) for maintaining this flake
+- Flake-enabled [bootstrap images](#bootstrap-images)
 - Dotfiles managed using wrappers implemented from basic nixpkgs functions
-- Symlinks in ~ managed using [hjem](https://github.com/feel-co/hjem)
-- Secrets managed using [sops-nix](https://github.com/Mic92/sops-nix)
-- Secure boot using [lanzaboote](https://github.com/nix-community/lanzaboote)
 - [Impermanence](./doc/filesystems.md#impermanence) using ZFS snapshots and bind
   mounts, without the library.
+- Secrets managed using [sops-nix](https://github.com/Mic92/sops-nix)
+- Secure boot using [lanzaboote](https://github.com/nix-community/lanzaboote)
 - Package management using [lix](https://lix.systems)
-- Role-based modules
-- Variables system for device-specific configuration
-- Flake helper [CLI](#cli)
-- Flake-enabled installation [images](#images)
 
 Desktop features:
 
@@ -73,7 +70,9 @@ Services features:
 - [i2pd](https://github.com/PurpleI2P/i2pd) I2P router
 - [Jellyfin](https://jellyfin.org/) media server
 
-Comprehensive features list:
+<details>
+
+<summary>Click to expand: Comprehensive features list</summary>
 
 | Category                      | Stack                                                                                                      |
 | ----------------------------- | ---------------------------------------------------------------------------------------------------------- |
@@ -89,8 +88,8 @@ Comprehensive features list:
 | filesystem                    | `zfs`                                                                                                      |
 | impermanence                  | `zfs(8)` `mount(8)`                                                                                        |
 | drive health                  | `smartmontools`                                                                                            |
-| ~ symlinks                    | `hjem`                                                                                                     |
 | dotfiles                      | `nixpkgs` wrappers                                                                                         |
+| ~ symlinks                    | `systemd-tmpfiles`                                                                                         |
 | auditing                      | `auditd`                                                                                                   |
 | secrets                       | `sops`, `sops-nix`                                                                                         |
 | keys                          | `age`, `signify`, `gpg`                                                                                    |
@@ -135,6 +134,8 @@ Comprehensive features list:
 | wallpapers                    | [`wallpapers`](https://github.com/sotormd/wallpapers), [`xkcd-wall`](https://github.com/sotormd/xkcd-wall) |
 | terminal misc                 | `cava`, `fortune`                                                                                          |
 
+</details>
+
 # Configuration Roles
 
 This flake uses role-based configuration.
@@ -155,8 +156,8 @@ Some previous roles have been moved to separate repos, see [Related](#related).
 Three images: GNOME, Minimal and SD are included (for installation, recovery,
 etc.)
 
-These images have an ideal environment for bootstrapping and installing this
-flake.
+These images provide a preconfigured environment for setting up this flake, and
+include useful tools for installation, recovery, etc.
 
 It is also possible to further configure these images for specific installation
 setups. Modules for remote installation over a wireless network are also
@@ -178,6 +179,20 @@ man nixos
 
 See [CLI Documentation](./doc/cli.md) for the full command reference and
 workflow examples.
+
+# Architecture
+
+![architecture](./doc/screenshots/architecture.png)
+
+- [`./modules/`](./modules) are low-level dendritic features, which are exposed
+  under `nixosModules.modules.*`.
+- [`./profiles/`](./profiles) are high-level collections of modules, which are
+  exposed under `nixosModules.profiles.*`.
+- [`./roles/`](./roles) are the final outputs provided by this flake, each role
+  is a full system configuration composed of several profiles/modules.
+- Variables capture the differences between multiple instances of the same role.
+  Variables are not provided in this flake and are defined on a per-deployment
+  basis.
 
 # Related Flakes
 

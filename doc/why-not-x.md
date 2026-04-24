@@ -21,7 +21,7 @@ decisions for MY personal setup.
 
 [link](https://github.com/nix-community/home-manager)
 
-in favor of: wrappers, hjem
+in favor of: wrappers, systemd-tmpfiles
 
 home-manager is a collection of modules which implement several features that
 make it easy to interact with a user's `$HOME`.
@@ -38,8 +38,10 @@ The three primary features are:
 
 2. `home.file`
 
-   [hjem](https://github.com/feel-co/hjem) is a much simpler symlinker with
-   cleaner code.
+   systemd-tmpfiles can link files from the Nix store to arbitrary locations.
+
+   Another choice is [hjem](https://github.com/feel-co/hjem), which is a much
+   simpler symlinker with cleaner code.
 
 3. the home-manager module system
 
@@ -57,14 +59,13 @@ The three primary features are:
 
 4. I believe wrappers are a better way to configure apps
 
-   With home-manager, or any other library that puts configuration in `$HOME`,
-   which may be convenient, but the configuration now lives separate from the
-   package.
+   Libraries like home-manager put configuration in `$HOME`, which may be
+   convenient, but the configuration now lives separate from the package.
 
    The solution? wrappers.
 
    Wrap the package _along_ with its configuration - this way your package only
-   relies on what's inside the `/nix/store` and not on things in some
+   relies on what's within its own store output and not on things in some
    out-of-store directory like `$HOME`.
 
    This also provides other benefits, like having multiple versions of the same
@@ -83,7 +84,9 @@ The three primary features are:
    Wrappers are how many packages are configured in `nixpkgs`!
 
    In the cases where I _have_ to write to `$HOME` (example: gtk config), I use
-   [hjem](https://github.com/feel-co/hjem) which is a much simpler linker.
+   systemd-tmpfiles. The usual argument against tmpfiles is that removing a line
+   from the configuration doesn't delete your files - which is negated by using
+   Impermanence.
 
 ## a wrapper library
 

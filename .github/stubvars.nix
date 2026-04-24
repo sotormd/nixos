@@ -1,6 +1,4 @@
 {
-  role = "stub";
-
   device = {
     hostName = "stub";
     machineId = "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa";

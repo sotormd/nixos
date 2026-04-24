@@ -126,7 +126,7 @@ Examples:
 3. To update multiple specific inputs:
 
    ```bash
-   nixos update nixpkgs hjem
+   nixos update nixpkgs sops-nix lanzaboote
    ```
 
 # Garbage collect

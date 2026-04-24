@@ -10,13 +10,13 @@ Two images are offered for the `x86_64-linux` architecture:
 
 2. **Minimal**: A minimal NixOS environment.
 
-One images is offered for the `aarch64-linux` architecture (intended for
+One image is offered for the `aarch64-linux` architecture (intended for
 Raspberry-Pi 4b):
 
 1. **SD**: NixOS for sdcard targets.
 
-These images have an ideal environment for setting up this flake and also
-include several useful packages for installation, recovery, etc.
+These images provide a preconfigured environment for setting up this flake, and
+include useful tools for installation, recovery, etc.
 
 **For all images, the username is `nixos` and the password is also `nixos`.**
 
@@ -82,7 +82,11 @@ For example, to build a GNOME image with NH enabled.
 
   outputs = { self, ... }@inputs: {
     nixosConfigurations.my-gnome-image = inputs.nixpkgs.lib.nixosSystem {
-      specialArgs = { inherit inputs self; };
+      specialArgs = {
+        inputs = inputs // {
+          self = inputs.nixos-config;
+        };
+      };
       system = "x86_64-linux";
       modules = [
         inputs.nixos-config.nixosModules.image-gnome
@@ -134,13 +138,17 @@ wireless network:
 
   outputs = { self, ... }@inputs: {
     nixosConfigurations.my-remote-sd-image = inputs.nixpkgs.lib.nixosSystem {
-      specialArgs = { inherit inputs self; };
+      specialArgs = {
+        inputs = inputs // {
+          self = inputs.nixos-config;
+        };
+      };
       system = "aarch64-linux";
       modules = [
         inputs.nixos-config.nixosModules.image-sd-remote
         {
           remote = {
-            sshKey = "ssh-ed25519 AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA example@example";
+            sshKey = "ssh-ed25519 AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA test@test";
             wireless = {
               interface = "wlan0";
               ssid = "example-net";

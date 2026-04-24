@@ -124,27 +124,6 @@
         "type": "github"
       }
     },
-    "hjem": {
-      "inputs": {
-        "nix-darwin": "nix-darwin",
-        "nixpkgs": [
-          "nixpkgs"
-        ]
-      },
-      "locked": {
-        "lastModified": 1775569958,
-        "narHash": "sha256-W+kpLQ5J/DDaY1nUmvN9aIAfh5ixdyqYM76ZUdcvMBU=",
-        "owner": "feel-co",
-        "repo": "hjem",
-        "rev": "32bd6d54d805a3eb41efa62a940eeceaf263c4a8",
-        "type": "github"
-      },
-      "original": {
-        "owner": "feel-co",
-        "repo": "hjem",
-        "type": "github"
-      }
-    },
     "homepage": {
       "locked": {
         "lastModified": 1769836390,
@@ -266,27 +245,6 @@
         "type": "github"
       }
     },
-    "nix-darwin": {
-      "inputs": {
-        "nixpkgs": [
-          "hjem",
-          "nixpkgs"
-        ]
-      },
-      "locked": {
-        "lastModified": 1775037210,
-        "narHash": "sha256-KM2WYj6EA7M/FVZVCl3rqWY+TFV5QzSyyGE2gQxeODU=",
-        "owner": "nix-darwin",
-        "repo": "nix-darwin",
-        "rev": "06648f4902343228ce2de79f291dd5a58ee12146",
-        "type": "github"
-      },
-      "original": {
-        "owner": "nix-darwin",
-        "repo": "nix-darwin",
-        "type": "github"
-      }
-    },
     "nixpkgs": {
       "locked": {
         "lastModified": 1769461804,
@@ -383,7 +341,6 @@
     "root": {
       "inputs": {
         "colors": "colors",
-        "hjem": "hjem",
         "homepage": "homepage",
         "hosts": "hosts",
         "lanzaboote": "lanzaboote",
