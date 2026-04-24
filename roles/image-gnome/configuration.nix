@@ -33,6 +33,7 @@
   };
 
   environment = {
+    systemPackages = [ pkgs.gparted ];
     sessionVariables = {
       NIXOS_ROLE = "laptop";
       NIXOS_MOUNT = "/mnt";

@@ -4,12 +4,13 @@
     <a href="#configuration-roles">Configuration Roles</a> &bull;
     <a href="#bootstrap-images">Bootstrap Images</a> &bull;
     <a href="#bespoke-cli">Bespoke CLI</a> &bull;
+    <a href="#architecture">Architecture</a> &bull;
     <a href="#related-flakes">Related Flakes</a>
 </p>
 
 ![screenshots gif](./doc/screenshots/nord.gif)
 
-~~slighly overengineered~~ dendritic NixOS configuration flake for multiple
+~~slightly overengineered~~ dendritic NixOS configuration flake for multiple
 hosts
 
 [See all screenshots](./doc/screenshots.md)
@@ -155,8 +156,8 @@ Some previous roles have been moved to separate repos, see [Related](#related).
 Three images: GNOME, Minimal and SD are included (for installation, recovery,
 etc.)
 
-These images have an ideal environment for bootstrapping and installing this
-flake.
+These images provide a preconfigured environment for setting up this flake, and
+include useful tools for installation, recovery, etc.
 
 It is also possible to further configure these images for specific installation
 setups. Modules for remote installation over a wireless network are also
@@ -178,6 +179,20 @@ man nixos
 
 See [CLI Documentation](./doc/cli.md) for the full command reference and
 workflow examples.
+
+# Architecture
+
+![architecture](./doc/screenshots/architecture.png)
+
+- [`./modules/`](./modules) are low-level dendritic features, which are exposed
+  under `nixosModules.modules.*`.
+- [`./profiles/`](./profiles) are high-level collections of modules, which are
+  exposed under `nixosModules.profiles.*`.
+- [`./roles/`](./roles) are the final outputs provided by this flake, each role
+  is a full system configuration composed of several profiles/modules.
+- Variables capture the differences between multiple instances of the same role.
+  Variables are not provided in this flake and are defined on a per-deployment
+  basis.
 
 # Related Flakes
 
