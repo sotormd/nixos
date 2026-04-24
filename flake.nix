@@ -145,25 +145,23 @@
         ];
       };
 
-      nixosConfigurations =
-        lib.listToAttrs (
-          map (m: lib.nameValuePair "machine-${m.name}" (mkMachine m.name m.arch)) targets.machines
-        )
-        // lib.listToAttrs (
-          map (i: lib.nameValuePair "image-${i.name}" (mkImage i.name i.arch)) targets.images
-        );
+      machineConfigurations = lib.listToAttrs (
+        map (m: lib.nameValuePair "machine-${m.name}" (mkMachine m.name m.arch)) targets.machines
+      );
+      imageConfigurations = lib.listToAttrs (
+        map (i: lib.nameValuePair "image-${i.name}" (mkImage i.name i.arch)) targets.images
+      );
+      imageModules = lib.listToAttrs (
+        map (i: lib.nameValuePair "image-${i.name}" (mkImageModule i.name)) targets.images
+      );
+      imageRemoteModules = lib.listToAttrs (
+        map (
+          i: lib.nameValuePair "image-${i.name}-remote" (mkImageModule "${i.name}-remote")
+        ) targets.images
+      );
 
-      nixosModules =
-        modules
-        // profiles
-        // lib.listToAttrs (
-          map (i: lib.nameValuePair "image-${i.name}" (mkImageModule i.name)) targets.images
-        )
-        // lib.listToAttrs (
-          map (
-            i: lib.nameValuePair "image-${i.name}-remote" (mkImageModule "${i.name}-remote")
-          ) targets.images
-        );
+      nixosConfigurations = machineConfigurations // imageConfigurations;
+      nixosModules = modules // profiles // imageModules // imageRemoteModules;
 
     in
     {

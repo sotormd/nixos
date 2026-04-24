@@ -13,6 +13,7 @@ in
     pkgs.libnotify
   ];
   nixpkgs.overlays = [
+    (_: _: { dunst0 = package.dunstWrapped; })
     (_: _: { volume0 = scripts.volume; })
     (_: _: { brightness0 = scripts.brightness; })
     (_: _: { media0 = scripts.media; })

@@ -19,7 +19,7 @@
   systemd.services.reset-home-perms = {
     description = "Reset /home permissions after tmpfiles";
     wantedBy = [ "multi-user.target" ];
-    after = [ "systemd-tmpfiles-resetup.service" ];
+    after = [ "systemd-tmpfiles-setup.service" ];
     path = [ pkgs.coreutils-full ];
     serviceConfig.Type = "oneshot";
     script = ''
