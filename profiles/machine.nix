@@ -8,7 +8,6 @@ in
     m.apps.bash
     m.apps.git
     m.boot.disks
-    m.boot.emulated
     m.boot.jitterentropy
     m.boot.kernel
     m.boot.localization
