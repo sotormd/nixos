@@ -8,7 +8,7 @@
          && [ -n "$XDG_VTNR" ] \
          && [ "$XDG_VTNR" -eq 1 ] \
          && [ "$USER" = "${config.vars.user.name}" ]; then
-        exec dbus-run-session ${pkgs.sway0}/bin/sway
+        exec ${pkgs.sway0}/bin/sway
       fi
     '';
   };
