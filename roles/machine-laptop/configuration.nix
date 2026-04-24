@@ -140,11 +140,24 @@
       securebootRequired = [
         config.vars.features.impermanence.enable
       ];
+      ensureDisabled = [
+        config.vars.services.unbound.enable
+        config.vars.services.nginx.enable
+        config.vars.services.searxng.enable
+        config.vars.services.vaultwarden.enable
+        config.vars.services.i2pd.enable
+        config.vars.services.qbt.enable
+        config.vars.services.jellyfin.enable
+      ];
     in
     [
       {
         assertion = !(builtins.any (x: x) securebootRequired) || config.vars.features.secureboot.enable;
-        message = "secureboot must be enabled if any dependent service is enabled";
+        message = "variables: secureboot must be enabled if any dependent service is enabled";
+      }
+      {
+        assertion = builtins.all (x: !x) ensureDisabled;
+        message = "variables: one or more unexpected services are enabled";
       }
     ];
 }

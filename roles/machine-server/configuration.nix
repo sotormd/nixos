@@ -67,6 +67,9 @@
 
   # drop unnecessary variables
   vars = {
+    user = {
+      sshAliases = lib.mkForce { };
+    };
     features = {
       secureboot.enable = lib.mkForce false;
     };
@@ -90,19 +93,34 @@
         config.vars.services.qbt.enable
         config.vars.services.jellyfin.enable
       ];
-
       i2pdRequired = [
         config.vars.services.qbt.enable
+      ];
+      ensureDisabled = [
+        config.vars.selfhosted.unbound.enable
+        config.vars.selfhosted.searxng.enable
+        config.vars.selfhosted.vaultwarden.enable
+        config.vars.selfhosted.i2pd.enable
+        config.vars.selfhosted.qbt.enable
+        config.vars.selfhosted.jellyfin.enable
       ];
     in
     [
       {
         assertion = !(builtins.any (x: x) nginxRequired) || config.vars.services.nginx.enable;
-        message = "nginx must be enabled if any dependent service is enabled";
+        message = "variables: nginx must be enabled if any dependent service is enabled";
       }
       {
         assertion = !(builtins.any (x: x) i2pdRequired) || config.vars.services.i2pd.enable;
-        message = "i2pd must be enabled if any dependent service is enabled";
+        message = "variables: i2pd must be enabled if any dependent service is enabled";
+      }
+      {
+        assertion = builtins.all (x: !x) ensureDisabled;
+        message = "variables: vars.selfhosted.* is not supported";
+      }
+      {
+        assertion = config.vars.user.sshAliases == { };
+        message = "variables: vars.user.sshAliases is not supported";
       }
     ];
 }
