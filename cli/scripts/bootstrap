@@ -227,8 +227,6 @@ elif [ "$VERB" == "vars" ]; then
 # bootstrap DOES NOT POPULATE VARIABLES with sane values, only examples
 
 {
-  role = "laptop";
-
   device = {
     hostName = "nixos";
     machineId = "$MACHINE_ID";
@@ -357,8 +355,6 @@ EOF
 # bootstrap DOES NOT POPULATE VARIABLES with sane values, only examples
 
 {
-  role = "server";
-
   device = {
     hostName = "nixos";
     machineId = "$MACHINE_ID";

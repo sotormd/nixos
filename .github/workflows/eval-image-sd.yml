@@ -2,6 +2,7 @@ name: Evaluate Image - SD
 
 on:
   push:
+    branches: [master]
   pull_request:
 
 jobs:

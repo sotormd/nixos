@@ -1,11 +1,10 @@
 {
-  role ? "laptop",
+  role,
+  inputs,
+  legacyVars ? { },
 }:
 
 let
-  roleConfig = import ./${role}.nix;
+  roleConfig = import ./${role}/default.nix { inherit inputs legacyVars; };
 in
-{
-  system.stateVersion = "24.05";
-}
-// roleConfig
+roleConfig // { system.stateVersion = "24.05"; }

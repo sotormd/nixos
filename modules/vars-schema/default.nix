@@ -1,0 +1,3 @@
+{
+  imports = [ ./vars-schema.nix ];
+}

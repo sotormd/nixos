@@ -2,6 +2,7 @@ name: Evaluate Image - GNOME
 
 on:
   push:
+    branches: [master]
   pull_request:
 
 jobs:

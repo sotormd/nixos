@@ -10,14 +10,6 @@
       url = "github:nixos/nixpkgs/nixos-unstable";
     };
 
-    # simple symlinking to $HOME
-    # because some apps dont fw wrappers
-    # used only on laptop
-    hjem = {
-      url = "github:feel-co/hjem";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
-
     # secrets for nixos
     # because we dont want them ending
     # up in the world-readable Nix store
@@ -88,17 +80,33 @@
       # the old variables interface, now using options!
       legacyVars = import ./vars/vars.nix;
 
+      # features as modules - DENDRITIC!
+      modules = import ./modules;
+
+      # profiles, collections of modules
+      profiles = import ./profiles;
+
       # create a "machine"
       mkMachine =
         role: system:
         inputs.nixpkgs.lib.nixosSystem {
-          specialArgs = { inherit inputs lib legacyVars; };
+          specialArgs = { inherit inputs lib; };
           inherit system;
-          modules = [ (import ./roles { role = "machine-${role}"; }) ];
+          modules = [
+            (import ./roles {
+              role = "machine-${role}";
+              inherit inputs legacyVars;
+            })
+          ];
         };
 
       # create an image module
-      mkImageModule = role: (import ./roles { role = "image-${role}"; });
+      mkImageModule =
+        role:
+        (import ./roles {
+          role = "image-${role}";
+          inherit inputs;
+        });
 
       # create an "image"
       mkImage =
@@ -110,7 +118,7 @@
         };
 
       # targets
-      spec = {
+      targets = {
         machines = [
           {
             name = "laptop";
@@ -137,22 +145,26 @@
         ];
       };
 
-      nixosConfigurations =
-        lib.listToAttrs (
-          map (m: lib.nameValuePair "machine-${m.name}" (mkMachine m.name m.arch)) spec.machines
-        )
-        // lib.listToAttrs (
-          map (i: lib.nameValuePair "image-${i.name}" (mkImage i.name i.arch)) spec.images
-        );
+      machineConfigurations = lib.listToAttrs (
+        map (m: lib.nameValuePair "machine-${m.name}" (mkMachine m.name m.arch)) targets.machines
+      );
+      imageConfigurations = lib.listToAttrs (
+        map (i: lib.nameValuePair "image-${i.name}" (mkImage i.name i.arch)) targets.images
+      );
+      imageModules = lib.listToAttrs (
+        map (i: lib.nameValuePair "image-${i.name}" (mkImageModule i.name)) targets.images
+      );
+      imageRemoteModules = lib.listToAttrs (
+        map (
+          i: lib.nameValuePair "image-${i.name}-remote" (mkImageModule "${i.name}-remote")
+        ) targets.images
+      );
 
-      nixosModules =
-        lib.listToAttrs (map (i: lib.nameValuePair "image-${i.name}" (mkImageModule i.name)) spec.images)
-        // lib.listToAttrs (
-          map (i: lib.nameValuePair "image-${i.name}-remote" (mkImageModule "${i.name}-remote")) spec.images
-        );
+      nixosConfigurations = machineConfigurations // imageConfigurations;
+      nixosModules = modules // profiles // imageModules // imageRemoteModules;
 
     in
     {
-      inherit nixosConfigurations nixosModules formatter;
+      inherit formatter nixosConfigurations nixosModules;
     };
 }

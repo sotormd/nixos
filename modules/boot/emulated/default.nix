@@ -1,0 +1,3 @@
+{
+  imports = [ ./binfmt.nix ];
+}
