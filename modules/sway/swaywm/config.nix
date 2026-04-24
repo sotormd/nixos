@@ -370,6 +370,11 @@ let
       exec ${pkgs.mate-polkit}/libexec/polkit-mate-authentication-agent-1
 
       #
+      # DBUS
+      #
+      exec "dbus-update-activation-environment --systemd DISPLAY WAYLAND_DISPLAY SWAYSOCK XDG_CURRENT_DESKTOP XDG_SESSION_TYPE NIXOS_OZONE_WL XCURSOR_THEME XCURSOR_SIZE; systemctl --user reset-failed && systemctl --user start sway-session.target && swaymsg -mt subscribe '[]' || true && systemctl --user stop sway-session.target"
+
+      #
       # DISABLE XWAYLAND
       #
       xwayland disable
