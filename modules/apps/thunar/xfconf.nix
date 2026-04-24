@@ -26,6 +26,10 @@ in
   programs.xfconf.enable = true;
 
   systemd.tmpfiles.rules = [
+    "d ${home}/.config 0700 ${user} ${user} -"
+    "d ${home}/.config/xfce4 0700 ${user} ${user} -"
+    "d ${home}/.config/xfce4/xfconf 0700 ${user} ${user} -"
+    "d ${home}/.config/xfce4/xfconf/xfce-perchannel-xml 0700 ${user} ${user} -"
     "L ${home}/.config/xfce4/xfconf/xfce-perchannel-xml/thunar.xml - - - - ${xfconf}"
   ];
 }

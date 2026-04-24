@@ -24,6 +24,8 @@ let
 in
 {
   systemd.tmpfiles.rules = [
+    "d ${home}/.config 0700 ${user} ${user} -"
+    "d ${home}/.config/Thunar 0700 ${user} ${user} - "
     "L ${home}/.config/Thunar/uca.xml - - - - ${uca}"
   ];
 }

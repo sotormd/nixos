@@ -15,6 +15,8 @@ let
 in
 {
   systemd.tmpfiles.rules = [
+    "d ${home}/.config 0700 ${user} ${user} -"
+    "d ${home}/.config/Mousepad 0700 ${user} ${user} -"
     "L ${home}/.config/Mousepad/settings.conf - - - - ${settings}"
   ];
 }

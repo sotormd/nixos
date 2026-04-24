@@ -15,8 +15,14 @@ let
     pkg: "L ${home}/.local/share/fonts/nerdfonts/${pkg} - - - - ${pkgs.nerd-fonts.${pkg}}/share/fonts";
 in
 {
-  systemd.tmpfiles.rules =
-    map mkFontRule config.colors.fonts.packages ++ map mkNerdRule config.colors.fonts.nerdfonts;
+  systemd.tmpfiles.rules = [
+    "d ${home}/.local 0700 ${user} ${user} -"
+    "d ${home}/.local/share 0700 ${user} ${user} -"
+    "d ${home}/.local/share/fonts 0700 ${user} ${user} -"
+    "d ${home}/.local/share/fonts/nerdfonts 0700 ${user} ${user} -"
+  ]
+  ++ map mkFontRule config.colors.fonts.packages
+  ++ map mkNerdRule config.colors.fonts.nerdfonts;
 
   fonts.enableDefaultPackages = true;
 

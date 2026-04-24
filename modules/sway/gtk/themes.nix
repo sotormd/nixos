@@ -17,7 +17,11 @@ let
 in
 {
   systemd.tmpfiles.rules = [
+    "d ${home}/.local 0700 ${user} ${user} -"
+    "d ${home}/.local/share 0700 ${user} ${user} -"
+    "d ${home}/.local/share/themes 0700 ${user} ${user} -"
     "L ${home}/.local/share/themes/${config.colors.gtk.theme.name} - - - - ${theme}"
+    "d ${home}/.config/gtk-4.0 0700 ${user} ${user} -"
     "L ${home}/.config/gtk-4.0/gtk.css - - - - ${css}"
   ];
 }

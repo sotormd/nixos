@@ -1,30 +1,25 @@
 { config, pkgs, ... }:
 
+let
+  user = config.vars.user.name;
+  home = "/home/${user}";
+in
 {
   # Setup /home
   systemd.services.setup-home = {
-    description = "Setup /home";
+    description = "Setup ${home}";
     wantedBy = [ "local-fs.target" ];
     after = [ "home.mount" ];
     path = [ pkgs.coreutils-full ];
     serviceConfig.Type = "oneshot";
     script = ''
-      mkdir -p /home/${config.vars.user.name}
-      chown ${config.vars.user.name}: -R /home/${config.vars.user.name}
-      chmod 700 /home/${config.vars.user.name}
+      mkdir -p ${home}
+      chown ${user}: -R ${home}
+      chmod 700 ${home}
     '';
   };
 
-  # Reset /home permissions after tmpfiles
-  systemd.services.reset-home-perms = {
-    description = "Reset /home permissions after tmpfiles";
-    wantedBy = [ "multi-user.target" ];
-    after = [ "systemd-tmpfiles-setup.service" ];
-    path = [ pkgs.coreutils-full ];
-    serviceConfig.Type = "oneshot";
-    script = ''
-      chown ${config.vars.user.name}: -R /home/${config.vars.user.name}
-      chmod 700 /home/${config.vars.user.name}
-    '';
-  };
+  systemd.tmpfiles.rules = [
+    "d ${home} 0700 ${user} ${user} -"
+  ];
 }

@@ -22,7 +22,9 @@ let
 in
 {
   systemd.tmpfiles.rules = [
+    "d ${home}/.icons 0700 ${user} ${user} -"
     "L ${home}/.icons/${config.colors.gtk.cursor.name} - - - - ${cursors}"
+    "d ${home}/.icons/default 0700 ${user} ${user} -"
     "L ${home}/.icons/default/index.theme - - - - ${index}"
     "L ${home}/.Xresources - - - - ${Xresources}"
   ];
