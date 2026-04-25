@@ -145,7 +145,8 @@ This flake uses role-based configuration.
 | Laptop | Configuration for my laptops.      | [Requirements](./doc/laptop/requirements.md) - [Setup](./doc/laptop/setup.md) - [Usage](./doc/laptop/usage.md) |
 | Server | Configuration for my home-servers. | [Requirements](./doc/server/requirements.md) - [Setup](./doc/server/setup.md) - [Usage](./doc/server/usage.md) |
 
-Some previous roles have been moved to separate repos, see [Related](#related).
+Some previous roles have been moved to separate repos, see
+[Related Flakes](#related-flakes).
 
 # Bootstrap Images
 
