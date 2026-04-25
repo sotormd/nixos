@@ -464,7 +464,7 @@ those related to crypto and web3.
 The included brave browser also strips out any telemetry by setting initial
 preferences and local state files.
 
-For a full comprehensive list, see [Security](../sec.md#brave).
+For a full comprehensive list, see [Security](../security.md#brave).
 
 ### Extensions
 
@@ -480,7 +480,7 @@ uBlock Origin is also configured further via chromium policies.
 ### Sandbox
 
 Brave runs in a sandbox using bubblewrap and xdg-dbus-proxy. See
-[Security](../sec.md#brave) for more information.
+[Security](../security.md#brave) for more information.
 
 ## I2P Browser
 
@@ -498,7 +498,7 @@ to allow browsing the I2P network, along with hardened policies and preferences.
 The I2P Browser uses the I2P HTTP Proxy hosted on the Server.
 
 The I2P Browser runs in a bubblewrap sandbox. See
-[Security](../sec.md#i2p-browser) for more information.
+[Security](../security.md#i2p-browser) for more information.
 
 # Other Applications
 
@@ -675,6 +675,6 @@ using the `vars.selfhosted.*` variables.
 
 # Further Reading
 
-- [Security Features](../sec.md)
+- [Security Features](../security.md)
 - [Filesystem and Impermanence Documentation](../filesystems.md)
 - [CLI Documentation](../cli.md)
