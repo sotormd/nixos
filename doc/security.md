@@ -1439,7 +1439,7 @@ browsers.
      - Allow using Wayland
 
        ```
-       --ro-bind "$XDG_RUNTIME_DIR/wayland-1" "$XDG_RUNTIME_DIR/wayland-1" \
+       --ro-bind "$XDG_RUNTIME_DIR/wayland-1" "$XDG_RUNTIME_DIR/wayland-1"
        ```
 
      - Bind fake passwd and group files as readonly
