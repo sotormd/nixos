@@ -2,9 +2,9 @@
   profiles = {
     desktop = _: { imports = [ ./desktop.nix ]; };
     image = _: { imports = [ ./image.nix ]; };
-    laptop = _: { imports = [ ./laptop.nix ]; };
     machine = _: { imports = [ ./machine.nix ]; };
-    pi = _: { imports = [ ./pi.nix ]; };
+    raspi = _: { imports = [ ./raspi.nix ]; };
     selfhost = _: { imports = [ ./selfhost.nix ]; };
+    workstation = _: { imports = [ ./workstation.nix ]; };
   };
 }

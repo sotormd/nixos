@@ -9,8 +9,8 @@
     inputs.sops-nix.nixosModules.sops
     inputs.wallpapers.nixosModules.wallpapers
     inputs.self.nixosModules.profiles.desktop
-    inputs.self.nixosModules.profiles.laptop
     inputs.self.nixosModules.profiles.machine
+    inputs.self.nixosModules.profiles.workstation
   ];
 
   # populate the variables
