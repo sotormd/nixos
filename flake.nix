@@ -60,19 +60,21 @@
       url = "github:sotormd/homepage";
     };
 
+    # my mate configuration
+    nate = {
+      url = "github:sotormd/nate";
+    };
+
   };
 
   outputs =
     inputs:
     let
 
-      forSystems = systems: f: inputs.nixpkgs.lib.genAttrs systems (system: f system);
-
       # formatter
       # nixfmt-tree can take an entire directory
-      formatter = forSystems [ "x86_64-linux" "aarch64-linux" ] (
-        system: inputs.nixpkgs.legacyPackages.${system}.nixfmt-tree
-      );
+      formatter.x86_64-linux = inputs.nixpkgs.legacyPackages.x86_64-linux.nixfmt-tree;
+      formatter.aarch64-linux = inputs.nixpkgs.legacyPackages.aarch64-linux.nixfmt-tree;
 
       # additional lib functions
       lib = inputs.nixpkgs.lib // (import ./lib);
@@ -130,6 +132,10 @@
           }
         ];
         images = [
+          {
+            name = "mate";
+            arch = "x86_64-linux";
+          }
           {
             name = "gnome";
             arch = "x86_64-linux";

@@ -1,14 +1,19 @@
 # Bootstrap Images
 
+[![Build MATE ISO](https://img.shields.io/github/actions/workflow/status/sotormd/nixos/build-mate-iso.yml?style=for-the-badge&label=Build%20MATE%20ISO)](https://github.com/sotormd/nixos/actions/workflows/build-mate-iso.yml)
+
 [![Build GNOME ISO](https://img.shields.io/github/actions/workflow/status/sotormd/nixos/build-gnome-iso.yml?style=for-the-badge&label=Build%20GNOME%20ISO)](https://github.com/sotormd/nixos/actions/workflows/build-gnome-iso.yml)
 
 [![Build Minimal ISO](https://img.shields.io/github/actions/workflow/status/sotormd/nixos/build-minimal-iso.yml?style=for-the-badge&label=Build%20Minimal%20ISO)](https://github.com/sotormd/nixos/actions/workflows/build-minimal-iso.yml)
 
-Two images are offered for the `x86_64-linux` architecture:
+Three images are offered for the `x86_64-linux` architecture:
+
+1. **MATE**: NixOS with
+   [my MATE configuration](https://github.com/sotormd/nate).
 
 1. **GNOME**: NixOS with the GNOME desktop environment.
 
-2. **Minimal**: A minimal NixOS environment.
+1. **Minimal**: A minimal NixOS environment.
 
 One image is offered for the `aarch64-linux` architecture (intended for
 Raspberry-Pi 4b):
@@ -28,6 +33,16 @@ include useful tools for installation, recovery, etc.
 
 # Usage
 
+1. MATE image
+
+   If you do not wish to build this image, you can get one from the
+   [Github Actions](https://github.com/sotormd/nixos/actions/workflows/build-mate-iso.yml)
+   build artifacts.
+
+   ```bash
+   nix build github:sotormd/nixos#nixosConfigurations.image-mate.config.system.build.isoImage
+   ```
+
 1. GNOME image
 
    If you do not wish to build this image, you can get one from the
@@ -38,7 +53,7 @@ include useful tools for installation, recovery, etc.
    nix build github:sotormd/nixos#nixosConfigurations.image-gnome.config.system.build.isoImage
    ```
 
-2. Minimal image
+1. Minimal image
 
    If you do not wish to build this image, you can get one from the
    [Github Actions](https://github.com/sotormd/nixos/actions/workflows/build-minimal-iso.yml)
@@ -48,7 +63,7 @@ include useful tools for installation, recovery, etc.
    nix build github:sotormd/nixos#nixosConfigurations.image-minimal.config.system.build.isoImage
    ```
 
-3. SD image
+1. SD image
 
    ```bash
    nix build github:sotormd/nixos#nixosConfigurations.image-sd.config.system.build.sdImage
@@ -61,6 +76,7 @@ further configure images.
 
 The available modules are:
 
+- `image-mate`
 - `image-gnome`
 - `image-minimal`
 - `image-sd`
@@ -116,6 +132,7 @@ over wireless networks significantly easier.
 
 The available modules are:
 
+- `image-mate-remote`
 - `image-gnome-remote`
 - `image-minimal-remote`
 - `image-sd-remote`
