@@ -1,0 +1,20 @@
+name: Evaluate Image - MATE
+
+on:
+  push:
+    branches: [master]
+  pull_request:
+
+jobs:
+  eval:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+
+      - name: Install Nix
+        uses: DeterminateSystems/nix-installer-action@main
+
+      - name: MATE image evaluation
+        run: nix eval .#nixosConfigurations.image-mate.config.system.build.toplevel
+

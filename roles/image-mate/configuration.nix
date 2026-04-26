@@ -1,0 +1,3 @@
+{
+  isoImage.edition = "mate";
+}
