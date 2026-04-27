@@ -91,6 +91,9 @@
     # users and other nsswitch options
     boot.users = _: { imports = [ ./boot/users ]; };
 
+    # bootstrap graphical
+    bootstrap.graphical = _: { imports = [ ./bootstrap/graphical ]; };
+
     # bootstrap images
     bootstrap.image = _: { imports = [ ./bootstrap/image ]; };
 

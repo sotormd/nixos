@@ -26,14 +26,9 @@
       '';
       extraGSettingsOverridePackages = [ pkgs.gnome-settings-daemon ];
     };
-    displayManager.autoLogin = {
-      enable = true;
-      user = "nixos";
-    };
   };
 
   environment = {
-    systemPackages = [ pkgs.gparted ];
     sessionVariables = {
       NIXOS_ROLE = "laptop";
       NIXOS_MOUNT = "/mnt";
