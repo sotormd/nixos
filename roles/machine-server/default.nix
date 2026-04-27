@@ -1,4 +1,4 @@
-{ inputs, legacyVars, ... }:
+{ inputs, ... }:
 
 {
   imports = [
@@ -10,7 +10,4 @@
     inputs.self.nixosModules.profiles.raspi
     inputs.self.nixosModules.profiles.selfhost
   ];
-
-  # populate the variables
-  vars = legacyVars;
 }

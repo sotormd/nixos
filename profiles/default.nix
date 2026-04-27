@@ -1,5 +1,6 @@
 {
   profiles = {
+    deskspec = _: { imports = [ ./deskspec.nix ]; };
     desktop = _: { imports = [ ./desktop.nix ]; };
     image = _: { imports = [ ./image.nix ]; };
     machine = _: { imports = [ ./machine.nix ]; };

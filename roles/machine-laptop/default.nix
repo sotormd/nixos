@@ -1,9 +1,10 @@
-{ inputs, legacyVars, ... }:
+{ inputs, ... }:
 
 {
   imports = [
     ./impermanence
     ./configuration.nix
+    ./specialisations.nix
     inputs.colors.nixosModules.colors
     inputs.lanzaboote.nixosModules.lanzaboote
     inputs.sops-nix.nixosModules.sops
@@ -12,7 +13,4 @@
     inputs.self.nixosModules.profiles.machine
     inputs.self.nixosModules.profiles.workstation
   ];
-
-  # populate the variables
-  vars = legacyVars;
 }

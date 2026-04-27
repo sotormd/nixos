@@ -5,9 +5,10 @@ let
 in
 {
   imports = [
-    m.bootstrap.image
+    m.bootstrap.user
     m.core.cli
     m.core.nix
     m.core.packages
+    m.network.networkmanager
   ];
 }

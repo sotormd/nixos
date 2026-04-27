@@ -92,12 +92,12 @@
       mkMachine =
         role: system:
         inputs.nixpkgs.lib.nixosSystem {
-          specialArgs = { inherit inputs lib; };
+          specialArgs = { inherit inputs lib legacyVars; };
           inherit system;
           modules = [
             (import ./roles {
               role = "machine-${role}";
-              inherit inputs legacyVars;
+              inherit inputs;
             })
           ];
         };

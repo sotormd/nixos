@@ -2,6 +2,7 @@
   config,
   lib,
   modulesPath,
+  legacyVars,
   ...
 }:
 
@@ -121,8 +122,8 @@
     NIXOS_ROLE = "laptop";
   };
 
-  # drop unnecessary variables
-  vars = {
+  # populate variables and drop unnecessary variables
+  vars = lib.recursiveUpdate legacyVars {
     services = {
       unbound.enable = lib.mkForce false;
       nginx.enable = lib.mkForce false;

@@ -5,8 +5,7 @@
     <a href="#bootstrap-images">Bootstrap Images</a> &bull;
     <a href="#bespoke-cli">Bespoke CLI</a> &bull;
     <a href="#architecture">Architecture</a> &bull;
-    <a href="#related-flakes">Related Flakes</a> &bull;
-    <a href="#ci">CI</a>
+    <a href="#related-flakes">Related Flakes</a>
 </p>
 
 ![screenshots gif](./doc/screenshots/nord.gif)
@@ -219,16 +218,3 @@ being out-of-scope (eg, [pattern](https://github.com/sotormd/pattern)).
 
 Others are still in-scope, but are maintained separately for simplicity (eg,
 [wallpapers](https://github.com/sotormd/wallpapers)).
-
-# CI
-
-[![Check](https://img.shields.io/github/actions/workflow/status/sotormd/nixos/check.yml?style=for-the-badge&label=Check)](https://github.com/sotormd/nixos/actions/workflows/check.yml)
-[![Evaluate Machine - Laptop](https://img.shields.io/github/actions/workflow/status/sotormd/nixos/eval-laptop.yml?style=for-the-badge&label=Evaluate%20Machine%20-%20Laptop)](https://github.com/sotormd/nixos/actions/workflows/eval-laptop.yml)
-[![Evaluate Machine - Server](https://img.shields.io/github/actions/workflow/status/sotormd/nixos/eval-server.yml?style=for-the-badge&label=Evaluate%20Machine%20-%20Server)](https://github.com/sotormd/nixos/actions/workflows/eval-server.yml)
-[![Evaluate Image - MATE](https://img.shields.io/github/actions/workflow/status/sotormd/nixos/eval-image-mate.yml?style=for-the-badge&label=Evaluate%20Image%20-%20MATE)](https://github.com/sotormd/nixos/actions/workflows/eval-image-mate.yml)
-[![Evaluate Image - GNOME](https://img.shields.io/github/actions/workflow/status/sotormd/nixos/eval-image-gnome.yml?style=for-the-badge&label=Evaluate%20Image%20-%20GNOME)](https://github.com/sotormd/nixos/actions/workflows/eval-image-gnome.yml)
-[![Evaluate Image - Minimal](https://img.shields.io/github/actions/workflow/status/sotormd/nixos/eval-image-minimal.yml?style=for-the-badge&label=Evaluate%20Image%20-%20Minimal)](https://github.com/sotormd/nixos/actions/workflows/eval-image-minimal.yml)
-[![Evaluate Image - SD](https://img.shields.io/github/actions/workflow/status/sotormd/nixos/eval-image-sd.yml?style=for-the-badge&label=Evaluate%20Image%20-%20SD)](https://github.com/sotormd/nixos/actions/workflows/eval-image-sd.yml)
-[![Build Image - MATE](https://img.shields.io/github/actions/workflow/status/sotormd/nixos/build-mate-iso.yml?style=for-the-badge&label=Build%20Image%20-%20MATE)](https://github.com/sotormd/nixos/actions/workflows/build-mate-iso.yml)
-[![Build Image - GNOME](https://img.shields.io/github/actions/workflow/status/sotormd/nixos/build-gnome-iso.yml?style=for-the-badge&label=Build%20Image%20-%20GNOME)](https://github.com/sotormd/nixos/actions/workflows/build-gnome-iso.yml)
-[![Build Image - Minimal](https://img.shields.io/github/actions/workflow/status/sotormd/nixos/build-minimal-iso.yml?style=for-the-badge&label=Build%20Image%20-%20Minimal)](https://github.com/sotormd/nixos/actions/workflows/build-minimal-iso.yml)

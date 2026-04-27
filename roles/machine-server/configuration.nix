@@ -2,6 +2,7 @@
   config,
   lib,
   modulesPath,
+  legacyVars,
   ...
 }:
 
@@ -65,8 +66,8 @@
     NIXOS_ROLE = "server";
   };
 
-  # drop unnecessary variables
-  vars = {
+  # populate variables and drop unnecessary variables
+  vars = lib.recursiveUpdate legacyVars {
     user = {
       sshAliases = lib.mkForce { };
     };

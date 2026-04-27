@@ -23,4 +23,6 @@
   };
 
   programs.gnupg.agent.enable = true;
+
+  time.timeZone = "UTC";
 }

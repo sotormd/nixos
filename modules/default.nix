@@ -91,14 +91,14 @@
     # users and other nsswitch options
     boot.users = _: { imports = [ ./boot/users ]; };
 
-    # bootstrap graphical
+    # graphical settings bootstrap
     bootstrap.graphical = _: { imports = [ ./bootstrap/graphical ]; };
-
-    # bootstrap images
-    bootstrap.image = _: { imports = [ ./bootstrap/image ]; };
 
     # bootstrap remotely
     bootstrap.remote = _: { imports = [ ./bootstrap/remote ]; };
+
+    # user settings for bootstrap
+    bootstrap.user = _: { imports = [ ./bootstrap/user ]; };
 
     # bespoke `nixos` cli
     core.cli = _: { imports = [ ./core/cli ]; };
@@ -118,8 +118,8 @@
     # gnu macchanger
     network.macchanger = _: { imports = [ ./network/macchanger ]; };
 
-    # roaming mode
-    network.roaming = _: { imports = [ ./network/roaming ]; };
+    # networkmanager
+    network.networkmanager = _: { imports = [ ./network/networkmanager ]; };
 
     # build, sign and copy remote closures
     network.seed = _: { imports = [ ./network/seed ]; };
