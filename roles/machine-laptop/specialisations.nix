@@ -1,4 +1,9 @@
-{ inputs, lib, ... }:
+{
+  config,
+  inputs,
+  lib,
+  ...
+}:
 
 {
   specialisation = {
@@ -6,6 +11,7 @@
       inheritParentConfig = true;
       configuration = {
         imports = [ inputs.self.nixosModules.modules.network.networkmanager ];
+        users.users.${config.vars.user.name}.extraGroups = [ "networkmanager" ];
         environment.sessionVariables.NIXOS_ROLE = lib.mkForce "laptop-mode-roaming";
         vars = {
           selfhosted = {

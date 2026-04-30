@@ -1,4 +1,4 @@
-{ config, lib, ... }:
+{ lib, ... }:
 
 {
   networking = {
@@ -8,5 +8,4 @@
       networks = lib.mkForce { };
     };
   };
-  users.users.${config.vars.user.name}.extraGroups = [ "networkmanager" ];
 }
