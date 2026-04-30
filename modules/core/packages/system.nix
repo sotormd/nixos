@@ -185,5 +185,8 @@
     # fat
     pkgs.dosfstools
 
+    # tmux
+    pkgs.tmux
+
   ];
 }
