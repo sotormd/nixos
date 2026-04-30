@@ -1,3 +1,5 @@
+{ inputs, pkgs, ... }:
+
 {
   # configuration for nixpkgs
   nixpkgs.config = {
@@ -23,4 +25,15 @@
     allowUnsupportedSystem = false;
 
   };
+
+  # alternate nixpkgs pins
+  _module.args =
+    let
+      inherit (pkgs.stdenv.hostPlatform) system;
+    in
+    {
+      pkgs-master = import inputs.nixpkgs-master { inherit system; };
+      pkgs-stable = import inputs.nixpkgs-stable { inherit system; };
+      pkgs-neovim = import inputs.nixpkgs-neovim { inherit system; };
+    };
 }

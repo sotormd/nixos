@@ -10,6 +10,20 @@
       url = "github:nixos/nixpkgs/nixos-unstable";
     };
 
+    # alternate branches
+    # for specific stuff
+    # remember to vet these
+    # `nixos grep -r ALT-PKGS`
+    nixpkgs-master = {
+      url = "github:nixos/nixpkgs/master";
+    };
+    nixpkgs-stable = {
+      url = "github:nixos/nixpkgs/25.11";
+    };
+    nixpkgs-neovim = {
+      url = "github:nixos/nixpkgs/bfc1b8a4574108ceef22f02bafcf6611380c100d";
+    };
+
     # secrets for nixos
     # because we dont want them ending
     # up in the world-readable Nix store
@@ -35,7 +49,7 @@
     # my Neovim configuration
     neovim = {
       url = "github:sotormd/neovim";
-      inputs.nixpkgs.follows = "nixpkgs";
+      inputs.nixpkgs.follows = "nixpkgs-neovim"; # ALT-PKGS: deno rebuild on unstable
       inputs.colors.follows = "colors";
     };
 

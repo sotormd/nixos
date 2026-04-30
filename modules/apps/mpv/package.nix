@@ -1,4 +1,4 @@
-{ pkgs, ... }:
+{ pkgs, pkgs-master, ... }:
 
 let
   inherit (import ./config.nix { inherit pkgs; }) configuration;
@@ -8,7 +8,7 @@ let
     text = ''
       #!${pkgs.runtimeShell}
 
-      ${pkgs.mpv}/bin/mpv --config-dir=${configuration} "$@"
+      ${pkgs-master.mpv}/bin/mpv --config-dir=${configuration} "$@"
     '';
     destination = "/bin/mpv";
     executable = true;
@@ -16,7 +16,7 @@ let
 
   mpvWrapped = pkgs.symlinkJoin {
     name = "mpv-wrapped";
-    paths = [ pkgs.mpv ];
+    paths = [ pkgs-master.mpv ]; # ALT-PKGS: deno rebuild on unstable
 
     # replace the mpv binary with our wrapper
     postBuild = ''
