@@ -57,15 +57,10 @@ This section covers using the Sway desktop.
 
 ## Logging In
 
-Logging in to `tty1` will drop you into the `sway` desktop.
+Logging in to `tty1` as the main user will drop you into the `sway` desktop.
 
-This is possible due to this line in the login shell configuration:
-
-```bash
-if [ -z "$WAYLAND_DISPLAY" ] && [ -n "$XDG_VTNR" ] && [ "$XDG_VTNR" -eq 1 ]; then
-    exec sway
-fi
-```
+Logging in to `tty2` as the main user will drop you into a `cage` session with
+the `foot` terminal.
 
 Logging in to any other `tty` will drop you into the default shell, `bash`.
 

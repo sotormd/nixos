@@ -16,8 +16,5 @@
     # wayland clipboard
     pkgs.wl-clipboard
 
-    # kiosk-style compositor
-    pkgs.cage
-
   ];
 }

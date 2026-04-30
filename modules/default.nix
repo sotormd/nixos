@@ -178,6 +178,9 @@
     # vaultwarden password manager
     services.vaultwarden = _: { imports = [ ./services/vaultwarden ]; };
 
+    # kiosk-style compositor
+    sway.cage = _: { imports = [ ./sway/cage ]; };
+
     # dunst notification daemon
     sway.dunst = _: { imports = [ ./sway/dunst ]; };
 

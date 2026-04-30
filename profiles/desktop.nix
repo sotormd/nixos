@@ -21,6 +21,7 @@ in
     m.apps.zathura
     m.services.libvirtd
     m.services.pipewire
+    m.sway.cage
     m.sway.dunst
     m.sway.eww
     m.sway.gtk
