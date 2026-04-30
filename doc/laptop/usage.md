@@ -467,7 +467,6 @@ The browser also comes with these extensions:
 
 - uBlock Origin
 - Darkreader
-- Bitwarden
 - Vimium
 
 uBlock Origin is also configured further via chromium policies.

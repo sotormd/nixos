@@ -1715,7 +1715,6 @@ browsers.
 
 5. Extensions
 
-   - Bitwarden (for use with selfhosted Vaultwarden)
    - uBlock Origin (further configured using policies)
    - Dark Reader
    - Vimium
@@ -1907,8 +1906,7 @@ The Brave Browser uses SearXNG as the default search engine.
 
 # Password Manager
 
-The Vaultwarden password manager is hosted on Server. The Brave Browser uses the
-Bitwarden extension to access the vault hosted on Server.
+The Vaultwarden password manager is hosted on Server.
 
 # Virtualisation and Containers
 
