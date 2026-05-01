@@ -1,14 +1,14 @@
 { inputs, ... }:
 
 let
-  m = inputs.self.nixosModules.modules;
+  inherit (inputs.self.nixosModules.modules) apps boot network;
 in
 {
   imports = [
-    m.apps.cpufreq
-    m.boot.emulated
-    m.boot.secureboot
-    m.boot.systemd-boot
-    m.network.wpa3
+    apps.cpufreq
+    boot.emulated
+    boot.secureboot
+    boot.systemd-boot
+    network.wpa3
   ];
 }

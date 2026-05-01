@@ -1,10 +1,10 @@
 { inputs, ... }:
 
 let
-  m = inputs.self.nixosModules.modules;
+  inherit (inputs.self.nixosModules.modules) boot;
 in
 {
   imports = [
-    m.boot.uboot
+    boot.uboot
   ];
 }

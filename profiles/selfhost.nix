@@ -1,17 +1,17 @@
 { inputs, ... }:
 
 let
-  m = inputs.self.nixosModules.modules;
+  inherit (inputs.self.nixosModules.modules) network services;
 in
 {
   imports = [
-    m.network.stevenblack
-    m.services.i2pd
-    m.services.jellyfin
-    m.services.nginx
-    m.services.qbt
-    m.services.searxng
-    m.services.unbound
-    m.services.vaultwarden
+    network.stevenblack
+    services.i2pd
+    services.jellyfin
+    services.nginx
+    services.qbt
+    services.searxng
+    services.unbound
+    services.vaultwarden
   ];
 }

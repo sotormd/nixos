@@ -1,35 +1,42 @@
 { inputs, ... }:
 
 let
-  m = inputs.self.nixosModules.modules;
+  inherit (inputs.self.nixosModules.modules)
+    apps
+    boot
+    core
+    network
+    services
+    vars-schema
+    ;
 in
 {
   imports = [
-    m.apps.bash
-    m.apps.git
-    m.boot.disks
-    m.boot.jitterentropy
-    m.boot.kernel
-    m.boot.localization
-    m.boot.malloc
-    m.boot.persist
-    m.boot.quiet
-    m.boot.stage-1
-    m.boot.users
-    m.core.cli
-    m.core.nix
-    m.core.packages
-    m.network.firewall
-    m.network.host
-    m.network.macchanger
-    m.network.seed
-    m.network.wireless
-    m.services.auditd
-    m.services.journald
-    m.services.run0
-    m.services.sshd
-    m.services.timesyncd
-    m.services.usbguard
-    m.vars-schema
+    apps.bash
+    apps.git
+    boot.disks
+    boot.jitterentropy
+    boot.kernel
+    boot.localization
+    boot.malloc
+    boot.persist
+    boot.quiet
+    boot.stage-1
+    boot.users
+    core.cli
+    core.nix
+    core.packages
+    network.firewall
+    network.host
+    network.macchanger
+    network.seed
+    network.wireless
+    services.auditd
+    services.journald
+    services.run0
+    services.sshd
+    services.timesyncd
+    services.usbguard
+    vars-schema
   ];
 }

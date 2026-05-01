@@ -1,14 +1,14 @@
 { inputs, ... }:
 
 let
-  m = inputs.self.nixosModules.modules;
+  inherit (inputs.self.nixosModules.modules) bootstrap core network;
 in
 {
   imports = [
-    m.bootstrap.user
-    m.core.cli
-    m.core.nix
-    m.core.packages
-    m.network.networkmanager
+    bootstrap.user
+    core.cli
+    core.nix
+    core.packages
+    network.networkmanager
   ];
 }
