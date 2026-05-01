@@ -13,8 +13,6 @@
 ~~slightly overengineered~~ dendritic NixOS configuration flake for multiple
 hosts
 
-[See all screenshots](./doc/screenshots.md)
-
 # Features
 
 [Why do I not use some popular libraries?](./doc/why-not-x.md)
