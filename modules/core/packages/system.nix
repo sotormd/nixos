@@ -40,7 +40,7 @@
     pkgs.binutils
 
     # the GNU core utilities
-    pkgs.coreutils-full
+    pkgs.coreutils
 
     # create or extract from cpio archives
     pkgs.cpio

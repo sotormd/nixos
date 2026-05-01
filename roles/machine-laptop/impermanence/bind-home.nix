@@ -1,7 +1,8 @@
 { config, lib, ... }:
 
 let
-  home = "/home/${config.vars.user.name}";
+  user = config.vars.user.name;
+  home = "/home/${user}";
 in
 lib.mkIf config.vars.features.impermanence.enable {
 
@@ -37,5 +38,12 @@ lib.mkIf config.vars.features.impermanence.enable {
       "${home}/.ssh"
 
     ];
+
+  systemd.tmpfiles.rules = [
+    "d ${home}/.config 0700 ${user} ${user} -"
+    "d ${home}/.config/BraveSoftware 0700 ${user} ${user} -"
+    "d ${home}/.local 0700 ${user} ${user} -"
+    "d ${home}/.local/share 0700 ${user} ${user} -"
+  ];
 
 }

@@ -20,20 +20,20 @@ let
     USER="${config.vars.user.name}"
 
     # chown directory
-    ${pkgs.coreutils-full}/bin/chown "$USER": -R "/persist/nixos"
+    chown "$USER": -R "/persist/nixos"
 
     # directories: 700 (except .git)
-    ${pkgs.findutils}/bin/find "/persist/nixos" \
+    find "/persist/nixos" \
       -path "/persist/nixos/.git" -prune -o \
-      -type d -exec ${pkgs.coreutils-full}/bin/chmod 700 {} +
+      -type d -exec chmod 700 {} +
 
     # files: 600 (except .git)
-    ${pkgs.findutils}/bin/find "/persist/nixos" \
+    find "/persist/nixos" \
       -path "/persist/nixos/.git" -prune -o \
-      -type f -exec ${pkgs.coreutils-full}/bin/chmod 600 {} +
+      -type f -exec chmod 600 {} +
 
     # scripts explicitly executable
-    ${pkgs.coreutils-full}/bin/chmod -R 700 "/persist/nixos/cli"
+    chmod -R 700 "/persist/nixos/cli"
   '';
 in
 {
@@ -41,6 +41,10 @@ in
     description = "Set persist directory permissions";
     wantedBy = [ "multi-user.target" ];
     after = [ "local-fs.target" ];
+    path = [
+      pkgs.coreutils
+      pkgs.findutils
+    ];
     serviceConfig.Type = "oneshot";
     inherit script;
   };

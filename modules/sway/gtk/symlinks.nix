@@ -30,11 +30,15 @@ let
 in
 {
   systemd.tmpfiles.rules = [
+    "d ${home} 0700 ${user} ${user} -"
     "L ${home}/.gtkrc-2.0 - - - - ${gtk2}"
+    "Z ${home}/.gtkrc-2.0 - ${user} ${user} -"
     "d ${home}/.config 0700 ${user} ${user} -"
     "d ${home}/.config/gtk-3.0 0700 ${user} ${user} -"
     "L ${home}/.config/gtk-3.0/settings.ini - - - - ${gtk3}"
+    "Z ${home}/.config/gtk-3.0/settings.ini - ${user} ${user} -"
     "d ${home}/.config/gtk-4.0 0700 ${user} ${user} -"
     "L ${home}/.config/gtk-4.0/settings.ini - - - - ${gtk4}"
+    "Z ${home}/.config/gtk-4.0/settings.ini - ${user} ${user} -"
   ];
 }

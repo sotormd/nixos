@@ -9,20 +9,30 @@ let
   user = config.vars.user.name;
   home = "/home/${user}";
 
-  mkFontRule = pkg: "L ${home}/.local/share/fonts/${pkg} - - - - ${pkgs.${pkg}}/share/fonts";
+  mkFontRules = pkg: [
+    "L ${home}/.local/share/fonts/${pkg} - - - - ${pkgs.${pkg}}/share/fonts"
+    "Z ${home}/.local/share/fonts/${pkg} - ${user} ${user} -"
+  ];
 
-  mkNerdRule =
-    pkg: "L ${home}/.local/share/fonts/nerdfonts/${pkg} - - - - ${pkgs.nerd-fonts.${pkg}}/share/fonts";
+  mkNerdRules = pkg: [
+    "L ${home}/.local/share/fonts/nerdfonts/${pkg} - - - - ${pkgs.nerd-fonts.${pkg}}/share/fonts"
+    "Z ${home}/.local/share/fonts/nerdfonts/${pkg} - ${user} ${user} -"
+  ];
+
+  allFontRules = lib.flatten [
+    (map mkFontRules config.colors.fonts.packages)
+    (map mkNerdRules config.colors.fonts.nerdfonts)
+  ];
 in
 {
   systemd.tmpfiles.rules = [
+    "d ${home} 0700 ${user} ${user} -"
     "d ${home}/.local 0700 ${user} ${user} -"
     "d ${home}/.local/share 0700 ${user} ${user} -"
     "d ${home}/.local/share/fonts 0700 ${user} ${user} -"
     "d ${home}/.local/share/fonts/nerdfonts 0700 ${user} ${user} -"
   ]
-  ++ map mkFontRule config.colors.fonts.packages
-  ++ map mkNerdRule config.colors.fonts.nerdfonts;
+  ++ allFontRules;
 
   fonts.enableDefaultPackages = true;
 

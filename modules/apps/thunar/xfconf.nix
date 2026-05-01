@@ -31,5 +31,6 @@ in
     "d ${home}/.config/xfce4/xfconf 0700 ${user} ${user} -"
     "d ${home}/.config/xfce4/xfconf/xfce-perchannel-xml 0700 ${user} ${user} -"
     "L ${home}/.config/xfce4/xfconf/xfce-perchannel-xml/thunar.xml - - - - ${xfconf}"
+    "Z ${home}/.config/xfce4/xfconf/xfce-perchannel-xml/thunar.xml - ${user} ${user} -"
   ];
 }

@@ -31,6 +31,9 @@
     # assume root device is already there
     # do not wait for it to appear
     "rootflags=x-systemd.device-timeout=0"
+
+    # nvme speedup
+    "nvme_core.default_ps_max_latency_us=0"
   ];
 
   # swap with random encryption

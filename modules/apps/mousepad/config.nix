@@ -18,5 +18,6 @@ in
     "d ${home}/.config 0700 ${user} ${user} -"
     "d ${home}/.config/Mousepad 0700 ${user} ${user} -"
     "L ${home}/.config/Mousepad/settings.conf - - - - ${settings}"
+    "Z ${home}/.config/Mousepad/settings.conf - ${user} ${user} -"
   ];
 }

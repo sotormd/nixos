@@ -31,7 +31,7 @@ let
 
       users=$(mktemp -d)
 
-      echo "${user}:x:1000:1000:${user}:/home/${user}:${pkgs.coreutils-full}/bin/false" > "$users/passwd"
+      echo "${user}:x:1000:1000:${user}:/home/${user}:${pkgs.coreutils}/bin/false" > "$users/passwd"
       echo "${user}:x:1000:" > "$users/group"
 
       proxy_dir=$(mktemp -d)

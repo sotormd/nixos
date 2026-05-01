@@ -11,7 +11,7 @@
     extraGroups = [ "wheel" ];
 
     home = "/home/${config.vars.user.name}";
-    createHome = true;
+    createHome = false;
   };
 
   users.groups = {
