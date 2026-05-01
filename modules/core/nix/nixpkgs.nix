@@ -27,13 +27,14 @@
   };
 
   # alternate nixpkgs pins
+  # these are directly tracked
+  # from the inputs in flake.nix
   _module.args =
     let
       inherit (pkgs.stdenv.hostPlatform) system;
     in
     {
       pkgs-master = import inputs.nixpkgs-master { inherit system; };
-      pkgs-stable = import inputs.nixpkgs-stable { inherit system; };
       pkgs-neovim = import inputs.nixpkgs-neovim { inherit system; };
     };
 }

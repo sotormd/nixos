@@ -17,9 +17,6 @@
     nixpkgs-master = {
       url = "github:nixos/nixpkgs/master";
     };
-    nixpkgs-stable = {
-      url = "github:nixos/nixpkgs/25.11";
-    };
     nixpkgs-neovim = {
       url = "github:nixos/nixpkgs/bfc1b8a4574108ceef22f02bafcf6611380c100d";
     };
