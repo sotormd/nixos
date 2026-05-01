@@ -354,5 +354,6 @@ yes | nixos apply switch
 All the included scripts were written assuming that they will be called from the
 `nixos(1)` wrapper, and not executed directly.
 
-Additionally, there is no need to use `sudo` for any of the included scripts;
-the scripts will use `sudo` to elevate privileges when required.
+Additionally, there is no need to use `sudo` / `run0` for any of the included
+scripts; the scripts will use `sudo` / `run0` to elevate privileges when
+required.

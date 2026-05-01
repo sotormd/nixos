@@ -90,12 +90,10 @@ Before proceeding, see [Laptop Requirements](./requirements.md).
    nixos bootstrap disks mount apply
    ```
 
+   > Run without `apply` for a dry-run.
+
    Or alternatively, format and mount the partitions manually by following
-   equivalent steps mentioned below. This is useful if you want more control
-   over the process. For example: you already have a ZFS pool you wish to
-   import, or you want to use different ZFS options while creating the
-   pool/datasets. Remember that after everything is complete, the new system
-   should be available under `$NIXOS_MOUNT`.
+   equivalent steps mentioned below.
 
 <details>
 
