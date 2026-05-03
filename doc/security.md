@@ -1023,7 +1023,8 @@ Unbound DNS server hosted on Server is used as the default DNS server.
 Cloudflare is used as the fallback server.
 
 Additionally, [StevenBlack's host list](http://github.com/StevenBlack/hosts) is
-used to filter domains on the Server and in the Brave browser on Laptop.
+used to filter domains on the Server and in the Brave browser on Laptop. This
+list is also used to block domains in the Unbound DNS server hosted on Server.
 
 > Server only
 

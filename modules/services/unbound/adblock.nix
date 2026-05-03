@@ -1,0 +1,16 @@
+{ lib, inputs, ... }:
+
+let
+  hosts = builtins.readFile "${inputs.hosts.outPath}/alternates/fakenews-gambling-porn/hosts";
+
+  block_hosts = lib.filter (
+    x: lib.strings.hasPrefix "0.0.0.0" x && !(lib.strings.hasSuffix "0.0.0.0" x)
+  ) (lib.strings.splitString "\n" hosts);
+
+  block_domains = lib.map (x: (builtins.elemAt (lib.strings.splitString " " x) 1)) block_hosts;
+
+  unboundLines = lib.map (d: ''"${d}" static'') block_domains;
+in
+{
+  services.unbound.settings.local-zone = unboundLines;
+}
