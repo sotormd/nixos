@@ -14,6 +14,11 @@
     "usbhid"
   ];
 
+  # respect zfs safety stuff
+  boot.zfs.forceImportRoot = false;
+  boot.zfs.forceImportAll = false;
+
+  # filesystems
   fileSystems = {
 
     # root partition

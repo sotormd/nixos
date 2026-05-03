@@ -36,6 +36,10 @@
     "nvme_core.default_ps_max_latency_us=0"
   ];
 
+  # respect zfs safety stuff
+  boot.zfs.forceImportRoot = false;
+  boot.zfs.forceImportAll = false;
+
   # swap with random encryption
   swapDevices = [
     {
@@ -52,6 +56,7 @@
     };
   };
 
+  # filesystems
   fileSystems = {
 
     # boot partition
@@ -112,6 +117,7 @@
     "/tmp"
   ];
 
+  # microcode
   hardware.cpu.amd.updateMicrocode = lib.mkDefault config.hardware.enableRedistributableFirmware;
 
   # kernel sysctl options

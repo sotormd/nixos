@@ -17,7 +17,7 @@ let
     executable = false;
   };
 
-  fallback = config.wallpapers.oc.nixos;
+  fallback = config.wallpapers.nord.nixos;
   target = "/home/${config.vars.user.name}/.local/share/xkcd.png";
   backup = "/home/${config.vars.user.name}/.local/share/xkcd.last.png";
 

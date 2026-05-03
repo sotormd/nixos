@@ -11,5 +11,6 @@ let
   );
 in
 {
+  networking.resolvconf.enable = false;
   environment.etc."resolv.conf".text = text;
 }

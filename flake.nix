@@ -14,12 +14,8 @@
     # for specific stuff
     # remember to vet these
     # `nixos grep -r ALT-PKGS`
-    nixpkgs-master = {
-      url = "github:nixos/nixpkgs/master";
-    };
-    nixpkgs-neovim = {
-      url = "github:nixos/nixpkgs/bfc1b8a4574108ceef22f02bafcf6611380c100d";
-    };
+    # -----------------------
+    # -----------------------
 
     # secrets for nixos
     # because we dont want them ending
@@ -46,7 +42,7 @@
     # my Neovim configuration
     neovim = {
       url = "github:sotormd/neovim";
-      inputs.nixpkgs.follows = "nixpkgs-neovim"; # ALT-PKGS: deno rebuild on unstable
+      inputs.nixpkgs.follows = "nixpkgs";
       inputs.colors.follows = "colors";
     };
 

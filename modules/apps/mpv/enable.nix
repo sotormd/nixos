@@ -1,12 +1,7 @@
-{
-  config,
-  pkgs,
-  pkgs-master,
-  ...
-}:
+{ config, pkgs, ... }:
 
 let
-  package = import ./package.nix { inherit pkgs pkgs-master; };
+  package = import ./package.nix { inherit pkgs; };
 in
 {
   users.users.${config.vars.user.name}.packages = [ package.mpvWrapped ];

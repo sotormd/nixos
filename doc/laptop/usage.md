@@ -408,7 +408,7 @@ every unlock. To manually refresh:
 xkcd-refresh
 ```
 
-The fallback wallpaper for the lockscreen is `oc.nixos` from
+The fallback wallpaper for the lockscreen is `nord.nixos` from
 [wallpapers](https://github.com/sotormd/wallpapers).
 
 ## Colors & Theming
