@@ -91,6 +91,12 @@
     impermanence.enable = true;
   };
 
+  modes = {
+    roaming.enable = true;
+    nate.enable = true;
+    coffee.enable = true;
+  };
+
   selfhosted = {
     unbound = {
       enable = true;

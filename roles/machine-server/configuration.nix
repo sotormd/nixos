@@ -79,6 +79,11 @@
     features = {
       secureboot.enable = lib.mkForce false;
     };
+    modes = {
+      roaming.enable = lib.mkForce false;
+      nate.enable = lib.mkForce false;
+      coffee.enable = lib.mkForce false;
+    };
     selfhosted = {
       unbound.enable = lib.mkForce false;
       searxng.enable = lib.mkForce false;
@@ -102,13 +107,21 @@
       i2pdRequired = [
         config.vars.services.qbt.enable
       ];
-      ensureDisabled = [
+      featuresDisabled = [
+        config.vars.features.secureboot.enable
+      ];
+      selfhostedDisabled = [
         config.vars.selfhosted.unbound.enable
         config.vars.selfhosted.searxng.enable
         config.vars.selfhosted.vaultwarden.enable
         config.vars.selfhosted.i2pd.enable
         config.vars.selfhosted.qbt.enable
         config.vars.selfhosted.jellyfin.enable
+      ];
+      modesDisabled = [
+        config.vars.modes.roaming.enable
+        config.vars.modes.nate.enable
+        config.vars.modes.coffee.enable
       ];
     in
     [
@@ -121,8 +134,16 @@
         message = "variables: i2pd must be enabled if any dependent service is enabled";
       }
       {
-        assertion = builtins.all (x: !x) ensureDisabled;
-        message = "variables: vars.selfhosted.* is not supported";
+        assertion = builtins.all (x: !x) featuresDisabled;
+        message = "variables: unsupported vars.features.* are enabled";
+      }
+      {
+        assertion = builtins.all (x: !x) selfhostedDisabled;
+        message = "variables: unsupported vars.selfhosted.* are enabled";
+      }
+      {
+        assertion = builtins.all (x: !x) modesDisabled;
+        message = "variables: unsupported vars.modes.* are enabled";
       }
       {
         assertion = config.vars.user.sshAliases == { };

@@ -28,11 +28,14 @@ in
     boot.stage-1
     boot.systemd-boot
     boot.users
+    core.cli
     core.nix
     core.packages
     network.firewall
     network.host
     network.macchanger
+    network.networkmanager
+    network.wireless
     services.auditd
     services.journald
     services.libvirtd

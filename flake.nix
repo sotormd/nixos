@@ -72,6 +72,11 @@
       url = "github:sotormd/nate";
     };
 
+    # my openbox configuration
+    coffee = {
+      url = "github:sotormd/coffee";
+    };
+
   };
 
   outputs =

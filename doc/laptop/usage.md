@@ -9,8 +9,8 @@ This document covers using the Laptop role.
 3. [Browsers](#browsers)
 4. [Other Applications](#other-applications)
 5. [Virtualisation and Containers](#virtualisation-and-containers)
-6. [Roaming Mode](#roaming-mode)
-7. [SSH](#ssh)
+6. [Specialisation Modes](#specialisation-modes)
+7. [SSH Server](#ssh-server)
 8. [Using Selfhosted Features](#using-selfhosted-features)
 9. [Further Reading](#further-reading)
 
@@ -623,10 +623,15 @@ man podman
 
 Podman is also used as the backend for Distrobox.
 
-# Roaming Mode
+# Specialisation Modes
 
-Roaming Mode refers to the `roaming` specialisation that which sets up an
-environment ideal for usage away from home, in unreliable conditions.
+The following "modes" can be enabled on the Laptop role. Modes are implemented
+using specialisations.
+
+## Roaming Mode
+
+Roaming Mode refers to the `roaming` specialisation that sets up an environment
+ideal for usage away from home, in unreliable conditions.
 
 Notable changes from the default configuration:
 
@@ -641,7 +646,45 @@ boot menu.
 
 The bespoke `nixos` CLI cannot be used within Roaming Mode.
 
-# SSH
+## Nate Mode
+
+Nate Mode refers to the `nate` specialisation that sets up an environment using
+[my MATE configuration](https://github.com/sotormd/nate).
+
+Notable changes from the default configuration:
+
+- sway desktop replaced with MATE
+- wpa_supplicant replaced by NetworkManager
+- all selfhosted features are disabled
+
+Nate Mode can be enabled using `vars.modes.nate.enable` and used by booting into
+the `nate` specialisation from the boot menu.
+
+> Nate Mode is available only if Impermanence is enabled. This ensures that
+> mode-specific files do not persist across reboots.
+
+The bespoke `nixos` CLI cannot be used within Nate Mode.
+
+## Coffee Mode
+
+Coffee Mode refers to the `coffee` specialisation that sets up an environment
+using [my openbox configuration](https://github.com/sotormd/coffee).
+
+Notable changes from the default configuration:
+
+- sway desktop replaced with openbox
+- wpa_supplicant replaced by NetworkManager
+- all selfhosted features are disabled
+
+Coffee Mode can be enabled using `vars.modes.coffee.enable` and used by booting
+into the `coffee` specialisation from the boot menu.
+
+> Coffee Mode is available only if Impermanence is enabled. This ensures that
+> mode-specific files do not persist across reboots.
+
+The bespoke `nixos` CLI cannot be used within Coffee Mode.
+
+# SSH Server
 
 OpenSSH secure shell daemon with a hardened configuration. SSH is also required
 for [seeding](../cli.md#build-remote-closures) the current machine.

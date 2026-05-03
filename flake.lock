@@ -1,5 +1,20 @@
 {
   "nodes": {
+    "coffee": {
+      "locked": {
+        "lastModified": 1777785892,
+        "narHash": "sha256-dDpodOKwCTZN6BKu4bnImr2VXgoIgjEp06W3FcY/atg=",
+        "owner": "sotormd",
+        "repo": "coffee",
+        "rev": "24a667c3df7b80bf3de183a537a64fa95f566abb",
+        "type": "github"
+      },
+      "original": {
+        "owner": "sotormd",
+        "repo": "coffee",
+        "type": "github"
+      }
+    },
     "colors": {
       "locked": {
         "lastModified": 1777784025,
@@ -342,6 +357,7 @@
     },
     "root": {
       "inputs": {
+        "coffee": "coffee",
         "colors": "colors",
         "homepage": "homepage",
         "hosts": "hosts",

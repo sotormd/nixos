@@ -194,6 +194,22 @@ in
 
     };
 
+    modes = {
+
+      roaming.enable = mkOption {
+        type = types.bool;
+      };
+
+      nate.enable = mkOption {
+        type = types.bool;
+      };
+
+      coffee.enable = mkOption {
+        type = types.bool;
+      };
+
+    };
+
     selfhosted = {
       unbound = {
         enable = mkOption {

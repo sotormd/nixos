@@ -112,7 +112,7 @@
     # iptables-nft firewall
     network.firewall = _: { imports = [ ./network/firewall ]; };
 
-    # hostname, hostid, machineid, issue, ssh host aliases
+    # networking, hostnames, dns, ssh aliases, ...
     network.host = _: { imports = [ ./network/host ]; };
 
     # gnu macchanger

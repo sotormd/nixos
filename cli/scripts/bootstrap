@@ -294,6 +294,12 @@ elif [ "$VERB" == "vars" ]; then
     impermanence.enable = false;
   };
 
+  modes = {
+    roaming.enable = false;
+    nate.enable = false;
+    coffee.enable = false;
+  };
+
   selfhosted = {
     unbound = {
       enable = false;

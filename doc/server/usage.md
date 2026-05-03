@@ -6,7 +6,7 @@ This document covers using the Server role.
 
 1. [System Maintenance](#system-maintenance)
 2. [Bind Mounts and External Disks](#bind-mounts-and-external-disks)
-3. [SSH](#ssh)
+3. [SSH Server](#ssh-server)
 4. [Unbound](#unbound)
 5. [NGINX](#nginx)
 6. [SearXNG](#searxng)
@@ -61,7 +61,7 @@ See
 [Filesystem and Impermanence Documentation](../filesystems.md#additional-disks-and-mounts)
 for more information.
 
-# SSH
+# SSH Server
 
 OpenSSH secure shell daemon with a hardened configuration. SSH is also required
 for [seeding](../cli.md#build-remote-closures) the current machine.

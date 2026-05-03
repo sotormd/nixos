@@ -150,7 +150,7 @@
       securebootRequired = [
         config.vars.features.impermanence.enable
       ];
-      ensureDisabled = [
+      servicesDisabled = [
         config.vars.services.unbound.enable
         config.vars.services.nginx.enable
         config.vars.services.searxng.enable
@@ -166,8 +166,8 @@
         message = "variables: secureboot must be enabled if any dependent service is enabled";
       }
       {
-        assertion = builtins.all (x: !x) ensureDisabled;
-        message = "variables: one or more unexpected services are enabled";
+        assertion = builtins.all (x: !x) servicesDisabled;
+        message = "variables: unsupported vars.services.* are enabled";
       }
     ];
 }
