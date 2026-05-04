@@ -132,36 +132,7 @@
         };
 
       # targets
-      targets = {
-        machines = [
-          {
-            name = "laptop";
-            arch = "x86_64-linux";
-          }
-          {
-            name = "server";
-            arch = "aarch64-linux";
-          }
-        ];
-        images = [
-          {
-            name = "mate";
-            arch = "x86_64-linux";
-          }
-          {
-            name = "gnome";
-            arch = "x86_64-linux";
-          }
-          {
-            name = "minimal";
-            arch = "x86_64-linux";
-          }
-          {
-            name = "sd";
-            arch = "aarch64-linux";
-          }
-        ];
-      };
+      targets = fromTOML (builtins.readFile ./targets.toml);
 
       machineConfigurations = lib.listToAttrs (
         map (m: lib.nameValuePair "machine-${m.name}" (mkMachine m.name m.arch)) targets.machines

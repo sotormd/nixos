@@ -1,0 +1,23 @@
+[[machines]]
+name = "laptop"
+arch = "x86_64-linux"
+
+[[machines]]
+name = "server"
+arch = "aarch64-linux"
+
+[[images]]
+name = "mate"
+arch = "x86_64-linux"
+
+[[images]]
+name = "gnome"
+arch = "x86_64-linux"
+
+[[images]]
+name = "minimal"
+arch = "x86_64-linux"
+
+[[images]]
+name = "sd"
+arch = "aarch64-linux"
