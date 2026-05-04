@@ -344,12 +344,16 @@ command in three places:
 
    `nixos(1)` dispatches the provided command as-is in `/persist/nixos`
 
-It is _generally_ safe to pipe into and out of the included scripts:
+It is _generally_ safe to pipe into and out of the included scripts **except**
+`nixos bootstrap`:
 
 ```bash
 nixos cat modules/machines/server/searxng/engines.nix | wl-copy
 yes | nixos apply switch
 ```
+
+**The output of `nixos bootstrap` IS NOT STABLE and should not be used for
+scripting.**
 
 All the included scripts were written assuming that they will be called from the
 `nixos(1)` wrapper, and not executed directly.

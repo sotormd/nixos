@@ -226,52 +226,133 @@ elif [ "$VERB" == "vars" ]; then
 # invalid / inaccurate variables can lead to a broken system
 # bootstrap DOES NOT POPULATE VARIABLES with sane values, only examples
 
+# the following values have been populated from the installation environment
+# - device.machineId
+# - device.hostId
+# - partitions.boot
+# - partitions.swap
+# - partitions.root
+
 {
+
+  # device variables
   device = {
-    hostName = "nixos";
+
+    # hostname in /etc/hostname
+    hostName = "example";
+
+    # machine id in /etc/machine-id
+    # required by systemd for consistent logs
+    # passed as a boot parameter
     machineId = "$MACHINE_ID";
+
+    # host id
+    # required by ZFS
     hostId = "$HOST_ID";
+
   };
 
+  # partition PARTUUIDS
+  # get these from /dev/disk/by-partuuid/...
   partitions = {
+
+    # FAT32 boot partition
     boot = "${BOOT##*/}";
+
+    # swap partition
     swap = "${SWAP##*/}";
+
+    # LUKS partition with rpool
     root = "${ROOT##*/}";
+
   };
 
+  # additional filesystem mounts
   filesystem = {
+
+    # configure luks encrypted devices
+    # each entry should have a uuid and keyfile
     luks = { };
+
+    # configure mounts
+    # directly map to fileSystems.* blocks
     mount = {
+
+      # raw mounts, no additional options
       raw = { };
+
+      # nosuid, nodev
       harden = { };
+
+      # nosuid, nodev, noexec
       data = { };
+
+      # nosuid, nodev, ro
       immutable = { };
+
+      # nosuid, nodev, noexec, ro
       static = { };
+
     };
+
   };
 
+  # usbguard allowed devices
+  # all others are blocked
   usbs = [ ];
 
+  # user information
   user = {
-    name = "nixos";
+
+    # nsswitch username in /etc/passwd
+    name = "example";
+
+    # email address for git, acme, ...
     email = "example@example";
+
+    # ssh host aliases
+    # each with a user, host, port and keyfile
     sshAliases = { };
+
   };
 
+  # localization and internationalization
   localization = {
+
+    # Continent/City timezone
     timeZone = "UTC";
+
+    # keyboard layout
     keyboard = "us";
+
+    # locale
     locale = "en_US.UTF-8";
+
   };
 
+  # wpa_supplicant wireless networking
   wireless = {
+
+    # wireless NIC identifier
     interface = "wlp1s0";
+
+    # wireless network ssid
     ssid = "example";
+
+    # wireless network gateway
     gateway = "10.0.0.1";
+
+    # static IP address
     address = "10.0.0.2";
+
   };
 
+  # displays
   displays = {
+
+    # outputs
+    # each with an identifier, resolution, refresh and position
+    # as used in sway configuration
     outputs = {
       laptop = {
         identifier = "eDP-1";
@@ -286,63 +367,131 @@ elif [ "$VERB" == "vars" ]; then
         position = "1920 0";
       };
     };
+
+    # primary output
     primary = "monitor";
+
   };
 
+  # additional feature toggles
   features = {
+
+    # secureboot with lanzaboote
     secureboot.enable = false;
+
+    # impermanence with ZFS and bind mounts
     impermanence.enable = false;
+
   };
 
+  # specialisation modes
   modes = {
+
+    # roaming mode
+    # for use outside home
     roaming.enable = false;
+
+    # nate mode
+    # MATE desktop
     nate.enable = false;
+
+    # coffee mode
+    # openbox dekstop
     coffee.enable = false;
+
   };
 
+  # use selfhosted features
   selfhosted = {
+
+    # unbound dns resolver
+    # used in /etc/resolv.conf
+    # address is a private address
     unbound = {
       enable = false;
       address = "10.0.0.3";
     };
+
+    # searxng search engine
+    # used for web searches
+    # domain is a duckdns domain
     searxng = {
       enable = false;
       domain = "example.duckdns.org";
     };
+
+    # vaultwarden password manager
+    # used for web vault
+    # domain is a duckdns domain
     vaultwarden = {
       enable = false;
       domain = "example.duckdns.org";
     };
+
+    # i2pd router
+    # used for webconsole and HTTP proxy
+    # address is a private address
+    # domain is a duckdns domain
     i2pd = {
       enable = false;
       address = "10.0.0.3";
       domain = "example.duckdns.org";
     };
+
+    # qBittorrent torrent client
+    # used for webui
+    # domain is a duckdns domain
     qbt = {
       enable = false;
       domain = "example.duckdns.org";
     };
+
+    # jellyfin media server
+    # used for web interface
+    # domain is a duckdns domain
     jellyfin = {
       enable = false;
       domain = "example.duckdns.org";
     };
+
   };
 
+  # service toggles
   services = {
+
+    # ssh server
+    # allow is a private CIDR
+    # port is a port
+    # trusted-keys is a list of ed25519 ssh public keys
     ssh = {
       enable = false;
       allow = "10.0.0.4/32";
-      port = 22;
+      port = 2222;
       trusted-keys = [ ];
     };
+
   };
 
+  # seed this machine remotely
+  # trusted-keys is a list of nix public keys
   seed = {
     enable = false;
     trusted-keys = [ ];
   };
+
 }
 EOF
+
+        echo 'before rebuilding, ensure that all variables are properly defined
+invalid / inaccurate variables can lead to a broken system
+bootstrap DOES NOT POPULATE VARIABLES with sane values, only examples
+
+the following values have been populated from the installation environment
+- device.machineId
+- device.hostId
+- partitions.boot
+- partitions.swap
+- partitions.root'
 
     elif [ "$ROLE" == "server" ]; then
 
@@ -360,96 +509,205 @@ EOF
 # invalid / inaccurate variables can lead to a broken system
 # bootstrap DOES NOT POPULATE VARIABLES with sane values, only examples
 
+# the following values have been populated from the installation environment
+# - device.machineId
+# - device.hostId
+
 {
+  # device variables
   device = {
-    hostName = "nixos";
+
+    # hostname in /etc/hostname
+    hostName = "example";
+
+    # machine id in /etc/machine-id
+    # required by systemd for consistent logs
+    # passed as a boot parameter
     machineId = "$MACHINE_ID";
+
+    # host id
+    # required by ZFS
     hostId = "$HOST_ID";
+
   };
 
+  # partition PARTUUIDS
+  # get these from /dev/disk/by-partuuid/...
   partitions = {
+
+    # root partition
     root = "2178694e-02";
+
   };
 
+  # additional filesystem mounts
   filesystem = {
+
+    # configure luks encrypted devices
+    # each entry should have a uuid and keyfile
     luks = { };
+
+    # configure mounts
+    # directly map to fileSystems.* blocks
     mount = {
+
+      # raw mounts, no additional options
       raw = { };
+
+      # nosuid, nodev
       harden = { };
+
+      # nosuid, nodev, noexec
       data = { };
+
+      # nosuid, nodev, ro
       immutable = { };
+
+      # nosuid, nodev, noexec, ro
       static = { };
+
     };
+
   };
 
+  # usbguard allowed devices
+  # all others are blocked
   usbs = [ ];
 
+  # user information
   user = {
-    name = "nixos";
+
+    # nsswitch username in /etc/passwd
+    name = "example";
+
+    # email address for git, acme, ...
     email = "example@example";
+
   };
 
+  # localization and internationalization
   localization = {
-    timeZone = "Asia/Kolkata";
+
+    # Continent/City timezone
+    timeZone = "UTC";
+
+    # keyboard layout
     keyboard = "us";
+
+    # locale
     locale = "en_US.UTF-8";
+
   };
 
+  # wpa_supplicant wireless networking
   wireless = {
+
+    # wireless NIC identifier
     interface = "wlan0";
+
+    # wireless network ssid
     ssid = "example";
+
+    # wireless network gateway
     gateway = "10.0.0.1";
+
+    # static IP address
     address = "10.0.0.3";
+
   };
 
+  # service toggles
   services = {
+
+    # ssh server
+    # allow is a private CIDR
+    # port is a port
+    # trusted-keys is a list of ed25519 ssh public keys
     ssh = {
       enable = false;
       allow = "10.0.0.2/32";
-      port = 22;
+      port = 2222;
       trusted-keys = [ ];
     };
+
+    # unbound dns resolver
+    # allow is a private CIDR
     unbound = {
       enable = false;
       allow = "10.0.0.2/32";
     };
+
+    # nginx web server
+    # domain is a duckdns domain
+    # allow is a private CIDR
     nginx = {
       enable = false;
       domain = "example.duckdns.org";
       allow = "10.0.0.2/32";
     };
+
+    # searxng metasearch engine
+    # allow is a private CIDR
     searxng = {
       enable = false;
       allow = "10.0.0.2/32";
     };
+
+    # vaultwarden password manager
+    # allow is a private CIDR
     vaultwarden = {
       enable = false;
       allow = "10.0.0.2/32";
     };
+
+    # i2pd router
+    # allow is a private CIDR
     i2pd = {
       enable = false;
       allow = "10.0.0.2/32";
     };
+
+    # qbittorrent bittorrent client
+    # allow is a private CIDR
     qbt = {
       enable = false;
       allow = "10.0.0.2/32";
     };
+
+    # jellyfin media server
+    # allow is a private CIDR
     jellyfin = {
       enable = false;
       allow = "10.0.0.2/32";
     };
+
   };
 
+  # additional feature toggles
   features = {
+
+    # impermanence with tmpfs and bind mounts
     impermanence.enable = false;
+
   };
 
+  # seed this machine remotely
+  # trusted-keys is a list of nix public keys
   seed = {
     enable = false;
     trusted-keys = [ ];
   };
+
 }
 EOF
+
+        echo 'before rebuilding, ensure that all variables are properly defined
+invalid / inaccurate variables can lead to a broken system
+bootstrap DOES NOT POPULATE VARIABLES with sane values, only examples
+
+the following values have been populated from the installation environment
+- device.machineId
+- device.hostId'
 
     fi
 
@@ -471,13 +729,14 @@ elif [ "$VERB" == "sops" ]; then
 
     # check environment variables
     if [ -z "${SECRETS_HASHED_PASSWORD:-}" ]; then
+        echo "SECRETS_HASHED_PASSWORD unset, using user input"
 
         while true; do
-            echo
             echo "Set user account password"
             read -sp "Enter password  : " PASSWORD1
             echo
             read -sp "Confirm password: " PASSWORD2
+            echo
             echo
 
             if [ "$PASSWORD1" == "$PASSWORD2" ]; then
@@ -490,13 +749,14 @@ elif [ "$VERB" == "sops" ]; then
     fi
 
     if [ -z "${SECRETS_PSK:-}" ]; then
+        echo "SECRETS_PSK unset, using user input"
 
         while true; do
-            echo
             echo "Set wireless network password"
             read -sp "Enter password  : " PASSWORD1
             echo
             read -sp "Confirm password: " PASSWORD2
+            echo
             echo
 
             if [ "$PASSWORD1" == "$PASSWORD2" ]; then
@@ -509,16 +769,19 @@ elif [ "$VERB" == "sops" ]; then
     fi
 
     if [ -z "${SECRETS_SEED_KEY:-}" ]; then
+        echo "SECRETS_SEED_KEY unset, generating new"
         SECRETS_SEED_KEY=$(nix key generate-secret --key-name seed)
     fi
 
     if [ "$ROLE" == "server" ]; then
 
         if [ -z "${SECRETS_DUCKDNS_TOKEN:-}" ]; then
+            echo "SECRETS_DUCKDNS_TOKEN unset, left empty"
             SECRETS_DUCKDNS_TOKEN=""
         fi
 
         if [ -z "${SECRETS_SEARXNG_KEY:-}" ]; then
+            echo "SECRETS_SEARXNG_KEY unset, generating new"
             SECRETS_SEARXNG_KEY=$(head -c 64 /dev/urandom | sha256sum | cut -d ' ' -f1)
         fi
 
@@ -726,6 +989,7 @@ elif [ "$VERB" == "impermanence" ]; then
     if [ "$ROLE" == "laptop" ]; then
 
         # populate /persist/root/
+        echo "Populating /persist/root/"
         persist_dirs "$PERSIST_DIR_ROOT" "$MOUNT$REAL_ROOT" \
             "/var/lib/nixos" \
             "/var/lib/systemd" \
@@ -737,6 +1001,7 @@ elif [ "$VERB" == "impermanence" ]; then
             "/var/log"
 
         # populate /persist/root/home/
+        echo "Populating /persist/root/home/"
         persist_dirs "$PERSIST_DIR_HOME" "$MOUNT$REAL_HOME" \
             "/Documents" \
             "/Downloads" \
@@ -749,6 +1014,7 @@ elif [ "$VERB" == "impermanence" ]; then
     elif [ "$ROLE" == "server" ]; then
         
         # populate /persist/root/
+        echo "Populating /persist/root/"
         persist_dirs "$PERSIST_DIR_ROOT" "$MOUNT$REAL_ROOT"  \
             "/var/lib/nixos" \
             "/var/lib/systemd" \
@@ -777,3 +1043,5 @@ elif [ "$VERB" == "impermanence" ]; then
     fi
 
 fi
+
+echo "Finished bootstrap task(s)"
