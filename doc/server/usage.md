@@ -6,14 +6,7 @@ This document covers using the Server role.
 
 1. [System Maintenance](#system-maintenance)
 2. [Bind Mounts and External Disks](#bind-mounts-and-external-disks)
-3. [SSH Server](#ssh-server)
-4. [Unbound](#unbound)
-5. [NGINX](#nginx)
-6. [SearXNG](#searxng)
-7. [Vaultwarden](#vaultwarden)
-8. [I2PD](#i2pd)
-9. [qBittorrent](#qbittorrent)
-10. [Jellyfin](#jellyfin)
+3. [Services](#services)
 
 # System Maintenance
 
@@ -61,36 +54,64 @@ See
 [Filesystem and Impermanence Documentation](../filesystems.md#additional-disks-and-mounts)
 for more information.
 
-# SSH Server
+# Services
+
+The following services are available:
+
+- SSH Server
+- Unbound
+- NGINX
+- SearXNG
+- Vaultwarden
+- I2PD
+- qBittorrent
+- Jellyfin
+
+## SSH Server
 
 OpenSSH secure shell daemon with a hardened configuration. SSH is also required
 for [seeding](../cli.md#build-remote-closures) the current machine.
 
-## Enabling
+### Enabling
 
 Enabled using `vars.services.ssh.enable`.
 
-## Ports
+### Ports
 
 Open on LAN to the private CIDR defined by `vars.services.ssh.allow`:
 
 1. `vars.services.ssh.port`
 
-## Keys
+### Keys
 
 Trusted public keys are defined in `vars.services.ssh.trusted-keys`.
 
 Host keys are generated and stored under `/etc/ssh`.
 
-# Unbound
+### Example Variables Configuration
+
+For `vars.services.ssh`
+
+```nix
+{
+  enable = true;
+  allow = "10.0.0.4/31"; # allow 10.0.0.4 and 10.0.0.5
+  trusted-keys = [
+    "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIM4BfT6bp+fl83TyrSFAerXpAq6AVmVlfUnfnPU3jHHY example@example"
+    "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIH+iL2MFXNyxd3Hu6akfdOBeI6HYWE4R0LTBScTHCoyH example@example"
+  ];
+}
+```
+
+## Unbound
 
 Unbound recursive validating DNS server with a hardened configuration.
 
-## Enabling
+### Enabling
 
 Enabled using `vars.services.unbound.enable`
 
-## Ports
+### Ports
 
 Open on `127.0.0.1`:
 
@@ -102,25 +123,25 @@ Open on LAN to the private CIDR defined by `vars.services.unbound.allow`:
 1. `53/tcp` dns
 2. `53/udp` dns
 
-## Data
+### Data
 
 Data is stored under `/var/lib/unbound`.
 
-# NGINX
+## NGINX
 
 Web server and reverse proxy.
 
-## Enabling
+### Enabling
 
 Enabled using `vars.services.nginx.enable`.
 
-## Ports
+### Ports
 
 Open on LAN to private CIDR defined by `vars.services.nginx.allow`:
 
 1. `443` https
 
-## Domain
+### Domain
 
 The nginx web server is hosted at `https://<your-duckdns-domain>`.
 
@@ -131,7 +152,7 @@ using your duckdns domain.
 
 Certificates are renewed using ACME, which stores them in `/var/lib/acme`.
 
-## Reverse Proxy
+### Reverse Proxy
 
 The root of the web server returns a
 [homepage](https://github.com/sotormd/homepage) with links to all the services'
@@ -147,12 +168,12 @@ Reverse proxy is set up for the following services, if enabled:
 | `/qbt/`         | qBittorrent webui     | Bittorrent client           | `vars.services.qbt.allow`         |
 | `/jellyfin/`    | Jellyfin              | Media server                | `vars.services.jellyfin.allow`    |
 
-## Static
+### Static
 
 The `/static/` location points to files in `/srv/static` which can be used to
 serve static files.
 
-## Ad-Hoc Reverse Proxy
+### Ad-Hoc Reverse Proxy
 
 The `/adhoc/*` locations can be used to reverse proxy services in an ad-hoc
 manner.
@@ -163,19 +184,19 @@ the firewall (even on loopback) so the `nixos-firewall-tool` needs to be used to
 open them on a ad-hoc basis so that nginx can access them through the loopback
 interface.
 
-# SearXNG
+## SearXNG
 
 Fast, private metasearch engine.
 
-## Enabling
+### Enabling
 
 Enabled using `vars.services.searxng.enable`.
 
-## Ports
+### Ports
 
 Doesn't open any ports since it uses `uwsgi`.
 
-## Search Engines
+### Search Engines
 
 The following search engines are enabled by default on the general tab:
 
@@ -185,37 +206,37 @@ The following search engines are enabled by default on the general tab:
 4. Startpage
 5. Wikipedia
 
-## Key
+### Key
 
 Requires a secret key which is stored using sops-nix.
 
-# Vaultwarden
+## Vaultwarden
 
 Password manager.
 
-## Enabling
+### Enabling
 
 Enabled using `vars.services.vaultwarden.enable`.
 
-## Ports
+### Ports
 
 Open on `127.0.0.1`:
 
 1. `8222` web vault
 
-## Vault
+### Vault
 
 The vault is stored at `/var/lib/bitwarden_rs`.
 
-# I2PD
+## I2PD
 
 Router for the I2P network.
 
-## Enabling
+### Enabling
 
 Enabled using `vars.services.i2pd.enable`.
 
-## Ports
+### Ports
 
 Open on `127.0.0.1`:
 
@@ -228,31 +249,31 @@ Open on LAN to the private CIDR defined by `vars.services.i2pd.allow`:
 
 1. `4444` HTTP proxy
 
-## Data
+### Data
 
 Data is stored under `/var/lib/i2pd`.
 
 Root for the eepsite is at `/srv/i2p`.
 
-# qBittorrent
+## qBittorrent
 
 Web interface for the qBittorrent bittorrent client.
 
-## Enabling
+### Enabling
 
 Enabled using `vars.services.qbt.enable`.
 
-## Ports
+### Ports
 
 Open on `127.0.0.1`:
 
 1. `8080` webui
 
-## Data
+### Data
 
 Data is stored under `/var/lib/qbt`.
 
-## Torrents
+### Torrents
 
 Default torrent download directory is `/srv/torrents/downloads`.
 
@@ -262,7 +283,7 @@ Default download directory for Movies is: `/srv/torrents/movies`.
 
 Default download directory for TV is: `/srv/torrents/tv`.
 
-## Initial Setup
+### Initial Setup
 
 qBittorrent will initially start with username `admin` and a random password.
 Check the service status for the password.
@@ -274,25 +295,25 @@ systemctl status qbt
 Then, in the web ui `https://<your-duckdns-domain>/qbt/` under
 `Tools > Options > WebUI > Authentication` set a username and password.
 
-# Jellyfin
+## Jellyfin
 
 Media server.
 
-## Enabling
+### Enabling
 
 Enabled using `vars.services.jellyfin.enable`.
 
-## Ports
+### Ports
 
 Open on `127.0.0.1`:
 
 1. `8096` web interface
 
-## Data
+### Data
 
 Data is stored under `/var/lib/jellyfin`.
 
-## Initial Setup
+### Initial Setup
 
 Access the web interface at `https://<your-duckdns-domain>/jellyfin/` and follow
 the wizard to set up your user and library.
@@ -300,7 +321,7 @@ the wizard to set up your user and library.
 To use torrents from qBittorrent, add `/srv/torrents/movies` and
 `/srv/torrents/tv`.
 
-## Disabling media playback
+### Disabling media playback
 
 If using only the `Download` and/or `Copy Stream URL` options, you can disable
 media playback by disallowing it for your user.

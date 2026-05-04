@@ -10,7 +10,7 @@ This document covers using the Laptop role.
 4. [Other Applications](#other-applications)
 5. [Virtualisation and Containers](#virtualisation-and-containers)
 6. [Specialisation Modes](#specialisation-modes)
-7. [SSH Server](#ssh-server)
+7. [Services](#services)
 8. [Using Selfhosted Features](#using-selfhosted-features)
 9. [Further Reading](#further-reading)
 
@@ -684,31 +684,117 @@ into the `coffee` specialisation from the boot menu.
 
 The bespoke `nixos` CLI cannot be used within Coffee Mode.
 
-# SSH Server
+# Services
+
+Only the SSH server is available.
+
+## SSH Server
 
 OpenSSH secure shell daemon with a hardened configuration. SSH is also required
 for [seeding](../cli.md#build-remote-closures) the current machine.
 
-## Enabling
+### Enabling
 
 Enabled using `vars.services.ssh.enable`.
 
-## Ports
+### Ports
 
 Open on LAN to the private CIDR defined by `vars.services.ssh.allow`:
 
 1. `vars.services.ssh.port`
 
-## Keys
+### Keys
 
 Trusted public keys are defined in `vars.services.ssh.trusted-keys`.
 
 Host keys are generated and stored under `/etc/ssh`.
 
+### Example Variables Configuration
+
+For `vars.services.ssh`.
+
+```nix
+{
+  enable = true;
+  allow = "10.0.0.4/31"; # allow 10.0.0.4 and 10.0.0.5
+  trusted-keys = [
+    "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIM4BfT6bp+fl83TyrSFAerXpAq6AVmVlfUnfnPU3jHHY example@example"
+    "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIH+iL2MFXNyxd3Hu6akfdOBeI6HYWE4R0LTBScTHCoyH example@example"
+  ];
+}
+```
+
 # Using Selfhosted Features
 
 The Laptop can be configured to use several selfhosted features from a Server
 using the `vars.selfhosted.*` variables.
+
+1. `vars.selfhosted.unbound`
+
+   ```nix
+   {
+     enable = true;
+     address = "10.0.0.3";
+   }
+   ```
+
+   Unbound DNS resolver to use.
+
+2. `vars.selfhosted.searxng`
+
+   ```nix
+   {
+     enable = true;
+     domain = "example.duckdns.org"; 
+   }
+   ```
+
+   SearXNG instance to use for web search.
+
+3. `vars.selfhosted.vaultwarden`
+
+   ```nix
+   {
+     enable = true;
+     domain = "example.duckdns.org"; 
+   }
+   ```
+
+   Vaultwarden instance to use for the web vault.
+
+4. `vars.selfhosted.i2pd`
+
+   ```nix
+   {
+     enable = true;
+     address = "10.0.0.3";
+     domain = "example.duckdns.org"; 
+   }
+   ```
+
+   I2PD router to use for the webconsole and HTTP proxy.
+
+5. `vars.selfhosted.qbt`
+
+   ```nix
+   {
+     enable = true;
+     domain = "example.duckdns.org"; 
+   }
+   ```
+
+   qBittorrent instance to use for the webui.
+
+6. `vars.selfhosted.jellyfin`
+
+   ```nix
+   {
+     enable = true;
+     domain = "example.duckdns.org"; 
+   }
+   ```
+
+   Jellyfin instance to use for the web interface.
 
 # Further Reading
 
