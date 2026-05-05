@@ -22,6 +22,7 @@ backed by the guarantees of the
 - [System Hardening Checklist - Kicksecure](https://www.kicksecure.com/wiki/System_Hardening_Checklist)
 - [Kernel Hardening - Tails](https://tails.net/contribute/design/kernel_hardening/)
 - [Security - ArchWiki](https://wiki.archlinux.org/title/Security)
+- [Features - secureblue](https://secureblue.dev/features)
 - [Paranoid NixOS - Xe Iaso](https://xeiaso.net/blog/paranoid-nixos-2021-07-18/)
 
 # Known Issues

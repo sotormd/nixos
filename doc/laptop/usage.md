@@ -711,7 +711,7 @@ Host keys are generated and stored under `/etc/ssh`.
 
 ### Example Variables Configuration
 
-For `vars.services.ssh`.
+For `vars.services.ssh`
 
 ```nix
 {
