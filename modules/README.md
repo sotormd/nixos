@@ -1,3 +1,3 @@
 # modules
 
-low-level dendritic-esque feature modules
+low-level feature modules

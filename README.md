@@ -10,8 +10,7 @@
 
 ![screenshots gif](./doc/screenshots/nord.gif)
 
-~~slightly overengineered~~ dendritic NixOS configuration flake for multiple
-hosts
+~~slightly overengineered~~ NixOS configuration flake for multiple hosts
 
 # Features
 
@@ -22,7 +21,7 @@ hosts
 Nix-specific features:
 
 - Completely reproducible, pure evaluation
-- Role-based outputs with features as dendritic modules
+- Role-based outputs with features as modules
 - Variables system for device-specific configuration
 - [Bespoke CLI](#bespoke-cli) for maintaining this flake
 - Flake-enabled [bootstrap images](#bootstrap-images)
@@ -179,8 +178,8 @@ workflow examples.
 
 ![architecture](./doc/screenshots/architecture.png)
 
-- [`./modules/`](./modules) are low-level dendritic features, which are exposed
-  under `nixosModules.modules.*`.
+- [`./modules/`](./modules) are low-level features, which are exposed under
+  `nixosModules.modules.*`.
 - [`./profiles/`](./profiles) are high-level collections of modules, which are
   exposed under `nixosModules.profiles.*`.
 - [`./roles/`](./roles) are the final outputs provided by this flake, each role
