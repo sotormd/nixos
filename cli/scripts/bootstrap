@@ -188,7 +188,7 @@ elif [ "$VERB" == "clone" ]; then
 
     sudo mkdir -p "$DIR"
     sudo chown "$USER:" "$DIR"
-    git clone https://github.com/sotormd/nixos "$DIR"
+    git clone https://github.com/sotormd/nixos "$DIR" --depth=1
 
 #######
 # VARS
