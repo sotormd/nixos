@@ -129,7 +129,7 @@ vulnerabilities.
 
 2. ZFS
 
-   ZFS, which provides advanced self-healing capabilities and administraton, is
+   ZFS, which provides advanced self-healing capabilities and administration, is
    supported out-of-the-box.
 
    It is the also root filesystem on Laptop.
@@ -169,7 +169,7 @@ Several kernel parameters are used to harden the kernel. They are covered below:
 
 1. disables merging of slabs of similar sizes
 
-   sometines, vulnerable slabs may be merged with safe ones
+   sometimes, vulnerable slabs may be merged with safe ones
 
    slight increase in kernel memory utilization
 
@@ -192,8 +192,6 @@ Several kernel parameters are used to harden the kernel. They are covered below:
 3. randomise page allocator freelists
 
    makes page allocations less predictable
-
-   slightly improves performace
 
    ```
    page_alloc.shuffle=1
@@ -290,7 +288,7 @@ Several kernel parameters are used to harden the kernel. They are covered below:
 
 13. do not trust the proprietary cpu RNG
 
-    this RNG can not be audited
+    this RNG cannot be audited
 
     ```
     random.trust_cpu=off
@@ -328,7 +326,7 @@ Several kernel parameters are used to harden the kernel. They are covered below:
 
     do not print unnecessary text during boot
 
-    prevent malicious screenreaders from capturing system logs
+    no real security benefit
 
     ```
     quiet
@@ -345,6 +343,8 @@ Several kernel parameters are used to harden the kernel. They are covered below:
     ```
 
 19. disable IPv6
+
+    no real security benefit, I just dont need this
 
     ```
     ipv6.disable=1
@@ -464,7 +464,7 @@ Several kernel parameters are used to harden the kernel. They are covered below:
 
 16. controls permissions for named pipes
 
-    only owned of the FIFO can write to it
+    only owner of the FIFO can write to it
 
     ```
     fs.protected_fifos=2
@@ -477,13 +477,15 @@ Several kernel parameters are used to harden the kernel. They are covered below:
     fs.protected_regular=2
     ```
 
-18. disable the berkely packet filter JIT
+18. disable the berkeley packet filter JIT
 
     ```
     net.core.bpf_jit_enable=0
     ```
 
 19. enable JIT hardening techniques like constant blinding
+
+    note that JIT is disabled anyways
 
     ```
     net.core.bpf_jit_harden=2
@@ -835,7 +837,7 @@ covered below:
 
 22. IEEE 1394
 
-    high-speed interface for video cameras, external drives, etc replacd by usb
+    high-speed interface for video cameras, external drives, etc replaced by usb
     3.0 and usb c can blacklist unless using old firewire devices
 
     ```
@@ -1021,7 +1023,8 @@ WPA3 (SAE / dragonfly) is used for wireless authentication on Laptop.
 
 Unbound DNS server hosted on Server is used as the default DNS server.
 
-Cloudflare is used as the fallback server.
+Cloudflare is used as the fallback server _if_ the Unbound resolver is not
+available.
 
 Additionally, [StevenBlack's host list](http://github.com/StevenBlack/hosts) is
 used to filter domains on the Server and in the Brave browser on Laptop. This
