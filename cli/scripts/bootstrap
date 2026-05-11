@@ -307,8 +307,22 @@ elif [ "$VERB" == "vars" ]; then
     # nsswitch username in /etc/passwd
     name = "example";
 
-    # email address for git, acme, ...
-    email = "example@example";
+    # git configuration
+    git = {
+
+      # name used for git commits
+      name = "example";
+
+      # email used for git commits
+      email = "example@example";
+
+      # signing key used for git commits
+      signing-key = "/home/example/.ssh/id_ed25519_example_git_sign.pub";
+
+      # allowed signers file
+      allowed-signers = "/home/example/.ssh/git_allowed_signers";
+
+    };
 
     # ssh host aliases
     # each with a user, host, port and keyfile
@@ -580,9 +594,6 @@ the following values have been populated from the installation environment
     # nsswitch username in /etc/passwd
     name = "example";
 
-    # email address for git, acme, ...
-    email = "example@example";
-
   };
 
   # localization and internationalization
@@ -638,10 +649,12 @@ the following values have been populated from the installation environment
     };
 
     # nginx web server
+    # email is address used for acme
     # domain is a duckdns domain
     # allow is a private CIDR
     nginx = {
       enable = false;
+      email = "example@example";
       domain = "example.duckdns.org";
       allow = "10.0.0.2/32";
     };

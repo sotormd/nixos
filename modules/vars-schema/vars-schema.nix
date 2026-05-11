@@ -90,8 +90,24 @@ in
         type = types.str;
       };
 
-      email = mkOption {
-        type = types.str;
+      git = {
+
+        name = mkOption {
+          type = types.str;
+        };
+
+        email = mkOption {
+          type = types.str;
+        };
+
+        signing-key = mkOption {
+          type = types.str;
+        };
+
+        allowed-signers = mkOption {
+          type = types.str;
+        };
+
       };
 
       sshAliases = mkOption {
@@ -293,6 +309,9 @@ in
       nginx = {
         enable = mkOption {
           type = types.bool;
+        };
+        email = mkOption {
+          type = types.str;
         };
         allow = mkOption {
           type = privateCidr;

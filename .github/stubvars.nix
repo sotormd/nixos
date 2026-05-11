@@ -44,7 +44,12 @@
 
   user = {
     name = "stub";
-    email = "stub@stub";
+    git = {
+      name = "stub";
+      email = "stub@stub";
+      signing-key = "/home/stub/.ssh/id_ed25519_STUB.pub";
+      allowed-signers = "/home/stub/.ssh/git_allowed_signers";
+    };
     sshAliases = {
       github = {
         user = "git";
@@ -140,6 +145,7 @@
     };
     nginx = {
       enable = true;
+      email = "stub@stub";
       domain = "example.duckdns.org";
       allow = "10.0.0.2/32";
     };

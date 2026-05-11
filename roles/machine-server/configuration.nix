@@ -74,6 +74,7 @@
   # populate variables and drop unnecessary variables
   vars = lib.recursiveUpdate legacyVars {
     user = {
+      git = lib.mkForce { };
       sshAliases = lib.mkForce { };
     };
     features = {
@@ -144,6 +145,10 @@
       {
         assertion = builtins.all (x: !x) modesDisabled;
         message = "variables: unsupported vars.modes.* are enabled";
+      }
+      {
+        assertion = config.vars.user.sshAliases == { };
+        message = "variables: vars.user.git is not supported";
       }
       {
         assertion = config.vars.user.sshAliases == { };

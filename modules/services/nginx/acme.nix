@@ -5,7 +5,7 @@
 
     security.acme = {
       acceptTerms = true;
-      defaults.email = config.vars.user.email;
+      defaults.email = config.vars.services.nginx.email;
       defaults.dnsPropagationCheck = false;
       certs."${config.vars.services.nginx.domain}" = {
         inherit (config.vars.services.nginx) domain;
