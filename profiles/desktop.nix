@@ -11,6 +11,7 @@ in
     apps.distrobox
     apps.file-roller
     apps.foot
+    apps.git
     apps.i2p-browser
     apps.inkscape
     apps.mousepad

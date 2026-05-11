@@ -13,7 +13,6 @@ in
 {
   imports = [
     apps.bash
-    apps.git
     boot.disks
     boot.jitterentropy
     boot.kernel
