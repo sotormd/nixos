@@ -44,39 +44,38 @@ Missing features:
 # Contents
 
 1. [Secure Boot](#secure-boot)
-2. [Entropy](#entropy)
-3. [Memory Allocator](#memory-allocator)
-4. [Filesystems](#filesystems)
-5. [Impermanence](#impermanence)
-6. [Kernel Parameters](#kernel-parameters)
-7. [sysctl Options](#sysctl-options)
-8. [Module Blacklists](#module-blacklists)
-9. [Audit Subsystem](#audit-subsystem)
-10. [Coredumps](#coredumps)
-11. [Emergency and Rescue](#emergency-and-rescue)
-12. [Systemd Services](#systemd-services)
-13. [Users and Privileges](#users-and-privileges)
-14. [Nix Package Manager](#nix-package-manager)
-15. [SOPS](#sops)
-16. [Encryption and Signing](#encryption-and-signing)
-17. [USBGuard](#usbguard)
-18. [Wireless Networking](#wireless-networking)
-19. [DNS](#dns)
-20. [Firewall](#firewall)
-21. [MAC Randomization](#mac-randomization)
-22. [Secure Shell](#secure-shell)
-23. [Fail2Ban](#fail2ban)
-24. [NGINX](#nginx)
-25. [I2P and Anonymity](#i2p-and-anonymity)
-26. [Display Server](#display-server)
-27. [Desktop](#desktop)
-28. [Session Locking](#session-locking)
-29. [Bubblewrap](#bubblewrap)
-30. [xdg-dbus-proxy](#xdg-dbus-proxy)
-31. [Browsers](#browsers)
-32. [Search Engine](#search-engine)
-33. [Password Manager](#password-manager)
-34. [Virtualisation and Containers](#virtualisation-and-containers)
+2. [Memory Allocator](#memory-allocator)
+3. [Filesystems](#filesystems)
+4. [Impermanence](#impermanence)
+5. [Kernel Parameters](#kernel-parameters)
+6. [sysctl Options](#sysctl-options)
+7. [Module Blacklists](#module-blacklists)
+8. [Audit Subsystem](#audit-subsystem)
+9. [Coredumps](#coredumps)
+10. [Emergency and Rescue](#emergency-and-rescue)
+11. [Systemd Services](#systemd-services)
+12. [Users and Privileges](#users-and-privileges)
+13. [Nix Package Manager](#nix-package-manager)
+14. [SOPS](#sops)
+15. [Encryption and Signing](#encryption-and-signing)
+16. [USBGuard](#usbguard)
+17. [Wireless Networking](#wireless-networking)
+18. [DNS](#dns)
+19. [Firewall](#firewall)
+20. [MAC Randomization](#mac-randomization)
+21. [Secure Shell](#secure-shell)
+22. [Fail2Ban](#fail2ban)
+23. [NGINX](#nginx)
+24. [I2P and Anonymity](#i2p-and-anonymity)
+25. [Display Server](#display-server)
+26. [Desktop](#desktop)
+27. [Session Locking](#session-locking)
+28. [Bubblewrap](#bubblewrap)
+29. [xdg-dbus-proxy](#xdg-dbus-proxy)
+30. [Browsers](#browsers)
+31. [Search Engine](#search-engine)
+32. [Password Manager](#password-manager)
+33. [Virtualisation and Containers](#virtualisation-and-containers)
 
 # Secure Boot
 
@@ -88,19 +87,6 @@ Secure Boot support for NixOS is provided by the
 
 Note that Secure Boot can only be enabled post-installation. See
 [Setting up Secure Boot](./laptop/setup.md#setting-up-secure-boot).
-
-# Entropy
-
-[Jitterentropy](https://github.com/smuellerDD/jitterentropy-library) is used to
-improve RNG quality by providing a noise source using the CPU execution jitter.
-
-The hardware RNGS are not trusted. This is done using the following kernel
-parameters:
-
-```
-random.trust_cpu=off
-random.trust_bootloader=off
-```
 
 # Memory Allocator
 

@@ -78,7 +78,6 @@ Services features:
 | package manager               | `lix`                                                                                                      |
 | kernel                        | `linux`                                                                                                    |
 | shell                         | `bash`                                                                                                     |
-| entropy                       | `jitterentropy`                                                                                            |
 | malloc                        | `graphene-hardened`                                                                                        |
 | bootloader                    | `systemd-boot`, `uboot`                                                                                    |
 | secure boot                   | `lanzaboote`                                                                                               |

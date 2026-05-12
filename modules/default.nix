@@ -58,9 +58,6 @@
     # binfmt emulated architectures
     boot.emulated = _: { imports = [ ./boot/emulated ]; };
 
-    # hardware rng based on cpu timing jitter
-    boot.jitterentropy = _: { imports = [ ./boot/jitterentropy ]; };
-
     # kernel release, kernel parameters, sysctl options, module blacklists
     boot.kernel = _: { imports = [ ./boot/kernel ]; };
 

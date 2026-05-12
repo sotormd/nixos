@@ -18,7 +18,6 @@ in
     apps.git
     apps.sandbox
     boot.disks
-    boot.jitterentropy
     boot.kernel
     boot.localization
     boot.malloc

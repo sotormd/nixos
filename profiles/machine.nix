@@ -14,7 +14,6 @@ in
   imports = [
     apps.bash
     boot.disks
-    boot.jitterentropy
     boot.kernel
     boot.localization
     boot.malloc
