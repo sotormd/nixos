@@ -82,7 +82,7 @@
     "/home" = {
       device = "rpool/nixos/home";
       fsType = "zfs";
-      options = lib.mountHarden;
+      options = lib.mountData;
     };
 
     # rpool/nixos/nix -> /nix
@@ -103,7 +103,6 @@
   # nosuid,nodev
   // lib.mkSelfHarden [
     "/persist/nixos"
-    "/tmp"
   ]
 
   # nosuid,nodev,noexec
@@ -115,6 +114,7 @@
     "/persist/sops-nix"
     "/root"
     "/srv"
+    "/tmp"
   ];
 
   # microcode

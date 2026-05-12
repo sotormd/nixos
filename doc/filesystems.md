@@ -85,14 +85,14 @@ On the Laptop role, the following directories are hardened without Impermanence:
 | `/bin`              | Data    |
 | `/boot`             | Data    |
 | `/etc`              | Data    |
-| `/home`             | Harden  |
+| `/home`             | Data    |
 | `/lib`              | Data    |
 | `/lib64`            | Data    |
 | `/persist/nixos`    | Harden  |
 | `/persist/sops-nix` | Data    |
 | `/root`             | Data    |
 | `/srv`              | Data    |
-| `/tmp`              | Harden  |
+| `/tmp`              | Data    |
 
 On the Server role, the following directories are hardened without Impermanence:
 
