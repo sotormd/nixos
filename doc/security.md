@@ -9,11 +9,11 @@ flake source should be referred to as the primary and only source of truth.
 
 # Threat Model
 
-Secure without a threat model is meaningless. The threat model for this flake is
-general desktop / home usage, and NOT anything requiring specialized security,
-advanced privacy or defence against sophisticated targeted attacks. Consider
-[Qubes](https://www.qubes-os.org/) for decent security against these attacks,
-backed by the guarantees of the
+Security without a threat model is meaningless. The threat model for this flake
+is general desktop / home usage, and NOT anything requiring specialized
+security, advanced privacy or defence against sophisticated targeted attacks.
+Consider [Qubes](https://www.qubes-os.org/) for decent security against these
+attacks, backed by the guarantees of the
 [Xen project hypervisor](https://xenproject.org/).
 
 # Resources
@@ -902,7 +902,7 @@ The emergency and rescue targets and services are disabled.
 
 Upstream Nixpkgs already hardens several common service, especially
 network-facing ones. Some services are additionally hardened with low-breakage
-service options. These options are:
+service options. For example. `qbt.service` is hardened with these options:
 
 ```nix
 {
@@ -920,6 +920,18 @@ service options. These options are:
   PrivateTmp = true;
   RestrictRealtime = true;
   RestrictSUIDSGID = true;
+  RemoveIPC = true;
+  PrivateUsers = true;
+  ProtectProc = "invisible";
+  ProcSubset = "pid";
+  ProtectSystem = "full";
+  RestrictAddressFamilies = [
+    "AF_INET"
+    "AF_NETLINK"
+  ];
+  RestrictNamespaces = true;
+  MemoryDenyWriteExecute = true;
+  SystemCallFilter = [ "@system-service" ];
 }
 ```
 

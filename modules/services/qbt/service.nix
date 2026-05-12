@@ -32,6 +32,18 @@
         PrivateTmp = true;
         RestrictRealtime = true;
         RestrictSUIDSGID = true;
+        RemoveIPC = true;
+        PrivateUsers = true;
+        ProtectProc = "invisible";
+        ProcSubset = "pid";
+        ProtectSystem = "full";
+        RestrictAddressFamilies = [
+          "AF_INET"
+          "AF_NETLINK"
+        ];
+        RestrictNamespaces = true;
+        MemoryDenyWriteExecute = true;
+        SystemCallFilter = [ "@system-service" ];
 
         ExecStartPre =
           let
