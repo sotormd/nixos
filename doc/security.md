@@ -863,6 +863,14 @@ covered below:
     pcspkr
     ```
 
+27. dirtyfrag mitigation
+
+    ```
+    esp4
+    esp6
+    rxrpc
+    ```
+
 # Audit Subsystem
 
 The Linux audit subsystem is enabled with the following rules:

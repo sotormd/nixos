@@ -159,6 +159,11 @@ let
     # annoying PC speaker module
     # can blacklist unless deaf
     "pcspkr"
+
+    # dirtyfrag mitigation
+    "esp4"
+    "esp6"
+    "rxrpc"
   ];
 in
 {
