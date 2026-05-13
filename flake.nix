@@ -100,18 +100,21 @@
       # profiles, collections of modules
       profiles = import ./profiles;
 
+      # create a machine module
+      mkMachineModule =
+        role:
+        (import ./roles {
+          role = "machine-${role}";
+          inherit inputs;
+        });
+
       # create a "machine"
       mkMachine =
         role: system:
         inputs.nixpkgs.lib.nixosSystem {
           specialArgs = { inherit inputs lib legacyVars; };
           inherit system;
-          modules = [
-            (import ./roles {
-              role = "machine-${role}";
-              inherit inputs;
-            })
-          ];
+          modules = [ (mkMachineModule role) ];
         };
 
       # create an image module
