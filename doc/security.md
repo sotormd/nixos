@@ -243,9 +243,9 @@ Several kernel parameters are used to harden the kernel. They are covered below:
 10. enable the kernel lockdown LSM
 
     confidentiality is the strictest mode protects both kernel integrity and
+    prevents unauthorized access to kernel data
 
-    prevents unauthorized access to kernel data establishes clear security
-    boundary between userspace and kernel
+    establishes clear security boundary between userspace and kernel
 
     this implies `module.sig_enforce=1`
 
