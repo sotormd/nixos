@@ -48,10 +48,14 @@
   systemd.services.service-fix = {
     description = "Restart wacky services";
     wantedBy = [ "multi-user.target" ];
-    after = [ "multi-user.target" ];
+    after = [
+      "multi-user.target"
+      "i2pd.service"
+      "qbt.service"
+    ];
     serviceConfig = {
       Type = "oneshot";
-      ExecStart = "/bin/sh -c 'sleep 10 && systemctl restart i2pd && systemctl restart qbt'";
+      ExecStart = "/bin/sh -c 'sleep 30 && systemctl restart i2pd && systemctl restart qbt'";
     };
   };
 
