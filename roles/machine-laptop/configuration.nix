@@ -85,6 +85,14 @@
       options = lib.mountData;
     };
 
+    # rpool/nixos/var -> /var
+    # nosuid,nodev,noexec
+    "/var" = {
+      device = "rpool/nixos/var";
+      fsType = "zfs";
+      options = lib.mountData;
+    };
+
     # rpool/nixos/nix -> /nix
     "/nix" = {
       device = "rpool/nixos/nix";
