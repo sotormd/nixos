@@ -16,9 +16,6 @@
     # development tools
     apps.dev = _: { imports = [ ./apps/dev ]; };
 
-    # distrobox containers
-    apps.distrobox = _: { imports = [ ./apps/distrobox ]; };
-
     # file-roller archive manager
     apps.file-roller = _: { imports = [ ./apps/file-roller ]; };
 
@@ -133,6 +130,9 @@
     # linux audit subsystem
     services.auditd = _: { imports = [ ./services/auditd ]; };
 
+    # distrobox containers
+    services.distrobox = _: { imports = [ ./services/distrobox ]; };
+
     # invisible internet protocol daemon
     services.i2pd = _: { imports = [ ./services/i2pd ]; };
 
@@ -174,6 +174,9 @@
 
     # vaultwarden password manager
     services.vaultwarden = _: { imports = [ ./services/vaultwarden ]; };
+
+    # waydroid android container
+    services.waydroid = _: { imports = [ ./services/waydroid ]; };
 
     # kiosk-style compositor
     sway.cage = _: { imports = [ ./sway/cage ]; };

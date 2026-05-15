@@ -1,7 +1,12 @@
 { inputs, ... }:
 
 let
-  inherit (inputs.self.nixosModules.modules) apps boot network;
+  inherit (inputs.self.nixosModules.modules)
+    apps
+    boot
+    network
+    services
+    ;
 in
 {
   imports = [
@@ -10,5 +15,7 @@ in
     boot.secureboot
     boot.systemd-boot
     network.wpa3
+    services.distrobox
+    services.libvirtd
   ];
 }

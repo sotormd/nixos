@@ -8,7 +8,6 @@ in
     apps.brave
     apps.btop
     apps.dev
-    apps.distrobox
     apps.file-roller
     apps.foot
     apps.git
@@ -20,7 +19,6 @@ in
     apps.sandbox
     apps.thunar
     apps.zathura
-    services.libvirtd
     services.pipewire
     sway.cage
     sway.dunst

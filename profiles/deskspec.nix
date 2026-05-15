@@ -14,7 +14,6 @@ in
   imports = [
     apps.bash
     apps.dev
-    apps.distrobox
     apps.git
     apps.sandbox
     boot.disks
@@ -36,6 +35,7 @@ in
     network.networkmanager
     network.wireless
     services.auditd
+    services.distrobox
     services.journald
     services.libvirtd
     services.pipewire
