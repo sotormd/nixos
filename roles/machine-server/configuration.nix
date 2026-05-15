@@ -48,10 +48,17 @@
   systemd.services.service-fix = {
     description = "Restart wacky services";
     wantedBy = [ "multi-user.target" ];
-    after = [
-      "multi-user.target"
+    wants = [
+      "network-online.target"
       "i2pd.service"
       "qbt.service"
+      "ip-link-up.service"
+    ];
+    after = [
+      "network-online.target"
+      "i2pd.service"
+      "qbt.service"
+      "ip-link-up.service"
     ];
     serviceConfig = {
       Type = "oneshot";
