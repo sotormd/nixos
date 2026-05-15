@@ -150,20 +150,23 @@ if [ "$VERB" == "disks" ]; then
         run sudo zfs create rpool/nixos
         run sudo zfs create rpool/nixos/root -o mountpoint=legacy
         run sudo zfs create rpool/nixos/home -o mountpoint=legacy
+        run sudo zfs create rpool/nixos/var -o mountpoint=legacy
         run sudo zfs create rpool/nixos/nix -o mountpoint=legacy
         run sudo zfs create rpool/nixos/persist -o mountpoint=legacy
 
         # 8) empty snapshots for impermanence
         run sudo zfs snapshot rpool/nixos/root@blank
         run sudo zfs snapshot rpool/nixos/home@blank
+        run sudo zfs snapshot rpool/nixos/var@blank
 
     elif [ "$ARG1" == "mount" ]; then
 
         # 10) mount filesystems
         run sudo mkdir -p /mnt
         run sudo mount -t zfs rpool/nixos/root /mnt
-        run sudo mkdir -p /mnt/home /mnt/nix /mnt/persist
+        run sudo mkdir -p /mnt/home /mnt/var /mnt/nix /mnt/persist
         run sudo mount -t zfs rpool/nixos/home /mnt/home
+        run sudo mount -t zfs rpool/nixos/var /mnt/var
         run sudo mount -t zfs rpool/nixos/nix /mnt/nix
         run sudo mount -t zfs rpool/nixos/persist /mnt/persist
 

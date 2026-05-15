@@ -35,10 +35,11 @@ Three partitions are used:
 The bootstrap script creates four datasets:
 
 ```
-rpool/nixos/nix        mounted at /nix
-rpool/nixos/persist    mounted at /persist
 rpool/nixos/root       mounted at /
 rpool/nixos/home       mounted at /home
+rpool/nixos/var        mounted at /var
+rpool/nixos/nix        mounted at /nix
+rpool/nixos/persist    mounted at /persist
 ```
 
 Two blank snapshots are also created at this time:
@@ -46,6 +47,7 @@ Two blank snapshots are also created at this time:
 ```
 rpool/nixos/root@blank
 rpool/nixos/home@blank
+rpool/nixos/var@blank
 ```
 
 The blank snapshots are relevant for Impermanence.
@@ -93,6 +95,7 @@ On the Laptop role, the following directories are hardened without Impermanence:
 | `/root`             | Data    |
 | `/srv`              | Data    |
 | `/tmp`              | Data    |
+| `/var`              | Data    |
 
 On the Server role, the following directories are hardened without Impermanence:
 
@@ -102,8 +105,11 @@ On the Server role, the following directories are hardened without Impermanence:
 | `/persist/sops-nix` | Data    |
 | `/tmp`              | Data    |
 
-Additionally, directories persisted using Impermanence are also hardened
-separately.
+Note that Impermanence is required to harden various other directories on
+Server.
+
+Additionally, directories persisted using Impermanence on Laptop and Server are
+also hardened.
 
 # Additional Disks and Mounts
 
@@ -287,19 +293,19 @@ snapshots:
 ```
 rpool/nixos/root@blank
 rpool/nixos/home@blank
+rpool/nixos/var@blank
 ```
 
 During the Impermanence setup (post-install), the bootstrap script populates
 `/persist/root` with the default directories to persist.
 
-During early boot, systemd services roll back the `rpool/nixos/root` and
-`rpool/nixos/home` datasets.
+During early boot, systemd services roll back the `rpool/nixos/root`,
+`rpool/nixos/home` and `rpool/nixos/var` datasets.
 
-So, in early boot, the `rpool/nixos/root` and `rpool/nixos/home` directories are
-**completely empty**. Nix populates it with relevant files from `/nix` based on
-the system closure.
-
-All directories are persisted using bind mounts from `/persist/root`.
+So, in early boot, the `/`, `/home` and `/var` directories are **completely
+empty**. Nix populates it with relevant files from `/nix` based on the system
+closure. All other directories are persisted using bind mounts from
+`/persist/root`.
 
 ### Persisted Directories
 
@@ -345,6 +351,7 @@ At any given point, to see the files that will be thrown out by Impermanence:
 ```console
 # zfs diff rpool/root@blank
 # zfs diff rpool/home@blank
+# zfs diff rpool/var@blank
 ```
 
 ### Adding Directories
@@ -393,7 +400,6 @@ The following directories are persisted by default:
 
 | Path                    | Description              | Profile |
 | ----------------------- | ------------------------ | ------- |
-| `/var/lib/sbctl`        | secure boot keys         | Data    |
 | `/var/lib/nixos`        | needed by nixos          | Data    |
 | `/var/lib/systemd`      | needed by systemd        | Data    |
 | `/etc/zfs`              | needed by ZFS            | Data    |
