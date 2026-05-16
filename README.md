@@ -125,7 +125,7 @@ Services features:
 | development                   | `rust`, `python`, `go`, `haskell`                                                                          |
 | virtualization                | `qemu`, `virt-manager`, `distrobox`, `podman`                                                              |
 | cpu optimizations             | `auto-cpufreq`                                                                                             |
-| resource monitor              | `btop`, `htop`                                                                                             |
+| resource monitor              | `htop`                                                                                                     |
 | themes, icons, cursors, fonts | [`colors`](https://github.com/sotormd/colors)                                                              |
 | wallpapers                    | [`wallpapers`](https://github.com/sotormd/wallpapers), [`xkcd-wall`](https://github.com/sotormd/xkcd-wall) |
 

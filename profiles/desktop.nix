@@ -6,7 +6,6 @@ in
 {
   imports = [
     apps.brave
-    apps.btop
     apps.dev
     apps.file-roller
     apps.foot

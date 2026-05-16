@@ -17,11 +17,11 @@
     },
     "colors": {
       "locked": {
-        "lastModified": 1777784025,
-        "narHash": "sha256-t2ibexQYRHTWlS+0P5rka0DQe5Eisl9I+5wBOcyLObE=",
+        "lastModified": 1778920238,
+        "narHash": "sha256-LLakcqzO47W+VDmwH1rCxCWrf5HlMWKfN7VWtcDN0Ms=",
         "owner": "sotormd",
         "repo": "colors",
-        "rev": "c3441c285f69080313ee59149bc286275b357000",
+        "rev": "987c504ec509d2d359024daad3aeb2191fb6c699",
         "type": "github"
       },
       "original": {
