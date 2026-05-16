@@ -96,9 +96,9 @@
               Session\Encryption=1
               Session\LSDEnabled=false
               Session\PeXEnabled=false
-              Session\MaxActiveDownloads=20
-              Session\MaxActiveTorrents=20
-              Session\MaxActiveUploads=40
+              Session\MaxActiveDownloads=100
+              Session\MaxActiveTorrents=200
+              Session\MaxActiveUploads=100
               Session\I2P\Enabled=true
               Session\I2P\MixedMode=false
               Session\I2P\Address=127.0.0.1
