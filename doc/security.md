@@ -255,11 +255,13 @@ Several kernel parameters are used to harden the kernel. They are covered below:
     lockdown=confidentiality
     ```
 
-11. panic on uncorrectable memory errors
+11. do not panic on uncorrectable memory errors
 
-    kernel will panic on uncorrectable memory errors
+    kernel will panic on uncorrectable memory errors, which can be exploited
 
     mainly for systems with ECC memory
+
+    so this is unnecessary and can be disabled
 
     ```
     mce=0
@@ -610,8 +612,9 @@ covered below:
 
 1. datagram congestion control protocol
 
-   manages congestion without providing reliable data delivery can blacklist
-   unless using voice-over-IP
+   manages congestion without providing reliable data delivery
+
+   can blacklist unless using voice-over-IP
 
    ```
    dccp
@@ -619,8 +622,9 @@ covered below:
 
 2. stream control transmission protocol
 
-   like tcp but with support for multiple streams can blacklist unless involved
-   in telecoms or signalling
+   like tcp but with support for multiple streams
+
+   can blacklist unless involved in telecoms or signalling
 
    ```
    sctp
@@ -628,8 +632,9 @@ covered below:
 
 3. reliable datagram sockets
 
-   high performance clustered computing and inter-process communication can
-   blacklist unless running distributed systems
+   high performance clustered computing and inter-process communication
+
+   can blacklist unless running distributed systems
 
    ```
    rds
@@ -637,8 +642,9 @@ covered below:
 
 4. transparent inter-process communication
 
-   cluster-wide communication in systems like databases/clustered servers can
-   blacklist unless running clustered environments
+   cluster-wide communication in systems like databases/clustered servers
+
+   can blacklist unless running clustered environments
 
    ```
    tipc
@@ -646,8 +652,9 @@ covered below:
 
 5. high-level data link control
 
-   serial communication and networking over physical links can blacklist unless
-   using specialized serial networking hardware
+   serial communication and networking over physical links
+
+   can blacklist unless using specialized serial networking hardware
 
    ```
    n-hdlc
@@ -655,7 +662,9 @@ covered below:
 
 6. amateur radio X.25 protocol
 
-   amateur radio communication can blacklist unless a radio operator
+   amateur radio communication
+
+   can blacklist unless a radio operator
 
    ```
    ax25
@@ -669,8 +678,9 @@ covered below:
 
 8. X.25 protocol
 
-   packet-switched network protocol can blacklist unless using legacy networking
-   systems
+   packet-switched network protocol
+
+   can blacklist unless using legacy networking systems
 
    ```
    x25
@@ -678,7 +688,9 @@ covered below:
 
 9. amateur radio link layer
 
-   packet radio communication can blacklist unless a radio operator
+   packet radio communication
+
+   can blacklist unless a radio operator
 
    ```
    rose
@@ -686,8 +698,9 @@ covered below:
 
 10. digital equipment corporation network
 
-    DEC network protocol for its proprietary systems can blacklist unless using
-    legacy DEC equipment
+    DEC network protocol for its proprietary systems
+
+    can blacklist unless using legacy DEC equipment
 
     ```
     decnet
@@ -695,8 +708,9 @@ covered below:
 
 11. Acorn Computers' networking protocol
 
-    proprietary network protocol developed by Acorn can blacklist unless using
-    legacy Acorn equipment
+    proprietary network protocol developed by Acorn
+
+    can blacklist unless using legacy Acorn equipment
 
     ```
     econet
@@ -705,6 +719,7 @@ covered below:
 12. IEEE 802.15.4 protocol family
 
     low-rate wireless personal area networks (LR-WPANs), mostly for IoT devices
+
     can blacklist unless dealing with IoT
 
     ```
@@ -713,8 +728,9 @@ covered below:
 
 13. internetwork packet exchange
 
-    Novell protocol used in legacy networks can blacklist unless using old
-    Novell networks
+    Novell protocol used in legacy networks
+
+    can blacklist unless using old Novell networks
 
     ```
     ipx
@@ -722,8 +738,9 @@ covered below:
 
 14. AppleTalk protocol
 
-    network protocol developed by Apple can blacklist unless using legacy Mac
-    systems
+    network protocol developed by Apple
+
+    can blacklist unless using legacy Mac systems
 
     ```
     appletalk
@@ -731,8 +748,9 @@ covered below:
 
 15. subnetwork access protocol
 
-    transmitting packets over different types of physical networks can blacklist
-    unless dealing with low-level networking
+    transmitting packets over different types of physical networks
+
+    can blacklist unless dealing with low-level networking
 
     ```
     psnap
@@ -740,8 +758,9 @@ covered below:
 
 16. IEEE 802.3 and 802.2
 
-    ethernet-based networking standard for ethernet communication can blacklist
-    unless using ethernet (eg. only using wifi)
+    legacy networking standard for ethernet communication
+
+    can blacklist unless using legacy ethernet
 
     ```
     p8023
@@ -750,8 +769,9 @@ covered below:
 
 17. controller area network
 
-    communication in vehicles and industrial systems can blacklist unless
-    dealing with embedded/automotive systems
+    communication in vehicles and industrial systems
+
+    can blacklist unless dealing with embedded/automotive systems
 
     ```
     can
@@ -759,8 +779,9 @@ covered below:
 
 18. asynchronous transfer mode
 
-    used in old telecommunications networks can blacklist unless using legacy
-    telecom equipment
+    used in old telecommunications networks
+
+    can blacklist unless using legacy telecom equipment
 
     ```
     atm
@@ -824,7 +845,9 @@ covered below:
 22. IEEE 1394
 
     high-speed interface for video cameras, external drives, etc replaced by usb
-    3.0 and usb c can blacklist unless using old firewire devices
+    3.0 and usb c
+
+    can blacklist unless using old firewire devices
 
     ```
     firewire-core
@@ -832,7 +855,9 @@ covered below:
 
 23. intel thunderbolt
 
-    high-speed data and power transfer can blacklist unless using thunderbolt
+    high-speed data and power transfer
+
+    can blacklist unless using thunderbolt
 
     ```
     thunderbolt

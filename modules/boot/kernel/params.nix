@@ -56,8 +56,10 @@
     # to ensure reproducibility, this does nothing
     "lockdown=confidentiality"
 
-    # kernel will panic on uncorrectable memory errors
+    # do not panic on uncorrectable memory errors
+    # kernel will panic on uncorrectable memory errors, which can be exploited
     # mainly for systems with ECC memory
+    # so this is unnecessary and can be disabled
     "mce=0"
 
     # mitigate spectre vulnerabilities
