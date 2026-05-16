@@ -81,6 +81,9 @@
     # control the TCP/IP stack
     pkgs.iproute2
 
+    # small utilities for networking
+    pkgs.iputils
+
     # dig
     pkgs.dig
 

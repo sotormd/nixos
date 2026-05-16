@@ -108,7 +108,7 @@ Services features:
 | audio                         | `pipewire`, `pavucontrol`, `playerctl`                                                                     |
 | media player                  | `mpv`                                                                                                      |
 | pdf reader                    | `zathura`                                                                                                  |
-| images                        | `swayimg`, `imagemagick`                                                                                   |
+| images                        | `swayimg`                                                                                                  |
 | vector graphics editor        | `inkscape`                                                                                                 |
 | screenshots                   | `grimshot`, `grim`, `slurp`                                                                                |
 | clipboard                     | `cliphist`                                                                                                 |
@@ -128,7 +128,6 @@ Services features:
 | resource monitor              | `btop`, `htop`                                                                                             |
 | themes, icons, cursors, fonts | [`colors`](https://github.com/sotormd/colors)                                                              |
 | wallpapers                    | [`wallpapers`](https://github.com/sotormd/wallpapers), [`xkcd-wall`](https://github.com/sotormd/xkcd-wall) |
-| terminal misc                 | `cava`, `fortune`                                                                                          |
 
 </details>
 

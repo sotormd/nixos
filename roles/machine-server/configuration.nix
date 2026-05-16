@@ -1,6 +1,7 @@
 {
   config,
   lib,
+  pkgs,
   modulesPath,
   legacyVars,
   ...
@@ -45,26 +46,36 @@
   nix.settings.cores = 1;
 
   # some services dont behave properly on first start
-  systemd.services.service-fix = {
-    description = "Restart wacky services";
-    wantedBy = [ "multi-user.target" ];
-    wants = [
-      "network-online.target"
-      "i2pd.service"
-      "qbt.service"
-      "ip-link-up.service"
-    ];
-    after = [
-      "network-online.target"
-      "i2pd.service"
-      "qbt.service"
-      "ip-link-up.service"
-    ];
-    serviceConfig = {
-      Type = "oneshot";
-      ExecStart = "/bin/sh -c 'sleep 30 && systemctl restart i2pd && systemctl restart qbt'";
+  systemd.services.service-fix =
+    let
+      service-fix-script = pkgs.writeShellScript "service-fix-script" ''
+        until ${pkgs.iputils}/bin/ping -c1 1.1.1.1 >/dev/null 2>&1; do
+          sleep 2
+        done
+        ${pkgs.systemd}/bin/systemctl restart i2pd
+        ${pkgs.systemd}/bin/systemctl restart qbt
+      '';
+    in
+    {
+      description = "Restart wacky services";
+      wantedBy = [ "multi-user.target" ];
+      wants = [
+        "network-online.target"
+        "i2pd.service"
+        "qbt.service"
+        "ip-link-up.service"
+      ];
+      after = [
+        "network-online.target"
+        "i2pd.service"
+        "qbt.service"
+        "ip-link-up.service"
+      ];
+      serviceConfig = {
+        Type = "oneshot";
+        ExecStart = service-fix-script;
+      };
     };
-  };
 
   # ensure interface is up before wpa_supplicant starts
   systemd.services.ip-link-up = {
