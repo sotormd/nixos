@@ -40,7 +40,6 @@
         users.users.${config.vars.user.name}.extraGroups = [ "networkmanager" ];
         environment.sessionVariables.NIXOS_ROLE = lib.mkForce "laptop-mode-nate";
         networking.wireless.networks = lib.mkForce { };
-        system.stateVersion = import ../../state.nix;
         vars = {
           selfhosted = {
             unbound.enable = lib.mkForce false;
@@ -67,7 +66,6 @@
         users.users.${config.vars.user.name}.extraGroups = [ "networkmanager" ];
         environment.sessionVariables.NIXOS_ROLE = lib.mkForce "laptop-mode-coffee";
         networking.wireless.networks = lib.mkForce { };
-        system.stateVersion = import ../../state.nix;
         vars = {
           selfhosted = {
             unbound.enable = lib.mkForce false;

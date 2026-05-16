@@ -100,6 +100,9 @@
     # base packages collection
     core.packages = _: { imports = [ ./core/packages ]; };
 
+    # stateVersion
+    core.state = _: { imports = [ ./core/state ]; };
+
     # iptables-nft firewall
     network.firewall = _: { imports = [ ./network/firewall ]; };
 

@@ -9,6 +9,7 @@ in
     core.cli
     core.nix
     core.packages
+    core.state
     network.networkmanager
   ];
 }

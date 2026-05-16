@@ -24,6 +24,7 @@ in
     core.cli
     core.nix
     core.packages
+    core.state
     network.firewall
     network.host
     network.macchanger
