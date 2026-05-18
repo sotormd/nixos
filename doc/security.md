@@ -1228,7 +1228,6 @@ Ports are opened for the following services:
    - TCP `7656` is open on loopback
    - TCP `4447` is open on loopback
    - TCP `7070` is open on loopback
-   - TCP `9999` is open on loopback
 
 6. qBittorrent, if enabled using `vars.services.qbt.enable`:
 

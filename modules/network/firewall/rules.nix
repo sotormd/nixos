@@ -40,7 +40,6 @@
 #      7656
 #      4447
 #      7070
-#      9999
 #
 # 5. qbittorrent: bittorrent client
 #
@@ -118,7 +117,6 @@ in
       7656
       4447
       7070
-      9999
     ])
 
     # qbittorrent bittorrent client
