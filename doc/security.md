@@ -1188,7 +1188,7 @@ Ports are opened for the following services:
 
 1. SSH, if enabled using `vars.services.ssh.enable`:
 
-   - `vars.services.ssh.port` is open on LAN to the private CIDR defined by
+   - TCP `vars.services.ssh.port` is open on LAN to the private CIDR defined by
      `vars.services.ssh.allow`
 
 > Server only
