@@ -195,7 +195,9 @@ Enabled using `vars.services.searxng.enable`.
 
 ### Ports
 
-Doesn't open any ports since it uses `uwsgi`.
+Open on `127.0.0.1`:
+
+1. `8888` search engine
 
 ### Search Engines
 

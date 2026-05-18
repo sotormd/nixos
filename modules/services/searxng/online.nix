@@ -1,6 +1,15 @@
+{ config, lib, ... }:
+
+let
+  inherit (config.vars.services) searxng;
+in
 {
-  systemd.services.uwsgi = {
-    wants = [ "network-online.target" ];
-    after = [ "network-online.target" ];
+  config = lib.mkIf searxng.enable {
+
+    systemd.services.searx = {
+      wants = [ "network-online.target" ];
+      after = [ "network-online.target" ];
+    };
+
   };
 }

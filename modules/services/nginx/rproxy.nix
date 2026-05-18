@@ -17,11 +17,10 @@ in
     services.nginx.virtualHosts.${nginx.domain}.locations = {
 
       "/searxng/" = lib.mkIf searxng.enable {
+        proxyPass = "http://127.0.0.1:8888";
         extraConfig = ''
           allow ${searxng.allow};
           deny all;
-
-          uwsgi_pass unix:${config.services.searx.uwsgiConfig.socket};
         '';
       };
 

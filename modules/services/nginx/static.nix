@@ -12,5 +12,10 @@ in
       };
     };
 
+    systemd.tmpfiles.rules = [
+      "d /srv/static 755 root root -"
+      "Z /srv/static - root root -"
+    ];
+
   };
 }

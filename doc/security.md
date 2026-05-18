@@ -1214,11 +1214,15 @@ Ports are opened for the following services:
    - TCP `443` is open on LAN to the private CIDR defined by
      `vars.services.nginx.allow`
 
-4. Vaultwarden, if enabled using `vars.services.vaultwarden.enable`:
+4. SearXNG, if enabled using `vars.services.searxng.enable`:
+
+   - TCP `8888` is open on loopback
+
+5. Vaultwarden, if enabled using `vars.services.vaultwarden.enable`:
 
    - TCP `8222` is open on loopback
 
-5. I2PD, if enabled using `vars.services.i2pd.enable`:
+6. I2PD, if enabled using `vars.services.i2pd.enable`:
 
    - TCP `4444` is open on LAN to the private CIDR defined by
      `vars.services.i2pd.allow`
@@ -1226,11 +1230,11 @@ Ports are opened for the following services:
    - TCP `4447` is open on loopback
    - TCP `7070` is open on loopback
 
-6. qBittorrent, if enabled using `vars.services.qbt.enable`:
+7. qBittorrent, if enabled using `vars.services.qbt.enable`:
 
    - TCP `8080` is open on loopback
 
-7. Jellyfin, if enabled using `vars.services.jellyfin.enable`:
+8. Jellyfin, if enabled using `vars.services.jellyfin.enable`:
 
    - TCP `8096` is open on loopback
 

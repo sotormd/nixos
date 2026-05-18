@@ -1,6 +1,15 @@
+{ config, lib, ... }:
+
+let
+  inherit (config.vars.services) qbt;
+in
 {
-  systemd.services.qbt = {
-    wants = [ "network-online.target" ];
-    after = [ "network-online.target" ];
+  config = lib.mkIf qbt.enable {
+
+    systemd.services.qbt = {
+      wants = [ "network-online.target" ];
+      after = [ "network-online.target" ];
+    };
+
   };
 }

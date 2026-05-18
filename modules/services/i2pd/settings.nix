@@ -10,21 +10,21 @@
         # enable SAM
         sam = {
           enable = true;
-          address = "127.0.0.1";
+          address = "0.0.0.0";
           port = 7656;
         };
 
         # enable HTTP proxy
         httpProxy = {
           enable = true;
-          address = config.vars.wireless.address;
+          address = "0.0.0.0";
           port = 4444;
         };
 
         # enable SOCKS proxy
         socksProxy = {
           enable = true;
-          address = "127.0.0.1";
+          address = "0.0.0.0";
           port = 4447;
         };
 
@@ -32,7 +32,7 @@
         http = {
           enable = true;
           hostname = config.vars.services.nginx.domain;
-          address = "127.0.0.1";
+          address = "0.0.0.0";
           port = 7070;
         };
 

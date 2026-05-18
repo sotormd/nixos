@@ -23,6 +23,11 @@ in
       onlySSL = true;
     };
 
+    systemd.tmpfiles.rules = [
+      "d /var/lib/acme 750 acme acme -"
+      "Z /var/lib/acme - acme acme -"
+    ];
+
     users.users.nginx.extraGroups = [ "acme" ];
 
   };

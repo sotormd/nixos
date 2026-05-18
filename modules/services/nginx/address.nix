@@ -8,7 +8,7 @@ in
 
     services.nginx.virtualHosts.${nginx.domain}.listen = [
       {
-        addr = config.vars.wireless.address;
+        addr = "0.0.0.0";
         port = 443;
         ssl = true;
       }

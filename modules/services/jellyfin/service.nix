@@ -28,7 +28,7 @@ let
       <EnableRemoteAccess>false</EnableRemoteAccess>
       <LocalNetworkSubnets />
       <LocalNetworkAddresses>
-        <string>127.0.0.1</string>
+        <string>0.0.0.0</string>
       </LocalNetworkAddresses>
       <KnownProxies />
       <IgnoreVirtualInterfaces>true</IgnoreVirtualInterfaces>

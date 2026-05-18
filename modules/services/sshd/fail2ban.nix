@@ -13,5 +13,9 @@
         overalljails = true;
       };
     };
+    systemd.tmpfiles.rules = [
+      "d /var/lib/fail2ban 700 root root -"
+      "Z /var/lib/fail2ban - root root -"
+    ];
   };
 }

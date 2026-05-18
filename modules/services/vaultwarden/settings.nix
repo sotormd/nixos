@@ -8,7 +8,7 @@
     services.vaultwarden.config = {
       WEB_VAULT_ENABLED = true;
       DOMAIN = "https://${config.vars.services.nginx.domain}/vaultwarden";
-      ROCKET_ADDRESS = "127.0.0.1";
+      ROCKET_ADDRESS = "0.0.0.0";
       ROCKET_PORT = 8222;
       SENDS_ALLOWED = false;
       SIGNUPS_ALLOWED = false;

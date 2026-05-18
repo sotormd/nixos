@@ -1,6 +1,15 @@
+{ config, lib, ... }:
+
+let
+  inherit (config.vars.services) unbound;
+in
 {
-  systemd.services.unbound = {
-    wants = [ "network-online.target" ];
-    after = [ "network-online.target" ];
+  config = lib.mkIf unbound.enable {
+
+    systemd.services.unbound = {
+      wants = [ "network-online.target" ];
+      after = [ "network-online.target" ];
+    };
+
   };
 }

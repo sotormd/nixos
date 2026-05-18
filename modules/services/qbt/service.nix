@@ -124,7 +124,7 @@
               Accepted=true
 
               [Preferences]
-              WebUI\Address=127.0.0.1
+              WebUI\Address=0.0.0.0
               WebUI\Port=8080
               WebUI\CSRFProtection=true
               WebUI\ClickjackingProtection=true
