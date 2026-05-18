@@ -309,6 +309,9 @@ in
         enable = mkOption {
           type = types.bool;
         };
+        staging = mkOption {
+          type = types.bool;
+        };
         email = mkOption {
           type = types.str;
         };

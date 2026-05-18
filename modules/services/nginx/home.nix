@@ -7,33 +7,42 @@
 }:
 
 let
+  inherit (config.vars.services)
+    nginx
+    searxng
+    vaultwarden
+    i2pd
+    qbt
+    jellyfin
+    ;
+
   homepageText = inputs.homepage.lib.makeHomepage {
     layout = [
       (lib.flatten [
-        (lib.optional config.vars.services.searxng.enable {
+        (lib.optional searxng.enable {
           short = "sx";
           full = "searxng";
-          url = "https://${config.vars.services.nginx.domain}/searxng/";
+          url = "https://${nginx.domain}/searxng/";
         })
-        (lib.optional config.vars.services.vaultwarden.enable {
+        (lib.optional vaultwarden.enable {
           short = "vw";
           full = "vaultwarden";
-          url = "https://${config.vars.services.nginx.domain}/vaultwarden/";
+          url = "https://${nginx.domain}/vaultwarden/";
         })
-        (lib.optional config.vars.services.i2pd.enable {
+        (lib.optional i2pd.enable {
           short = "ip";
           full = "i2pd";
-          url = "https://${config.vars.services.nginx.domain}/i2pd/";
+          url = "https://${nginx.domain}/i2pd/";
         })
-        (lib.optional config.vars.services.qbt.enable {
+        (lib.optional qbt.enable {
           short = "qb";
           full = "qbittorrent";
-          url = "https://${config.vars.services.nginx.domain}/qbt/";
+          url = "https://${nginx.domain}/qbt/";
         })
-        (lib.optional config.vars.services.jellyfin.enable {
+        (lib.optional jellyfin.enable {
           short = "jf";
           full = "jellyfin";
-          url = "https://${config.vars.services.nginx.domain}/jellyfin/";
+          url = "https://${nginx.domain}/jellyfin/";
         })
       ])
     ];
@@ -52,9 +61,9 @@ let
   };
 in
 {
-  config = lib.mkIf config.vars.services.nginx.enable {
+  config = lib.mkIf nginx.enable {
 
-    services.nginx.virtualHosts.${config.vars.services.nginx.domain} = {
+    services.nginx.virtualHosts.${nginx.domain} = {
       locations."/" = {
         root = homepageDir;
         index = "home.html";

@@ -1,22 +1,25 @@
 { config, lib, ... }:
 
+let
+  inherit (config.vars.services) nginx;
+in
 {
-  config = lib.mkIf config.vars.services.nginx.enable {
+  config = lib.mkIf nginx.enable {
 
     security.acme = {
       acceptTerms = true;
-      defaults.email = config.vars.services.nginx.email;
+      defaults.email = nginx.email;
       defaults.dnsPropagationCheck = false;
-      certs."${config.vars.services.nginx.domain}" = {
-        inherit (config.vars.services.nginx) domain;
+      certs."${nginx.domain}" = {
+        inherit (nginx) domain;
         group = "nginx";
         dnsProvider = "duckdns";
         environmentFile = config.sops.secrets.duckdns.path;
       };
     };
 
-    services.nginx.virtualHosts."${config.vars.services.nginx.domain}" = {
-      useACMEHost = config.vars.services.nginx.domain;
+    services.nginx.virtualHosts."${nginx.domain}" = {
+      useACMEHost = nginx.domain;
       onlySSL = true;
     };
 

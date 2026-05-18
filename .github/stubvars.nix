@@ -142,6 +142,7 @@
     };
     nginx = {
       enable = true;
+      staging = false;
       email = "stub@stub";
       domain = "example.duckdns.org";
       allow = "10.0.0.2/32";

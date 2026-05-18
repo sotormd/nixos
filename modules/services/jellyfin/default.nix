@@ -1,7 +1,7 @@
 {
   imports = [
     ./enable.nix
-    ./nginx.nix
+    ./online.nix
     ./service.nix
   ];
 }

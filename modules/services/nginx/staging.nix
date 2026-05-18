@@ -1,7 +1,10 @@
 { config, lib, ... }:
 
+let
+  inherit (config.vars.services) nginx;
+in
 {
-  config = lib.mkIf config.vars.services.nginx.enable {
+  config = lib.mkIf (nginx.enable && nginx.staging) {
 
     # use the staging environment
     # disable after testing

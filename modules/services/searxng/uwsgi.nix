@@ -8,6 +8,7 @@
       socket = "/run/searx/searx.sock";
       chmod-socket = "660";
     };
+    users.groups.searx.members = [ "nginx" ];
 
   };
 }

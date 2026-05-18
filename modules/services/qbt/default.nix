@@ -1,6 +1,6 @@
 {
   imports = [
-    ./nginx.nix
+    ./online.nix
     ./service.nix
     ./user.nix
   ];

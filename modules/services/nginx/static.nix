@@ -1,9 +1,12 @@
 { config, lib, ... }:
 
+let
+  inherit (config.vars.services) nginx;
+in
 {
-  config = lib.mkIf config.vars.services.nginx.enable {
+  config = lib.mkIf nginx.enable {
 
-    services.nginx.virtualHosts.${config.vars.services.nginx.domain} = {
+    services.nginx.virtualHosts.${nginx.domain} = {
       locations."/static/" = {
         alias = "/srv/static/";
       };

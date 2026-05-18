@@ -5,9 +5,11 @@
     ./adhoc.nix
     ./enable.nix
     ./home.nix
+    ./online.nix
+    ./rproxy.nix
     ./settings.nix
     ./sops.nix
-    # ./staging.nix
+    ./staging.nix
     ./static.nix
   ];
 }

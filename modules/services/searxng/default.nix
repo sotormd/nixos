@@ -2,7 +2,7 @@
   imports = [
     ./enable.nix
     ./engines.nix
-    ./nginx.nix
+    ./online.nix
     ./settings.nix
     ./sops.nix
     ./uwsgi.nix

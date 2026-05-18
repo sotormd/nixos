@@ -654,11 +654,13 @@ the following values have been populated from the installation environment
     };
 
     # nginx web server
+    # staging is to use Let's Encrypt staging
     # email is address used for acme
     # domain is a duckdns domain
     # allow is a private CIDR
     nginx = {
       enable = false;
+      staging = false;
       email = "example@example";
       domain = "example.duckdns.org";
       allow = "10.0.0.2/32";
