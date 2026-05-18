@@ -362,6 +362,9 @@ elif [ "$VERB" == "vars" ]; then
     # static IP address
     address = "10.0.0.2";
 
+    # primary DNS resolver
+    resolver = "10.0.0.3";
+
   };
 
   # displays
@@ -420,14 +423,6 @@ elif [ "$VERB" == "vars" ]; then
 
   # use selfhosted features
   selfhosted = {
-
-    # unbound dns resolver
-    # used in /etc/resolv.conf
-    # address is a private address
-    unbound = {
-      enable = false;
-      address = "10.0.0.3";
-    };
 
     # searxng search engine
     # used for web searches
@@ -627,6 +622,9 @@ the following values have been populated from the installation environment
 
     # static IP address
     address = "10.0.0.3";
+
+    # primary DNS resolver
+    resolver = "127.0.0.1";
 
   };
 

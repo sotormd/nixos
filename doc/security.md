@@ -1,6 +1,6 @@
 # Security Features Summary
 
-This document attempts to cover the various security features for the Laptop and
+This document attempts to cover the various security features for Laptop and
 Server roles.
 
 This is a larger document than other documents in this flake. It is possible
@@ -143,9 +143,9 @@ Impermanence ensures a clean filesystem after every reboot. Only explicitly
 declared state survives across reboots, and anything else is purged. This
 greatly reduces the persistent attack surface.
 
-Impermanence is implemented differently on the Laptop and Server role, without
-using the [library](https://github.com/nix-community/impermanence), using either
-ZFS Snapshots or tmpfs for rollbacks and bind mounts for state persistence.
+Impermanence is implemented differently on Laptop and Server, without using the
+[library](https://github.com/nix-community/impermanence), using either ZFS
+Snapshots or tmpfs for rollbacks and bind mounts for state persistence.
 
 See [Impermanence](./filesystems.md#impermanence) for more information.
 
@@ -1052,14 +1052,11 @@ WPA3 (SAE / dragonfly) is used for wireless authentication on Laptop.
 
 # DNS
 
-Unbound DNS server hosted on Server is used as the default DNS server.
-
-Cloudflare is used as the fallback server _if_ the Unbound resolver is not
-available.
+The Unbound DNS server hosted on Server.
 
 Additionally, [StevenBlack's host list](http://github.com/StevenBlack/hosts) is
-used to filter domains on the Server and in the Brave browser on Laptop. This
-list is also used to block domains in the Unbound DNS server hosted on Server.
+used to filter domains on Server and in the Brave browser on Laptop. This list
+is also used to block domains in the Unbound DNS server hosted on Server.
 
 > Server only
 
@@ -1245,7 +1242,7 @@ reduces anonymity significantly. Therefore, only non-vendor bits are randomized.
 
 # Secure Shell
 
-SSH can be enabled on both the Server and Laptop. See
+SSH can be enabled on both Server and Laptop. See
 [Laptop Usage Documentation](./laptop/usage.md#ssh) and
 [Server Usage Documentation](./server/usage.md#ssh) for details about using a
 non-default port, authorized keys, etc.
@@ -1448,7 +1445,7 @@ for D-Bus connections. It is used in conjunction with bubblewrap because it lets
 you selectively allow D-Bus connections. Without it, bubblewrap can only enable
 D-Bus completely or disable it completely.
 
-It is used on the Laptop role to let browsers use select D-Bus connections.
+It is used on Laptop to let browsers use select D-Bus connections.
 
 # Browsers
 

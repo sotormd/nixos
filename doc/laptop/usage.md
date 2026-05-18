@@ -729,18 +729,7 @@ For `vars.services.ssh`
 The Laptop can be configured to use several selfhosted features from a Server
 using the `vars.selfhosted.*` variables.
 
-1. `vars.selfhosted.unbound`
-
-   ```nix
-   {
-     enable = true;
-     address = "10.0.0.3";
-   }
-   ```
-
-   Unbound DNS resolver to use.
-
-2. `vars.selfhosted.searxng`
+1. `vars.selfhosted.searxng`
 
    ```nix
    {
@@ -751,7 +740,7 @@ using the `vars.selfhosted.*` variables.
 
    SearXNG instance to use for web search.
 
-3. `vars.selfhosted.vaultwarden`
+2. `vars.selfhosted.vaultwarden`
 
    ```nix
    {
@@ -762,7 +751,7 @@ using the `vars.selfhosted.*` variables.
 
    Vaultwarden instance to use for the web vault.
 
-4. `vars.selfhosted.i2pd`
+3. `vars.selfhosted.i2pd`
 
    ```nix
    {
@@ -774,7 +763,7 @@ using the `vars.selfhosted.*` variables.
 
    I2PD router to use for the webconsole and HTTP proxy.
 
-5. `vars.selfhosted.qbt`
+4. `vars.selfhosted.qbt`
 
    ```nix
    {
@@ -785,7 +774,7 @@ using the `vars.selfhosted.*` variables.
 
    qBittorrent instance to use for the webui.
 
-6. `vars.selfhosted.jellyfin`
+5. `vars.selfhosted.jellyfin`
 
    ```nix
    {

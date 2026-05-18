@@ -167,6 +167,10 @@ in
         type = privateAddr;
       };
 
+      resolver = mkOption {
+        type = types.str;
+      };
+
     };
 
     displays = {
@@ -227,14 +231,6 @@ in
     };
 
     selfhosted = {
-      unbound = {
-        enable = mkOption {
-          type = types.bool;
-        };
-        address = mkOption {
-          type = privateAddr;
-        };
-      };
       searxng = {
         enable = mkOption {
           type = types.bool;

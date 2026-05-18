@@ -21,10 +21,11 @@
         ];
         users.users.${config.vars.user.name}.extraGroups = [ "networkmanager" ];
         environment.sessionVariables.NIXOS_ROLE = lib.mkForce "laptop-mode-coffee";
+        systemd.network.networks = lib.mkForce { };
         networking.wireless.networks = lib.mkForce { };
         vars = {
+          wireless.resolver = lib.mkForce "1.1.1.1";
           selfhosted = {
-            unbound.enable = lib.mkForce false;
             searxng.enable = lib.mkForce false;
             vaultwarden.enable = lib.mkForce false;
             i2pd.enable = lib.mkForce false;

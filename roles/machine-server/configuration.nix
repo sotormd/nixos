@@ -108,7 +108,6 @@
       coffee.enable = lib.mkForce false;
     };
     selfhosted = {
-      unbound.enable = lib.mkForce false;
       searxng.enable = lib.mkForce false;
       vaultwarden.enable = lib.mkForce false;
       i2pd.enable = lib.mkForce false;
@@ -134,7 +133,6 @@
         config.vars.features.secureboot.enable
       ];
       selfhostedDisabled = [
-        config.vars.selfhosted.unbound.enable
         config.vars.selfhosted.searxng.enable
         config.vars.selfhosted.vaultwarden.enable
         config.vars.selfhosted.i2pd.enable

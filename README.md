@@ -94,7 +94,8 @@ Services features:
 | firewall                      | `nf_tables`                                                                                                |
 | mac randomization             | `macchanger`                                                                                               |
 | anonymity                     | `i2pd`                                                                                                     |
-| networking                    | `wpa_supplicant`                                                                                           |
+| networking                    | `systemd-networkd`                                                                                         |
+| wireless                      | `wpa_supplicant`                                                                                           |
 | dns                           | `unbound`                                                                                                  |
 | secure shell                  | `sshd`, `fail2ban`                                                                                         |
 | display server                | `wayland`                                                                                                  |

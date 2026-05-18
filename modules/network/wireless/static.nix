@@ -1,16 +1,16 @@
 { config, ... }:
 
+let
+  inherit (config.vars.wireless) interface address gateway;
+in
 {
-  # disable dhcp
-  networking.dhcpcd.enable = false;
-  networking.useDHCP = false;
+  # primary network and static address
+  systemd.network.networks."10-primary" = {
+    matchConfig.Name = interface;
+    address = [ "${address}/24" ];
+    routes = [ { Gateway = gateway; } ];
+    networkConfig.DHCP = "no";
+  };
 
-  # set static ip
-  networking.defaultGateway = config.vars.wireless.gateway;
-  networking.interfaces."${config.vars.wireless.interface}".ipv4.addresses = [
-    {
-      address = config.vars.wireless.address;
-      prefixLength = 24;
-    }
-  ];
+  networking.useDHCP = false;
 }

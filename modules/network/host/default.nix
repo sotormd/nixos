@@ -7,5 +7,6 @@
     ./hostname.nix
     ./issue.nix
     ./machineid.nix
+    ./networkd.nix
   ];
 }

@@ -71,6 +71,7 @@
     ssid = "net";
     gateway = "10.0.0.1";
     address = "10.0.0.2";
+    resolver = "10.0.0.3";
   };
 
   displays = {
@@ -103,10 +104,6 @@
   };
 
   selfhosted = {
-    unbound = {
-      enable = true;
-      address = "10.0.0.3";
-    };
     searxng = {
       enable = true;
       domain = "stub.duckdns.org";
