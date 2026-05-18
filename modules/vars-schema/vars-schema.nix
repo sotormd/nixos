@@ -304,6 +304,9 @@ in
         allow = mkOption {
           type = privateCidr;
         };
+        local-data = mkOption {
+          type = types.str;
+        };
       };
 
       nginx = {

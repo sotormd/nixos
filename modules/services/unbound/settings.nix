@@ -61,11 +61,7 @@
       access-control = [ "${config.vars.services.unbound.allow} allow" ];
 
       # nginx web server
-      local-data = [
-        ''
-          "${config.vars.services.nginx.domain}. IN A ${config.vars.wireless.address}"
-        ''
-      ];
+      local-data = config.vars.services.unbound.local-data;
     };
 
     # use and update root trust anchor for dnssec validation
