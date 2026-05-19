@@ -10,78 +10,75 @@ let
     jellyfin
     ;
 
-  inherit (lib.ports) internal;
+  inherit (lib) ports;
 in
+lib.mkIf nginx.enable {
 
-{
-  config = lib.mkIf nginx.enable {
+  services.nginx.virtualHosts.${nginx.domain}.locations = {
 
-    services.nginx.virtualHosts.${nginx.domain}.locations = {
+    "/searxng/" = lib.mkIf searxng.enable {
+      proxyPass = "http://127.0.0.1:${toString ports.searxng.search-engine}";
+      extraConfig = ''
+        allow ${searxng.allow};
+        deny all;
+      '';
+    };
 
-      "/searxng/" = lib.mkIf searxng.enable {
-        proxyPass = "http://127.0.0.1:${toString internal.searxng.search-engine}";
-        extraConfig = ''
-          allow ${searxng.allow};
-          deny all;
-        '';
-      };
+    "/vaultwarden/" = lib.mkIf vaultwarden.enable {
+      proxyPass = "http://127.0.0.1:${toString ports.vaultwarden.web-vault}";
+      extraConfig = ''
+        allow ${vaultwarden.allow};
+        deny all;
 
-      "/vaultwarden/" = lib.mkIf vaultwarden.enable {
-        proxyPass = "http://127.0.0.1:${toString internal.vaultwarden.webvault}";
-        extraConfig = ''
-          allow ${vaultwarden.allow};
-          deny all;
+        proxy_set_header Host $host;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header X-Forwarded-Proto $scheme;
+      '';
+    };
 
-          proxy_set_header Host $host;
-          proxy_set_header X-Real-IP $remote_addr;
-          proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
-          proxy_set_header X-Forwarded-Proto $scheme;
-        '';
-      };
+    "/i2pd/" = lib.mkIf i2pd.enable {
+      proxyPass = "http://127.0.0.1:${toString ports.i2pd.web-console}";
+      extraConfig = ''
+        allow ${i2pd.allow};
+        deny all;
 
-      "/i2pd/" = lib.mkIf i2pd.enable {
-        proxyPass = "http://127.0.0.1:${toString internal.i2pd.webconsole}";
-        extraConfig = ''
-          allow ${i2pd.allow};
-          deny all;
+        proxy_set_header Host $host;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header X-Forwarded-Proto $scheme;
 
-          proxy_set_header Host $host;
-          proxy_set_header X-Real-IP $remote_addr;
-          proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
-          proxy_set_header X-Forwarded-Proto $scheme;
+        sub_filter_once off;
+        sub_filter '/?' '/i2pd/?';
+        sub_filter 'href="/' 'href="/i2pd/';
+        sub_filter 'action="/' 'action="/i2pd/';
+        sub_filter 'src="/' 'src="/i2pd/';
+      '';
+    };
 
-          sub_filter_once off;
-          sub_filter '/?' '/i2pd/?';
-          sub_filter 'href="/' 'href="/i2pd/';
-          sub_filter 'action="/' 'action="/i2pd/';
-          sub_filter 'src="/' 'src="/i2pd/';
-        '';
-      };
+    "/qbt/" = lib.mkIf qbt.enable {
+      proxyPass = "http://127.0.0.1:${toString ports.qbt.web-ui}";
+      extraConfig = ''
+        allow ${qbt.allow};
+        deny all;
 
-      "/qbt/" = lib.mkIf qbt.enable {
-        proxyPass = "http://127.0.0.1:${toString internal.qbt.webui}";
-        extraConfig = ''
-          allow ${qbt.allow};
-          deny all;
+        proxy_set_header Host $proxy_host;
+        proxy_set_header X-Forwarded-Host $http_host;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header X-Forwarded-Proto $scheme;
+        proxy_redirect off;
+        rewrite ^/qbt(/.*)$ $1 break;
+      '';
+    };
 
-          proxy_set_header Host $proxy_host;
-          proxy_set_header X-Forwarded-Host $http_host;
-          proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
-          proxy_set_header X-Forwarded-Proto $scheme;
-          proxy_redirect off;
-          rewrite ^/qbt(/.*)$ $1 break;
-        '';
-      };
-
-      "/jellyfin/" = lib.mkIf jellyfin.enable {
-        proxyPass = "http://127.0.0.1:${toString internal.jellyfin.web-interface}";
-        extraConfig = ''
-          allow ${jellyfin.allow};
-          deny all;
-        '';
-      };
-
+    "/jellyfin/" = lib.mkIf jellyfin.enable {
+      proxyPass = "http://127.0.0.1:${toString ports.jellyfin.web-interface}";
+      extraConfig = ''
+        allow ${jellyfin.allow};
+        deny all;
+      '';
     };
 
   };
+
 }

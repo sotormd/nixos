@@ -1,7 +1,10 @@
 { config, lib, ... }:
 
-{
-  config = lib.mkIf config.vars.services.ssh.enable {
-    services.openssh.enable = true;
-  };
+let
+  inherit (config.vars.services) ssh;
+in
+lib.mkIf ssh.enable {
+
+  services.openssh.enable = true;
+
 }

@@ -1,33 +1,21 @@
-{
-  config,
-  lib,
-  pkgs,
-  ...
-}:
+{ config, lib, ... }:
 
-{
-  config = lib.mkIf config.vars.features.impermanence.enable {
+lib.mkIf config.vars.features.impermanence.enable {
 
-    fileSystems =
+  fileSystems =
 
-      lib.mkTmpRaw
-        [ ]
-        [
-          "/usr"
-        ]
+    (lib.mkTmpRaw [ ] [ "/usr" ])
 
-      # nosuid,nodev,noexec
-      // lib.mkTmpData [
-        "/bin"
-        "/etc"
-        "/lib"
-        "/lib64"
-        "/home"
-        "/root"
-        "/srv"
-        "/var"
-      ];
-
-  };
+    # nosuid,nodev,noexec
+    // lib.mkTmpData [
+      "/bin"
+      "/etc"
+      "/lib"
+      "/lib64"
+      "/home"
+      "/root"
+      "/srv"
+      "/var"
+    ];
 
 }

@@ -2,18 +2,15 @@
 
 let
   inherit (config.vars.services) searxng;
-  inherit (lib.ports) internal;
+  inherit (lib) ports;
 in
-{
-  config = lib.mkIf searxng.enable {
+lib.mkIf searxng.enable {
 
-    services.searx = {
-      settings.server = {
-        port = internal.searxng.search-engine;
-        bind_address = "0.0.0.0";
-      };
-      configureUwsgi = false;
+  services.searx = {
+    settings.server = {
+      bind_address = "127.0.0.1";
+      port = ports.searxng.search-engine;
     };
-
   };
+
 }

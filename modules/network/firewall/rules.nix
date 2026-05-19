@@ -84,7 +84,7 @@
 let
   inherit (config.vars.wireless) interface address;
 
-  inherit (lib.ports) internal external;
+  inherit (lib) ports;
 
   inherit (config.vars.services)
     ssh
@@ -124,31 +124,31 @@ in
     (lib.optionalString ssh.enable "iptables -A nixos-fw -p tcp -s ${ssh.allow} -d ${address} -i ${interface} --dport ${toString ssh.port} -j nixos-fw-accept")
 
     # unbound validating recursive dns server
-    (lib.optionalString unbound.enable "iptables -A nixos-fw -p tcp -s 127.0.0.1 -d 127.0.0.1 -i lo --dport ${toString internal.unbound.dns} -j nixos-fw-accept")
-    (lib.optionalString unbound.enable "iptables -A nixos-fw -p udp -s 127.0.0.1 -d 127.0.0.1 -i lo --dport ${toString internal.unbound.dns} -j nixos-fw-accept")
-    (lib.optionalString unbound.enable "iptables -A nixos-fw -p tcp -s ${unbound.allow} -d ${address} -i ${interface} --dport ${toString external.unbound.dns} -j nixos-fw-accept")
-    (lib.optionalString unbound.enable "iptables -A nixos-fw -p udp -s ${unbound.allow} -d ${address} -i ${interface} --dport ${toString external.unbound.dns} -j nixos-fw-accept")
+    (lib.optionalString unbound.enable "iptables -A nixos-fw -p tcp -s 127.0.0.1 -d 127.0.0.1 -i lo --dport ${toString ports.unbound.dns} -j nixos-fw-accept")
+    (lib.optionalString unbound.enable "iptables -A nixos-fw -p udp -s 127.0.0.1 -d 127.0.0.1 -i lo --dport ${toString ports.unbound.dns} -j nixos-fw-accept")
+    (lib.optionalString unbound.enable "iptables -A nixos-fw -p tcp -s ${unbound.allow} -d ${address} -i ${interface} --dport ${toString ports.unbound.dns} -j nixos-fw-accept")
+    (lib.optionalString unbound.enable "iptables -A nixos-fw -p udp -s ${unbound.allow} -d ${address} -i ${interface} --dport ${toString ports.unbound.dns} -j nixos-fw-accept")
 
     # nginx web server
-    (lib.optionalString nginx.enable "iptables -A nixos-fw -p tcp -s ${nginx.allow} -d ${address} -i ${interface} --dport ${toString external.nginx.https} -j nixos-fw-accept")
+    (lib.optionalString nginx.enable "iptables -A nixos-fw -p tcp -s ${nginx.allow} -d ${address} -i ${interface} --dport ${toString ports.nginx.https} -j nixos-fw-accept")
 
     # searxng metasearch engine
-    (lib.optionalString searxng.enable "iptables -A nixos-fw -p tcp -s 127.0.0.1 -d 127.0.0.1 -i lo --dport ${toString internal.searxng.search-engine} -j nixos-fw-accept")
+    (lib.optionalString searxng.enable "iptables -A nixos-fw -p tcp -s 127.0.0.1 -d 127.0.0.1 -i lo --dport ${toString ports.searxng.search-engine} -j nixos-fw-accept")
 
     # vaultwarden password manager
-    (lib.optionalString vaultwarden.enable "iptables -A nixos-fw -p tcp -s 127.0.0.1 -d 127.0.0.1 -i lo --dport ${toString internal.vaultwarden.webvault} -j nixos-fw-accept")
+    (lib.optionalString vaultwarden.enable "iptables -A nixos-fw -p tcp -s 127.0.0.1 -d 127.0.0.1 -i lo --dport ${toString ports.vaultwarden.web-vault} -j nixos-fw-accept")
 
     # i2pd invisible internet protocol daemon
-    (lib.optionalString i2pd.enable "iptables -A nixos-fw -p tcp -s 127.0.0.1 -d 127.0.0.1 -i lo --dport ${toString internal.i2pd.sam} -j nixos-fw-accept")
-    (lib.optionalString i2pd.enable "iptables -A nixos-fw -p tcp -s 127.0.0.1 -d 127.0.0.1 -i lo --dport ${toString internal.i2pd.socks} -j nixos-fw-accept")
-    (lib.optionalString i2pd.enable "iptables -A nixos-fw -p tcp -s 127.0.0.1 -d 127.0.0.1 -i lo --dport ${toString internal.i2pd.webconsole} -j nixos-fw-accept")
-    (lib.optionalString i2pd.enable "iptables -A nixos-fw -p tcp -s ${i2pd.allow} -d ${address} -i ${interface} --dport ${toString external.i2pd.http} -j nixos-fw-accept")
+    (lib.optionalString i2pd.enable "iptables -A nixos-fw -p tcp -s 127.0.0.1 -d 127.0.0.1 -i lo --dport ${toString ports.i2pd.sam} -j nixos-fw-accept")
+    (lib.optionalString i2pd.enable "iptables -A nixos-fw -p tcp -s 127.0.0.1 -d 127.0.0.1 -i lo --dport ${toString ports.i2pd.socks-proxy} -j nixos-fw-accept")
+    (lib.optionalString i2pd.enable "iptables -A nixos-fw -p tcp -s 127.0.0.1 -d 127.0.0.1 -i lo --dport ${toString ports.i2pd.web-console} -j nixos-fw-accept")
+    (lib.optionalString i2pd.enable "iptables -A nixos-fw -p tcp -s ${i2pd.allow} -d ${address} -i ${interface} --dport ${toString ports.i2pd.http-proxy} -j nixos-fw-accept")
 
     # qbittorrent bittorrent client
-    (lib.optionalString qbt.enable "iptables -A nixos-fw -p tcp -s 127.0.0.1 -d 127.0.0.1 -i lo --dport ${toString internal.qbt.webui} -j nixos-fw-accept")
+    (lib.optionalString qbt.enable "iptables -A nixos-fw -p tcp -s 127.0.0.1 -d 127.0.0.1 -i lo --dport ${toString ports.qbt.web-ui} -j nixos-fw-accept")
 
     # jellyfin media server
-    (lib.optionalString jellyfin.enable "iptables -A nixos-fw -p tcp -s 127.0.0.1 -d 127.0.0.1 -i lo --dport ${toString internal.jellyfin.web-interface} -j nixos-fw-accept")
+    (lib.optionalString jellyfin.enable "iptables -A nixos-fw -p tcp -s 127.0.0.1 -d 127.0.0.1 -i lo --dport ${toString ports.jellyfin.web-interface} -j nixos-fw-accept")
 
   ];
 
@@ -158,31 +158,31 @@ in
     (lib.optionalString ssh.enable "iptables -D nixos-fw -p tcp -s ${ssh.allow} -d ${address} -i ${interface} --dport ${toString ssh.port} -j nixos-fw-accept || true")
 
     # unbound validating recursive dns server
-    (lib.optionalString unbound.enable "iptables -D nixos-fw -p tcp -s 127.0.0.1 -d 127.0.0.1 -i lo --dport ${toString internal.unbound.dns} -j nixos-fw-accept || true")
-    (lib.optionalString unbound.enable "iptables -D nixos-fw -p udp -s 127.0.0.1 -d 127.0.0.1 -i lo --dport ${toString internal.unbound.dns} -j nixos-fw-accept || true")
-    (lib.optionalString unbound.enable "iptables -D nixos-fw -p tcp -s ${unbound.allow} -d ${address} -i ${interface} --dport ${toString external.unbound.dns} -j nixos-fw-accept || true")
-    (lib.optionalString unbound.enable "iptables -D nixos-fw -p udp -s ${unbound.allow} -d ${address} -i ${interface} --dport ${toString external.unbound.dns} -j nixos-fw-accept || true")
+    (lib.optionalString unbound.enable "iptables -D nixos-fw -p tcp -s 127.0.0.1 -d 127.0.0.1 -i lo --dport ${toString ports.unbound.dns} -j nixos-fw-accept || true")
+    (lib.optionalString unbound.enable "iptables -D nixos-fw -p udp -s 127.0.0.1 -d 127.0.0.1 -i lo --dport ${toString ports.unbound.dns} -j nixos-fw-accept || true")
+    (lib.optionalString unbound.enable "iptables -D nixos-fw -p tcp -s ${unbound.allow} -d ${address} -i ${interface} --dport ${toString ports.unbound.dns} -j nixos-fw-accept || true")
+    (lib.optionalString unbound.enable "iptables -D nixos-fw -p udp -s ${unbound.allow} -d ${address} -i ${interface} --dport ${toString ports.unbound.dns} -j nixos-fw-accept || true")
 
     # nginx web server
-    (lib.optionalString nginx.enable "iptables -D nixos-fw -p tcp -s ${nginx.allow} -d ${address} -i ${interface} --dport ${toString external.nginx.https} -j nixos-fw-accept || true")
+    (lib.optionalString nginx.enable "iptables -D nixos-fw -p tcp -s ${nginx.allow} -d ${address} -i ${interface} --dport ${toString ports.nginx.https} -j nixos-fw-accept || true")
 
     # searxng metasearch engine
-    (lib.optionalString searxng.enable "iptables -D nixos-fw -p tcp -s 127.0.0.1 -d 127.0.0.1 -i lo --dport ${toString internal.searxng.search-engine} -j nixos-fw-accept || true")
+    (lib.optionalString searxng.enable "iptables -D nixos-fw -p tcp -s 127.0.0.1 -d 127.0.0.1 -i lo --dport ${toString ports.searxng.search-engine} -j nixos-fw-accept || true")
 
     # vaultwarden password manager
-    (lib.optionalString vaultwarden.enable "iptables -D nixos-fw -p tcp -s 127.0.0.1 -d 127.0.0.1 -i lo --dport ${toString internal.vaultwarden.webvault} -j nixos-fw-accept || true")
+    (lib.optionalString vaultwarden.enable "iptables -D nixos-fw -p tcp -s 127.0.0.1 -d 127.0.0.1 -i lo --dport ${toString ports.vaultwarden.web-vault} -j nixos-fw-accept || true")
 
     # i2pd invisible internet protocol daemon
-    (lib.optionalString i2pd.enable "iptables -D nixos-fw -p tcp -s 127.0.0.1 -d 127.0.0.1 -i lo --dport ${toString internal.i2pd.sam} -j nixos-fw-accept || true")
-    (lib.optionalString i2pd.enable "iptables -D nixos-fw -p tcp -s 127.0.0.1 -d 127.0.0.1 -i lo --dport ${toString internal.i2pd.socks} -j nixos-fw-accept || true")
-    (lib.optionalString i2pd.enable "iptables -D nixos-fw -p tcp -s 127.0.0.1 -d 127.0.0.1 -i lo --dport ${toString internal.i2pd.webconsole} -j nixos-fw-accept || true")
-    (lib.optionalString i2pd.enable "iptables -D nixos-fw -p tcp -s ${i2pd.allow} -d ${address} -i ${interface} --dport ${toString external.i2pd.http} -j nixos-fw-accept || true")
+    (lib.optionalString i2pd.enable "iptables -D nixos-fw -p tcp -s 127.0.0.1 -d 127.0.0.1 -i lo --dport ${toString ports.i2pd.sam} -j nixos-fw-accept || true")
+    (lib.optionalString i2pd.enable "iptables -D nixos-fw -p tcp -s 127.0.0.1 -d 127.0.0.1 -i lo --dport ${toString ports.i2pd.socks-proxy} -j nixos-fw-accept || true")
+    (lib.optionalString i2pd.enable "iptables -D nixos-fw -p tcp -s 127.0.0.1 -d 127.0.0.1 -i lo --dport ${toString ports.i2pd.web-console} -j nixos-fw-accept || true")
+    (lib.optionalString i2pd.enable "iptables -D nixos-fw -p tcp -s ${i2pd.allow} -d ${address} -i ${interface} --dport ${toString ports.i2pd.http-proxy} -j nixos-fw-accept || true")
 
     # qbittorrent bittorrent client
-    (lib.optionalString qbt.enable "iptables -D nixos-fw -p tcp -s 127.0.0.1 -d 127.0.0.1 -i lo --dport ${toString internal.qbt.webui} -j nixos-fw-accept || true")
+    (lib.optionalString qbt.enable "iptables -D nixos-fw -p tcp -s 127.0.0.1 -d 127.0.0.1 -i lo --dport ${toString ports.qbt.web-ui} -j nixos-fw-accept || true")
 
     # jellyfin media server
-    (lib.optionalString jellyfin.enable "iptables -D nixos-fw -p tcp -s 127.0.0.1 -d 127.0.0.1 -i lo --dport ${toString internal.jellyfin.web-interface} -j nixos-fw-accept || true")
+    (lib.optionalString jellyfin.enable "iptables -D nixos-fw -p tcp -s 127.0.0.1 -d 127.0.0.1 -i lo --dport ${toString ports.jellyfin.web-interface} -j nixos-fw-accept || true")
 
   ];
 }

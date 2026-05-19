@@ -1,17 +1,18 @@
 { config, lib, ... }:
 
-{
-  config = lib.mkIf config.vars.services.nginx.enable {
+let
+  inherit (config.vars.services) qbt;
+in
+lib.mkIf qbt.enable {
 
-    users.users.qbt = {
-      isSystemUser = true;
-      group = "qbt";
-      home = "/var/lib/qbt/home";
-      createHome = true;
-    };
-    users.groups = {
-      qbt = { };
-    };
-
+  users.users.qbt = {
+    isSystemUser = true;
+    group = "qbt";
+    home = "/var/lib/qbt/home";
+    createHome = true;
   };
+  users.groups = {
+    qbt = { };
+  };
+
 }

@@ -8,11 +8,9 @@
 let
   inherit (config.vars.services) searxng;
 in
-{
-  config = lib.mkIf searxng.enable {
+lib.mkIf searxng.enable {
 
-    services.searx.enable = true;
-    services.searx.package = pkgs.searxng;
+  services.searx.enable = true;
+  services.searx.package = pkgs.searxng;
 
-  };
 }

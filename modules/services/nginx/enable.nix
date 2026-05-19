@@ -3,10 +3,8 @@
 let
   inherit (config.vars.services) nginx;
 in
-{
-  config = lib.mkIf nginx.enable {
+lib.mkIf nginx.enable {
 
-    services.nginx.enable = true;
+  services.nginx.enable = true;
 
-  };
 }

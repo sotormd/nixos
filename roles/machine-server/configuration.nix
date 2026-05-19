@@ -112,6 +112,14 @@
     };
   };
 
+  # secrets
+  sops.secrets = {
+    wireless = { };
+    seed = { };
+    searxng = { };
+    duckdns = { };
+  };
+
   # ensure no tomfoolery
   assertions =
     let

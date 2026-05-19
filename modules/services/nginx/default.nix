@@ -8,7 +8,6 @@
     ./online.nix
     ./rproxy.nix
     ./settings.nix
-    ./sops.nix
     ./staging.nix
     ./static.nix
   ];

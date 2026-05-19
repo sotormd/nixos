@@ -7,21 +7,19 @@
 
 let
   inherit (config.vars.services) jellyfin;
-  inherit (lib.ports) internal;
+  inherit (lib) ports;
 
   jellyfinSetup = pkgs.writeShellScript "jellyfin-setup" ''
-        if [ ! -f '/var/lib/jellyfin/config/network.xml' ]; then
-
-          mkdir -p "/var/lib/jellyfin/config"
-          cat > '/var/lib/jellyfin/config/network.xml' <<EOF
+        mkdir -p "/var/lib/jellyfin/config"
+        cat > '/var/lib/jellyfin/config/network.xml' <<EOF
     <?xml version="1.0" encoding="utf-8"?>
     <NetworkConfiguration xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
       <BaseUrl>/jellyfin</BaseUrl>
       <EnableHttps>false</EnableHttps>
       <RequireHttps>false</RequireHttps>
-      <InternalHttpPort>${toString internal.jellyfin.web-interface}</InternalHttpPort>
+      <InternalHttpPort>${toString ports.jellyfin.web-interface}</InternalHttpPort>
       <InternalHttpsPort>8920</InternalHttpsPort>
-      <PublicHttpPort>${toString internal.jellyfin.web-interface}</PublicHttpPort>
+      <PublicHttpPort>${toString ports.jellyfin.web-interface}</PublicHttpPort>
       <PublicHttpsPort>8920</PublicHttpsPort>
       <AutoDiscovery>false</AutoDiscovery>
       <EnableUPnP>false</EnableUPnP>
@@ -30,7 +28,7 @@ let
       <EnableRemoteAccess>false</EnableRemoteAccess>
       <LocalNetworkSubnets />
       <LocalNetworkAddresses>
-        <string>0.0.0.0</string>
+        <string>127.0.0.1</string>
       </LocalNetworkAddresses>
       <KnownProxies />
       <IgnoreVirtualInterfaces>true</IgnoreVirtualInterfaces>
@@ -44,37 +42,33 @@ let
     </NetworkConfiguration>
     EOF
 
-        fi
-
         chown jellyfin:jellyfin -R /var/lib/jellyfin
   '';
 in
-{
-  config = lib.mkIf jellyfin.enable {
+lib.mkIf jellyfin.enable {
 
-    systemd.services.jellyfin-setup = {
-      enable = true;
-      before = [ "jellyfin.service" ];
-      wantedBy = [ "multi-user.target" ];
-      serviceConfig = {
-        Type = "oneshot";
-        ExecStart = "${jellyfinSetup}";
-        ProtectClock = true;
-        ProtectKernelTunables = true;
-        ProtectKernelModules = true;
-        ProtectKernelLogs = true;
-        ProtectControlGroups = true;
-        ProtectHome = "read-only";
-        ProtectHostname = true;
-        SystemCallArchitectures = "native";
-        LockPersonality = true;
-        NoNewPrivileges = true;
-        PrivateDevices = true;
-        PrivateTmp = true;
-        RestrictRealtime = true;
-        RestrictSUIDSGID = true;
-      };
+  systemd.services.jellyfin-setup = {
+    enable = true;
+    before = [ "jellyfin.service" ];
+    wantedBy = [ "multi-user.target" ];
+    serviceConfig = {
+      Type = "oneshot";
+      ExecStart = "${jellyfinSetup}";
+      ProtectClock = true;
+      ProtectKernelTunables = true;
+      ProtectKernelModules = true;
+      ProtectKernelLogs = true;
+      ProtectControlGroups = true;
+      ProtectHome = "read-only";
+      ProtectHostname = true;
+      SystemCallArchitectures = "native";
+      LockPersonality = true;
+      NoNewPrivileges = true;
+      PrivateDevices = true;
+      PrivateTmp = true;
+      RestrictRealtime = true;
+      RestrictSUIDSGID = true;
     };
-
   };
+
 }

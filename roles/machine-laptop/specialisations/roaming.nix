@@ -1,33 +1,31 @@
 {
-  config,
   inputs,
+  config,
   lib,
   ...
 }:
 
-{
-  config = lib.mkIf (config.vars.modes.roaming.enable && config.vars.features.impermanence.enable) {
+lib.mkIf (config.vars.modes.roaming.enable && config.vars.features.impermanence.enable) {
 
-    specialisation.roaming = {
-      inheritParentConfig = true;
-      configuration = {
-        imports = [ inputs.self.nixosModules.modules.network.networkmanager ];
-        users.users.${config.vars.user.name}.extraGroups = [ "networkmanager" ];
-        environment.sessionVariables.NIXOS_ROLE = lib.mkForce "laptop-mode-roaming";
-        systemd.network.networks = lib.mkForce { };
-        networking.wireless.networks = lib.mkForce { };
-        vars = {
-          wireless.resolver = lib.mkForce "1.1.1.1";
-          selfhosted = {
-            searxng.enable = lib.mkForce false;
-            vaultwarden.enable = lib.mkForce false;
-            i2pd.enable = lib.mkForce false;
-            qbt.enable = lib.mkForce false;
-            jellyfin.enable = lib.mkForce false;
-          };
+  specialisation.roaming = {
+    inheritParentConfig = true;
+    configuration = {
+      imports = [ inputs.self.nixosModules.modules.network.networkmanager ];
+      users.users.${config.vars.user.name}.extraGroups = [ "networkmanager" ];
+      environment.sessionVariables.NIXOS_ROLE = lib.mkForce "laptop-mode-roaming";
+      systemd.network.networks = lib.mkForce { };
+      networking.wireless.networks = lib.mkForce { };
+      vars = {
+        wireless.resolver = lib.mkForce "1.1.1.1";
+        selfhosted = {
+          searxng.enable = lib.mkForce false;
+          vaultwarden.enable = lib.mkForce false;
+          i2pd.enable = lib.mkForce false;
+          qbt.enable = lib.mkForce false;
+          jellyfin.enable = lib.mkForce false;
         };
       };
     };
-
   };
+
 }

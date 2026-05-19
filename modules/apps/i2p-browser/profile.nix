@@ -6,7 +6,7 @@
 }:
 
 let
-  inherit (lib.ports) external;
+  inherit (lib) ports;
 
   proxy = config.vars.selfhosted.i2pd.address;
 
@@ -15,9 +15,9 @@ let
     text = ''
       user_pref("network.proxy.type", 1);
       user_pref("network.proxy.http", "${proxy}");
-      user_pref("network.proxy.http_port", ${toString external.i2pd.http});
+      user_pref("network.proxy.http_port", ${toString ports.i2pd.http-proxy});
       user_pref("network.proxy.ssl", "${proxy}");
-      user_pref("network.proxy.ssl_port", ${toString external.i2pd.http});
+      user_pref("network.proxy.ssl_port", ${toString ports.i2pd.http-proxy});
       user_pref("network.proxy.no_proxies_on", "");
 
       user_pref("browser.urlbar.suggest.bookmark", false);

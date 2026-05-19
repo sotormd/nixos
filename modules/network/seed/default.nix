@@ -1,6 +1,3 @@
 {
-  imports = [
-    ./keys.nix
-    ./sops.nix
-  ];
+  imports = [ ./keys.nix ];
 }

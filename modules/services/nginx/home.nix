@@ -60,15 +60,13 @@ let
     paths = [ homepageFile ];
   };
 in
-{
-  config = lib.mkIf nginx.enable {
+lib.mkIf nginx.enable {
 
-    services.nginx.virtualHosts.${nginx.domain} = {
-      locations."/" = {
-        root = homepageDir;
-        index = "home.html";
-      };
+  services.nginx.virtualHosts.${nginx.domain} = {
+    locations."/" = {
+      root = homepageDir;
+      index = "home.html";
     };
-
   };
+
 }

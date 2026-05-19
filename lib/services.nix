@@ -1,21 +1,16 @@
 {
   ports = {
-    internal = {
-      unbound.dns = 53;
-      searxng.search-engine = 8888;
-      vaultwarden.webvault = 8222;
-      i2pd = {
-        sam = 7656;
-        socks = 4447;
-        webconsole = 7070;
-      };
-      qbt.webui = 8080;
-      jellyfin.web-interface = 8096;
+    unbound.dns = 53;
+    nginx.https = 443;
+    searxng.search-engine = 8888;
+    vaultwarden.web-vault = 8222;
+    i2pd = {
+      sam = 7656;
+      http-proxy = 4444;
+      socks-proxy = 4447;
+      web-console = 7070;
     };
-    external = {
-      unbound.dns = 53;
-      nginx.https = 443;
-      i2pd.http = 4444;
-    };
+    qbt.web-ui = 8080;
+    jellyfin.web-interface = 8096;
   };
 }

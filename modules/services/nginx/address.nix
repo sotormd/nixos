@@ -2,18 +2,16 @@
 
 let
   inherit (config.vars.services) nginx;
-  inherit (lib.ports) external;
+  inherit (lib) ports;
 in
-{
-  config = lib.mkIf nginx.enable {
+lib.mkIf nginx.enable {
 
-    services.nginx.virtualHosts.${nginx.domain}.listen = [
-      {
-        addr = "0.0.0.0";
-        port = external.nginx.https;
-        ssl = true;
-      }
-    ];
+  services.nginx.virtualHosts.${nginx.domain}.listen = [
+    {
+      addr = config.vars.wireless.address;
+      port = ports.nginx.https;
+      ssl = true;
+    }
+  ];
 
-  };
 }

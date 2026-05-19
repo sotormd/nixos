@@ -152,6 +152,12 @@
     };
   };
 
+  # secrets
+  sops.secrets = {
+    wireless = { };
+    seed = { };
+  };
+
   # ensure no tomfoolery
   assertions =
     let

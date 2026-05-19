@@ -1,10 +1,11 @@
 { config, lib, ... }:
 
-{
-  config = lib.mkIf config.vars.services.jellyfin.enable {
+let
+  inherit (config.vars.services) jellyfin;
+in
+lib.mkIf jellyfin.enable {
 
-    services.jellyfin.enable = true;
-    services.jellyfin.openFirewall = false;
+  services.jellyfin.enable = true;
+  services.jellyfin.openFirewall = false;
 
-  };
 }

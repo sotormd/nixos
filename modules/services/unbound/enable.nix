@@ -3,10 +3,8 @@
 let
   inherit (config.vars.services) unbound;
 in
-{
-  config = lib.mkIf unbound.enable {
+lib.mkIf unbound.enable {
 
-    services.unbound.enable = true;
+  services.unbound.enable = true;
 
-  };
 }
