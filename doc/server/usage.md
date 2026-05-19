@@ -124,6 +124,10 @@ Open on LAN to the private CIDR defined by `vars.services.unbound.allow`:
 1. `53/tcp` dns
 2. `53/udp` dns
 
+### Extra Entries
+
+Additional entries can be added using `vars.services.unbound.local-data`.
+
 ### Data
 
 Data is stored under `/var/lib/unbound`.
