@@ -114,7 +114,7 @@ Enabled using `vars.services.unbound.enable`
 
 ### Ports
 
-Open on `127.0.0.1`:
+Open on loopback to `127.0.0.1`:
 
 1. `53/tcp` dns
 2. `53/udp` dns
@@ -195,7 +195,7 @@ Enabled using `vars.services.searxng.enable`.
 
 ### Ports
 
-Open on `127.0.0.1`:
+Open on loopback to `127.0.0.1`:
 
 1. `8888` search engine
 
@@ -223,7 +223,7 @@ Enabled using `vars.services.vaultwarden.enable`.
 
 ### Ports
 
-Open on `127.0.0.1`:
+Open on loopback to `127.0.0.1`:
 
 1. `8222` web vault
 
@@ -241,7 +241,7 @@ Enabled using `vars.services.i2pd.enable`.
 
 ### Ports
 
-Open on `127.0.0.1`:
+Open on loopback to `127.0.0.1`:
 
 1. `7656` SAM
 2. `4447` SOCKS proxy
@@ -265,7 +265,7 @@ Enabled using `vars.services.qbt.enable`.
 
 ### Ports
 
-Open on `127.0.0.1`:
+Open on loopback to `127.0.0.1`:
 
 1. `8080` webui
 
@@ -305,7 +305,7 @@ Enabled using `vars.services.jellyfin.enable`.
 
 ### Ports
 
-Open on `127.0.0.1`:
+Open on loopback to `127.0.0.1`:
 
 1. `8096` web interface
 
