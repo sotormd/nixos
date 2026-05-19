@@ -91,7 +91,7 @@ Services features:
 | keys                          | `age`, `signify`, `gpg`                                                                                    |
 | usb policy                    | `usbguard`                                                                                                 |
 | sandboxing                    | `bubblewrap`, `xdg-dbus-proxy`                                                                             |
-| firewall                      | `nf_tables`                                                                                                |
+| firewall                      | `nftables`                                                                                                 |
 | mac randomization             | `macchanger`                                                                                               |
 | anonymity                     | `i2pd`                                                                                                     |
 | networking                    | `systemd-networkd`                                                                                         |

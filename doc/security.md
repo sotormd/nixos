@@ -1157,9 +1157,8 @@ used:
 
 # Firewall
 
-The NixOS `networking.firewall` module is used, which uses the new `nf_tables`
-backend using `iptables-nft`. The userspace tool `nixos-firewall-tool` can be
-used for ad-hoc changes.
+The NixOS firewall with the `nftables` backend is used. The userspace tool
+`nixos-firewall-tool` can be used for ad-hoc changes.
 
 By default, **NO** ports are open on **ANY** interface. ICMP ping requests are
 also disallowed. Additionally, **NO** interfaces are trusted, not even loopback.

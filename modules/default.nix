@@ -103,7 +103,7 @@
     # stateVersion
     core.state = _: { imports = [ ./core/state ]; };
 
-    # iptables-nft firewall
+    # nftables firewall
     network.firewall = _: { imports = [ ./network/firewall ]; };
 
     # networking, hostnames, dns, ssh aliases, ...
