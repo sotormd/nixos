@@ -1044,7 +1044,6 @@ elif [ "$VERB" == "impermanence" ]; then
             "/var/lib/fail2ban" \
             "/var/lib/unbound" \
             "/var/lib/acme" \
-            "/srv/static" \
             "/var/lib/bitwarden_rs" \
             "/var/lib/i2pd" \
             "/var/lib/qbt" \

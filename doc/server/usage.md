@@ -173,22 +173,6 @@ Reverse proxy is set up for the following services, if enabled:
 | `/qbt/`         | qBittorrent webui     | Bittorrent client           | `vars.services.qbt.allow`         |
 | `/jellyfin/`    | Jellyfin              | Media server                | `vars.services.jellyfin.allow`    |
 
-### Static
-
-The `/static/` location points to files in `/srv/static` which can be used to
-serve static files.
-
-### Ad-Hoc Reverse Proxy
-
-The `/adhoc/*` locations can be used to reverse proxy services in an ad-hoc
-manner.
-
-Only ports from `10000` to `10999` are allowed. For example, `/adhoc/10111/`
-proxies to `http://127.0.0.1:10111`. Note that these ports are still blocked by
-the firewall (even on loopback) so the `nixos-firewall-tool` needs to be used to
-open them on a ad-hoc basis so that nginx can access them through the loopback
-interface.
-
 ## SearXNG
 
 Fast, private metasearch engine.

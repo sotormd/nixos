@@ -407,7 +407,6 @@ The following directories are persisted by default:
 | `/var/lib/fail2ban`     | fail2ban data           | Data    |
 | `/var/lib/unbound`      | unbound data            | Data    |
 | `/var/lib/acme`         | nginx acme certificates | Data    |
-| `/srv/static`           | nginx static data       | Data    |
 | `/var/lib/bitwarden_rs` | vaultwarden vault       | Data    |
 | `/var/lib/i2pd`         | i2pd router data        | Data    |
 | `/var/lib/qbt`          | qbittorrent data        | Data    |
