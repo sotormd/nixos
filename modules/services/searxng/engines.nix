@@ -1,7 +1,10 @@
 { config, lib, ... }:
 
+let
+  inherit (config.vars.services) searxng;
+in
 {
-  config = lib.mkIf config.vars.services.searxng.enable {
+  config = lib.mkIf searxng.enable {
 
     # upstream searxng adds/removes engines often
     # see https://docs.searxng.org/user/configured_engines.html

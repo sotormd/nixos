@@ -2,6 +2,7 @@
 
 let
   inherit (config.vars.services) nginx;
+  inherit (lib.ports) external;
 in
 {
   config = lib.mkIf nginx.enable {
@@ -9,7 +10,7 @@ in
     services.nginx.virtualHosts.${nginx.domain}.listen = [
       {
         addr = "0.0.0.0";
-        port = 443;
+        port = external.nginx.https;
         ssl = true;
       }
     ];

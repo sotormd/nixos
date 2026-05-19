@@ -9,6 +9,8 @@ let
     qbt
     jellyfin
     ;
+
+  inherit (lib.ports) internal;
 in
 
 {
@@ -17,7 +19,7 @@ in
     services.nginx.virtualHosts.${nginx.domain}.locations = {
 
       "/searxng/" = lib.mkIf searxng.enable {
-        proxyPass = "http://127.0.0.1:8888";
+        proxyPass = "http://127.0.0.1:${toString internal.searxng.search-engine}";
         extraConfig = ''
           allow ${searxng.allow};
           deny all;
@@ -25,7 +27,7 @@ in
       };
 
       "/vaultwarden/" = lib.mkIf vaultwarden.enable {
-        proxyPass = "http://127.0.0.1:8222";
+        proxyPass = "http://127.0.0.1:${toString internal.vaultwarden.webvault}";
         extraConfig = ''
           allow ${vaultwarden.allow};
           deny all;
@@ -38,7 +40,7 @@ in
       };
 
       "/i2pd/" = lib.mkIf i2pd.enable {
-        proxyPass = "http://127.0.0.1:7070";
+        proxyPass = "http://127.0.0.1:${toString internal.i2pd.webconsole}";
         extraConfig = ''
           allow ${i2pd.allow};
           deny all;
@@ -57,7 +59,7 @@ in
       };
 
       "/qbt/" = lib.mkIf qbt.enable {
-        proxyPass = "http://127.0.0.1:8080";
+        proxyPass = "http://127.0.0.1:${toString internal.qbt.webui}";
         extraConfig = ''
           allow ${qbt.allow};
           deny all;
@@ -72,7 +74,7 @@ in
       };
 
       "/jellyfin/" = lib.mkIf jellyfin.enable {
-        proxyPass = "http://127.0.0.1:8096";
+        proxyPass = "http://127.0.0.1:${toString internal.jellyfin.web-interface}";
         extraConfig = ''
           allow ${jellyfin.allow};
           deny all;

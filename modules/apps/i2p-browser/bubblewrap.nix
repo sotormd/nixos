@@ -1,7 +1,12 @@
-{ config, pkgs, ... }:
+{
+  config,
+  pkgs,
+  lib,
+  ...
+}:
 
 let
-  inherit (import ./script.nix { inherit config pkgs; }) script;
+  inherit (import ./script.nix { inherit config pkgs lib; }) script;
 
   user = config.vars.user.name;
 

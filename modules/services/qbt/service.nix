@@ -5,8 +5,12 @@
   ...
 }:
 
+let
+  inherit (config.vars.services) qbt;
+  inherit (lib.ports) internal;
+in
 {
-  config = lib.mkIf config.vars.services.qbt.enable {
+  config = lib.mkIf qbt.enable {
 
     systemd.services.qbt = {
       description = "qbittorrent-nox service";
@@ -102,7 +106,7 @@
               Session\I2P\Enabled=true
               Session\I2P\MixedMode=false
               Session\I2P\Address=127.0.0.1
-              Session\I2P\Port=7656
+              Session\I2P\Port=${toString internal.i2pd.sam}
               Session\ProxyPeerConnections=true
 
               [Meta]
@@ -112,7 +116,7 @@
               Proxy\AuthEnabled=false
               Proxy\HostnameLookupEnabled=true
               Proxy\IP=127.0.0.1
-              Proxy\Port=4447
+              Proxy\Port=${toString internal.i2pd.socks}
               Proxy\Profiles\BitTorrent=true
               Proxy\Profiles\Misc=true
               Proxy\Profiles\RSS=true
@@ -125,7 +129,7 @@
 
               [Preferences]
               WebUI\Address=0.0.0.0
-              WebUI\Port=8080
+              WebUI\Port=${toString internal.qbt.webui}
               WebUI\CSRFProtection=true
               WebUI\ClickjackingProtection=true
               WebUI\MaxAuthenticationFailCount=3

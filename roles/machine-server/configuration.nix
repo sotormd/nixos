@@ -49,7 +49,7 @@
   systemd.services.service-fix =
     let
       service-fix-script = pkgs.writeShellScript "service-fix-script" ''
-        until ${pkgs.iputils}/bin/ping -c1 1.1.1.1 >/dev/null 2>&1; do
+        until ${pkgs.iputils}/bin/ping -c1 nixos.org >/dev/null 2>&1; do
           sleep 2
         done
         ${pkgs.systemd}/bin/systemctl restart i2pd
@@ -61,14 +61,10 @@
       wantedBy = [ "multi-user.target" ];
       wants = [
         "network-online.target"
-        "i2pd.service"
-        "qbt.service"
         "ip-link-up.service"
       ];
       after = [
         "network-online.target"
-        "i2pd.service"
-        "qbt.service"
         "ip-link-up.service"
       ];
       serviceConfig = {

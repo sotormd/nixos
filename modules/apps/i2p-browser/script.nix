@@ -1,8 +1,13 @@
-{ config, pkgs, ... }:
+{
+  config,
+  pkgs,
+  lib,
+  ...
+}:
 
 let
   inherit (import ./policies.nix) policies;
-  inherit (import ./profile.nix { inherit config pkgs; }) profile;
+  inherit (import ./profile.nix { inherit config pkgs lib; }) profile;
 
   script = pkgs.writeTextFile {
     name = "i2p-browser-script";

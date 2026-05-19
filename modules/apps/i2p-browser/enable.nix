@@ -6,7 +6,7 @@
 }:
 
 let
-  inherit (import ./package.nix { inherit config pkgs; }) i2pBrowser;
+  inherit (import ./package.nix { inherit config pkgs lib; }) i2pBrowser;
 in
 {
   config = lib.mkIf config.vars.selfhosted.i2pd.enable {

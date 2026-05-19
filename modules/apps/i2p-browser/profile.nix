@@ -1,6 +1,13 @@
-{ config, pkgs, ... }:
+{
+  config,
+  pkgs,
+  lib,
+  ...
+}:
 
 let
+  inherit (lib.ports) external;
+
   proxy = config.vars.selfhosted.i2pd.address;
 
   userJs = pkgs.writeTextFile {
@@ -8,9 +15,9 @@ let
     text = ''
       user_pref("network.proxy.type", 1);
       user_pref("network.proxy.http", "${proxy}");
-      user_pref("network.proxy.http_port", 4444);
+      user_pref("network.proxy.http_port", ${toString external.i2pd.http});
       user_pref("network.proxy.ssl", "${proxy}");
-      user_pref("network.proxy.ssl_port", 4444);
+      user_pref("network.proxy.ssl_port", ${toString external.i2pd.http});
       user_pref("network.proxy.no_proxies_on", "");
 
       user_pref("browser.urlbar.suggest.bookmark", false);

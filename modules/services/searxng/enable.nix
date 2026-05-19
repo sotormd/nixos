@@ -5,10 +5,13 @@
   ...
 }:
 
+let
+  inherit (config.vars.services) searxng;
+in
 {
-  config = lib.mkIf config.vars.services.searxng.enable {
+  config = lib.mkIf searxng.enable {
 
-    services.searx.enable = config.vars.services.searxng.enable;
+    services.searx.enable = true;
     services.searx.package = pkgs.searxng;
 
   };

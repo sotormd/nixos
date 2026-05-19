@@ -6,10 +6,12 @@
 }:
 
 let
-  jellyfinSetup = pkgs.writeShellScript "jellyfin-setup" ''
-        #!${pkgs.runtimeShell}
+  inherit (config.vars.services) jellyfin;
+  inherit (lib.ports) internal;
 
+  jellyfinSetup = pkgs.writeShellScript "jellyfin-setup" ''
         if [ ! -f '/var/lib/jellyfin/config/network.xml' ]; then
+
           mkdir -p "/var/lib/jellyfin/config"
           cat > '/var/lib/jellyfin/config/network.xml' <<EOF
     <?xml version="1.0" encoding="utf-8"?>
@@ -17,9 +19,9 @@ let
       <BaseUrl>/jellyfin</BaseUrl>
       <EnableHttps>false</EnableHttps>
       <RequireHttps>false</RequireHttps>
-      <InternalHttpPort>8096</InternalHttpPort>
+      <InternalHttpPort>${toString internal.jellyfin.web-interface}</InternalHttpPort>
       <InternalHttpsPort>8920</InternalHttpsPort>
-      <PublicHttpPort>8096</PublicHttpPort>
+      <PublicHttpPort>${toString internal.jellyfin.web-interface}</PublicHttpPort>
       <PublicHttpsPort>8920</PublicHttpsPort>
       <AutoDiscovery>false</AutoDiscovery>
       <EnableUPnP>false</EnableUPnP>
@@ -41,13 +43,14 @@ let
       <IsRemoteIPFilterBlacklist>false</IsRemoteIPFilterBlacklist>
     </NetworkConfiguration>
     EOF
+
         fi
 
         chown jellyfin:jellyfin -R /var/lib/jellyfin
   '';
 in
 {
-  config = lib.mkIf config.vars.services.jellyfin.enable {
+  config = lib.mkIf jellyfin.enable {
 
     systemd.services.jellyfin-setup = {
       enable = true;

@@ -1,10 +1,12 @@
 { config, lib, ... }:
 
+let
+  inherit (config.vars.services) unbound;
+in
 {
-  config = lib.mkIf config.vars.services.unbound.enable {
+  config = lib.mkIf unbound.enable {
 
-    # enable unbound validating recursive dns server
-    services.unbound.enable = config.vars.services.unbound.enable;
+    services.unbound.enable = true;
 
   };
 }

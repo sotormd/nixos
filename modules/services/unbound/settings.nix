@@ -1,9 +1,16 @@
 { config, lib, ... }:
 
+let
+  inherit (config.vars.services) unbound;
+in
 {
-  config = lib.mkIf config.vars.services.unbound.enable {
+  config = lib.mkIf unbound.enable {
 
     services.unbound.settings.server = {
+
+      # extra entries
+      inherit (unbound) local-data;
+
       # disable ipv6
       prefer-ip6 = "no";
       prefer-ip4 = "yes";
@@ -55,13 +62,8 @@
       use-caps-for-id = "yes";
 
       # enforce privacy of local ip range
-      private-address = config.vars.services.unbound.allow;
+      private-address = unbound.allow;
 
-      # access control
-      access-control = [ "${config.vars.services.unbound.allow} allow" ];
-
-      # nginx web server
-      local-data = config.vars.services.unbound.local-data;
     };
 
     # use and update root trust anchor for dnssec validation

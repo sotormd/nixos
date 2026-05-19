@@ -1,7 +1,10 @@
 { config, lib, ... }:
 
+let
+  inherit (config.vars.services) nginx searxng;
+in
 {
-  config = lib.mkIf config.vars.services.searxng.enable {
+  config = lib.mkIf searxng.enable {
 
     services.searx.settings = {
       general = {
@@ -33,7 +36,7 @@
       };
 
       server = {
-        base_url = "https://${config.vars.services.nginx.domain}/searxng";
+        base_url = "https://${nginx.domain}/searxng";
         secret_key = config.sops.secrets.searxng.path;
         public_instance = false;
         limiter = false;
