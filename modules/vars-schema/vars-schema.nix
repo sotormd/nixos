@@ -301,7 +301,7 @@ in
           type = privateCidr;
         };
         local-data = mkOption {
-          type = types.str;
+          type = types.listOf types.str;
         };
       };
 

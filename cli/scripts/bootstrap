@@ -648,9 +648,9 @@ the following values have been populated from the installation environment
     unbound = {
       enable = false;
       allow = "10.0.0.2/32";
-      local-data = ''
-        "example.duckdns.org. IN A 10.0.0.3"
-      '';
+      local-data = [
+        ''"example.duckdns.org. IN A 10.0.0.3"''
+      ];
     };
 
     # nginx web server

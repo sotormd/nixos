@@ -64,6 +64,10 @@ in
       # enforce privacy of local ip range
       private-address = unbound.allow;
 
+      # access control - unbound shouldn't decide this
+      # firewall decides access control
+      access-control = [ "0.0.0.0/0 allow" ];
+
     };
 
     # use and update root trust anchor for dnssec validation
