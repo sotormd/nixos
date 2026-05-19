@@ -139,6 +139,9 @@
     unbound = {
       enable = true;
       allow = "10.0.0.2/32";
+      local-data = [
+        ''"test.unbound. IN A 127.0.0.1"''
+      ];
     };
     nginx = {
       enable = true;
