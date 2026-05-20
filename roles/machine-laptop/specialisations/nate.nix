@@ -12,8 +12,8 @@ lib.mkIf (config.vars.modes.nate.enable && config.vars.features.impermanence.ena
     inheritParentConfig = false;
     configuration = {
       imports = [
-        ./impermanence
-        ./configuration.nix
+        ../impermanence
+        ../configuration.nix
         inputs.lanzaboote.nixosModules.lanzaboote
         inputs.nate.nixosModules.nate
         inputs.sops-nix.nixosModules.sops

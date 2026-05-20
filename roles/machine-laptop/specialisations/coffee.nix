@@ -12,8 +12,8 @@ lib.mkIf (config.vars.modes.coffee.enable && config.vars.features.impermanence.e
     inheritParentConfig = false;
     configuration = {
       imports = [
-        ./impermanence
-        ./configuration.nix
+        ../impermanence
+        ../configuration.nix
         inputs.coffee.nixosModules.coffee
         inputs.lanzaboote.nixosModules.lanzaboote
         inputs.sops-nix.nixosModules.sops
