@@ -1,16 +1,13 @@
 { config, lib, ... }:
 
 let
-  inherit (config.vars.services) unbound;
+  inherit (config.svcvm) vms unbound;
   inherit (lib) ports;
 in
-lib.mkIf unbound.enable {
+lib.mkIf (unbound.enable && !vms) {
 
   services.unbound.settings.server = {
-    interface = [
-      config.vars.wireless.address
-      "127.0.0.1"
-    ];
+    interface = unbound.ifaces;
     port = ports.unbound.dns;
   };
 

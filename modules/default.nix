@@ -106,8 +106,11 @@
     # stateVersion
     core.state = _: { imports = [ ./core/state ]; };
 
-    # nftables firewall
-    network.firewall = _: { imports = [ ./network/firewall ]; };
+    # nftables firewall base
+    firewall.base = _: { imports = [ ./firewall/base ]; };
+
+    # nftables firewall for svcvm
+    firewall.svcvm = _: { imports = [ ./firewall/svcvm ]; };
 
     # networking, hostnames, dns, ssh aliases, ...
     network.host = _: { imports = [ ./network/host ]; };
@@ -183,6 +186,12 @@
 
     # waydroid android container
     services.waydroid = _: { imports = [ ./services/waydroid ]; };
+
+    # svcvm guest
+    svcvm.guest = _: { imports = [ ./svcvm/guest ]; };
+
+    # svcvm schema
+    svcvm.schema = _: { imports = [ ./svcvm/schema ]; };
 
     # kiosk-style compositor
     sway.cage = _: { imports = [ ./sway/cage ]; };

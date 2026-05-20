@@ -5,6 +5,7 @@ let
     apps
     boot
     core
+    firewall
     network
     services
     vars-schema
@@ -25,7 +26,7 @@ in
     core.nix
     core.packages
     core.state
-    network.firewall
+    firewall.base
     network.host
     network.macchanger
     network.seed

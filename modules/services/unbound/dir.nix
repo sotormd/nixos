@@ -1,9 +1,9 @@
 { config, lib, ... }:
 
 let
-  inherit (config.vars.services) unbound;
+  inherit (config.svcvm) vms unbound;
 in
-lib.mkIf unbound.enable {
+lib.mkIf (unbound.enable && !vms) {
 
   systemd.tmpfiles.rules = [
     "d /var/lib/unbound 700 unbound unbound -"

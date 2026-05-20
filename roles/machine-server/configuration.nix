@@ -78,6 +78,27 @@
     };
   };
 
+  # svcvm
+  svcvm =
+    let
+      inherit (config.vars) wireless;
+    in
+    {
+      vms = true; # TODO: vms = config.vars.features.microvms.enable;
+      unbound =
+        let
+          inherit (config.vars.services) unbound;
+        in
+        {
+          inherit (unbound) enable allow local-data;
+          ifaces = [
+            wireless.address
+            "127.0.0.1"
+          ];
+          access-control = [ "${unbound.allow} allow" ];
+        };
+    };
+
   # secrets
   sops.secrets = {
     wireless = { };

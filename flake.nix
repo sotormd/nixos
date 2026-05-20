@@ -32,6 +32,14 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
+    # microvms for nixos
+    # because we dont want containers
+    # used for services on server
+    microvm-nix = {
+      url = "github:microvm-nix/microvm.nix";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+
     # StevenBlack's host lists
     # because we dont want PiHole
     hosts = {

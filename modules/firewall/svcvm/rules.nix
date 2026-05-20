@@ -1,16 +1,6 @@
-####################################################
 # The following ports are required:
 #
-# 1. openssh: secure shell daemon
-#
-#    IF: vars.services.ssh.enable
-#
-#    LAN ports TO vars.services.ssh.allow:
-#      vars.services.ssh.port
-#    lo  ports TO 127.0.0.1:
-#      -
-#
-# 2. unbound: validating recursive dns server
+# 1. unbound: validating recursive dns server
 #
 #    IF: vars.services.unbound.enable
 #
@@ -21,7 +11,7 @@
 #      53/tcp
 #      53/udp
 #
-# 3. nginx: web server
+# 2. nginx: web server
 #
 #    IF: vars.services.nginx.enable
 #
@@ -30,7 +20,7 @@
 #    lo  ports TO 127.0.0.1:
 #      -
 #
-# 4. searxng: metasearch engine
+# 3. searxng: metasearch engine
 #
 #    IF: vars.services.searxng.enable
 #
@@ -39,7 +29,7 @@
 #    lo  ports TO 127.0.0.1:
 #      8888
 #
-# 5. vaultwarden: password manager
+# 4. vaultwarden: password manager
 #
 #    IF: vars.services.vaultwarden.enable
 #
@@ -48,7 +38,7 @@
 #    lo  ports TO 127.0.0.1:
 #      8222
 #
-# 6. i2pd: invisible internet protocol daemon
+# 5. i2pd: invisible internet protocol daemon
 #
 #    IF: vars.services.i2pd.enable
 #
@@ -59,7 +49,7 @@
 #      4447
 #      7070
 #
-# 7. qbittorrent: bittorrent client
+# 6. qbittorrent: bittorrent client
 #
 #    IF: vars.services.qbt.enable
 #
@@ -68,7 +58,7 @@
 #    lo  ports TO 127.0.0.1:
 #      8080
 #
-# 8. jellyfin: media server
+# 7. jellyfin: media server
 #
 #    IF: vars.services.jellyfin.enable
 #
@@ -85,9 +75,7 @@ let
 
   inherit (lib) ports;
 
-  inherit (config.vars.services)
-    ssh
-    unbound
+  inherit (config.vars.services) # TODO: config.vars.svcvm
     nginx
     searxng
     vaultwarden
@@ -96,30 +84,12 @@ let
     jellyfin
     ;
 
+  inherit (config.svcvm) vms unbound;
+
   o = lib.optionalString;
 in
 {
   networking.firewall = {
-
-    ###########
-    # deny all
-    ###########
-
-    # disallow pings
-    allowPing = false;
-
-    # trust no interfaces
-    trustedInterfaces = lib.mkForce [ ];
-
-    # open zero ports
-    allowedTCPPorts = lib.mkForce [ ];
-    allowedUDPPorts = lib.mkForce [ ];
-    allowedTCPPortRanges = lib.mkForce [ ];
-    allowedUDPPortRanges = lib.mkForce [ ];
-
-    # log refused
-    logRefusedConnections = true;
-    logRefusedPackets = true;
 
     #############
     # open ports
@@ -129,19 +99,16 @@ in
 
       ####################################################################################################################################################################
       #
-      # openssh secure shell daemon
-      #
-
-      (o ssh.enable "ip saddr ${ssh.allow} ip daddr ${address} iifname \"${interface}\" tcp dport ${toString ssh.port} accept")
-
-      ####################################################################################################################################################################
-      #
       # unbound validating recursive dns server
       #
 
-      (o unbound.enable "ip saddr 127.0.0.1 ip daddr 127.0.0.1 iifname \"lo\" tcp dport ${toString ports.unbound.dns} accept")
+      (o (unbound.enable && !vms)
+        "ip saddr 127.0.0.1 ip daddr 127.0.0.1 iifname \"lo\" tcp dport ${toString ports.unbound.dns} accept"
+      )
 
-      (o unbound.enable "ip saddr 127.0.0.1 ip daddr 127.0.0.1 iifname \"lo\" udp dport ${toString ports.unbound.dns} accept")
+      (o (unbound.enable && !vms)
+        "ip saddr 127.0.0.1 ip daddr 127.0.0.1 iifname \"lo\" udp dport ${toString ports.unbound.dns} accept"
+      )
 
       (o unbound.enable "ip saddr ${unbound.allow} ip daddr ${address} iifname \"${interface}\" tcp dport ${toString ports.unbound.dns} accept")
 
