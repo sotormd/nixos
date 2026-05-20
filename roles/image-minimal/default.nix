@@ -1,8 +1,8 @@
-{ inputs, ... }:
+{ self, ... }:
 
 {
   imports = [
     ./configuration.nix
-    inputs.self.nixosModules.profiles.image
+    self.nixosModules.profiles.image
   ];
 }

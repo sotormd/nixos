@@ -1,8 +1,8 @@
-{ inputs, ... }:
+{ self, ... }:
 
 {
   imports = [
-    inputs.self.nixosModules.image-minimal
-    inputs.self.nixosModules.modules.bootstrap.remote
+    self.nixosModules.image-minimal
+    self.nixosModules.modules.bootstrap.remote
   ];
 }

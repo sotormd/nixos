@@ -1,7 +1,7 @@
-{ inputs, ... }:
+{ self, ... }:
 
 let
-  inherit (inputs.self.nixosModules.modules)
+  inherit (self.nixosModules.modules)
     apps
     boot
     core

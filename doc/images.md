@@ -90,13 +90,9 @@ For example, to build a GNOME image with NH enabled.
     nixos-config.url = "github:sotormd/nixos";
   };
 
-  outputs = { self, ... }@inputs: {
+  outputs = inputs: {
     nixosConfigurations.my-gnome-image = inputs.nixpkgs.lib.nixosSystem {
-      specialArgs = {
-        inputs = inputs // {
-          self = inputs.nixos-config;
-        };
-      };
+      specialArgs.self = inputs.nixos-config;
       system = "x86_64-linux";
       modules = [
         inputs.nixos-config.nixosModules.image-gnome
@@ -147,13 +143,9 @@ wireless network:
     nixos-config.url = "github:sotormd/nixos";
   };
 
-  outputs = { self, ... }@inputs: {
+  outputs = inputs: {
     nixosConfigurations.my-remote-sd-image = inputs.nixpkgs.lib.nixosSystem {
-      specialArgs = {
-        inputs = inputs // {
-          self = inputs.nixos-config;
-        };
-      };
+      specialArgs.self = inputs.nixos-config;
       system = "aarch64-linux";
       modules = [
         inputs.nixos-config.nixosModules.image-sd-remote

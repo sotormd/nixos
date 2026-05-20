@@ -1,9 +1,9 @@
-{ inputs, ... }:
+{ self, ... }:
 
 {
   imports = [
     ./configuration.nix
-    inputs.self.nixosModules.modules.bootstrap.graphical
-    inputs.self.nixosModules.profiles.image
+    self.nixosModules.modules.bootstrap.graphical
+    self.nixosModules.profiles.image
   ];
 }

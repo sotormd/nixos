@@ -101,35 +101,31 @@
       profiles = import ./profiles;
 
       # create a machine module
-      mkMachineModule =
-        role:
-        (import ./roles {
-          role = "machine-${role}";
-          inherit inputs;
-        });
+      mkMachineModule = role: (_: { imports = [ ./roles/machine-${role} ]; });
 
       # create a "machine"
       mkMachine =
         role: system:
         inputs.nixpkgs.lib.nixosSystem {
-          specialArgs = { inherit inputs lib legacyVars; };
+          specialArgs = {
+            inherit inputs lib legacyVars;
+            inherit (inputs) self;
+          };
           inherit system;
           modules = [ (mkMachineModule role) ];
         };
 
       # create an image module
-      mkImageModule =
-        role:
-        (import ./roles {
-          role = "image-${role}";
-          inherit inputs;
-        });
+      mkImageModule = role: (_: { imports = [ ./roles/image-${role} ]; });
 
       # create an "image"
       mkImage =
         role: system:
         inputs.nixpkgs.lib.nixosSystem {
-          specialArgs = { inherit inputs lib; };
+          specialArgs = {
+            inherit inputs lib;
+            inherit (inputs) self;
+          };
           inherit system;
           modules = [ (mkImageModule role) ];
         };

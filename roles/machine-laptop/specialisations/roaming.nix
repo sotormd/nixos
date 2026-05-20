@@ -1,5 +1,6 @@
 {
   inputs,
+  self,
   config,
   lib,
   ...
@@ -10,7 +11,7 @@ lib.mkIf (config.vars.modes.roaming.enable && config.vars.features.impermanence.
   specialisation.roaming = {
     inheritParentConfig = true;
     configuration = {
-      imports = [ inputs.self.nixosModules.modules.network.networkmanager ];
+      imports = [ self.nixosModules.modules.network.networkmanager ];
       users.users.${config.vars.user.name}.extraGroups = [ "networkmanager" ];
       environment.sessionVariables.NIXOS_ROLE = lib.mkForce "laptop-mode-roaming";
       systemd.network.networks = lib.mkForce { };

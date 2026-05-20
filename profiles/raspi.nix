@@ -1,7 +1,7 @@
-{ inputs, ... }:
+{ self, ... }:
 
 let
-  inherit (inputs.self.nixosModules.modules) boot network;
+  inherit (self.nixosModules.modules) boot network;
 in
 {
   imports = [

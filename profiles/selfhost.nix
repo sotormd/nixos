@@ -1,7 +1,7 @@
-{ inputs, ... }:
+{ self, ... }:
 
 let
-  inherit (inputs.self.nixosModules.modules) services;
+  inherit (self.nixosModules.modules) services;
 in
 {
   imports = [

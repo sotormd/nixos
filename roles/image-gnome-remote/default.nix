@@ -1,8 +1,8 @@
-{ inputs, ... }:
+{ self, ... }:
 
 {
   imports = [
-    inputs.self.nixosModules.image-gnome
-    inputs.self.nixosModules.modules.bootstrap.remote
+    self.nixosModules.image-gnome
+    self.nixosModules.modules.bootstrap.remote
   ];
 }

@@ -1,4 +1,4 @@
-{ inputs, ... }:
+{ inputs, self, ... }:
 
 {
   imports = [
@@ -10,9 +10,9 @@
     inputs.hosts.nixosModule
     inputs.sops-nix.nixosModules.sops
 
-    inputs.self.nixosModules.profiles.machine
-    inputs.self.nixosModules.profiles.raspi
-    inputs.self.nixosModules.profiles.selfhost
+    self.nixosModules.profiles.machine
+    self.nixosModules.profiles.raspi
+    self.nixosModules.profiles.selfhost
 
   ];
 }

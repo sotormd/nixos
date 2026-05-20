@@ -1,7 +1,7 @@
-{ inputs, ... }:
+{ self, ... }:
 
 let
-  inherit (inputs.self.nixosModules.modules) apps services sway;
+  inherit (self.nixosModules.modules) apps services sway;
 in
 {
   imports = [

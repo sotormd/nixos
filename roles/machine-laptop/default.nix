@@ -1,4 +1,4 @@
-{ inputs, ... }:
+{ inputs, self, ... }:
 
 {
   imports = [
@@ -13,9 +13,9 @@
     inputs.sops-nix.nixosModules.sops
     inputs.wallpapers.nixosModules.wallpapers
 
-    inputs.self.nixosModules.profiles.desktop
-    inputs.self.nixosModules.profiles.machine
-    inputs.self.nixosModules.profiles.workstation
+    self.nixosModules.profiles.desktop
+    self.nixosModules.profiles.machine
+    self.nixosModules.profiles.workstation
 
   ];
 }

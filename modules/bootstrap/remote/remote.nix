@@ -20,7 +20,7 @@
     users.users.nixos.openssh.authorizedKeys.keys = [ config.remote.sshKey ];
 
     networking = {
-      networkmanager.enable = lib.mkForce false;
+      networkmanager.enable = lib.mkOverride 10 false;
 
       wireless = {
         enable = true;

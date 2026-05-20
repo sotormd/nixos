@@ -1,5 +1,6 @@
 {
   inputs,
+  self,
   config,
   lib,
   ...
@@ -16,7 +17,7 @@ lib.mkIf (config.vars.modes.coffee.enable && config.vars.features.impermanence.e
         inputs.coffee.nixosModules.coffee
         inputs.lanzaboote.nixosModules.lanzaboote
         inputs.sops-nix.nixosModules.sops
-        inputs.self.nixosModules.profiles.deskspec
+        self.nixosModules.profiles.deskspec
       ];
       users.users.${config.vars.user.name}.extraGroups = [ "networkmanager" ];
       environment.sessionVariables.NIXOS_ROLE = lib.mkForce "laptop-mode-coffee";

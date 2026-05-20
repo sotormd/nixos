@@ -1,7 +1,7 @@
-{ inputs, ... }:
+{ self, ... }:
 
 let
-  inherit (inputs.self.nixosModules.modules) bootstrap core network;
+  inherit (self.nixosModules.modules) bootstrap core network;
 in
 {
   imports = [
