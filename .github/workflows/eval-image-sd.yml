@@ -16,5 +16,5 @@ jobs:
         uses: DeterminateSystems/nix-installer-action@main
 
       - name: SD image evaluation
-        run: nix eval .#nixosConfigurations.image-sd.config.system.build.toplevel
+        run: nix eval .#nixosConfigurations.image-sd.config.system.build.toplevel --json
 

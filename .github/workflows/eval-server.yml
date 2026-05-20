@@ -34,4 +34,4 @@ jobs:
         run: git add .
 
       - name: Server evaluation
-        run: nix eval .#nixosConfigurations.machine-server.config.system.build.toplevel
+        run: nix eval .#nixosConfigurations.machine-server.config.system.build.toplevel --json
