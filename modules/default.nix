@@ -82,6 +82,9 @@
     # users and other nsswitch options
     boot.users = _: { imports = [ ./boot/users ]; };
 
+    # filesystems for bootstrap
+    bootstrap.fs = _: { imports = [ ./bootstrap/fs ]; };
+
     # graphical settings bootstrap
     bootstrap.graphical = _: { imports = [ ./bootstrap/graphical ]; };
 
@@ -114,6 +117,9 @@
 
     # networkmanager
     network.networkmanager = _: { imports = [ ./network/networkmanager ]; };
+
+    # network is ready
+    network.ready = _: { imports = [ ./network/ready ]; };
 
     # build, sign and copy remote closures
     network.seed = _: { imports = [ ./network/seed ]; };

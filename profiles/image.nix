@@ -5,6 +5,7 @@ let
 in
 {
   imports = [
+    bootstrap.fs
     bootstrap.user
     core.cli
     core.nix

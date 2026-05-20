@@ -36,10 +36,6 @@
     "nvme_core.default_ps_max_latency_us=0"
   ];
 
-  # respect zfs safety stuff
-  boot.zfs.forceImportRoot = false;
-  boot.zfs.forceImportAll = false;
-
   # swap with random encryption
   swapDevices = [
     {

@@ -1,7 +1,6 @@
 {
   config,
   lib,
-  pkgs,
   modulesPath,
   legacyVars,
   ...
@@ -14,10 +13,6 @@
     "xhci_pci"
     "usbhid"
   ];
-
-  # respect zfs safety stuff
-  boot.zfs.forceImportRoot = false;
-  boot.zfs.forceImportAll = false;
 
   # filesystems
   fileSystems = {
@@ -45,43 +40,14 @@
   nix.settings.max-jobs = 1;
   nix.settings.cores = 1;
 
-  # some services dont behave properly on first start
-  systemd.services.service-fix =
-    let
-      service-fix-script = pkgs.writeShellScript "service-fix-script" ''
-        until ${pkgs.iputils}/bin/ping -c1 nixos.org >/dev/null 2>&1; do
-          sleep 2
-        done
-        ${pkgs.systemd}/bin/systemctl restart i2pd
-        ${pkgs.systemd}/bin/systemctl restart qbt
-      '';
-    in
-    {
-      description = "Restart wacky services";
-      wantedBy = [ "multi-user.target" ];
-      wants = [
-        "network-online.target"
-        "ip-link-up.service"
-      ];
-      after = [
-        "network-online.target"
-        "ip-link-up.service"
-      ];
-      serviceConfig = {
-        Type = "oneshot";
-        ExecStart = service-fix-script;
-      };
-    };
-
-  # ensure interface is up before wpa_supplicant starts
-  systemd.services.ip-link-up = {
-    description = "Bring up ${config.vars.wireless.interface} before wpa_supplicant";
-    wantedBy = [ "multi-user.target" ];
-    before = [ "wpa_supplicant-${config.vars.wireless.interface}.service" ];
-    serviceConfig = {
-      Type = "oneshot";
-      ExecStart = "/run/current-system/sw/bin/ip link set ${config.vars.wireless.interface} up";
-    };
+  # some services need to start later
+  systemd.services.i2pd = {
+    wants = [ "svcready.service" ];
+    after = [ "svcready.service" ];
+  };
+  systemd.services.qbt = {
+    wants = [ "svcready.service" ];
+    after = [ "svcready.service" ];
   };
 
   # environment variables

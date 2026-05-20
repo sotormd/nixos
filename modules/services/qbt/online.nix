@@ -6,8 +6,14 @@ in
 lib.mkIf qbt.enable {
 
   systemd.services.qbt = {
-    wants = [ "network-online.target" ];
-    after = [ "network-online.target" ];
+    wants = [
+      "network-online.target"
+      "i2pd.service"
+    ];
+    after = [
+      "network-online.target"
+      "i2pd.service"
+    ];
   };
 
 }

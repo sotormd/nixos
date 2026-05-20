@@ -25,8 +25,4 @@
   programs.gnupg.agent.enable = true;
 
   time.timeZone = "UTC";
-
-  # respect zfs safety stuff
-  boot.zfs.forceImportRoot = false;
-  boot.zfs.forceImportAll = false;
 }
