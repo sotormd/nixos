@@ -930,7 +930,7 @@ service options. For example. `qbt.service` is hardened with these options:
   ProtectKernelModules = true;
   ProtectKernelLogs = true;
   ProtectControlGroups = true;
-  ProtectHome = "read-only";
+  ProtectHome = true;
   ProtectHostname = true;
   SystemCallArchitectures = "native";
   LockPersonality = true;
@@ -1052,11 +1052,10 @@ WPA3 (SAE / dragonfly) is used for wireless authentication on Laptop.
 
 # DNS
 
-The Unbound DNS server hosted on Server.
+The Unbound DNS resolver is hosted on Server.
 
 Additionally, [StevenBlack's host list](http://github.com/StevenBlack/hosts) is
-used to filter domains on Server and in the Brave browser on Laptop. This list
-is also used to block domains in the Unbound DNS server hosted on Server.
+used to sinkhole domains in the Unbound DNS server hosted on Server.
 
 > Server only
 
@@ -1157,11 +1156,10 @@ used:
 
 # Firewall
 
-The NixOS firewall with the `nftables` backend is used. The userspace tool
-`nixos-firewall-tool` can be used for ad-hoc changes.
+The simpler NixOS `networking.firewall` is disabled. `nftables` is used instead.
+The userspace `nft` tool can be used for ad-hoc changes.
 
-By default, **NO** ports are open on **ANY** interface. ICMP ping requests are
-also disallowed. Additionally, **NO** interfaces are trusted, not even loopback.
+By default, **NO** ports are open on **ANY** interface, not even loopback.
 
 Ports are opened on loopback / LAN based on the variables and enabled services.
 
@@ -1175,6 +1173,33 @@ only `10.0.0.100` and `10.0.0.101` are allowed.
 Additionally, the services reverse-proxied via the variables file are also
 restricted using NGINX. See [NGINX](#nginx) for more information.
 
+Base firewall rules:
+
+```
+flush ruleset
+table inet filter {
+    chain input {
+        type filter hook input priority filter; policy drop;
+        ct state invalid drop
+        tcp flags & (fin|syn|rst|ack) != syn ct state new drop
+
+        iifname "${interface}" ct state established,related accept
+        iifname "lo" ct state established,related accept
+        ${services}
+    }
+
+    chain forward {
+        type filter hook forward priority filter; policy drop;
+    }
+
+    chain output {
+        type filter hook output priority filter; policy accept;
+    }
+}
+```
+
+Service rules:
+
 > Laptop only
 
 Ports are open based on the enabled services (only SSH). See
@@ -1186,6 +1211,10 @@ Ports are opened for the following services:
 
    - TCP `vars.services.ssh.port` is open on LAN to the private CIDR defined by
      `vars.services.ssh.allow`
+
+     ```nix
+     (o ssh.enable "ip saddr ${ssh.allow} ip daddr ${address} iifname \"${interface}\" tcp dport ${toString ssh.port} accept")
+     ```
 
 > Server only
 
@@ -1199,43 +1228,105 @@ Ports are opened for the following services:
    - TCP `vars.services.ssh.port` is open on LAN to the private CIDR defined by
      `vars.services.ssh.allow`
 
+     ```nix
+     (o ssh.enable "ip saddr ${ssh.allow} ip daddr ${address} iifname \"${interface}\" tcp dport ${toString ssh.port} accept")
+     ```
+
 2. Unbound, if enabled using `vars.services.unbound.enable`:
 
    - TCP `53` is open on LAN to the private CIDR defined by
      `vars.services.unbound.allow`
+
+     ```nix
+     (o unbound.enable "ip saddr ${unbound.allow} ip daddr ${address} iifname \"${interface}\" tcp dport ${toString ports.unbound.dns} accept")
+     ```
+
    - UDP `53` is open on LAN to the private CIDR defined by
      `vars.services.unbound.allow`
+
+     ```nix
+     (o unbound.enable "ip saddr ${unbound.allow} ip daddr ${address} iifname \"${interface}\" udp dport ${toString ports.unbound.dns} accept")
+     ```
+
    - TCP `53` is open on loopback to `127.0.0.1`
+
+     ```nix
+     (o unbound.enable "ip saddr 127.0.0.1 ip daddr 127.0.0.1 iifname \"lo\" tcp dport ${toString ports.unbound.dns} accept")
+     ```
+
    - UDP `53` is open on loopback to `127.0.0.1`
+
+     ```nix
+     (o unbound.enable "ip saddr 127.0.0.1 ip daddr 127.0.0.1 iifname \"lo\" udp dport ${toString ports.unbound.dns} accept")
+     ```
 
 3. NGINX, if enabled using `vars.services.nginx.enable`:
 
    - TCP `443` is open on LAN to the private CIDR defined by
      `vars.services.nginx.allow`
 
+     ```nix
+     (o nginx.enable "ip saddr ${nginx.allow} ip daddr ${address} iifname \"${interface}\" tcp dport ${toString ports.nginx.https} accept")
+     ```
+
 4. SearXNG, if enabled using `vars.services.searxng.enable`:
 
    - TCP `8888` is open on loopback to `127.0.0.1`
+
+     ```nix
+     (o searxng.enable "ip saddr 127.0.0.1 ip daddr 127.0.0.1 iifname \"lo\" tcp dport ${toString ports.searxng.search-engine} accept")
+     ```
 
 5. Vaultwarden, if enabled using `vars.services.vaultwarden.enable`:
 
    - TCP `8222` is open on loopback to `127.0.0.1`
 
+     ```nix
+     (o vaultwarden.enable "ip saddr 127.0.0.1 ip daddr 127.0.0.1 iifname \"lo\" tcp dport ${toString ports.vaultwarden.web-vault} accept")
+     ```
+
 6. I2PD, if enabled using `vars.services.i2pd.enable`:
 
    - TCP `4444` is open on LAN to the private CIDR defined by
      `vars.services.i2pd.allow`
+
+     ```nix
+     (o i2pd.enable "ip saddr ${i2pd.allow} ip daddr ${address} iifname \"${interface}\" tcp dport ${toString ports.i2pd.http-proxy} accept")
+     ```
+
    - TCP `7656` is open on loopback to `127.0.0.1`
+
+     ```nix
+     (o i2pd.enable "ip saddr 127.0.0.1 ip daddr 127.0.0.1 iifname \"lo\" tcp dport ${toString ports.i2pd.sam} accept")
+     ```
+
    - TCP `4447` is open on loopback to `127.0.0.1`
+
+     ```nix
+     (o i2pd.enable "ip saddr 127.0.0.1 ip daddr 127.0.0.1 iifname \"lo\" tcp dport ${toString ports.i2pd.socks-proxy} accept")
+     ```
+
    - TCP `7070` is open on loopback to `127.0.0.1`
+
+     ```nix
+     (o i2pd.enable "ip saddr 127.0.0.1 ip daddr 127.0.0.1 iifname \"lo\" tcp dport ${toString ports.i2pd.web-console} accept")
+     ```
 
 7. qBittorrent, if enabled using `vars.services.qbt.enable`:
 
    - TCP `8080` is open on loopback to `127.0.0.1`
 
+     ```nix
+     (o qbt.enable "ip saddr 127.0.0.1 ip daddr 127.0.0.1 iifname \"lo\" tcp dport ${toString ports.qbt.web-ui} accept")
+     ```
+
 8. Jellyfin, if enabled using `vars.services.jellyfin.enable`:
 
    - TCP `8096` is open on loopback to `127.0.0.1`
+
+     ```nix
+     (o jellyfin.enable "ip saddr 127.0.0.1 ip daddr 127.0.0.1 iifname \"lo\" tcp dport ${toString ports.jellyfin.web-interface} accept")
+     ```
 
 # MAC Randomization
 
