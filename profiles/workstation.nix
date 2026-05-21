@@ -11,6 +11,9 @@ in
 {
   imports = [
     apps.cpufreq
+    apps.dev
+    apps.git
+    apps.sandbox
     boot.emulated
     boot.secureboot
     boot.systemd-boot
