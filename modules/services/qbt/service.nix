@@ -12,7 +12,9 @@ in
 lib.mkIf qbt.enable {
 
   systemd.services.qbt = {
+    enable = true;
     description = "qbittorrent-nox service";
+    wantedBy = [ "multi-user.target" ];
 
     serviceConfig = {
       Type = "simple";
@@ -26,7 +28,7 @@ lib.mkIf qbt.enable {
       ProtectKernelModules = true;
       ProtectKernelLogs = true;
       ProtectControlGroups = true;
-      ProtectHome = "read-only";
+      ProtectHome = true;
       ProtectHostname = true;
       SystemCallArchitectures = "native";
       LockPersonality = true;

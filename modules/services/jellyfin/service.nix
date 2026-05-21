@@ -54,20 +54,6 @@ lib.mkIf jellyfin.enable {
     serviceConfig = {
       Type = "oneshot";
       ExecStart = "${jellyfinSetup}";
-      ProtectClock = true;
-      ProtectKernelTunables = true;
-      ProtectKernelModules = true;
-      ProtectKernelLogs = true;
-      ProtectControlGroups = true;
-      ProtectHome = "read-only";
-      ProtectHostname = true;
-      SystemCallArchitectures = "native";
-      LockPersonality = true;
-      NoNewPrivileges = true;
-      PrivateDevices = true;
-      PrivateTmp = true;
-      RestrictRealtime = true;
-      RestrictSUIDSGID = true;
     };
   };
 

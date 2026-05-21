@@ -24,7 +24,7 @@ lib.mkIf nginx.enable {
 
   systemd.tmpfiles.rules = [
     "d /var/lib/acme 750 acme acme -"
-    "Z /var/lib/acme - acme acme -"
+    "Z /var/lib/acme 750 acme acme -"
   ];
 
   users.users.nginx.extraGroups = [ "acme" ];
