@@ -4,6 +4,10 @@ Bootstrap process for the Laptop role.
 
 Before proceeding, see [Laptop Requirements](./requirements.md).
 
+> Keep in mind that this is my personal configuration for my personal devices.
+> It is not meant to be used in other places and will most likely not work.
+> Documentation is written to help me setup new devices in the future.
+
 # Contents
 
 1. [Obtaining a Live NixOS Image](#obtaining-a-live-nixos-image)

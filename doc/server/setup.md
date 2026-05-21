@@ -4,6 +4,10 @@ Bootstrap process for the Server role.
 
 Before proceeding, see [Server Requirements](./requirements.md).
 
+> Keep in mind that this is my personal configuration for my personal devices.
+> It is not meant to be used in other places and will most likely not work.
+> Documentation is written to help me setup new devices in the future.
+
 # Contents
 
 1. [Obtaining a NixOS Image](#obtaining-a-nixos-image)
