@@ -1244,26 +1244,26 @@ Ports are opened for the following services:
      `vars.services.unbound.allow`
 
      ```nix
-     "ip saddr ${unbound.allow} ip daddr ${address} iifname \"${interface}\" tcp dport ${toString ports.unbound.dns} accept"
+     "ip saddr ${unbound.allow} ip daddr ${address} iifname \"${interface}\" tcp dport 53 accept"
      ```
 
    - UDP `53` is open on LAN to the private CIDR defined by
      `vars.services.unbound.allow`
 
      ```nix
-     "ip saddr ${unbound.allow} ip daddr ${address} iifname \"${interface}\" udp dport ${toString ports.unbound.dns} accept"
+     "ip saddr ${unbound.allow} ip daddr ${address} iifname \"${interface}\" udp dport 53 accept"
      ```
 
    - TCP `53` is open on loopback to `127.0.0.1`
 
      ```nix
-     "ip saddr 127.0.0.1 ip daddr 127.0.0.1 iifname \"lo\" tcp dport ${toString ports.unbound.dns} accept"
+     "ip saddr 127.0.0.1 ip daddr 127.0.0.1 iifname \"lo\" tcp dport 53 accept"
      ```
 
    - UDP `53` is open on loopback to `127.0.0.1`
 
      ```nix
-     "ip saddr 127.0.0.1 ip daddr 127.0.0.1 iifname \"lo\" udp dport ${toString ports.unbound.dns} accept"
+     "ip saddr 127.0.0.1 ip daddr 127.0.0.1 iifname \"lo\" udp dport 53 accept"
      ```
 
 3. NGINX, if enabled using `vars.services.nginx.enable`:
@@ -1272,7 +1272,7 @@ Ports are opened for the following services:
      `vars.services.nginx.allow`
 
      ```nix
-     "ip saddr ${nginx.allow} ip daddr ${address} iifname \"${interface}\" tcp dport ${toString ports.nginx.https} accept"
+     "ip saddr ${nginx.allow} ip daddr ${address} iifname \"${interface}\" tcp dport 443 accept"
      ```
 
 4. SearXNG, if enabled using `vars.services.searxng.enable`:
@@ -1280,7 +1280,7 @@ Ports are opened for the following services:
    - TCP `8888` is open on loopback to `127.0.0.1`
 
      ```nix
-     "ip saddr 127.0.0.1 ip daddr 127.0.0.1 iifname \"lo\" tcp dport ${toString ports.searxng.search-engine} accept"
+     "ip saddr 127.0.0.1 ip daddr 127.0.0.1 iifname \"lo\" tcp dport 8888 accept"
      ```
 
 5. Vaultwarden, if enabled using `vars.services.vaultwarden.enable`:
@@ -1288,7 +1288,7 @@ Ports are opened for the following services:
    - TCP `8222` is open on loopback to `127.0.0.1`
 
      ```nix
-     "ip saddr 127.0.0.1 ip daddr 127.0.0.1 iifname \"lo\" tcp dport ${toString ports.vaultwarden.web-vault} accept"
+     "ip saddr 127.0.0.1 ip daddr 127.0.0.1 iifname \"lo\" tcp dport 8222 accept"
      ```
 
 6. I2PD, if enabled using `vars.services.i2pd.enable`:
@@ -1297,25 +1297,25 @@ Ports are opened for the following services:
      `vars.services.i2pd.allow`
 
      ```nix
-     "ip saddr ${i2pd.allow} ip daddr ${address} iifname \"${interface}\" tcp dport ${toString ports.i2pd.http-proxy} accept"
+     "ip saddr ${i2pd.allow} ip daddr ${address} iifname \"${interface}\" tcp dport 4444 accept"
      ```
 
    - TCP `7656` is open on loopback to `127.0.0.1`
 
      ```nix
-     "ip saddr 127.0.0.1 ip daddr 127.0.0.1 iifname \"lo\" tcp dport ${toString ports.i2pd.sam} accept"
+     "ip saddr 127.0.0.1 ip daddr 127.0.0.1 iifname \"lo\" tcp dport 7656 accept"
      ```
 
    - TCP `4447` is open on loopback to `127.0.0.1`
 
      ```nix
-     "ip saddr 127.0.0.1 ip daddr 127.0.0.1 iifname \"lo\" tcp dport ${toString ports.i2pd.socks-proxy} accept"
+     "ip saddr 127.0.0.1 ip daddr 127.0.0.1 iifname \"lo\" tcp dport 4447 accept"
      ```
 
    - TCP `7070` is open on loopback to `127.0.0.1`
 
      ```nix
-     "ip saddr 127.0.0.1 ip daddr 127.0.0.1 iifname \"lo\" tcp dport ${toString ports.i2pd.web-console} accept"
+     "ip saddr 127.0.0.1 ip daddr 127.0.0.1 iifname \"lo\" tcp dport 7070 accept"
      ```
 
 7. qBittorrent, if enabled using `vars.services.qbt.enable`:
@@ -1323,7 +1323,7 @@ Ports are opened for the following services:
    - TCP `8080` is open on loopback to `127.0.0.1`
 
      ```nix
-     "ip saddr 127.0.0.1 ip daddr 127.0.0.1 iifname \"lo\" tcp dport ${toString ports.qbt.web-ui} accept"
+     "ip saddr 127.0.0.1 ip daddr 127.0.0.1 iifname \"lo\" tcp dport 8080 accept"
      ```
 
 8. Jellyfin, if enabled using `vars.services.jellyfin.enable`:
@@ -1331,7 +1331,7 @@ Ports are opened for the following services:
    - TCP `8096` is open on loopback to `127.0.0.1`
 
      ```nix
-     "ip saddr 127.0.0.1 ip daddr 127.0.0.1 iifname \"lo\" tcp dport ${toString ports.jellyfin.web-interface} accept"
+     "ip saddr 127.0.0.1 ip daddr 127.0.0.1 iifname \"lo\" tcp dport 8096 accept"
      ```
 
 # MAC Randomization
