@@ -599,6 +599,12 @@ Several kernel parameters are used to harden the kernel. They are covered below:
     vm.mmap_rnd_bits=32
     ```
 
+    > Server only
+
+    ```
+    vm.mmap_rnd_bits=33
+    ```
+
 33. do not print unnecessary things during boot
 
     ```
@@ -1213,7 +1219,7 @@ Ports are opened for the following services:
      `vars.services.ssh.allow`
 
      ```nix
-     (o ssh.enable "ip saddr ${ssh.allow} ip daddr ${address} iifname \"${interface}\" tcp dport ${toString ssh.port} accept")
+     "ip saddr ${ssh.allow} ip daddr ${address} iifname \"${interface}\" tcp dport ${toString ssh.port} accept"
      ```
 
 > Server only
@@ -1229,7 +1235,7 @@ Ports are opened for the following services:
      `vars.services.ssh.allow`
 
      ```nix
-     (o ssh.enable "ip saddr ${ssh.allow} ip daddr ${address} iifname \"${interface}\" tcp dport ${toString ssh.port} accept")
+     "ip saddr ${ssh.allow} ip daddr ${address} iifname \"${interface}\" tcp dport ${toString ssh.port} accept"
      ```
 
 2. Unbound, if enabled using `vars.services.unbound.enable`:
@@ -1238,26 +1244,26 @@ Ports are opened for the following services:
      `vars.services.unbound.allow`
 
      ```nix
-     (o unbound.enable "ip saddr ${unbound.allow} ip daddr ${address} iifname \"${interface}\" tcp dport ${toString ports.unbound.dns} accept")
+     "ip saddr ${unbound.allow} ip daddr ${address} iifname \"${interface}\" tcp dport ${toString ports.unbound.dns} accept"
      ```
 
    - UDP `53` is open on LAN to the private CIDR defined by
      `vars.services.unbound.allow`
 
      ```nix
-     (o unbound.enable "ip saddr ${unbound.allow} ip daddr ${address} iifname \"${interface}\" udp dport ${toString ports.unbound.dns} accept")
+     "ip saddr ${unbound.allow} ip daddr ${address} iifname \"${interface}\" udp dport ${toString ports.unbound.dns} accept"
      ```
 
    - TCP `53` is open on loopback to `127.0.0.1`
 
      ```nix
-     (o unbound.enable "ip saddr 127.0.0.1 ip daddr 127.0.0.1 iifname \"lo\" tcp dport ${toString ports.unbound.dns} accept")
+     "ip saddr 127.0.0.1 ip daddr 127.0.0.1 iifname \"lo\" tcp dport ${toString ports.unbound.dns} accept"
      ```
 
    - UDP `53` is open on loopback to `127.0.0.1`
 
      ```nix
-     (o unbound.enable "ip saddr 127.0.0.1 ip daddr 127.0.0.1 iifname \"lo\" udp dport ${toString ports.unbound.dns} accept")
+     "ip saddr 127.0.0.1 ip daddr 127.0.0.1 iifname \"lo\" udp dport ${toString ports.unbound.dns} accept"
      ```
 
 3. NGINX, if enabled using `vars.services.nginx.enable`:
@@ -1266,7 +1272,7 @@ Ports are opened for the following services:
      `vars.services.nginx.allow`
 
      ```nix
-     (o nginx.enable "ip saddr ${nginx.allow} ip daddr ${address} iifname \"${interface}\" tcp dport ${toString ports.nginx.https} accept")
+     "ip saddr ${nginx.allow} ip daddr ${address} iifname \"${interface}\" tcp dport ${toString ports.nginx.https} accept"
      ```
 
 4. SearXNG, if enabled using `vars.services.searxng.enable`:
@@ -1274,7 +1280,7 @@ Ports are opened for the following services:
    - TCP `8888` is open on loopback to `127.0.0.1`
 
      ```nix
-     (o searxng.enable "ip saddr 127.0.0.1 ip daddr 127.0.0.1 iifname \"lo\" tcp dport ${toString ports.searxng.search-engine} accept")
+     "ip saddr 127.0.0.1 ip daddr 127.0.0.1 iifname \"lo\" tcp dport ${toString ports.searxng.search-engine} accept"
      ```
 
 5. Vaultwarden, if enabled using `vars.services.vaultwarden.enable`:
@@ -1282,7 +1288,7 @@ Ports are opened for the following services:
    - TCP `8222` is open on loopback to `127.0.0.1`
 
      ```nix
-     (o vaultwarden.enable "ip saddr 127.0.0.1 ip daddr 127.0.0.1 iifname \"lo\" tcp dport ${toString ports.vaultwarden.web-vault} accept")
+     "ip saddr 127.0.0.1 ip daddr 127.0.0.1 iifname \"lo\" tcp dport ${toString ports.vaultwarden.web-vault} accept"
      ```
 
 6. I2PD, if enabled using `vars.services.i2pd.enable`:
@@ -1291,25 +1297,25 @@ Ports are opened for the following services:
      `vars.services.i2pd.allow`
 
      ```nix
-     (o i2pd.enable "ip saddr ${i2pd.allow} ip daddr ${address} iifname \"${interface}\" tcp dport ${toString ports.i2pd.http-proxy} accept")
+     "ip saddr ${i2pd.allow} ip daddr ${address} iifname \"${interface}\" tcp dport ${toString ports.i2pd.http-proxy} accept"
      ```
 
    - TCP `7656` is open on loopback to `127.0.0.1`
 
      ```nix
-     (o i2pd.enable "ip saddr 127.0.0.1 ip daddr 127.0.0.1 iifname \"lo\" tcp dport ${toString ports.i2pd.sam} accept")
+     "ip saddr 127.0.0.1 ip daddr 127.0.0.1 iifname \"lo\" tcp dport ${toString ports.i2pd.sam} accept"
      ```
 
    - TCP `4447` is open on loopback to `127.0.0.1`
 
      ```nix
-     (o i2pd.enable "ip saddr 127.0.0.1 ip daddr 127.0.0.1 iifname \"lo\" tcp dport ${toString ports.i2pd.socks-proxy} accept")
+     "ip saddr 127.0.0.1 ip daddr 127.0.0.1 iifname \"lo\" tcp dport ${toString ports.i2pd.socks-proxy} accept"
      ```
 
    - TCP `7070` is open on loopback to `127.0.0.1`
 
      ```nix
-     (o i2pd.enable "ip saddr 127.0.0.1 ip daddr 127.0.0.1 iifname \"lo\" tcp dport ${toString ports.i2pd.web-console} accept")
+     "ip saddr 127.0.0.1 ip daddr 127.0.0.1 iifname \"lo\" tcp dport ${toString ports.i2pd.web-console} accept"
      ```
 
 7. qBittorrent, if enabled using `vars.services.qbt.enable`:
@@ -1317,7 +1323,7 @@ Ports are opened for the following services:
    - TCP `8080` is open on loopback to `127.0.0.1`
 
      ```nix
-     (o qbt.enable "ip saddr 127.0.0.1 ip daddr 127.0.0.1 iifname \"lo\" tcp dport ${toString ports.qbt.web-ui} accept")
+     "ip saddr 127.0.0.1 ip daddr 127.0.0.1 iifname \"lo\" tcp dport ${toString ports.qbt.web-ui} accept"
      ```
 
 8. Jellyfin, if enabled using `vars.services.jellyfin.enable`:
@@ -1325,7 +1331,7 @@ Ports are opened for the following services:
    - TCP `8096` is open on loopback to `127.0.0.1`
 
      ```nix
-     (o jellyfin.enable "ip saddr 127.0.0.1 ip daddr 127.0.0.1 iifname \"lo\" tcp dport ${toString ports.jellyfin.web-interface} accept")
+     "ip saddr 127.0.0.1 ip daddr 127.0.0.1 iifname \"lo\" tcp dport ${toString ports.jellyfin.web-interface} accept"
      ```
 
 # MAC Randomization
