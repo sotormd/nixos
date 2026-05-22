@@ -426,31 +426,39 @@ Several kernel parameters are used to harden the kernel. They are covered below:
     kernel.ftrace_enabled=0
     ```
 
-12. prevent auto loading line disciplines for tty
+12. disable io_uring
+
+    https://security.googleblog.com/2023/06/learnings-from-kctf-vrps-42-linux.html
+
+    ```
+    kernel.io_uring_disabled=2
+    ```
+
+13. prevent auto loading line disciplines for tty
 
     ```
     dev.tty.ldisc_autoload=0
     ```
 
-13. disable core dumps for setuid programs
+14. disable core dumps for setuid programs
 
     ```
     fs.suid_dumpable=0
     ```
 
-14. restrict creation of hard links to files owned by other users
+15. restrict creation of hard links to files owned by other users
 
     ```
     fs.protected_hardlinks=1
     ```
 
-15. restrict creation of symlinks to files owned by other users
+16. restrict creation of symlinks to files owned by other users
 
     ```
     fs.protected_symlinks=1
     ```
 
-16. controls permissions for named pipes
+17. controls permissions for named pipes
 
     only owner of the FIFO can write to it
 
@@ -458,20 +466,20 @@ Several kernel parameters are used to harden the kernel. They are covered below:
     fs.protected_fifos=2
     ```
 
-17. restrict access to regular files by non-root users if the file is owned by
+18. restrict access to regular files by non-root users if the file is owned by
     another user
 
     ```
     fs.protected_regular=2
     ```
 
-18. disable the berkeley packet filter JIT
+19. disable the berkeley packet filter JIT
 
     ```
     net.core.bpf_jit_enable=0
     ```
 
-19. enable JIT hardening techniques like constant blinding
+20. enable JIT hardening techniques like constant blinding
 
     note that JIT is disabled anyways
 
@@ -479,19 +487,19 @@ Several kernel parameters are used to harden the kernel. They are covered below:
     net.core.bpf_jit_harden=2
     ```
 
-20. protect against SYN flood attacks
+21. protect against SYN flood attacks
 
     ```
     net.ipv4.tcp_syncookies=1
     ```
 
-21. protect against time-wait assassination by dropping RST packets
+22. protect against time-wait assassination by dropping RST packets
 
     ```
     net.ipv4.tcp_rfc1337=1
     ```
 
-22. enable source validation of received packets from all interfaces
+23. enable source validation of received packets from all interfaces
 
     protect against IP spoofing
 
@@ -500,7 +508,7 @@ Several kernel parameters are used to harden the kernel. They are covered below:
     net.ipv4.conf.default.rp_filter=1
     ```
 
-23. disable ICMP redirect acceptance and sending
+24. disable ICMP redirect acceptance and sending
 
     prevent MITM attacks
 
@@ -515,7 +523,7 @@ Several kernel parameters are used to harden the kernel. They are covered below:
     net.ipv6.conf.default.accept_redirects=0
     ```
 
-24. ignore all ICMP requests
+25. ignore all ICMP requests
 
     prevent smurf attacks and clock fingerprinting
 
@@ -524,7 +532,7 @@ Several kernel parameters are used to harden the kernel. They are covered below:
     net.ipv4.icmp_echo_ignore_broadcasts=1
     ```
 
-25. disable source routing
+26. disable source routing
 
     prevent MITM attacks
 
@@ -535,7 +543,7 @@ Several kernel parameters are used to harden the kernel. They are covered below:
     net.ipv6.conf.default.accept_source_route=0
     ```
 
-26. disable TCP SACK
+27. disable TCP SACK
 
     commonly exploited and mostly unnecessary
 
@@ -545,14 +553,14 @@ Several kernel parameters are used to harden the kernel. They are covered below:
     net.ipv4.tcp_fack=0
     ```
 
-27. log martian packets
+28. log martian packets
 
     ```
     net.ipv4.conf.all.log_martians=1
     net.ipv4.conf.default.log_martians=1
     ```
 
-28. disable IPv6 router advertisements
+29. disable IPv6 router advertisements
 
     prevent MITM attacks
 
@@ -561,7 +569,7 @@ Several kernel parameters are used to harden the kernel. They are covered below:
     net.ipv6.conf.default.accept_ra=0
     ```
 
-29. generate a random IPv6 address every time
+30. generate a random IPv6 address every time
 
     IPv6 addresses are tied to MAC address, making them unique for each device
 
@@ -570,7 +578,7 @@ Several kernel parameters are used to harden the kernel. They are covered below:
     net.ipv6.conf.default.use_tempaddr=2
     ```
 
-30. disable tcp timestamps
+31. disable tcp timestamps
 
     tcp timestamps leak the system time
 
@@ -581,13 +589,13 @@ Several kernel parameters are used to harden the kernel. They are covered below:
     net.ipv4.tcp_timestamps=0
     ```
 
-31. disable the often-abused userfaultfd() syscall
+32. disable the often-abused userfaultfd() syscall
 
     ```
     vm.unprivileged_userfaultfd=0
     ```
 
-32. increase bits of entropy used for mmap ASLR
+33. increase bits of entropy used for mmap ASLR
 
     ```
     vm.mmap_rnd_compat_bits=16
@@ -605,7 +613,7 @@ Several kernel parameters are used to harden the kernel. They are covered below:
     vm.mmap_rnd_bits=33
     ```
 
-33. do not print unnecessary things during boot
+34. do not print unnecessary things during boot
 
     ```
     kernel.printk="3 3 3 3"

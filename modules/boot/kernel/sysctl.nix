@@ -38,6 +38,10 @@
     # disable function tracing
     "kernel.ftrace_enabled" = lib.mkForce "0";
 
+    # disable io_uring
+    # https://security.googleblog.com/2023/06/learnings-from-kctf-vrps-42-linux.html
+    "kernel.io_uring_disabled" = lib.mkForce "2";
+
     # prevent auto loading line disciplines for tty
     "dev.tty.ldisc_autoload" = lib.mkForce "0";
 
