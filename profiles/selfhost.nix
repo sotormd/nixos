@@ -10,7 +10,6 @@ in
     services.nginx
     services.qbt
     services.searxng
-    services.unbound
     services.vaultwarden
   ];
 }

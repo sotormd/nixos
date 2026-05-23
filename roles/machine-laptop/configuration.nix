@@ -128,6 +128,8 @@
   boot.kernel.sysctl = {
     # increase bits of entropy used for mmap ASLR
     "vm.mmap_rnd_bits" = lib.mkForce "32";
+    # laptop doesnt need to forward packets
+    "net.ipv4.ip_forward" = lib.mkForce "0";
   };
 
   # environment variables

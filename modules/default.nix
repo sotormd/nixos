@@ -124,9 +124,6 @@
     # build, sign and copy remote closures
     network.seed = _: { imports = [ ./network/seed ]; };
 
-    # stevenblack's host lists
-    network.stevenblack = _: { imports = [ ./network/stevenblack ]; };
-
     # wpa_supplicant wireless networking
     network.wireless = _: { imports = [ ./network/wireless ]; };
 
@@ -172,9 +169,6 @@
     # systemd-timesyncd ntp
     services.timesyncd = _: { imports = [ ./services/timesyncd ]; };
 
-    # unbound validating recursive dns server
-    services.unbound = _: { imports = [ ./services/unbound ]; };
-
     # usbguard daemon
     services.usbguard = _: { imports = [ ./services/usbguard ]; };
 
@@ -183,6 +177,9 @@
 
     # waydroid android container
     services.waydroid = _: { imports = [ ./services/waydroid ]; };
+
+    # unbound validating recursive dns server
+    svcvm.unbound = _: { imports = [ ./svcvm/unbound ]; };
 
     # kiosk-style compositor
     sway.cage = _: { imports = [ ./sway/cage ]; };

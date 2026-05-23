@@ -54,6 +54,8 @@
   boot.kernel.sysctl = {
     # increase bits of entropy used for mmap ASLR
     "vm.mmap_rnd_bits" = lib.mkForce "33";
+    # server needs to forward packets
+    "net.ipv4.ip_forward" = lib.mkForce "1";
   };
 
   # environment variables

@@ -1,14 +1,13 @@
-{ config, lib, ... }:
+{ config, ... }:
 
 let
-  inherit (config.vars.services) unbound;
+  inherit (config.svcfg) unbound;
 in
-lib.mkIf unbound.enable {
-
+{
   services.unbound.settings.server = {
 
-    # extra entries
-    inherit (unbound) local-data;
+    # extra entries, private address enforcement and resolver access control
+    inherit (unbound) local-data private-address access-control;
 
     # disable ipv6
     prefer-ip6 = "no";
@@ -59,12 +58,6 @@ lib.mkIf unbound.enable {
 
     # use random bits in the query to foil spoof attempts
     use-caps-for-id = "yes";
-
-    # enforce privacy of local ip range
-    private-address = unbound.allow;
-
-    # access control
-    access-control = [ "${unbound.allow} allow" ];
 
   };
 

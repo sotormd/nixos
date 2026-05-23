@@ -7,6 +7,5 @@ in
   imports = [
     boot.uboot
     network.ready
-    network.stevenblack
   ];
 }

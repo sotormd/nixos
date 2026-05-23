@@ -1,13 +1,6 @@
-{
-  inputs,
-  config,
-  lib,
-  ...
-}:
+{ inputs, lib, ... }:
 
 let
-  inherit (config.vars.services) unbound;
-
   hosts = builtins.readFile "${inputs.hosts.outPath}/alternates/fakenews-gambling-porn/hosts";
 
   block_hosts = lib.filter (
@@ -20,11 +13,9 @@ let
 
   unboundLocalData = lib.map (d: ''"${d}. IN A 0.0.0.0"'') block_domains;
 in
-lib.mkIf unbound.enable {
-
+{
   services.unbound.settings = {
     local-zone = unboundLocalZone;
     local-data = unboundLocalData;
   };
-
 }

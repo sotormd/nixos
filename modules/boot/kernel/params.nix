@@ -85,6 +85,10 @@
     # can increase memory usage, especially with KVM-based hypervisors
     "kvm.nx_huge_pages=force"
 
+    # disable ipv6
+    # i dont need this
+    "ipv6.disable=1"
+
     # disable hyperthreading - for both amd and intel
     # also disable TSX and mitigate TAA - mostly for intel
     # also mitigate speculative execution vulnerabilities - mostly for intel
@@ -95,4 +99,6 @@
     #"l1tf=full,force"
     #"mds=full,nosmt"
   ];
+
+  networking.enableIPv6 = false;
 }

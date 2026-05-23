@@ -3,7 +3,7 @@
 let
   inherit (config.vars.wireless) interface address;
 
-  inherit (lib) ports;
+  inherit (lib) ports addresses ifaces;
 
   inherit (config.vars.services)
     ssh
@@ -18,111 +18,151 @@ let
 
   o = lib.optionalString;
 
-  services = lib.concatStringsSep "\n" (
-    lib.filter (s: s != "") [
+  mkRules = rules: lib.concatStringsSep "\n" (lib.filter (s: s != "") rules);
 
-      ####################################################################################################################################################################
-      #
-      # LOOPBACK PORTS
-      #
+  ####################################################################################################################################################################
+  #
+  # LOOPBACK SERVICES
+  #
 
-      #
-      # openssh secure shell daemon
-      #
+  lo-services = mkRules [
 
-      (o ssh.enable "ip saddr ${ssh.allow} ip daddr ${address} iifname \"${interface}\" tcp dport ${toString ssh.port} accept")
+    (o ssh.enable "ip saddr ${ssh.allow} ip daddr ${address} iifname \"${interface}\" tcp dport ${toString ssh.port} ct state new accept")
 
-      #
-      # unbound validating recursive dns server
-      #
+    (o searxng.enable "ip saddr 127.0.0.1 ip daddr 127.0.0.1 iifname \"lo\" tcp dport ${toString ports.searxng.search-engine} ct state new accept")
 
-      (o unbound.enable "ip saddr 127.0.0.1 ip daddr 127.0.0.1 iifname \"lo\" tcp dport ${toString ports.unbound.dns} accept")
+    (o vaultwarden.enable "ip saddr 127.0.0.1 ip daddr 127.0.0.1 iifname \"lo\" tcp dport ${toString ports.vaultwarden.web-vault} ct state new accept")
 
-      (o unbound.enable "ip saddr 127.0.0.1 ip daddr 127.0.0.1 iifname \"lo\" udp dport ${toString ports.unbound.dns} accept")
+    (o i2pd.enable "ip saddr 127.0.0.1 ip daddr 127.0.0.1 iifname \"lo\" tcp dport ${toString ports.i2pd.sam} ct state new accept")
+    (o i2pd.enable "ip saddr 127.0.0.1 ip daddr 127.0.0.1 iifname \"lo\" tcp dport ${toString ports.i2pd.socks-proxy} ct state new accept")
+    (o i2pd.enable "ip saddr 127.0.0.1 ip daddr 127.0.0.1 iifname \"lo\" tcp dport ${toString ports.i2pd.web-console} ct state new accept")
 
-      #
-      # searxng metasearch engine
-      #
+    (o qbt.enable "ip saddr 127.0.0.1 ip daddr 127.0.0.1 iifname \"lo\" tcp dport ${toString ports.qbt.web-ui} ct state new accept")
 
-      (o searxng.enable "ip saddr 127.0.0.1 ip daddr 127.0.0.1 iifname \"lo\" tcp dport ${toString ports.searxng.search-engine} accept")
+    (o jellyfin.enable "ip saddr 127.0.0.1 ip daddr 127.0.0.1 iifname \"lo\" tcp dport ${toString ports.jellyfin.web-interface} ct state new accept")
 
-      #
-      # vaultwarden password manager
-      #
+  ];
 
-      (o vaultwarden.enable "ip saddr 127.0.0.1 ip daddr 127.0.0.1 iifname \"lo\" tcp dport ${toString ports.vaultwarden.web-vault} accept")
+  ####################################################################################################################################################################
+  #
+  # LAN SERVICES
+  #
 
-      #
-      # i2pd invisible internet protocol daemon
-      #
+  lan-services = mkRules [
 
-      (o i2pd.enable "ip saddr 127.0.0.1 ip daddr 127.0.0.1 iifname \"lo\" tcp dport ${toString ports.i2pd.sam} accept")
+    (o nginx.enable "ip saddr ${nginx.allow} ip daddr ${address} iifname \"${interface}\" tcp dport ${toString ports.nginx.https} ct state new accept")
 
-      (o i2pd.enable "ip saddr 127.0.0.1 ip daddr 127.0.0.1 iifname \"lo\" tcp dport ${toString ports.i2pd.socks-proxy} accept")
+    (o i2pd.enable "ip saddr ${i2pd.allow} ip daddr ${address} iifname \"${interface}\" tcp dport ${toString ports.i2pd.http-proxy} ct state new accept")
 
-      (o i2pd.enable "ip saddr 127.0.0.1 ip daddr 127.0.0.1 iifname \"lo\" tcp dport ${toString ports.i2pd.web-console} accept")
+  ];
 
-      #
-      # qbittorrent bittorrent client
-      #
+  ####################################################################################################################################################################
+  #
+  # SVCVM SERVICES
+  #
 
-      (o qbt.enable "ip saddr 127.0.0.1 ip daddr 127.0.0.1 iifname \"lo\" tcp dport ${toString ports.qbt.web-ui} accept")
+  svcvm-input = mkRules [
 
-      #
-      # jellyfin media server
-      #
+    (o unbound.enable "iifname \"${ifaces.unbound}\" ct state established,related accept")
 
-      (o jellyfin.enable "ip saddr 127.0.0.1 ip daddr 127.0.0.1 iifname \"lo\" tcp dport ${toString ports.jellyfin.web-interface} accept")
+  ];
 
-      ####################################################################################################################################################################
-      #
-      # LAN PORTS
-      #
+  svcvm-forwards-ingress = mkRules [
 
-      #
-      # unbound validating recursive dns server
-      #
+    (o unbound.enable "ip saddr ${unbound.allow} iifname \"${interface}\" oifname \"${ifaces.unbound}\" ip daddr ${addresses.unbound} tcp dport ${toString ports.unbound.dns} ct state new accept")
+    (o unbound.enable "ip saddr ${unbound.allow} iifname \"${interface}\" oifname \"${ifaces.unbound}\" ip daddr ${addresses.unbound} udp dport ${toString ports.unbound.dns} ct state new accept")
 
-      (o unbound.enable "ip saddr ${unbound.allow} ip daddr ${address} iifname \"${interface}\" tcp dport ${toString ports.unbound.dns} accept")
+  ];
 
-      (o unbound.enable "ip saddr ${unbound.allow} ip daddr ${address} iifname \"${interface}\" udp dport ${toString ports.unbound.dns} accept")
+  svcvm-forwards-internet = mkRules [
 
-      #
-      # nginx web server
-      #
+    (o unbound.enable "iifname \"${ifaces.unbound}\" oifname \"${interface}\" ct state new accept")
 
-      (o nginx.enable "ip saddr ${nginx.allow} ip daddr ${address} iifname \"${interface}\" tcp dport ${toString ports.nginx.https} accept")
+  ];
 
-      #
-      # i2pd invisible internet protocol daemon
-      #
+  svcvm-forwards-intervm = mkRules [ ];
 
-      (o i2pd.enable "ip saddr ${i2pd.allow} ip daddr ${address} iifname \"${interface}\" tcp dport ${toString ports.i2pd.http-proxy} accept")
+  svcvm-output = mkRules [
 
-    ]
-  );
+    (o unbound.enable "ip daddr ${addresses.unbound} tcp dport ${toString ports.unbound.dns} ct state new accept")
+    (o unbound.enable "ip daddr ${addresses.unbound} udp dport ${toString ports.unbound.dns} ct state new accept")
+
+  ];
+
+  svcvm-nat-prerouting = mkRules [
+
+    (o unbound.enable "ip saddr ${unbound.allow} iifname \"${interface}\" tcp dport ${toString ports.unbound.dns} dnat to ${addresses.unbound}")
+    (o unbound.enable "ip saddr ${unbound.allow} iifname \"${interface}\" udp dport ${toString ports.unbound.dns} dnat to ${addresses.unbound}")
+
+  ];
+
+  svcvm-nat-postrouting = mkRules [
+
+    (o unbound.enable "ip saddr ${addresses.unbound} iifname \"${ifaces.unbound}\" oifname \"${interface}\" masquerade")
+
+  ];
+
 in
 {
-  networking.nftables.ruleset = lib.mkForce ''
+  networking.nftables.ruleset = ''
     flush ruleset
     table inet filter {
+
         chain input {
             type filter hook input priority filter; policy drop;
+
             ct state invalid drop
             tcp flags & (fin|syn|rst|ack) != syn ct state new drop
 
-            iifname "${interface}" ct state established,related accept
             iifname "lo" ct state established,related accept
-            ${services}
+            iifname "${interface}" ct state established,related accept
+            ${svcvm-input}
+
+            ${lo-services}
+
+            ${lan-services}
         }
 
         chain forward {
-            type filter hook forward priority filter; policy drop;
+          	type filter hook forward priority filter; policy drop;
+          	
+            ct state invalid drop
+        		ct state established,related accept
+
+            ${svcvm-forwards-ingress}
+
+            ${svcvm-forwards-internet}
+
+            ${svcvm-forwards-intervm}
         }
 
         chain output {
-            type filter hook output priority filter; policy accept;
+         		type filter hook output priority filter; policy drop;
+
+            ct state invalid drop
+        		ct state established,related accept
+
+            oifname "${interface}" accept
+
+            ${svcvm-output}
         }
+
+    }
+
+    table ip nat {
+
+        chain prerouting {
+        		type nat hook prerouting priority dstnat; policy accept;
+
+            ${svcvm-nat-prerouting}
+      	}
+
+      	chain postrouting {
+        		type nat hook postrouting priority srcnat; policy accept;
+
+            ${svcvm-nat-postrouting}
+      	}
+
     }
   '';
 }
