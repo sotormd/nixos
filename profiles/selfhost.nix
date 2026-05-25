@@ -5,7 +5,6 @@ let
 in
 {
   imports = [
-    services.i2pd
     services.jellyfin
     services.nginx
     services.qbt

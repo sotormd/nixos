@@ -55,24 +55,27 @@ let
         access-control = [
           "${unbound.allow} allow"
           "${gateways.unbound}/32 allow"
+          "${addresses.i2pd}/32 allow"
         ];
       };
   };
 
 in
-lib.mkMerge [
-  (lib.mksvcvm {
-    inherit (unbound) svcvm svcfg;
-    inherit
-      inputs
-      self
-      pkgs
-      lib
-      ;
-  })
-  {
-    systemd.tmpfiles.rules = [
-      "d /var/lib/unbound 700 ${toString ids.unbound} ${toString ids.unbound} -"
-    ];
-  }
-]
+lib.mkIf config.vars.services.unbound.enable (
+  lib.mkMerge [
+    (lib.mksvcvm {
+      inherit (unbound) svcvm svcfg;
+      inherit
+        inputs
+        self
+        pkgs
+        lib
+        ;
+    })
+    {
+      systemd.tmpfiles.rules = [
+        "d /var/lib/unbound 700 ${toString ids.unbound} ${toString ids.unbound} -"
+      ];
+    }
+  ]
+)

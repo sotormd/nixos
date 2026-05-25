@@ -40,16 +40,6 @@
   nix.settings.max-jobs = 1;
   nix.settings.cores = 1;
 
-  # some services need to start later
-  systemd.services.i2pd = {
-    wants = [ "svcready.service" ];
-    after = [ "svcready.service" ];
-  };
-  systemd.services.qbt = {
-    wants = [ "svcready.service" ];
-    after = [ "svcready.service" ];
-  };
-
   # kernel sysctl options
   boot.kernel.sysctl = {
     # increase bits of entropy used for mmap ASLR

@@ -1,3 +1,6 @@
 {
-  imports = [ ./unbound.nix ];
+  imports = [
+    ./i2pd.nix
+    ./unbound.nix
+  ];
 }

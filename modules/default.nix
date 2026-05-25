@@ -118,9 +118,6 @@
     # networkmanager
     network.networkmanager = _: { imports = [ ./network/networkmanager ]; };
 
-    # network is ready
-    network.ready = _: { imports = [ ./network/ready ]; };
-
     # build, sign and copy remote closures
     network.seed = _: { imports = [ ./network/seed ]; };
 
@@ -135,9 +132,6 @@
 
     # distrobox containers
     services.distrobox = _: { imports = [ ./services/distrobox ]; };
-
-    # invisible internet protocol daemon
-    services.i2pd = _: { imports = [ ./services/i2pd ]; };
 
     # jellyfin media server
     services.jellyfin = _: { imports = [ ./services/jellyfin ]; };
@@ -180,6 +174,9 @@
 
     # unbound validating recursive dns server
     svcvm.unbound = _: { imports = [ ./svcvm/unbound ]; };
+
+    # invisible internet protocol daemon
+    svcvm.i2pd = _: { imports = [ ./svcvm/i2pd ]; };
 
     # kiosk-style compositor
     sway.cage = _: { imports = [ ./sway/cage ]; };
