@@ -1793,6 +1793,7 @@ browsers.
    - Disable telemetry, services that require sending data to Google, and other
      features to reduce attack surface:
      - V8 JavaScript JIT
+     - V8 JavaScript Optimizations
      - Metrics
      - Feedback Surveys
      - User Feedback
@@ -1824,7 +1825,6 @@ browsers.
      - Autoplay
      - Payment Method Query
 
-   - Use Post Quantum Key Cryptography
    - Use Site Per Process
    - Use Strict HTTPS-Only Mode
    - Use SearXNG as Search Engine

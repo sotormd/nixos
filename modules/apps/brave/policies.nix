@@ -156,9 +156,6 @@ in
     # do not use the builtin pdf reader
     AlwaysOpenPdfExternally = true;
 
-    # post quantum cryptography
-    PostQuantumKeyAgreementEnabled = true;
-
     # do not send domain reliability data to google
     DomainReliabilityAllowed = false;
 
@@ -207,7 +204,9 @@ in
 
     # disable V8
     DefaultJavaScriptJitSetting = 2;
+    DefaultJavaScriptOptimizerSetting = 2;
     JavaScriptJitAllowedForSites = [ config.vars.selfhosted.vaultwarden.domain ];
+    JavaScriptOptimizerAllowedForSites = [ config.vars.selfhosted.vaultwarden.domain ];
 
     # disable promotions
     PromotionsEnabled = false;

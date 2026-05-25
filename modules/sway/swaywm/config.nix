@@ -187,7 +187,6 @@ let
       bindsym Mod4+space focus mode_toggle
       bindsym Mod4+shift+space floating toggle
       for_window [app_id="easyeffects"] floating enable
-      for_window [app_id="brave-nngceckbapebfimnlniiiahkandclblb-Default"] floating enable
 
       #
       # GAPS, BORDERS & OPACITY
