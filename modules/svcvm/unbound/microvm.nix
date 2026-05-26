@@ -9,9 +9,11 @@
 
 let
   inherit (lib)
+    ports
     addresses
     gateways
     ifaces
+    vsocks
     ids
     ;
 
@@ -21,13 +23,19 @@ let
         iface = ifaces.unbound;
         gateway = gateways.unbound;
         address = addresses.unbound;
+        vsock = vsocks.unbound;
         resolver = "127.0.0.1";
       };
+      tmpfiles = [
+        "d /var/lib/unbound 700 ${toString ids.unbound} ${toString ids.unbound} -"
+      ];
+      secrets = { };
       vm = {
         name = "unbound";
         modules = [
-          self.nixosModules.profiles.svcvm
-          self.nixosModules.modules.svcvm.unbound
+          ./adblock.nix
+          ./options.nix
+          ./settings.nix
         ];
         shares = [
           {
@@ -37,45 +45,41 @@ let
             mountPoint = "/var/lib/unbound";
           }
         ];
-        vsock-cid = 3;
+        creds = { };
       };
       debug = true;
     };
     svcfg.unbound =
       let
-        inherit (config.vars.services) unbound;
+        inherit (config.vars.services) unbound nginx i2pd;
       in
       {
         inherit (unbound) local-data;
-        interfaces = [
+        id = ids.unbound;
+        interface = [
           addresses.unbound
           "127.0.0.1"
         ];
+        port = ports.unbound.dns;
         private-address = unbound.allow;
-        access-control = [
+        access-control = lib.flatten [
           "${unbound.allow} allow"
           "${gateways.unbound}/32 allow"
-          "${addresses.i2pd}/32 allow"
+          (lib.optional nginx.enable "${addresses.nginx}/32 allow")
+          (lib.optional i2pd.enable "${addresses.i2pd}/32 allow")
         ];
       };
   };
 
 in
 lib.mkIf config.vars.services.unbound.enable (
-  lib.mkMerge [
-    (lib.mksvcvm {
-      inherit (unbound) svcvm svcfg;
-      inherit
-        inputs
-        self
-        pkgs
-        lib
-        ;
-    })
-    {
-      systemd.tmpfiles.rules = [
-        "d /var/lib/unbound 700 ${toString ids.unbound} ${toString ids.unbound} -"
-      ];
-    }
-  ]
+  lib.mksvcvm {
+    inherit (unbound) svcvm svcfg;
+    inherit
+      inputs
+      self
+      pkgs
+      lib
+      ;
+  }
 )

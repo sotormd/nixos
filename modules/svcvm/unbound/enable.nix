@@ -1,3 +1,0 @@
-{
-  services.unbound.enable = true;
-}

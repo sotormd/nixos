@@ -9,9 +9,11 @@
 
 let
   inherit (lib)
+    ports
     addresses
     gateways
     ifaces
+    vsocks
     ids
     ;
 
@@ -21,13 +23,18 @@ let
         iface = ifaces.i2pd;
         gateway = gateways.i2pd;
         address = addresses.i2pd;
+        vsock = vsocks.i2pd;
         resolver = if config.vars.services.unbound.enable then addresses.unbound else "1.1.1.1";
       };
+      tmpfiles = [
+        "d /var/lib/i2pd 700 ${toString ids.i2pd} ${toString ids.i2pd} -"
+      ];
+      secrets = { };
       vm = {
         name = "i2pd";
         modules = [
-          self.nixosModules.profiles.svcvm
-          self.nixosModules.modules.svcvm.i2pd
+          ./options.nix
+          ./settings.nix
         ];
         shares = [
           {
@@ -37,7 +44,7 @@ let
             mountPoint = "/var/lib/i2pd";
           }
         ];
-        vsock-cid = 7;
+        creds = { };
       };
       debug = true;
     };
@@ -46,30 +53,32 @@ let
         inherit (config.vars.services) nginx;
       in
       {
-        sam-address = addresses.i2pd;
-        httpProxy-address = addresses.i2pd;
-        socksProxy-address = addresses.i2pd;
-        http-address = addresses.i2pd;
-        http-hostname = nginx.domain;
+        id = ids.i2pd;
+        sam = {
+          address = addresses.i2pd;
+          port = ports.i2pd.sam;
+        };
+        http-proxy = {
+          address = addresses.i2pd;
+          port = ports.i2pd.http-proxy;
+        };
+        web-console = {
+          address = addresses.i2pd;
+          port = ports.i2pd.web-console;
+          hostname = nginx.domain;
+        };
       };
   };
 
 in
 lib.mkIf config.vars.services.i2pd.enable (
-  lib.mkMerge [
-    (lib.mksvcvm {
-      inherit (i2pd) svcvm svcfg;
-      inherit
-        inputs
-        self
-        pkgs
-        lib
-        ;
-    })
-    {
-      systemd.tmpfiles.rules = [
-        "d /var/lib/i2pd 700 ${toString ids.i2pd} ${toString ids.i2pd} -"
-      ];
-    }
-  ]
+  lib.mksvcvm {
+    inherit (i2pd) svcvm svcfg;
+    inherit
+      inputs
+      self
+      pkgs
+      lib
+      ;
+  }
 )

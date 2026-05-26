@@ -4,64 +4,113 @@ let
   inherit (config.svcfg) unbound;
 in
 {
-  services.unbound.settings.server = {
+  services.unbound = {
 
-    # extra entries, private address enforcement and resolver access control
-    inherit (unbound) local-data private-address access-control;
+    # enable unbound recursive validating dns resolver
+    enable = true;
 
-    # disable ipv6
-    prefer-ip6 = "no";
-    prefer-ip4 = "yes";
-    do-ip6 = "no";
-    do-ip4 = "yes";
+    settings.server = {
 
-    # hide information
-    hide-identity = "yes";
-    hide-version = "yes";
-    hide-trustanchor = "yes";
-    hide-http-user-agent = "yes";
+      inherit (unbound)
 
-    # send minimum information to upstream servers
-    qname-minimisation = "yes";
-    qname-minimisation-strict = "yes";
+        # interfaces to bind to
+        interface
 
-    # harden against very small EDNS buffer sizes
-    harden-short-bufsize = "yes";
+        # dns resolver port
+        port
 
-    # harden against large queries
-    harden-large-queries = "yes";
+        # additional entries
+        local-data
 
-    # harden against out of zone rrsets, to avoid spoofing attempts
-    harden-glue = "yes";
+        # addresses to enforce privacy for
+        private-address
 
-    # harden against unverified glue rrsets
-    harden-unverified-glue = "yes";
+        # access control for the dns resolver
+        access-control
+        ;
 
-    # harden against receiving dnssec-stripped data
-    harden-dnssec-stripped = "yes";
+      # disable ipv6
+      prefer-ip6 = "no";
+      prefer-ip4 = "yes";
+      do-ip6 = "no";
+      do-ip4 = "yes";
 
-    # harden against queries that fall under dnssec-signed nxdomain names
-    harden-below-nxdomain = "yes";
+      # hide information
+      hide-identity = "yes";
+      hide-version = "yes";
+      hide-trustanchor = "yes";
+      hide-http-user-agent = "yes";
 
-    # harden the referral path by performing additional queries
-    # intensive and experimental
-    harden-referral-path = "no";
+      # send minimum information to upstream servers
+      qname-minimisation = "yes";
+      qname-minimisation-strict = "yes";
 
-    # harden against downgrades when multiple algorithms are advertised
-    harden-algo-downgrade = "yes";
+      # harden against very small EDNS buffer sizes
+      harden-short-bufsize = "yes";
 
-    # harden against unknown records in the authority and additional sections
-    harden-unknown-additional = "yes";
+      # harden against large queries
+      harden-large-queries = "yes";
 
-    # use the dnssec nsec chain
-    aggressive-nsec = "yes";
+      # harden against out of zone rrsets, to avoid spoofing attempts
+      harden-glue = "yes";
 
-    # use random bits in the query to foil spoof attempts
-    use-caps-for-id = "yes";
+      # harden against unverified glue rrsets
+      harden-unverified-glue = "yes";
+
+      # harden against receiving dnssec-stripped data
+      harden-dnssec-stripped = "yes";
+
+      # harden against queries that fall under dnssec-signed nxdomain names
+      harden-below-nxdomain = "yes";
+
+      # harden the referral path by performing additional queries
+      # intensive and experimental
+      harden-referral-path = "no";
+
+      # harden against downgrades when multiple algorithms are advertised
+      harden-algo-downgrade = "yes";
+
+      # harden against unknown records in the authority and additional sections
+      harden-unknown-additional = "yes";
+
+      # use the dnssec nsec chain
+      aggressive-nsec = "yes";
+
+      # use random bits in the query to foil spoof attempts
+      use-caps-for-id = "yes";
+
+    };
+
+    # use and update root trust anchor for dnssec validation
+    enableRootTrustAnchor = true;
 
   };
 
-  # use and update root trust anchor for dnssec validation
-  services.unbound.enableRootTrustAnchor = true;
+  # start after appropriate indicators
+  systemd.services.unbound = {
+    wants = [
+      "network-online.target"
+      "svcready-interface.service"
+    ];
+    after = [
+      "network-online.target"
+      "svcready-interface.service"
+    ];
+  };
+
+  # ensure appropriate permissions on data directories
+  systemd.tmpfiles.rules = [
+    "d /var/lib/unbound 700 unbound unbound -"
+    "Z /var/lib/unbound 700 unbound unbound -"
+  ];
+
+  # ensure appropriate uid/gid
+  users.users.unbound = {
+    uid = unbound.id;
+    group = "unbound";
+  };
+  users.groups.unbound = {
+    gid = unbound.id;
+  };
 
 }

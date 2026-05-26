@@ -1,14 +1,13 @@
 { self, ... }:
 
 let
-  inherit (self.nixosModules.modules) services;
+  inherit (self.nixosModules.modules) svcvm;
 in
 {
   imports = [
-    services.jellyfin
-    services.nginx
-    services.qbt
-    services.searxng
-    services.vaultwarden
+    svcvm.i2pd
+    svcvm.nginx
+    svcvm.qbt
+    svcvm.unbound
   ];
 }

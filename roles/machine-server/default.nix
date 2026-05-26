@@ -4,7 +4,6 @@
   imports = [
 
     ./impermanence
-    ./microvms
 
     ./configuration.nix
 

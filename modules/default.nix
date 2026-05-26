@@ -142,14 +142,8 @@
     # libvirt with qemu/kvm and virt-manager
     services.libvirtd = _: { imports = [ ./services/libvirtd ]; };
 
-    # nginx web server
-    services.nginx = _: { imports = [ ./services/nginx ]; };
-
     # audio with pipewire
     services.pipewire = _: { imports = [ ./services/pipewire ]; };
-
-    # qbittorrent torrent client
-    services.qbt = _: { imports = [ ./services/qbt ]; };
 
     # run0 privilege elevation
     services.run0 = _: { imports = [ ./services/run0 ]; };
@@ -177,6 +171,12 @@
 
     # invisible internet protocol daemon
     svcvm.i2pd = _: { imports = [ ./svcvm/i2pd ]; };
+
+    # nginx web server
+    svcvm.nginx = _: { imports = [ ./svcvm/nginx ]; };
+
+    # qbittorrent torrent client
+    svcvm.qbt = _: { imports = [ ./svcvm/qbt ]; };
 
     # kiosk-style compositor
     sway.cage = _: { imports = [ ./sway/cage ]; };

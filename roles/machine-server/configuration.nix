@@ -1,5 +1,6 @@
 {
   config,
+  pkgs,
   lib,
   modulesPath,
   legacyVars,
@@ -48,6 +49,68 @@
     "net.ipv4.ip_forward" = lib.mkForce "1";
   };
 
+  # do not autostart microvms
+  microvm.autostart = lib.mkForce [ ];
+
+  # start microvms with enough delays
+  # otherwise the pi will explode if all
+  # microvms start concurrently
+  systemd.services.start-microvms = {
+    description = "Start MicroVMs";
+    wants = [
+      "network-online.target"
+      "ip-link-up.service"
+      "wpa_supplicant-${config.vars.wireless.interface}.service"
+    ];
+    after = [
+      "network-online.target"
+      "ip-link-up.service"
+      "wpa_supplicant-${config.vars.wireless.interface}.service"
+    ];
+    serviceConfig =
+      let
+        inherit (config.vars.services) unbound nginx i2pd;
+      in
+      {
+        Type = "oneshot";
+        ExecStartPre = pkgs.writeShellScript "start-microvms-pre-script" ''
+          until ${pkgs.iputils}/bin/ping -c1 1.1.1.1 >/dev/null 2>&1; do
+            sleep 2
+          done
+        '';
+        ExecStart = pkgs.writeShellScript "start-microvms-script" ''
+          ${
+            (lib.optionalString unbound.enable ''
+              sleep 120
+              echo "starting unbound"
+              systemctl start microvm@unbound
+            '')
+          }
+          ${
+            (lib.optionalString i2pd.enable ''
+              sleep 120
+              echo "starting i2pd"
+              systemctl start microvm@i2pd
+            '')
+          }
+          ${
+            (lib.optionalString i2pd.enable ''
+              sleep 120
+              echo "starting qbt"
+              systemctl start microvm@qbt
+            '')
+          }
+          ${
+            (lib.optionalString nginx.enable ''
+              sleep 120
+              echo "starting nginx"
+              systemctl start microvm@nginx
+            '')
+          }
+        '';
+      };
+  };
+
   # environment variables
   environment.sessionVariables = {
     NIXOS_ROLE = "server";
@@ -74,14 +137,6 @@
       qbt.enable = lib.mkForce false;
       jellyfin.enable = lib.mkForce false;
     };
-  };
-
-  # secrets
-  sops.secrets = {
-    wireless = { };
-    seed = { };
-    searxng = { };
-    duckdns = { };
   };
 
   # ensure no tomfoolery

@@ -7,7 +7,6 @@
     i2pd = {
       sam = 7656;
       http-proxy = 4444;
-      socks-proxy = 4447;
       web-console = 7070;
     };
     qbt.web-ui = 8080;
@@ -16,24 +15,51 @@
 
   addresses = {
     unbound = "10.204.3.2";
+    nginx = "10.204.4.2";
+    searxng = "10.204.5.2";
+    vaultwarden = "10.204.6.2";
     i2pd = "10.204.7.2";
+    qbt = "10.204.8.2";
+    jellyfin = "10.204.9.2";
   };
 
   gateways = {
     unbound = "10.204.3.1";
+    nginx = "10.204.4.1";
+    searxng = "10.204.5.1";
+    vaultwarden = "10.204.6.1";
     i2pd = "10.204.7.1";
+    qbt = "10.204.8.1";
+    jellyfin = "10.204.9.1";
   };
 
   ifaces = {
-    test1 = "svcvm1";
-    test2 = "svcvm2";
     unbound = "svcvm3";
+    nginx = "svcvm4";
+    searxng = "svcvm5";
+    vaultwarden = "svcvm6";
     i2pd = "svcvm7";
+    qbt = "svcvm8";
+    jellyfin = "svcvm9";
+  };
+
+  vsocks = {
+    unbound = 3;
+    nginx = 4;
+    searxng = 5;
+    vaultwarden = 6;
+    i2pd = 7;
+    qbt = 8;
+    jellyfin = 9;
   };
 
   ids = {
-    unbound = 50003;
-    i2pd = 50007;
+    unbound = 50030;
+    acme = 50040;
+    vaultwarden = 50060;
+    i2pd = 50070;
+    qbt = 50080;
+    jellyfin = 50090;
   };
 
   # svcvm - service virtual machines
@@ -49,14 +75,21 @@
       ...
     }:
     let
-      inherit (svcvm) network vm debug;
+      inherit (svcvm)
+        network
+        tmpfiles
+        secrets
+        vm
+        debug
+        ;
     in
     lib.mkMerge [
 
-      # host networking options
-      # nftables options are not here
-      # modules.network.firewall should handle everything
+      # host options
       {
+        # host networking options
+        # nftables options are not here
+        # modules.network.firewall should handle everything
         systemd.network.networks.${network.iface} = {
           matchConfig.Name = network.iface;
           address = [ "${network.gateway}/32" ];
@@ -66,6 +99,16 @@
             IPv6Forwarding = false;
           };
         };
+
+        # host tmpfiles options
+        # this can be used to create directories
+        # that are later shared with the vm using microvm.shares
+        systemd.tmpfiles.rules = tmpfiles;
+
+        # host sops options
+        # this can be used to provision secrets
+        # that are later shared with the vm using microvm.credentialFiles
+        sops.secrets = secrets;
       }
 
       # microvm options
@@ -75,9 +118,8 @@
           # required for other modules to work
           specialArgs = { inherit self inputs lib; };
 
-          # individual self.nixosModules.modules.svcvm.* modules can be added like this
-          # also self.nixosModules.profiles.svcvm should almost always be added
-          extraModules = vm.modules;
+          # individual modules can be added like this
+          extraModules = [ self.nixosModules.profiles.svcvm ] ++ vm.modules;
 
           config = {
 
@@ -111,6 +153,9 @@
                   mac = "00:00:00:00:00:01";
                 }
               ];
+
+              # credentials - for sharing sops-nix stuff
+              credentialFiles = vm.creds;
 
             };
 
@@ -184,7 +229,7 @@
       # debug mode
       (lib.mkIf debug {
         microvm.vms.${vm.name}.config = {
-          microvm.vsock.cid = vm.vsock-cid;
+          microvm.vsock.cid = network.vsock;
           services.openssh = {
             enable = true;
             startWhenNeeded = true;

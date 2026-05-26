@@ -1,23 +1,20 @@
 { config, lib, ... }:
 
 let
-  inherit (config.vars.services)
-    nginx
+  inherit (config.svcfg) nginx;
+  inherit (config.svcfg.nginx.locations)
     searxng
     vaultwarden
     i2pd
     qbt
     jellyfin
     ;
-
-  inherit (lib) ports;
 in
-lib.mkIf nginx.enable {
-
+{
   services.nginx.virtualHosts.${nginx.domain}.locations = {
 
     "/searxng/" = lib.mkIf searxng.enable {
-      proxyPass = "http://127.0.0.1:${toString ports.searxng.search-engine}";
+      proxyPass = "http://${searxng.address}:${toString searxng.port}";
       extraConfig = ''
         allow ${searxng.allow};
         deny all;
@@ -25,7 +22,7 @@ lib.mkIf nginx.enable {
     };
 
     "/vaultwarden/" = lib.mkIf vaultwarden.enable {
-      proxyPass = "http://127.0.0.1:${toString ports.vaultwarden.web-vault}";
+      proxyPass = "http://${vaultwarden.address}:${toString vaultwarden.port}";
       extraConfig = ''
         allow ${vaultwarden.allow};
         deny all;
@@ -38,7 +35,7 @@ lib.mkIf nginx.enable {
     };
 
     "/i2pd/" = lib.mkIf i2pd.enable {
-      proxyPass = "http://127.0.0.1:${toString ports.i2pd.web-console}";
+      proxyPass = "http://${i2pd.address}:${toString i2pd.port}";
       extraConfig = ''
         allow ${i2pd.allow};
         deny all;
@@ -57,7 +54,7 @@ lib.mkIf nginx.enable {
     };
 
     "/qbt/" = lib.mkIf qbt.enable {
-      proxyPass = "http://127.0.0.1:${toString ports.qbt.web-ui}";
+      proxyPass = "http://${qbt.address}:${toString qbt.port}";
       extraConfig = ''
         allow ${qbt.allow};
         deny all;
@@ -72,7 +69,7 @@ lib.mkIf nginx.enable {
     };
 
     "/jellyfin/" = lib.mkIf jellyfin.enable {
-      proxyPass = "http://127.0.0.1:${toString ports.jellyfin.web-interface}";
+      proxyPass = "http://${jellyfin.address}:${toString jellyfin.port}";
       extraConfig = ''
         allow ${jellyfin.allow};
         deny all;
@@ -80,5 +77,4 @@ lib.mkIf nginx.enable {
     };
 
   };
-
 }

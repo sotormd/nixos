@@ -1,9 +1,9 @@
 { config, lib, ... }:
 
 let
-  inherit (config.vars.services) nginx;
+  inherit (config.svcfg) nginx;
 in
-lib.mkIf (nginx.enable && nginx.staging) {
+lib.mkIf nginx.staging {
 
   # use the staging environment
   # disable after testing

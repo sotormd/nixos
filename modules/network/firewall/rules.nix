@@ -31,8 +31,6 @@ let
 
     (o vaultwarden.enable "ip saddr 127.0.0.1 ip daddr 127.0.0.1 iifname \"lo\" tcp dport ${toString ports.vaultwarden.web-vault} ct state new accept")
 
-    (o qbt.enable "ip saddr 127.0.0.1 ip daddr 127.0.0.1 iifname \"lo\" tcp dport ${toString ports.qbt.web-ui} ct state new accept")
-
     (o jellyfin.enable "ip saddr 127.0.0.1 ip daddr 127.0.0.1 iifname \"lo\" tcp dport ${toString ports.jellyfin.web-interface} ct state new accept")
 
   ];
@@ -45,8 +43,6 @@ let
   lan-services = mkRules [
 
     (o ssh.enable "ip saddr ${ssh.allow} ip daddr ${address} iifname \"${interface}\" tcp dport ${toString ssh.port} ct state new accept")
-
-    (o nginx.enable "ip saddr ${nginx.allow} ip daddr ${address} iifname \"${interface}\" tcp dport ${toString ports.nginx.https} ct state new accept")
 
   ];
 
@@ -61,8 +57,16 @@ let
       iifname "${ifaces.unbound}" ct state established,related accept
     '')
 
+    (o nginx.enable ''
+      iifname "${ifaces.nginx}" ct state established,related accept
+    '')
+
     (o i2pd.enable ''
       iifname "${ifaces.i2pd}" ct state established,related accept
+    '')
+
+    (o qbt.enable ''
+      iifname "${ifaces.qbt}" ct state established,related accept
     '')
 
   ];
@@ -75,6 +79,10 @@ let
       ip saddr ${unbound.allow} iifname "${interface}" oifname "${ifaces.unbound}" ip daddr ${addresses.unbound} udp dport ${toString ports.unbound.dns} ct state new accept
     '')
 
+    (o nginx.enable ''
+      ip saddr ${nginx.allow} iifname "${interface}" oifname "${ifaces.nginx}" ip daddr ${addresses.nginx} tcp dport ${toString ports.nginx.https} ct state new accept
+    '')
+
     (o i2pd.enable ''
       ip saddr ${i2pd.allow} iifname "${interface}" oifname "${ifaces.i2pd}" ip daddr ${addresses.i2pd} tcp dport ${toString ports.i2pd.http-proxy} ct state new accept
     '')
@@ -85,11 +93,15 @@ let
   svcvm-forwards-internet = mkRules [
 
     (o unbound.enable ''
-      iifname "${ifaces.unbound}" oifname "${interface}" ct state new accept
+      ip saddr ${addresses.unbound} iifname "${ifaces.unbound}" oifname "${interface}" ct state new accept
+    '')
+
+    (o nginx.enable ''
+      ip saddr ${addresses.nginx} iifname "${ifaces.nginx}" oifname "${interface}" ct state new accept
     '')
 
     (o i2pd.enable ''
-      iifname "${ifaces.i2pd}" oifname "${interface}" ct state new accept
+      ip saddr ${addresses.i2pd} iifname "${ifaces.i2pd}" oifname "${interface}" ct state new accept
     '')
 
   ];
@@ -97,12 +109,38 @@ let
   # required for VMs to access other VMs
   svcvm-forwards-intervm = mkRules [
 
+    # nginx vm -> unbound vm, for dns
+    (o (nginx.enable && unbound.enable) ''
+      ip saddr ${addresses.nginx} iifname "${ifaces.nginx}" ip daddr ${addresses.unbound} oifname "${ifaces.unbound}" tcp dport ${toString ports.unbound.dns} ct state new accept
+    '')
+    (o (nginx.enable && unbound.enable) ''
+      ip saddr ${addresses.nginx} iifname "${ifaces.nginx}" ip daddr ${addresses.unbound} oifname "${ifaces.unbound}" udp dport ${toString ports.unbound.dns} ct state new accept
+    '')
+
+    # nginx vm -> i2pd vm, for webconsole
+    (o (nginx.enable && i2pd.enable) ''
+      ip saddr ${addresses.nginx} iifname "${ifaces.nginx}" ip daddr ${addresses.i2pd} oifname "${ifaces.i2pd}" tcp dport ${toString ports.i2pd.web-console} ct state new accept
+    '')
+
+    # nginx vm -> i2pd vm, for webui
+    (o (nginx.enable && qbt.enable) ''
+      ip saddr ${addresses.nginx} iifname "${ifaces.nginx}" ip daddr ${addresses.qbt} oifname "${ifaces.qbt}" tcp dport ${toString ports.qbt.web-ui} ct state new accept
+    '')
+
     # i2pd vm -> unbound vm, for dns
     (o (i2pd.enable && unbound.enable) ''
       ip saddr ${addresses.i2pd} iifname "${ifaces.i2pd}" ip daddr ${addresses.unbound} oifname "${ifaces.unbound}" tcp dport ${toString ports.unbound.dns} ct state new accept
     '')
     (o (i2pd.enable && unbound.enable) ''
       ip saddr ${addresses.i2pd} iifname "${ifaces.i2pd}" ip daddr ${addresses.unbound} oifname "${ifaces.unbound}" udp dport ${toString ports.unbound.dns} ct state new accept
+    '')
+
+    # qbt vm -> i2pd vm, for sam and http-proxy
+    (o (qbt.enable && i2pd.enable) ''
+      ip saddr ${addresses.qbt} iifname "${ifaces.qbt}" ip daddr ${addresses.i2pd} oifname "${ifaces.i2pd}" tcp dport ${toString ports.i2pd.sam} ct state new accept
+    '')
+    (o (qbt.enable && i2pd.enable) ''
+      ip saddr ${addresses.qbt} iifname "${ifaces.qbt}" ip daddr ${addresses.i2pd} oifname "${ifaces.i2pd}" tcp dport ${toString ports.i2pd.http-proxy} ct state new accept
     '')
 
   ];
@@ -125,6 +163,10 @@ let
       ip saddr ${unbound.allow} iifname "${interface}" udp dport ${toString ports.unbound.dns} dnat to ${addresses.unbound}
     '')
 
+    (o nginx.enable ''
+      ip saddr ${nginx.allow} iifname "${interface}" tcp dport ${toString ports.nginx.https} dnat to ${addresses.nginx}
+    '')
+
     (o i2pd.enable ''
       ip saddr ${i2pd.allow} iifname "${interface}" tcp dport ${toString ports.i2pd.http-proxy} dnat to ${addresses.i2pd}
     '')
@@ -136,6 +178,10 @@ let
 
     (o unbound.enable ''
       ip saddr ${addresses.unbound} iifname "${ifaces.unbound}" oifname "${interface}" masquerade
+    '')
+
+    (o nginx.enable ''
+      ip saddr ${addresses.nginx} iifname "${ifaces.nginx}" oifname "${interface}" masquerade
     '')
 
     (o i2pd.enable ''

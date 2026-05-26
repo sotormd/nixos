@@ -7,8 +7,8 @@
 }:
 
 let
-  inherit (config.vars.services)
-    nginx
+  inherit (config.svcfg) nginx;
+  inherit (config.svcfg.nginx.locations)
     searxng
     vaultwarden
     i2pd
@@ -60,13 +60,11 @@ let
     paths = [ homepageFile ];
   };
 in
-lib.mkIf nginx.enable {
-
+{
   services.nginx.virtualHosts.${nginx.domain} = {
     locations."/" = {
       root = homepageDir;
       index = "home.html";
     };
   };
-
 }

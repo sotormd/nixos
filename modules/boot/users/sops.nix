@@ -1,5 +1,6 @@
 {
   sops = {
+    keepGenerations = 0;
     defaultSopsFile = ../../../vars/secrets.yaml;
     defaultSopsFormat = "yaml";
     gnupg.sshKeyPaths = [ ];
