@@ -8,6 +8,7 @@ in
     svcvm.i2pd
     svcvm.nginx
     svcvm.qbt
+    svcvm.searxng
     svcvm.unbound
   ];
 }

@@ -1,10 +1,6 @@
-{ config, lib, ... }:
+{ lib, ... }:
 
-let
-  inherit (config.vars.services) searxng;
-in
-lib.mkIf searxng.enable {
-
+{
   # upstream searxng adds/removes engines often
   # see https://docs.searxng.org/user/configured_engines.html
   services.searx.settings.engines = lib.mapAttrsToList (name: value: { inherit name; } // value) {
@@ -336,5 +332,4 @@ lib.mkIf searxng.enable {
     "destatis".disabled = true;
 
   };
-
 }

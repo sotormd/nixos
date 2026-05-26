@@ -51,6 +51,13 @@
 
   # do not autostart microvms
   microvm.autostart = lib.mkForce [ ];
+  microvm.vms = {
+    unbound.restartIfChanged = false;
+    nginx.restartIfChanged = false;
+    searxng.restartIfChanged = false;
+    i2pd.restartIfChanged = false;
+    qbt.restartIfChanged = false;
+  };
 
   # start microvms with enough delays
   # otherwise the pi will explode if all
@@ -69,7 +76,13 @@
     ];
     serviceConfig =
       let
-        inherit (config.vars.services) unbound nginx i2pd;
+        inherit (config.vars.services)
+          unbound
+          nginx
+          searxng
+          i2pd
+          qbt
+          ;
       in
       {
         Type = "oneshot";
@@ -87,6 +100,13 @@
             '')
           }
           ${
+            (lib.optionalString searxng.enable ''
+              sleep 120
+              echo "starting searxng"
+              systemctl start microvm@searxng
+            '')
+          }
+          ${
             (lib.optionalString i2pd.enable ''
               sleep 120
               echo "starting i2pd"
@@ -94,7 +114,7 @@
             '')
           }
           ${
-            (lib.optionalString i2pd.enable ''
+            (lib.optionalString qbt.enable ''
               sleep 120
               echo "starting qbt"
               systemctl start microvm@qbt

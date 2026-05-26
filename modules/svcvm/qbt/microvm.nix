@@ -24,7 +24,7 @@ let
         gateway = gateways.qbt;
         address = addresses.qbt;
         vsock = vsocks.qbt;
-        resolver = if config.vars.services.unbound.enable then addresses.unbound else "1.1.1.1";
+        resolver = "127.0.0.1";
       };
       tmpfiles = [
         "d /var/lib/qbt 700 ${toString ids.qbt} ${toString ids.qbt} -"

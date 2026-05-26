@@ -61,6 +61,10 @@ let
       iifname "${ifaces.nginx}" ct state established,related accept
     '')
 
+    (o searxng.enable ''
+      iifname "${ifaces.searxng}" ct state established,related accept
+    '')
+
     (o i2pd.enable ''
       iifname "${ifaces.i2pd}" ct state established,related accept
     '')
@@ -100,6 +104,10 @@ let
       ip saddr ${addresses.nginx} iifname "${ifaces.nginx}" oifname "${interface}" ct state new accept
     '')
 
+    (o searxng.enable ''
+      ip saddr ${addresses.searxng} iifname "${ifaces.searxng}" oifname "${interface}" ct state new accept
+    '')
+
     (o i2pd.enable ''
       ip saddr ${addresses.i2pd} iifname "${ifaces.i2pd}" oifname "${interface}" ct state new accept
     '')
@@ -117,14 +125,27 @@ let
       ip saddr ${addresses.nginx} iifname "${ifaces.nginx}" ip daddr ${addresses.unbound} oifname "${ifaces.unbound}" udp dport ${toString ports.unbound.dns} ct state new accept
     '')
 
+    # nginx vm -> searxng vm, for search engine
+    (o (nginx.enable && searxng.enable) ''
+      ip saddr ${addresses.nginx} iifname "${ifaces.nginx}" ip daddr ${addresses.searxng} oifname "${ifaces.searxng}" tcp dport ${toString ports.searxng.search-engine} ct state new accept
+    '')
+
     # nginx vm -> i2pd vm, for webconsole
     (o (nginx.enable && i2pd.enable) ''
       ip saddr ${addresses.nginx} iifname "${ifaces.nginx}" ip daddr ${addresses.i2pd} oifname "${ifaces.i2pd}" tcp dport ${toString ports.i2pd.web-console} ct state new accept
     '')
 
-    # nginx vm -> i2pd vm, for webui
+    # nginx vm -> qbt vm, for webui
     (o (nginx.enable && qbt.enable) ''
       ip saddr ${addresses.nginx} iifname "${ifaces.nginx}" ip daddr ${addresses.qbt} oifname "${ifaces.qbt}" tcp dport ${toString ports.qbt.web-ui} ct state new accept
+    '')
+
+    # searxng vm -> unbound vm, for dns
+    (o (searxng.enable && unbound.enable) ''
+      ip saddr ${addresses.searxng} iifname "${ifaces.searxng}" ip daddr ${addresses.unbound} oifname "${ifaces.unbound}" tcp dport ${toString ports.unbound.dns} ct state new accept
+    '')
+    (o (searxng.enable && unbound.enable) ''
+      ip saddr ${addresses.searxng} iifname "${ifaces.searxng}" ip daddr ${addresses.unbound} oifname "${ifaces.unbound}" udp dport ${toString ports.unbound.dns} ct state new accept
     '')
 
     # i2pd vm -> unbound vm, for dns
@@ -182,6 +203,10 @@ let
 
     (o nginx.enable ''
       ip saddr ${addresses.nginx} iifname "${ifaces.nginx}" oifname "${interface}" masquerade
+    '')
+
+    (o searxng.enable ''
+      ip saddr ${addresses.searxng} iifname "${ifaces.searxng}" oifname "${interface}" masquerade
     '')
 
     (o i2pd.enable ''

@@ -148,9 +148,6 @@
     # run0 privilege elevation
     services.run0 = _: { imports = [ ./services/run0 ]; };
 
-    # searxng metasearch engine
-    services.searxng = _: { imports = [ ./services/searxng ]; };
-
     # openssh server
     services.sshd = _: { imports = [ ./services/sshd ]; };
 
@@ -160,14 +157,8 @@
     # usbguard daemon
     services.usbguard = _: { imports = [ ./services/usbguard ]; };
 
-    # vaultwarden password manager
-    services.vaultwarden = _: { imports = [ ./services/vaultwarden ]; };
-
     # waydroid android container
     services.waydroid = _: { imports = [ ./services/waydroid ]; };
-
-    # unbound validating recursive dns server
-    svcvm.unbound = _: { imports = [ ./svcvm/unbound ]; };
 
     # invisible internet protocol daemon
     svcvm.i2pd = _: { imports = [ ./svcvm/i2pd ]; };
@@ -177,6 +168,15 @@
 
     # qbittorrent torrent client
     svcvm.qbt = _: { imports = [ ./svcvm/qbt ]; };
+
+    # searxng metasearch engine
+    svcvm.searxng = _: { imports = [ ./svcvm/searxng ]; };
+
+    # unbound validating recursive dns server
+    svcvm.unbound = _: { imports = [ ./svcvm/unbound ]; };
+
+    # vaultwarden password manager
+    svcvm.vaultwarden = _: { imports = [ ./svcvm/vaultwarden ]; };
 
     # kiosk-style compositor
     sway.cage = _: { imports = [ ./sway/cage ]; };

@@ -51,7 +51,12 @@ let
     };
     svcfg.unbound =
       let
-        inherit (config.vars.services) unbound nginx i2pd;
+        inherit (config.vars.services)
+          unbound
+          nginx
+          searxng
+          i2pd
+          ;
       in
       {
         inherit (unbound) local-data;
@@ -66,6 +71,7 @@ let
           "${unbound.allow} allow"
           "${gateways.unbound}/32 allow"
           (lib.optional nginx.enable "${addresses.nginx}/32 allow")
+          (lib.optional searxng.enable "${addresses.searxng}/32 allow")
           (lib.optional i2pd.enable "${addresses.i2pd}/32 allow")
         ];
       };
