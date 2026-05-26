@@ -42,8 +42,7 @@ Desktop features:
   calendar, etc
 - [Rofi](https://github.com/davatorium/rofi) menu for launchers, clipboard
   history, workspace switchers, etc
-- [Brave](https://github.com/brave/brave-browser/) browser with tight policies
-  to ensure security and protect user privacy
+- [Brave](https://github.com/brave/brave-browser/) browser with tight policies.
 - Sandboxing with [Bubblewrap](https://github.com/containers/bubblewrap) and
   [xdg-dbus-proxy](https://github.com/flatpak/xdg-dbus-proxy).
 - NVF-powered [neovim](https://github.com/sotormd/neovim) configuration
