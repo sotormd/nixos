@@ -674,9 +674,11 @@ the following values have been populated from the installation environment
     };
 
     # vaultwarden password manager
+    # signups is whether to allow new signups
     # allow is a private CIDR
     vaultwarden = {
       enable = false;
+      signups = false;
       allow = "10.0.0.2/32";
     };
 

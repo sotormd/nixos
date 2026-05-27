@@ -339,6 +339,9 @@ in
         allow = mkOption {
           type = privateCidr;
         };
+        signups = mkOption {
+          type = types.bool;
+        };
       };
 
       i2pd = {

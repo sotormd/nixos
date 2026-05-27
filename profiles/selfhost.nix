@@ -10,5 +10,6 @@ in
     svcvm.qbt
     svcvm.searxng
     svcvm.unbound
+    svcvm.vaultwarden
   ];
 }

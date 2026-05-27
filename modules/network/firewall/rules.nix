@@ -13,7 +13,6 @@ let
     vaultwarden
     i2pd
     qbt
-    jellyfin
     ;
 
   o = lib.optionalString;
@@ -25,15 +24,7 @@ let
   # LOOPBACK SERVICES
   #
 
-  lo-services = mkRules [
-
-    (o searxng.enable "ip saddr 127.0.0.1 ip daddr 127.0.0.1 iifname \"lo\" tcp dport ${toString ports.searxng.search-engine} ct state new accept")
-
-    (o vaultwarden.enable "ip saddr 127.0.0.1 ip daddr 127.0.0.1 iifname \"lo\" tcp dport ${toString ports.vaultwarden.web-vault} ct state new accept")
-
-    (o jellyfin.enable "ip saddr 127.0.0.1 ip daddr 127.0.0.1 iifname \"lo\" tcp dport ${toString ports.jellyfin.web-interface} ct state new accept")
-
-  ];
+  lo-services = mkRules [ ];
 
   ####################################################################################################################################################################
   #
@@ -63,6 +54,10 @@ let
 
     (o searxng.enable ''
       iifname "${ifaces.searxng}" ct state established,related accept
+    '')
+
+    (o vaultwarden.enable ''
+      iifname "${ifaces.vaultwarden}" ct state established,related accept
     '')
 
     (o i2pd.enable ''
@@ -128,6 +123,11 @@ let
     # nginx vm -> searxng vm, for search engine
     (o (nginx.enable && searxng.enable) ''
       ip saddr ${addresses.nginx} iifname "${ifaces.nginx}" ip daddr ${addresses.searxng} oifname "${ifaces.searxng}" tcp dport ${toString ports.searxng.search-engine} ct state new accept
+    '')
+
+    # nginx vm -> vaultwarden vm, for webvault
+    (o (nginx.enable && vaultwarden.enable) ''
+      ip saddr ${addresses.nginx} iifname "${ifaces.nginx}" ip daddr ${addresses.vaultwarden} oifname "${ifaces.vaultwarden}" tcp dport ${toString ports.vaultwarden.web-vault} ct state new accept
     '')
 
     # nginx vm -> i2pd vm, for webconsole

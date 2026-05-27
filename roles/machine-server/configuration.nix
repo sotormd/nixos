@@ -64,6 +64,7 @@
   # microvms start concurrently
   systemd.services.start-microvms = {
     description = "Start MicroVMs";
+    wantedBy = [ "multi-user.target" ];
     wants = [
       "network-online.target"
       "ip-link-up.service"
@@ -80,6 +81,7 @@
           unbound
           nginx
           searxng
+          vaultwarden
           i2pd
           qbt
           ;
@@ -94,35 +96,42 @@
         ExecStart = pkgs.writeShellScript "start-microvms-script" ''
           ${
             (lib.optionalString unbound.enable ''
-              sleep 120
+              sleep 180
               echo "starting unbound"
               systemctl start microvm@unbound
             '')
           }
           ${
             (lib.optionalString searxng.enable ''
-              sleep 120
+              sleep 180
               echo "starting searxng"
               systemctl start microvm@searxng
             '')
           }
           ${
+            (lib.optionalString vaultwarden.enable ''
+              sleep 180
+              echo "starting vaultwarden"
+              systemctl start microvm@vaultwarden
+            '')
+          }
+          ${
             (lib.optionalString i2pd.enable ''
-              sleep 120
+              sleep 180
               echo "starting i2pd"
               systemctl start microvm@i2pd
             '')
           }
           ${
             (lib.optionalString qbt.enable ''
-              sleep 120
+              sleep 180
               echo "starting qbt"
               systemctl start microvm@qbt
             '')
           }
           ${
             (lib.optionalString nginx.enable ''
-              sleep 120
+              sleep 180
               echo "starting nginx"
               systemctl start microvm@nginx
             '')
