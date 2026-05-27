@@ -156,6 +156,7 @@
     };
     vaultwarden = {
       enable = true;
+      signups = true;
       allow = "10.0.0.2/32";
     };
     i2pd = {
