@@ -2129,7 +2129,9 @@ official wiki page covers setting up Whonix in QEMU/KVM using libvirt.
 
 Several services run in MicroVMs as covered above. These are
 [microvm.nix](https://github.com/microvm-nix/microvm.nix) QEMU MicroVMs.
-Networking is covered above in [Firewall](#firewall).
+Networking is covered above in [Firewall](#firewall). Rather than being bridged,
+the VMs use a
+[routed network model](https://microvm-nix.github.io/microvm.nix/routed-network.html).
 
 See [Server Usage Documentation](./server/usage.md#microvms) for more
 information.
