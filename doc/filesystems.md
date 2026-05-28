@@ -411,7 +411,6 @@ The following directories are persisted by default:
 | `/var/lib/i2pd`         | i2pd router data        | Data    |
 | `/var/lib/qbt`          | qbittorrent data        | Data    |
 | `/srv/torrents`         | qbittorrent torrents    | Data    |
-| `/var/lib/jellyfin`     | jellyfin data           | Data    |
 | `/var/log`              | logs                    | Data    |
 
 The directories are based on the recommendations in the NixOS

@@ -22,7 +22,6 @@ lib.mkIf (config.vars.modes.roaming.enable && config.vars.features.impermanence.
           vaultwarden.enable = lib.mkForce false;
           i2pd.enable = lib.mkForce false;
           qbt.enable = lib.mkForce false;
-          jellyfin.enable = lib.mkForce false;
         };
       };
     };

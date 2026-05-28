@@ -774,17 +774,6 @@ using the `vars.selfhosted.*` variables.
 
    qBittorrent instance to use for the webui.
 
-5. `vars.selfhosted.jellyfin`
-
-   ```nix
-   {
-     enable = true;
-     domain = "example.duckdns.org"; 
-   }
-   ```
-
-   Jellyfin instance to use for the web interface.
-
 # Further Reading
 
 - [Security Features](../security.md)

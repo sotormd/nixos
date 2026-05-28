@@ -7,7 +7,8 @@ This document covers using the Server role.
 1. [System Maintenance](#system-maintenance)
 2. [Bind Mounts and External Disks](#bind-mounts-and-external-disks)
 3. [Services](#services)
-4. [Further Reading](#further-reading)
+4. [MicroVMs](#microvms)
+5. [Further Reading](#further-reading)
 
 # System Maintenance
 
@@ -48,11 +49,10 @@ nixos edit sops
 
 # Bind Mounts and External Disks
 
-Bind mounts and external disks can be used to put files in expected data
-directories.
+The variables file can be used to create bind mounts, which can be used to put
+files in expected data directories from external disks.
 
-See
-[Filesystem and Impermanence Documentation](../filesystems.md#additional-disks-and-mounts)
+See [Additional Disks and Mounts](../filesystems.md#additional-disks-and-mounts)
 for more information.
 
 # Services
@@ -66,12 +66,13 @@ The following services are available:
 - Vaultwarden
 - I2PD
 - qBittorrent
-- Jellyfin
 
 ## SSH Server
 
 OpenSSH secure shell daemon with a hardened configuration. SSH is also required
 for [seeding](../cli.md#build-remote-closures) the current machine.
+
+OpenSSH runs on the Host.
 
 ### Enabling
 
@@ -108,16 +109,13 @@ For `vars.services.ssh`
 
 Unbound recursive validating DNS server with a hardened configuration.
 
+Unbound runs in a MicroVM. See [MicroVMs](#microvms) for more information.
+
 ### Enabling
 
 Enabled using `vars.services.unbound.enable`
 
 ### Ports
-
-Open on loopback to `127.0.0.1`:
-
-1. `53/tcp` dns
-2. `53/udp` dns
 
 Open on LAN to the private CIDR defined by `vars.services.unbound.allow`:
 
@@ -135,6 +133,8 @@ Data is stored under `/var/lib/unbound`.
 ## NGINX
 
 Web server and reverse proxy.
+
+NGINX runs in a MicroVM. See [MicroVMs](#microvms) for more information.
 
 ### Enabling
 
@@ -171,7 +171,6 @@ Reverse proxy is set up for the following services, if enabled:
 | `/vaultwarden/` | Vaultwarden web vault | Password manager            | `vars.services.vaultwarden.allow` |
 | `/i2pd/`        | I2PD web console      | Invisible Internet Protocol | `vars.services.i2pd.allow`        |
 | `/qbt/`         | qBittorrent webui     | Bittorrent client           | `vars.services.qbt.allow`         |
-| `/jellyfin/`    | Jellyfin              | Media server                | `vars.services.jellyfin.allow`    |
 
 ## SearXNG
 
@@ -181,11 +180,11 @@ Fast, private metasearch engine.
 
 Enabled using `vars.services.searxng.enable`.
 
+SearXNG runs in a MicroVM. See [MicroVMs](#microvms) for more information.
+
 ### Ports
 
-Open on loopback to `127.0.0.1`:
-
-1. `8888` search engine
+No ports are open on loopback or LAN.
 
 ### Search Engines
 
@@ -209,11 +208,11 @@ Password manager.
 
 Enabled using `vars.services.vaultwarden.enable`.
 
+Vaultwarden runs in a MicroVM. See [MicroVMs](#microvms) for more information.
+
 ### Ports
 
-Open on loopback to `127.0.0.1`:
-
-1. `8222` web vault
+No ports are open on loopback or LAN.
 
 ### Vault
 
@@ -227,13 +226,9 @@ Router for the I2P network.
 
 Enabled using `vars.services.i2pd.enable`.
 
+I2PD runs in a MicroVM. See [MicroVMs](#microvms) for more information.
+
 ### Ports
-
-Open on loopback to `127.0.0.1`:
-
-1. `7656` SAM
-2. `4447` SOCKS proxy
-3. `7070` webconsole
 
 Open on LAN to the private CIDR defined by `vars.services.i2pd.allow`:
 
@@ -247,15 +242,15 @@ Data is stored under `/var/lib/i2pd`.
 
 Web interface for the qBittorrent bittorrent client.
 
+qBittorrent runs in a MicroVM. See [MicroVMs](#microvms) for more information.
+
 ### Enabling
 
 Enabled using `vars.services.qbt.enable`.
 
 ### Ports
 
-Open on loopback to `127.0.0.1`:
-
-1. `8080` webui
+No ports are open on loopback or LAN.
 
 ### Data
 
@@ -274,52 +269,47 @@ Default download directory for TV is: `/srv/torrents/tv`.
 ### Initial Setup
 
 qBittorrent will initially start with username `admin` and a random password.
-Check the service status for the password.
+Check the service status for the password. Since qBittorrent runs in a MicroVM,
+ssh into the MicroVM first.
 
 ```bash
+microvm -s qbt
 systemctl status qbt
 ```
 
 Then, in the web ui `https://<your-duckdns-domain>/qbt/` under
 `Tools > Options > WebUI > Authentication` set a username and password.
 
-## Jellyfin
+# MicroVMs
 
-Media server.
+Several services run in MicroVMs. Each MicroVM uses its own interface and runs
+behind a NAT. The nftables firewall is used to allow restricted access to
+required regions. See [Firewall](../security.md#firewall) for more information.
 
-### Enabling
+| MicroVM       | (internal) IP Address | Interface | Gateway      |
+| ------------- | --------------------- | --------- | ------------ |
+| `unbound`     | `10.204.3.2`          | `svcvm3`  | `10.204.3.1` |
+| `nginx`       | `10.204.4.2`          | `svcvm4`  | `10.204.4.1` |
+| `searxng`     | `10.204.5.2`          | `svcvm5`  | `10.204.5.1` |
+| `vaultwarden` | `10.204.6.2`          | `svcvm6`  | `10.204.6.1` |
+| `i2pd`        | `10.204.7.2`          | `svcvm7`  | `10.204.7.1` |
+| `qbt`         | `10.204.8.2`          | `svcvm8`  | `10.204.8.1` |
 
-Enabled using `vars.services.jellyfin.enable`.
+Each MicroVM can be manually started/stopped/restarted using `systemctl`. For
+example:
 
-### Ports
+```bash
+systemctl start microvm@unbound
+systemctl stop microvm@qbt
+systemctl restart microvm@searxng
+```
 
-Open on loopback to `127.0.0.1`:
+It is possible to SSH into the MicroVMs using VSOCK from the host with the root
+password `toor`. For example:
 
-1. `8096` web interface
-
-### Data
-
-Data is stored under `/var/lib/jellyfin`.
-
-### Initial Setup
-
-Access the web interface at `https://<your-duckdns-domain>/jellyfin/` and follow
-the wizard to set up your user and library.
-
-To use torrents from qBittorrent, add `/srv/torrents/movies` and
-`/srv/torrents/tv`.
-
-### Disabling media playback
-
-If using only the `Download` and/or `Copy Stream URL` options, you can disable
-media playback by disallowing it for your user.
-
-1. Access the web interface at `https://<your-duckdns-domain>/jellyfin/`
-
-2. Uncheck `Allow media playback` under
-   `Dashboard > Users > <your-user> > Profile > Media Playback`.
-
-3. Click `Save` at the end of the page.
+```bash
+microvm -s nginx
+```
 
 # Further Reading
 

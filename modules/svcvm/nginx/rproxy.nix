@@ -7,7 +7,6 @@ let
     vaultwarden
     i2pd
     qbt
-    jellyfin
     ;
 in
 {
@@ -68,11 +67,12 @@ in
       '';
     };
 
-    "/jellyfin/" = lib.mkIf jellyfin.enable {
-      proxyPass = "http://${jellyfin.address}:${toString jellyfin.port}";
+    "/torrents/" = lib.mkIf qbt.enable {
+      alias = "/srv/torrents/";
       extraConfig = ''
-        allow ${jellyfin.allow};
+        allow ${qbt.allow};
         deny all;
+        autoindex on;
       '';
     };
 

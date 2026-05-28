@@ -266,14 +266,6 @@ in
           type = duckdnsDomain;
         };
       };
-      jellyfin = {
-        enable = mkOption {
-          type = types.bool;
-        };
-        domain = mkOption {
-          type = duckdnsDomain;
-        };
-      };
     };
 
     services = {
@@ -354,15 +346,6 @@ in
       };
 
       qbt = {
-        enable = mkOption {
-          type = types.bool;
-        };
-        allow = mkOption {
-          type = privateCidr;
-        };
-      };
-
-      jellyfin = {
         enable = mkOption {
           type = types.bool;
         };

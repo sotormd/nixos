@@ -1,4 +1,4 @@
-{ config, ... }:
+{ config, pkgs, ... }:
 
 let
   inherit (config.vars.wireless) interface;
@@ -11,7 +11,7 @@ in
     before = [ "wpa_supplicant-${interface}.service" ];
     serviceConfig = {
       Type = "oneshot";
-      ExecStart = "/run/current-system/sw/bin/ip link set ${interface} up";
+      ExecStart = "${pkgs.iproute2}/bin/ip link set ${interface} up";
     };
   };
 }

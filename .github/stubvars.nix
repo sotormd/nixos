@@ -121,10 +121,6 @@
       enable = true;
       domain = "stub.duckdns.org";
     };
-    jellyfin = {
-      enable = true;
-      domain = "stub.duckdns.org";
-    };
   };
 
   services = {
@@ -164,10 +160,6 @@
       allow = "10.0.0.2/32";
     };
     qbt = {
-      enable = true;
-      allow = "10.0.0.2/32";
-    };
-    jellyfin = {
       enable = true;
       allow = "10.0.0.2/32";
     };

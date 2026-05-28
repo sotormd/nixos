@@ -28,18 +28,4 @@ in
     "d /var/lib/acme 750 acme acme -"
     "Z /var/lib/acme 750 acme acme -"
   ];
-
-  # ensure appropriate uid/gid
-  users = {
-    users = {
-      nginx.extraGroups = [ "acme" ];
-      acme = {
-        uid = nginx.acme-id;
-        group = "acme";
-      };
-    };
-    groups.acme = {
-      gid = nginx.acme-id;
-    };
-  };
 }

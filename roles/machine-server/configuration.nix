@@ -85,59 +85,79 @@
           i2pd
           qbt
           ;
+        step = "180";
       in
       {
         Type = "oneshot";
-        ExecStartPre = pkgs.writeShellScript "start-microvms-pre-script" ''
+        ExecStartPre = "${pkgs.writeShellScriptBin "start-microvms-pre" ''
           until ${pkgs.iputils}/bin/ping -c1 1.1.1.1 >/dev/null 2>&1; do
             sleep 2
           done
-        '';
-        ExecStart = pkgs.writeShellScript "start-microvms-script" ''
+        ''}/bin/start-microvms-pre";
+        ExecStart = "${pkgs.writeShellScriptBin "start-microvms" ''
           ${
             (lib.optionalString unbound.enable ''
-              sleep 180
+              sleep ${step}
               echo "starting unbound"
               systemctl start microvm@unbound
             '')
           }
           ${
             (lib.optionalString searxng.enable ''
-              sleep 180
+              sleep ${step}
               echo "starting searxng"
               systemctl start microvm@searxng
             '')
           }
           ${
             (lib.optionalString vaultwarden.enable ''
-              sleep 180
+              sleep ${step}
               echo "starting vaultwarden"
               systemctl start microvm@vaultwarden
             '')
           }
           ${
             (lib.optionalString i2pd.enable ''
-              sleep 180
+              sleep ${step}
               echo "starting i2pd"
               systemctl start microvm@i2pd
             '')
           }
           ${
             (lib.optionalString qbt.enable ''
-              sleep 180
+              sleep ${step}
               echo "starting qbt"
               systemctl start microvm@qbt
             '')
           }
           ${
             (lib.optionalString nginx.enable ''
-              sleep 180
+              sleep ${step}
               echo "starting nginx"
               systemctl start microvm@nginx
             '')
           }
-        '';
+        ''}/bin/start-microvms";
       };
+  };
+
+  # stop microvms
+  # probably need this before
+  # a flake re-eval or rebuild
+  # so that it doesn't explode
+  systemd.services.stop-microvms = {
+    description = "Stop MicroVMs";
+    serviceConfig = {
+      Type = "oneshot";
+      ExecStart = "${pkgs.writeShellScriptBin "stop-microvms" ''
+        systemctl stop microvm@unbound || true
+        systemctl stop microvm@searxng || true
+        systemctl stop microvm@vaultwarden || true
+        systemctl stop microvm@i2pd || true
+        systemctl stop microvm@qbt || true
+        systemctl stop microvm@nginx || true
+      ''}/bin/stop-microvms";
+    };
   };
 
   # environment variables
@@ -164,7 +184,6 @@
       vaultwarden.enable = lib.mkForce false;
       i2pd.enable = lib.mkForce false;
       qbt.enable = lib.mkForce false;
-      jellyfin.enable = lib.mkForce false;
     };
   };
 
@@ -176,7 +195,6 @@
         config.vars.services.searxng.enable
         config.vars.services.i2pd.enable
         config.vars.services.qbt.enable
-        config.vars.services.jellyfin.enable
       ];
       i2pdRequired = [
         config.vars.services.qbt.enable
@@ -189,7 +207,6 @@
         config.vars.selfhosted.vaultwarden.enable
         config.vars.selfhosted.i2pd.enable
         config.vars.selfhosted.qbt.enable
-        config.vars.selfhosted.jellyfin.enable
       ];
       modesDisabled = [
         config.vars.modes.roaming.enable
@@ -200,11 +217,20 @@
     [
       {
         assertion = !(builtins.any (x: x) nginxRequired) || config.vars.services.nginx.enable;
-        message = "variables: nginx must be enabled if any dependent service is enabled";
+        message = ''
+          variables: nginx must be enabled if any dependent service is enabled
+            - searxng
+            - vaultwarden
+            - i2pd
+            - qbt
+        '';
       }
       {
         assertion = !(builtins.any (x: x) i2pdRequired) || config.vars.services.i2pd.enable;
-        message = "variables: i2pd must be enabled if any dependent service is enabled";
+        message = ''
+          variables: i2pd must be enabled if any dependent service is enabled
+            - qbt
+        '';
       }
       {
         assertion = builtins.all (x: !x) featuresDisabled;

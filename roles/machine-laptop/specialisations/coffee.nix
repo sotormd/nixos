@@ -30,7 +30,6 @@ lib.mkIf (config.vars.modes.coffee.enable && config.vars.features.impermanence.e
           vaultwarden.enable = lib.mkForce false;
           i2pd.enable = lib.mkForce false;
           qbt.enable = lib.mkForce false;
-          jellyfin.enable = lib.mkForce false;
         };
       };
     };

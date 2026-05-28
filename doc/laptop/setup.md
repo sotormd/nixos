@@ -221,11 +221,7 @@ Before proceeding, see [Laptop Requirements](./requirements.md).
    nixos bootstrap install
    ```
 
-5. Finish installation.
-
-   ```bash
-   sudo reboot
-   ```
+5. Finish installation. Remember to export the `rpool` zpool before rebooting.
 
    Remove the removable medium and boot into the newly installed NixOS
    installation.

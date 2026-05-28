@@ -44,4 +44,26 @@ in
       "svcready-resolve.service"
     ];
   };
+
+  # ensure appropriate uid/gid
+  users = {
+    users = {
+      nginx.extraGroups = [
+        "acme"
+        "torrents"
+      ];
+      acme = {
+        uid = nginx.acme-id;
+        group = "acme";
+      };
+    };
+    groups = {
+      acme = {
+        gid = nginx.acme-id;
+      };
+      torrents = {
+        gid = nginx.qbt-id;
+      };
+    };
+  };
 }

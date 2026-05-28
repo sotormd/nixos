@@ -458,14 +458,6 @@ elif [ "$VERB" == "vars" ]; then
       domain = "example.duckdns.org";
     };
 
-    # jellyfin media server
-    # used for web interface
-    # domain is a duckdns domain
-    jellyfin = {
-      enable = false;
-      domain = "example.duckdns.org";
-    };
-
   };
 
   # service toggles
@@ -692,13 +684,6 @@ the following values have been populated from the installation environment
     # qbittorrent bittorrent client
     # allow is a private CIDR
     qbt = {
-      enable = false;
-      allow = "10.0.0.2/32";
-    };
-
-    # jellyfin media server
-    # allow is a private CIDR
-    jellyfin = {
       enable = false;
       allow = "10.0.0.2/32";
     };
@@ -1049,8 +1034,7 @@ elif [ "$VERB" == "impermanence" ]; then
             "/var/lib/bitwarden_rs" \
             "/var/lib/i2pd" \
             "/var/lib/qbt" \
-            "/srv/torrents" \
-            "/var/lib/jellyfin" 
+            "/srv/torrents"
 
     fi
 

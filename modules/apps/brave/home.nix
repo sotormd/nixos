@@ -38,11 +38,11 @@ let
           url = "https://${config.vars.selfhosted.qbt.domain}/qbt/";
         }
       ])
-      (lib.optional config.vars.selfhosted.jellyfin.enable [
+      (lib.optional config.vars.selfhosted.qbt.enable [
         {
-          short = "jf";
-          full = "jellyfin";
-          url = "https://${config.vars.selfhosted.jellyfin.domain}/jellyfin/";
+          short = "tr";
+          full = "torrents";
+          url = "https://${config.vars.selfhosted.qbt.domain}/torrents/";
         }
       ])
     ])

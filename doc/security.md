@@ -16,6 +16,14 @@ Consider [Qubes](https://www.qubes-os.org/) for decent security against these
 attacks, backed by the guarantees of the
 [Xen project hypervisor](https://xenproject.org/).
 
+The targets covered in this document are:
+
+- Laptop, my laptop configuration for generic personal portable computers
+- Server, my home-server configuration for MicroVM service hosts that serve
+  their LAN
+
+Unless explicitly mentioned, everything applies to both roles.
+
 # Resources
 
 - [Madaidan's Insecurities](https://madaidans-insecurities.github.io/guides/linux-hardening.html)
@@ -75,7 +83,7 @@ Missing features:
 30. [Browsers](#browsers)
 31. [Search Engine](#search-engine)
 32. [Password Manager](#password-manager)
-33. [Virtualisation and Containers](#virtualisation-and-containers)
+33. [Virtualisation](#virtualisation)
 
 # Secure Boot
 
@@ -986,7 +994,7 @@ The Nix package manager and the Nix packaging model prevent various classes of
 supply chain attacks.
 
 The Nix package manager is hardened and can only be used by members of the wheel
-group. Furthermore, only the root user is trusted by the store uri. This is
+group. Furthermore, only the root user is part of `trusted-users`. This is
 important because adding a trusted user is essentially passwordless root.
 
 Nix is also set to only download and use cryptographically signed binaries.
@@ -1066,7 +1074,7 @@ WPA3 (SAE / dragonfly) is used for wireless authentication on Laptop.
 
 # DNS
 
-The Unbound DNS resolver is hosted on Server.
+The Unbound DNS resolver is hosted on Server. It runs in a MicroVM.
 
 Additionally, [StevenBlack's host list](http://github.com/StevenBlack/hosts) is
 used to sinkhole domains in the Unbound DNS server hosted on Server.
@@ -1168,51 +1176,31 @@ used:
     use-caps-for-id=yes
     ```
 
+15. Unbound is also set to allow only specific clients using `access-control`.
+    Importantly, the private CIDR `vars.services.unbound.allow` is allowed to
+    use the resolver. Additionally, the VM interfaces are explicitly allowed to
+    use the resolver if the respective services are enabled.
+
 # Firewall
 
 The simpler NixOS `networking.firewall` is disabled. `nftables` is used instead.
 The userspace `nft` tool can be used for ad-hoc changes.
 
-By default, **NO** ports are open on **ANY** interface, not even loopback.
+By default, **NO** ports are open on **ANY** interface, not even loopback or
+internal VM interfaces.
 
-Ports are opened on loopback / LAN based on the variables and enabled services.
+Ports are opened on loopback / LAN / VM interfaces to specific addresses and
+interfaces based on enabled services.
 
-Most ports are opened only to the loopback interface since services are
+Additionally, most ports are opened only to VM interfaces since services are
 reverse-proxied via NGINX. For the few ports that are opened to LAN, the ports
 are opened only to a select CIDR defined by the `vars.service.<name>.allow`
 variables in the variables file. Since this value is a CIDR, it can be used to
 allow only specific IP addresses. For example, by setting it to `10.0.0.100/31`,
 only `10.0.0.100` and `10.0.0.101` are allowed.
 
-Additionally, the services reverse-proxied via the variables file are also
-restricted using NGINX. See [NGINX](#nginx) for more information.
-
-Base firewall rules:
-
-```
-flush ruleset
-table inet filter {
-    chain input {
-        type filter hook input priority filter; policy drop;
-        ct state invalid drop
-        tcp flags & (fin|syn|rst|ack) != syn ct state new drop
-
-        iifname "${interface}" ct state established,related accept
-        iifname "lo" ct state established,related accept
-        ${services}
-    }
-
-    chain forward {
-        type filter hook forward priority filter; policy drop;
-    }
-
-    chain output {
-        type filter hook output priority filter; policy accept;
-    }
-}
-```
-
-Service rules:
+Additionally, the services reverse-proxied via the NGINX are also restricted
+using `vars.service.<name>.allow`. See [NGINX](#nginx) for more information.
 
 > Laptop only
 
@@ -1226,10 +1214,6 @@ Ports are opened for the following services:
    - TCP `vars.services.ssh.port` is open on LAN to the private CIDR defined by
      `vars.services.ssh.allow`
 
-     ```nix
-     "ip saddr ${ssh.allow} ip daddr ${address} iifname \"${interface}\" tcp dport ${toString ssh.port} accept"
-     ```
-
 > Server only
 
 Ports are open based on the enabled services. See
@@ -1242,105 +1226,183 @@ Ports are opened for the following services:
    - TCP `vars.services.ssh.port` is open on LAN to the private CIDR defined by
      `vars.services.ssh.allow`
 
-     ```nix
-     "ip saddr ${ssh.allow} ip daddr ${address} iifname \"${interface}\" tcp dport ${toString ssh.port} accept"
-     ```
-
 2. Unbound, if enabled using `vars.services.unbound.enable`:
 
-   - TCP `53` is open on LAN to the private CIDR defined by
+   - (dns) TCP `53` is forwarded and open on LAN to the private CIDR defined by
      `vars.services.unbound.allow`
 
-     ```nix
-     "ip saddr ${unbound.allow} ip daddr ${address} iifname \"${interface}\" tcp dport 53 accept"
-     ```
-
-   - UDP `53` is open on LAN to the private CIDR defined by
+   - (dns) UDP `53` is forwarded and open on LAN to the private CIDR defined by
      `vars.services.unbound.allow`
 
-     ```nix
-     "ip saddr ${unbound.allow} ip daddr ${address} iifname \"${interface}\" udp dport 53 accept"
-     ```
+   - (dns) TCP `53` is open on VM interface to host
 
-   - TCP `53` is open on loopback to `127.0.0.1`
+   - (dns) UDP `53` is open on VM interface to host
 
-     ```nix
-     "ip saddr 127.0.0.1 ip daddr 127.0.0.1 iifname \"lo\" tcp dport 53 accept"
-     ```
+   - (dns) TCP `53` is open on VM interface to `nginx`, `searxng` and `i2pd` VMs
 
-   - UDP `53` is open on loopback to `127.0.0.1`
-
-     ```nix
-     "ip saddr 127.0.0.1 ip daddr 127.0.0.1 iifname \"lo\" udp dport 53 accept"
-     ```
+   - (dns) UDP `53` is open on VM interface to `nginx`, `searxng` and `i2pd` VMs
 
 3. NGINX, if enabled using `vars.services.nginx.enable`:
 
-   - TCP `443` is open on LAN to the private CIDR defined by
-     `vars.services.nginx.allow`
-
-     ```nix
-     "ip saddr ${nginx.allow} ip daddr ${address} iifname \"${interface}\" tcp dport 443 accept"
-     ```
+   - (https) TCP `443` is forwarded and open on LAN to the private CIDR defined
+     by `vars.services.nginx.allow`
 
 4. SearXNG, if enabled using `vars.services.searxng.enable`:
 
-   - TCP `8888` is open on loopback to `127.0.0.1`
-
-     ```nix
-     "ip saddr 127.0.0.1 ip daddr 127.0.0.1 iifname \"lo\" tcp dport 8888 accept"
-     ```
+   - (search-engine) TCP `8888` is open on VM interface to `nginx` VM
 
 5. Vaultwarden, if enabled using `vars.services.vaultwarden.enable`:
 
-   - TCP `8222` is open on loopback to `127.0.0.1`
+   - Cannot access the internet.
 
-     ```nix
-     "ip saddr 127.0.0.1 ip daddr 127.0.0.1 iifname \"lo\" tcp dport 8222 accept"
-     ```
+   - (web-vault) TCP `8222` is open on VM interface to `nginx` VM
 
 6. I2PD, if enabled using `vars.services.i2pd.enable`:
 
-   - TCP `4444` is open on LAN to the private CIDR defined by
-     `vars.services.i2pd.allow`
+   - (http-proxy) TCP `4444` is forwarded and open on LAN to the private CIDR
+     defined by `vars.services.i2pd.allow`
 
-     ```nix
-     "ip saddr ${i2pd.allow} ip daddr ${address} iifname \"${interface}\" tcp dport 4444 accept"
-     ```
+   - (sam) TCP `7656` is open on VM interface to `qbt` VM
 
-   - TCP `7656` is open on loopback to `127.0.0.1`
-
-     ```nix
-     "ip saddr 127.0.0.1 ip daddr 127.0.0.1 iifname \"lo\" tcp dport 7656 accept"
-     ```
-
-   - TCP `4447` is open on loopback to `127.0.0.1`
-
-     ```nix
-     "ip saddr 127.0.0.1 ip daddr 127.0.0.1 iifname \"lo\" tcp dport 4447 accept"
-     ```
-
-   - TCP `7070` is open on loopback to `127.0.0.1`
-
-     ```nix
-     "ip saddr 127.0.0.1 ip daddr 127.0.0.1 iifname \"lo\" tcp dport 7070 accept"
-     ```
+   - (web-console) TCP `7070` is open on VM interface to `nginx` VM
 
 7. qBittorrent, if enabled using `vars.services.qbt.enable`:
 
-   - TCP `8080` is open on loopback to `127.0.0.1`
+   - Cannot access the internet, exclusively uses I2P.
 
-     ```nix
-     "ip saddr 127.0.0.1 ip daddr 127.0.0.1 iifname \"lo\" tcp dport 8080 accept"
-     ```
+   - (web-ui) TCP `8080` is open on VM interface to `nginx` VM
 
-8. Jellyfin, if enabled using `vars.services.jellyfin.enable`:
+> Examples
 
-   - TCP `8096` is open on loopback to `127.0.0.1`
+Example ruleset with NO services enabled:
 
-     ```nix
-     "ip saddr 127.0.0.1 ip daddr 127.0.0.1 iifname \"lo\" tcp dport 8096 accept"
-     ```
+Notes for example:
+
+- `wlan0` is the LAN interface.
+- This is how ruleset would look on Laptop with SSH disabled.
+
+```
+table inet filter {
+	chain input {
+		type filter hook input priority filter; policy drop;
+		ct state invalid drop
+		tcp flags & (fin | syn | rst | ack) != syn ct state new drop
+		iifname "lo" ct state established,related accept
+		iifname "wlan0" ct state established,related accept
+	}
+
+	chain forward {
+		type filter hook forward priority filter; policy drop;
+		ct state invalid drop
+		ct state established,related accept
+	}
+
+	chain output {
+		type filter hook output priority filter; policy drop;
+		ct state invalid drop
+		ct state established,related accept
+		oifname "lo" accept
+		oifname "wlan0" accept
+	}
+}
+table ip nat {
+	chain prerouting {
+		type nat hook prerouting priority dstnat; policy accept;
+	}
+
+	chain postrouting {
+		type nat hook postrouting priority srcnat; policy accept;
+	}
+}
+```
+
+Example ruleset with ALL services enabled:
+
+Notes for example:
+
+- `wlan0` is the LAN interface.
+- `192.168.0.101` is the host.
+- `192.168.0.100` is a trusted client.
+- `2233` is the SSH port.
+- `unbound` is `10.204.3.2` on `svcvm3`
+- `nginx` is `10.204.4.2` on `svcvm4`
+- `searxng` is `10.204.5.2` on `svcvm5`
+- `vaultwarden` is `10.204.6.2` on `svcvm6`
+- `i2pd` is `10.204.7.2` on `svcvm7`
+- `qbt` is `10.204.8.2` on `svcvm8`
+- This is how ruleset would look on Server with ALL services enabled.
+
+```
+table inet filter {
+	chain input {
+		type filter hook input priority filter; policy drop;
+		ct state invalid drop
+		tcp flags & (fin | syn | rst | ack) != syn ct state new drop
+		iifname "lo" ct state established,related accept
+		iifname "wlan0" ct state established,related accept
+		iifname "svcvm3" ct state established,related accept
+		iifname "svcvm4" ct state established,related accept
+		iifname "svcvm5" ct state established,related accept
+		iifname "svcvm6" ct state established,related accept
+		iifname "svcvm7" ct state established,related accept
+		iifname "svcvm8" ct state established,related accept
+		ip saddr 192.168.0.100 ip daddr 192.168.0.99 iifname "wlan0" tcp dport 2233 ct state new accept
+	}
+
+	chain forward {
+		type filter hook forward priority filter; policy drop;
+		ct state invalid drop
+		ct state established,related accept
+		ip saddr 10.204.3.2 iifname "svcvm3" oifname "wlan0" ct state new accept
+		ip saddr 10.204.4.2 iifname "svcvm4" oifname "wlan0" ct state new accept
+		ip saddr 10.204.5.2 iifname "svcvm5" oifname "wlan0" ct state new accept
+		ip saddr 10.204.7.2 iifname "svcvm7" oifname "wlan0" ct state new accept
+		ip saddr 192.168.0.100 iifname "wlan0" oifname "svcvm3" ip daddr 10.204.3.2 tcp dport 53 ct state new accept
+		ip saddr 192.168.0.100 iifname "wlan0" oifname "svcvm3" ip daddr 10.204.3.2 udp dport 53 ct state new accept
+		ip saddr 192.168.0.100 iifname "wlan0" oifname "svcvm4" ip daddr 10.204.4.2 tcp dport 443 ct state new accept
+		ip saddr 192.168.0.100 iifname "wlan0" oifname "svcvm7" ip daddr 10.204.7.2 tcp dport 4444 ct state new accept
+		ip saddr 10.204.4.2 iifname "svcvm4" ip daddr 10.204.3.2 oifname "svcvm3" tcp dport 53 ct state new accept
+		ip saddr 10.204.4.2 iifname "svcvm4" ip daddr 10.204.3.2 oifname "svcvm3" udp dport 53 ct state new accept
+		ip saddr 10.204.4.2 iifname "svcvm4" ip daddr 10.204.5.2 oifname "svcvm5" tcp dport 8888 ct state new accept
+		ip saddr 10.204.4.2 iifname "svcvm4" ip daddr 10.204.6.2 oifname "svcvm6" tcp dport 8222 ct state new accept
+		ip saddr 10.204.4.2 iifname "svcvm4" ip daddr 10.204.7.2 oifname "svcvm7" tcp dport 7070 ct state new accept
+		ip saddr 10.204.4.2 iifname "svcvm4" ip daddr 10.204.8.2 oifname "svcvm8" tcp dport 8080 ct state new accept
+		ip saddr 10.204.5.2 iifname "svcvm5" ip daddr 10.204.3.2 oifname "svcvm3" tcp dport 53 ct state new accept
+		ip saddr 10.204.5.2 iifname "svcvm5" ip daddr 10.204.3.2 oifname "svcvm3" udp dport 53 ct state new accept
+		ip saddr 10.204.7.2 iifname "svcvm7" ip daddr 10.204.3.2 oifname "svcvm3" tcp dport 53 ct state new accept
+		ip saddr 10.204.7.2 iifname "svcvm7" ip daddr 10.204.3.2 oifname "svcvm3" udp dport 53 ct state new accept
+		ip saddr 10.204.8.2 iifname "svcvm8" ip daddr 10.204.7.2 oifname "svcvm7" tcp dport 7656 ct state new accept
+		ip saddr 10.204.8.2 iifname "svcvm8" ip daddr 10.204.7.2 oifname "svcvm7" tcp dport 4444 ct state new accept
+	}
+
+	chain output {
+		type filter hook output priority filter; policy drop;
+		ct state invalid drop
+		ct state established,related accept
+		oifname "lo" accept
+		oifname "wlan0" accept
+		ip daddr 10.204.3.2 tcp dport 53 ct state new accept
+		ip daddr 10.204.3.2 udp dport 53 ct state new accept
+	}
+}
+table ip nat {
+	chain prerouting {
+		type nat hook prerouting priority dstnat; policy accept;
+		ip saddr 192.168.0.100 iifname "wlan0" tcp dport 53 dnat to 10.204.3.2
+		ip saddr 192.168.0.100 iifname "wlan0" udp dport 53 dnat to 10.204.3.2
+		ip saddr 192.168.0.100 iifname "wlan0" tcp dport 443 dnat to 10.204.4.2
+		ip saddr 192.168.0.100 iifname "wlan0" tcp dport 4444 dnat to 10.204.7.2
+	}
+
+	chain postrouting {
+		type nat hook postrouting priority srcnat; policy accept;
+		ip saddr 10.204.3.2 iifname "svcvm3" oifname "wlan0" masquerade
+		ip saddr 10.204.4.2 iifname "svcvm4" oifname "wlan0" masquerade
+		ip saddr 10.204.5.2 iifname "svcvm5" oifname "wlan0" masquerade
+		ip saddr 10.204.7.2 iifname "svcvm7" oifname "wlan0" masquerade
+	}
+}
+```
 
 # MAC Randomization
 
@@ -1472,6 +1534,8 @@ opening ports. This is served over HTTPS with certificates from
 [Let's Encrypt](https://letsencrypt.org) managed with ACME on LAN to the private
 CIDR as defined by `vars.services.nginx.allow`.
 
+NGINX runs in a MicroVM.
+
 Furthermore, all the reverse proxy locations are restricted using NGINX `allow`
 rules.
 
@@ -1500,8 +1564,9 @@ See [Server Usage Documenation](./server/usage.md#nginx) for more information.
 
 > Server only
 
-The I2PD router is hosted on Server. The qBittorrent torrent client also uses
-the I2P network via this router.
+The I2PD router is hosted on Server. It runs in a MicroVM. The qBittorrent
+torrent client, which also runs in a MicroVM, uses the I2P network via this
+router and does not have access to the clearnet at all.
 
 # Display Server
 
@@ -2037,8 +2102,7 @@ browsers.
 
 # Search Engine
 
-The SearXNG metasearch engine is hosted on Server. This preserves user privacy
-while ensuring good quality results. See
+The SearXNG metasearch engine is hosted on Server. It runs in a MicroVM. See
 [Server Usage Documentation](./server/usage.md#searxng) for information about
 default search engines.
 
@@ -2046,9 +2110,10 @@ The Brave Browser uses SearXNG as the default search engine.
 
 # Password Manager
 
-The Vaultwarden password manager is hosted on Server.
+The Vaultwarden password manager is hosted on Server. It runs in a MicroVM and
+does not have access to the internet.
 
-# Virtualisation and Containers
+# Virtualisation
 
 > Laptop only
 
@@ -2059,3 +2124,12 @@ for information about virtualisation with QEMU/KVM and libvirt/virt-manager.
 It is recommended to set up [Whonix](https://www.whonix.org/) for accessing the
 Tor network in an isolated environment. [This](https://www.whonix.org/wiki/KVM)
 official wiki page covers setting up Whonix in QEMU/KVM using libvirt.
+
+> Server only
+
+Several services run in MicroVMs as covered above. These are
+[microvm.nix](https://github.com/microvm-nix/microvm.nix) QEMU MicroVMs.
+Networking is covered above in [Firewall](#firewall).
+
+See [Server Usage Documentation](./server/usage.md#microvms) for more
+information.

@@ -40,9 +40,6 @@ lib.mkIf config.vars.features.impermanence.enable {
       # qbt torrents
       "/srv/torrents"
 
-      # jellyfin data
-      "/var/lib/jellyfin"
-
       # logs
       "/var/log"
 

@@ -133,9 +133,6 @@
     # distrobox containers
     services.distrobox = _: { imports = [ ./services/distrobox ]; };
 
-    # jellyfin media server
-    services.jellyfin = _: { imports = [ ./services/jellyfin ]; };
-
     # systemd-journald
     services.journald = _: { imports = [ ./services/journald ]; };
 

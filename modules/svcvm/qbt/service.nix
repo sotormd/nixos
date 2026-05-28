@@ -62,7 +62,7 @@ in
 
         ExecStartPre =
           let
-            setupScript = pkgs.writeShellScript "qbt-setup" ''
+            setupScript = pkgs.writeShellScriptBin "qbt-setup" ''
                           set -euo pipefail
 
                           # create the data directory
@@ -156,11 +156,8 @@ in
 
             '';
           in
-          "!${setupScript}";
-
-        ExecStart = ''
-          ${pkgs.qbittorrent-nox}/bin/qbittorrent-nox --confirm-legal-notice
-        '';
+          "!${setupScript}/bin/qbt-setup";
+        ExecStart = "${pkgs.qbittorrent-nox}/bin/qbittorrent-nox --confirm-legal-notice";
       };
     };
 
@@ -181,11 +178,11 @@ in
       ];
       serviceConfig = {
         Type = "oneshot";
-        ExecStart = pkgs.writeShellScript "svcready-i2p-script" ''
+        ExecStart = "${pkgs.writeShellScriptBin "svcready-i2p" ''
           until ${pkgs.curl}/bin/curl --silent --fail --proxy http://${qbt.i2p.address}:${toString qbt.i2p.http-proxy-port} http://stats.i2p >/dev/null 2>&1; do
             sleep 2
           done
-        '';
+        ''}/bin/svcready-i2p";
       };
     };
   };
@@ -194,7 +191,7 @@ in
   systemd.tmpfiles.rules = [
     "d /var/lib/qbt 700 qbt qbt -"
     "Z /var/lib/qbt 700 qbt qbt -"
-    "d /srv/torrents 750 qbt qbt -" # 750 so that the group can be used in the jellyfin vm
+    "d /srv/torrents 750 qbt qbt -" # 750 so that the group can be used in the nginx vm
     "Z /srv/torrents 750 qbt qbt -"
   ];
 

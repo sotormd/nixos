@@ -146,7 +146,6 @@
       vaultwarden.enable = lib.mkForce false;
       i2pd.enable = lib.mkForce false;
       qbt.enable = lib.mkForce false;
-      jellyfin.enable = lib.mkForce false;
     };
   };
 
@@ -163,13 +162,15 @@
         config.vars.services.vaultwarden.enable
         config.vars.services.i2pd.enable
         config.vars.services.qbt.enable
-        config.vars.services.jellyfin.enable
       ];
     in
     [
       {
         assertion = !(builtins.any (x: x) securebootRequired) || config.vars.features.secureboot.enable;
-        message = "variables: secureboot must be enabled if any dependent service is enabled";
+        message = ''
+          variables: secureboot must be enabled if any dependent feature is enabled
+            - impermanence
+        '';
       }
       {
         assertion = builtins.all (x: !x) servicesDisabled;

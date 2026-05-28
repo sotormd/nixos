@@ -12,6 +12,7 @@ in
 {
   options.svcfg.nginx = {
     acme-id = mkOption { type = types.int; };
+    qbt-id = mkOption { type = types.int; };
     addr = mkOption { type = types.str; };
     port = mkOption { type = types.port; };
     email = mkOption { type = types.str; };
@@ -22,7 +23,6 @@ in
       vaultwarden = locationOpts;
       i2pd = locationOpts;
       qbt = locationOpts;
-      jellyfin = locationOpts;
     };
   };
 }

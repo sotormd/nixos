@@ -13,7 +13,6 @@ let
     vaultwarden
     i2pd
     qbt
-    jellyfin
     ;
 
   homepageText = inputs.homepage.lib.makeHomepage {
@@ -39,10 +38,10 @@ let
           full = "qbittorrent";
           url = "https://${nginx.domain}/qbt/";
         })
-        (lib.optional jellyfin.enable {
-          short = "jf";
-          full = "jellyfin";
-          url = "https://${nginx.domain}/jellyfin/";
+        (lib.optional qbt.enable {
+          short = "tr";
+          full = "torrents";
+          url = "https://${nginx.domain}/torrents/";
         })
       ])
     ];

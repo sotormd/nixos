@@ -10,7 +10,8 @@
 
 ![screenshots gif](./doc/screenshots/nord.gif)
 
-~~slightly overengineered~~ NixOS configuration flake for multiple hosts
+~~slightly overengineered~~ NixOS configuration flake for multiple hosts with
+ZFS, Impermanence, MicroVMs, etc
 
 # Features
 
@@ -27,10 +28,12 @@ Nix-specific features:
 - Flake-enabled [bootstrap images](#bootstrap-images)
 - Dotfiles managed using wrappers implemented from basic nixpkgs functions
 - [Impermanence](./doc/filesystems.md#impermanence) using ZFS snapshots and bind
-  mounts, without the library.
+  mounts, without the library
+- Service isolation using
+  [microvm.nix](https://github.com/microvm-nix/microvm.nix)
 - Secrets managed using [sops-nix](https://github.com/Mic92/sops-nix)
 - Secure boot using [lanzaboote](https://github.com/nix-community/lanzaboote)
-- Package management using [lix](https://lix.systems)
+- Package management using [Lix](https://lix.systems)
 
 Desktop features:
 
@@ -58,13 +61,13 @@ Desktop features:
 
 Services features:
 
+- All selfhosted services run in MicroVMs
 - [Unbound](https://github.com/NLnetLabs/unbound) dns server
 - [NGINX](https://github.com/nginx/nginx) web server & reverse proxy
 - ACME for [Let's Encrypt](https://letsencrypt.org/) certificates
 - [SearXNG](https://github.com/searxng/searxng) search engine
 - [Vaultwarden](https://github.com/dani-garcia/vaultwarden) password manager
 - [i2pd](https://github.com/PurpleI2P/i2pd) I2P router
-- [Jellyfin](https://jellyfin.org/) media server
 
 <details>
 
@@ -117,13 +120,12 @@ Services features:
 | certificates                  | `acme`                                                                                                     |
 | homepage                      | [`homepage`](https://github.com/sotormd/homepage)                                                          |
 | search engine                 | `searxng`                                                                                                  |
-| media server                  | `jellyfin`                                                                                                 |
 | bittorrent                    | `qbittorrent-nox`                                                                                          |
 | passwords                     | `vaultwarden`                                                                                              |
 | text editor                   | [`neovim`](https://github.com/sotormd/neovim), `mousepad`                                                  |
 | version control               | `git`                                                                                                      |
 | development                   | `rust`, `python`, `go`, `haskell`                                                                          |
-| virtualization                | `qemu`, `virt-manager`, `distrobox`, `podman`                                                              |
+| virtualization                | `microvm.nix`, `qemu`, `virt-manager`, `distrobox`, `podman`                                               |
 | cpu optimizations             | `auto-cpufreq`                                                                                             |
 | resource monitor              | `htop`                                                                                                     |
 | themes, icons, cursors, fonts | [`colors`](https://github.com/sotormd/colors)                                                              |

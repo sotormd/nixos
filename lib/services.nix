@@ -10,7 +10,6 @@
       web-console = 7070;
     };
     qbt.web-ui = 8080;
-    jellyfin.web-interface = 8096;
   };
 
   addresses = {
@@ -20,7 +19,6 @@
     vaultwarden = "10.204.6.2";
     i2pd = "10.204.7.2";
     qbt = "10.204.8.2";
-    jellyfin = "10.204.9.2";
   };
 
   gateways = {
@@ -30,7 +28,6 @@
     vaultwarden = "10.204.6.1";
     i2pd = "10.204.7.1";
     qbt = "10.204.8.1";
-    jellyfin = "10.204.9.1";
   };
 
   ifaces = {
@@ -40,7 +37,6 @@
     vaultwarden = "svcvm6";
     i2pd = "svcvm7";
     qbt = "svcvm8";
-    jellyfin = "svcvm9";
   };
 
   vsocks = {
@@ -50,7 +46,6 @@
     vaultwarden = 6;
     i2pd = 7;
     qbt = 8;
-    jellyfin = 9;
   };
 
   ids = {
@@ -59,7 +54,6 @@
     vaultwarden = 50060;
     i2pd = 50070;
     qbt = 50080;
-    jellyfin = 50090;
   };
 
   # svcvm - service virtual machines
@@ -192,11 +186,11 @@
                 after = [ "network-online.target" ];
                 serviceConfig = {
                   Type = "oneshot";
-                  ExecStart = pkgs.writeShellScript "svcready-interface-script" ''
+                  ExecStart = "${pkgs.writeShellScriptBin "svcready-interface" ''
                     until ${pkgs.iproute2}/bin/ip -4 addr show scope global | grep -q ${network.address}; do
                         sleep 2
                     done
-                  '';
+                  ''}/bin/svcready-interface";
                 };
               };
               svcready-resolve = {
@@ -212,11 +206,11 @@
                 ];
                 serviceConfig = {
                   Type = "oneshot";
-                  ExecStart = pkgs.writeShellScript "svcready-resolve-script" ''
+                  ExecStart = "${pkgs.writeShellScriptBin "svcready-resolve" ''
                     until ${pkgs.iputils}/bin/ping -c1 nixos.org >/dev/null 2>&1; do
                       sleep 2
                     done
-                  '';
+                  ''}/bin/svcready-resolve";
                 };
               };
             };

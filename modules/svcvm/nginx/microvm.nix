@@ -45,13 +45,20 @@ let
           ./settings.nix
           ./staging.nix
         ];
-        shares = [
+        shares = lib.flatten [
           {
             proto = "virtiofs";
             tag = "acme-data";
             source = "/var/lib/acme";
             mountPoint = "/var/lib/acme";
           }
+          (lib.optional config.vars.services.qbt.enable {
+            proto = "virtiofs";
+            tag = "qbt-data";
+            source = "/srv/torrents";
+            mountPoint = "/srv/torrents";
+            readOnly = true;
+          })
         ];
         creds = {
           "duckdns" = config.sops.secrets.duckdns.path;
@@ -67,12 +74,12 @@ let
           vaultwarden
           i2pd
           qbt
-          jellyfin
           ;
       in
       {
         inherit (nginx) domain email staging;
         acme-id = ids.acme;
+        qbt-id = ids.qbt;
         addr = addresses.nginx;
         port = ports.nginx.https;
         locations = {
@@ -95,11 +102,6 @@ let
             inherit (qbt) enable allow;
             address = addresses.qbt;
             port = ports.qbt.web-ui;
-          };
-          jellyfin = {
-            inherit (jellyfin) enable allow;
-            address = addresses.jellyfin;
-            port = ports.jellyfin.web-interface;
           };
         };
       };
