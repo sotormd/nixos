@@ -145,12 +145,14 @@
   # probably need this before
   # a flake re-eval or rebuild
   # so that it doesn't explode
+  #
+  # dont stop unbound
   systemd.services.stop-microvms = {
     description = "Stop MicroVMs";
     serviceConfig = {
       Type = "oneshot";
       ExecStart = "${pkgs.writeShellScriptBin "stop-microvms" ''
-        systemctl stop microvm@unbound || true
+        # systemctl stop microvm@unbound || true
         systemctl stop microvm@searxng || true
         systemctl stop microvm@vaultwarden || true
         systemctl stop microvm@i2pd || true

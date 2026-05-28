@@ -132,11 +132,11 @@ The `filesystem` section is used for adding disks and mounts.
    filesystem = {
      luks = {
        wd = {
-         uuid = "99999999-9999-9999-9999-999999999999";
+         uuid = "6c4261b2-d9f2-434c-ab82-17e65f809833";
          keyfile = "/root/keys/wd";
        };
       hitachi = {
-         uuid = "88888888-8888-8888-8888-888888888888";
+         uuid = "01b3dfca-becc-4fbc-a740-f7d728435e34";
          keyfile = "/root/keys/hitachi";
        };
      };
@@ -167,52 +167,86 @@ The `filesystem` section is used for adding disks and mounts.
    This is particularly useful on Server, where services expect specific
    directories documented in [Server Usage Documentation](./server/usage.md).
 
-   <details>
-
-   <summary>Click to expand: Example to use an external disk for some Server service data</summary>
+   Example with Impermanence disabled:
 
    ```nix
-   filesystems = {
-     # ...
-     mount = {
-       raw = { };
-       harden = { };
-       data = {
-         "/mnt/wd" = {
-           device = "/dev/mapper/wd";
-           fsType = "xfs";
-           options = [ "defaults" ];
-         };
-         "/var/lib/acme" = {
-           device = "/mnt/wd/data/acme";
-           fsType = "none";
-           options = [ "bind" ];
-         };
-         "/var/lib/bitwarden_rs" = {
-           device = "/mnt/wd/data/vaultwarden";
-           fsType = "none";
-           options = [ "bind" ];
-         };
-         "/var/lib/qbt" = {
-           device = "/mnt/wd/data/qbt";
-           fsType = "none";
-           options = [ "bind" ];
-         };
-         "/srv/torrents" = {
-           device = "/mnt/wd/torrents";
-           fsType = "none";
-           options = [ "bind" ];
+     # additional filesystem mounts
+     filesystem = {
+
+       # configure luks encrypted devices
+       # each entry should have a uuid and keyfile
+       luks = {
+         datadisk = {
+           uuid = "8b6c940c-0a09-45a5-a90d-83d465f421fd";
+           keyfile = "/persist/keys/datadisk";
          };
        };
-       immutable = { };
-       static = { };
+
+       # configure mounts
+       # directly map to fileSystems.* blocks
+       mount = {
+
+         # raw mounts, no additional options
+         raw = { };
+
+         # nosuid, nodev
+         harden = { };
+
+         # nosuid, nodev, noexec
+         data = {
+           "/mnt/server" = {
+             device = "tank/server";
+             fsType = "zfs";
+           };
+           "/var/lib/unbound" = {
+             device = "/mnt/server/var/lib/unbound";
+             fsType = "none";
+             options = [ "bind" ];
+           };
+           "/var/lib/acme" = {
+             device = "/mnt/server/var/lib/acme";
+             fsType = "none";
+             options = [ "bind" ];
+           };
+           "/srv/static" = {
+             device = "/mnt/server/srv/static";
+             fsType = "none";
+             options = [ "bind" ];
+           };
+           "/var/lib/bitwarden_rs" = {
+             device = "/mnt/server/var/lib/bitwarden_rs";
+             fsType = "none";
+             options = [ "bind" ];
+           };
+           "/var/lib/i2pd" = {
+             device = "/mnt/server/var/lib/i2pd";
+             fsType = "none";
+             options = [ "bind" ];
+           };
+           "/var/lib/qbt" = {
+             device = "/mnt/server/var/lib/qbt";
+             fsType = "none";
+             options = [ "bind" ];
+           };
+           "/srv/torrents" = {
+             device = "/mnt/server/srv/torrents";
+             fsType = "none";
+             options = [ "bind" ];
+           };
+         };
+
+         # nosuid, nodev, ro
+         immutable = { };
+
+         # nosuid, nodev, noexec, ro
+         static = { };
+
+       };
+
      };
-   };
    ```
 
-   </details>
-
-   **The above example is for use when Impermanence is disabled.**
+   **The above example is for use only when Impermanence is disabled.**
 
    If enabled, Impermanence creates binds for all these directories, and more,
    from `/persist/root`.
@@ -220,50 +254,84 @@ The `filesystem` section is used for adding disks and mounts.
    So binds must be created from the external disk to `/persist/root` instead,
    otherwise there will be mount collisions.
 
-   <details>
-
-   <summary>Click to expand: Same example but with Impermanence enabled</summary>
+   Same example but with Impermanence enabled:
 
    ```nix
-   filesystems = {
-     # ...
-     mount = {
-       raw = { };
-       harden = { };
-       data = {
-         "/mnt/wd" = {
-           device = "/dev/mapper/wd";
-           fsType = "xfs";
-           options = [ "defaults" ];
-         };
-         "/persist/root/var/lib/acme" = {
-           device = "/mnt/wd/data/acme";
-           fsType = "none";
-           options = [ "bind" ];
-         };
-         "/persist/root/var/lib/bitwarden_rs" = {
-           device = "/mnt/wd/data/vaultwarden";
-           fsType = "none";
-           options = [ "bind" ];
-         };
-         "/persist/root/var/lib/qbt" = {
-           device = "/mnt/wd/data/qbt";
-           fsType = "none";
-           options = [ "bind" ];
-         };
-         "/persist/root/srv/torrents" = {
-           device = "/mnt/wd/torrents";
-           fsType = "none";
-           options = [ "bind" ];
-         };  
-       };
-       immutable = { };
-       static = { };
-     };
-   };
-   ```
+     # additional filesystem mounts
+     filesystem = {
 
-   </details>
+       # configure luks encrypted devices
+       # each entry should have a uuid and keyfile
+       luks = {
+         datadisk = {
+           uuid = "8b6c940c-0a09-45a5-a90d-83d465f421fd";
+           keyfile = "/persist/keys/datadisk";
+         };
+       };
+
+       # configure mounts
+       # directly map to fileSystems.* blocks
+       mount = {
+
+         # raw mounts, no additional options
+         raw = { };
+
+         # nosuid, nodev
+         harden = { };
+
+         # nosuid, nodev, noexec
+         data = {
+           "/mnt/server" = {
+             device = "tank/server";
+             fsType = "zfs";
+           };
+           "/persist/root/var/lib/unbound" = {
+             device = "/mnt/server/var/lib/unbound";
+             fsType = "none";
+             options = [ "bind" ];
+           };
+           "/persist/root/var/lib/acme" = {
+             device = "/mnt/server/var/lib/acme";
+             fsType = "none";
+             options = [ "bind" ];
+           };
+           "/persist/root/srv/static" = {
+             device = "/mnt/server/srv/static";
+             fsType = "none";
+             options = [ "bind" ];
+           };
+           "/persist/root/var/lib/bitwarden_rs" = {
+             device = "/mnt/server/var/lib/bitwarden_rs";
+             fsType = "none";
+             options = [ "bind" ];
+           };
+           "/persist/root/var/lib/i2pd" = {
+             device = "/mnt/server/var/lib/i2pd";
+             fsType = "none";
+             options = [ "bind" ];
+           };
+           "/persist/root/var/lib/qbt" = {
+             device = "/mnt/server/var/lib/qbt";
+             fsType = "none";
+             options = [ "bind" ];
+           };
+           "/persist/root/srv/torrents" = {
+             device = "/mnt/server/srv/torrents";
+             fsType = "none";
+             options = [ "bind" ];
+           };
+         };
+
+         # nosuid, nodev, ro
+         immutable = { };
+
+         # nosuid, nodev, noexec, ro
+         static = { };
+
+       };
+
+     };
+   ```
 
    See the [Impermanence](#impermanence) section for full lists of directories
    are bind mounted from `/persist/root` by Impermanence.
@@ -407,6 +475,7 @@ The following directories are persisted by default:
 | `/var/lib/fail2ban`     | fail2ban data           | Data    |
 | `/var/lib/unbound`      | unbound data            | Data    |
 | `/var/lib/acme`         | nginx acme certificates | Data    |
+| `/srv/static`           | nginx static data       | Data    |
 | `/var/lib/bitwarden_rs` | vaultwarden vault       | Data    |
 | `/var/lib/i2pd`         | i2pd router data        | Data    |
 | `/var/lib/qbt`          | qbittorrent data        | Data    |

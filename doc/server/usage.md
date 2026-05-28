@@ -160,10 +160,9 @@ Certificates are renewed using ACME, which stores them in `/var/lib/acme`.
 ### Locations
 
 The root of the web server returns a
-[homepage](https://github.com/sotormd/homepage) with links to all the services'
-reverse proxy pages.
-
-Reverse proxy is set up for the following services, if enabled:
+[homepage](https://github.com/sotormd/homepage) with links to all the enabled
+services' reverse proxy pages. There are additional locations as well. All
+possible locations are listed below:
 
 | Location        | Name                  | Description                 | Allowed private CIDR              |
 | --------------- | --------------------- | --------------------------- | --------------------------------- |
@@ -171,7 +170,10 @@ Reverse proxy is set up for the following services, if enabled:
 | `/vaultwarden/` | Vaultwarden web vault | Password manager            | `vars.services.vaultwarden.allow` |
 | `/i2pd/`        | I2PD web console      | Invisible Internet Protocol | `vars.services.i2pd.allow`        |
 | `/qbt/`         | qBittorrent webui     | Bittorrent client           | `vars.services.qbt.allow`         |
-| `/torrents/`    | qBittorrent torrents  | Bittorrent torrents         | `vars.services.qbt.allow`         |
+| `/torrents/`    | qBittorrent torrents  | Torrents in `/srv/torrents` | `vars.services.qbt.allow`         |
+| `/static/`      | Static serve          | `/srv/static`               | -                                 |
+
+Note that NGINX itself is open to `vars.services.nginx.allow` only.
 
 ## SearXNG
 

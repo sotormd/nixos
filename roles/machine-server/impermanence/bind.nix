@@ -28,6 +28,9 @@ lib.mkIf config.vars.features.impermanence.enable {
       # nginx acme certificates
       "/var/lib/acme"
 
+      # nginx static data
+      "/srv/static"
+
       # vaultwarden vault
       "/var/lib/bitwarden_rs"
 

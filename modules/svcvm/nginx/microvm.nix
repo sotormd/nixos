@@ -28,6 +28,7 @@ let
       };
       tmpfiles = [
         "d /var/lib/acme 750 ${toString ids.acme} ${toString ids.acme} -"
+        "d /srv/static 755 root root -"
       ];
       secrets = {
         duckdns = {
@@ -40,8 +41,8 @@ let
         modules = [
           ./acme.nix
           ./home.nix
+          ./locations.nix
           ./options.nix
-          ./rproxy.nix
           ./settings.nix
           ./staging.nix
         ];
@@ -51,6 +52,12 @@ let
             tag = "acme-data";
             source = "/var/lib/acme";
             mountPoint = "/var/lib/acme";
+          }
+          {
+            proto = "virtiofs";
+            tag = "static-data";
+            source = "/srv/static";
+            mountPoint = "/srv/static";
           }
           (lib.optional config.vars.services.qbt.enable {
             proto = "virtiofs";

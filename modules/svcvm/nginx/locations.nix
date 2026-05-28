@@ -12,6 +12,10 @@ in
 {
   services.nginx.virtualHosts.${nginx.domain}.locations = {
 
+    "/static/" = {
+      alias = "/srv/static/";
+    };
+
     "/searxng/" = lib.mkIf searxng.enable {
       proxyPass = "http://${searxng.address}:${toString searxng.port}";
       extraConfig = ''

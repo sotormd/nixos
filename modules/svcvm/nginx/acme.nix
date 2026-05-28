@@ -22,10 +22,4 @@ in
     useACMEHost = nginx.domain;
     onlySSL = true;
   };
-
-  # ensure appropriate permissions on data directories
-  systemd.tmpfiles.rules = [
-    "d /var/lib/acme 750 acme acme -"
-    "Z /var/lib/acme 750 acme acme -"
-  ];
 }
