@@ -1560,7 +1560,7 @@ See [Server Usage Documenation](./server/usage.md#nginx) for more information.
 
    The Tor Browser and oniux can be installed and used in an ad-hoc Nix Shell.
    However, this is discouraged and it is recommended to use Whonix instead. See
-   [Virtualisation and Containers](#virtualisation-and-containers).
+   [Virtualisation](#virtualisation).
 
 > Server only
 
