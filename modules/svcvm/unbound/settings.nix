@@ -65,7 +65,7 @@ in
 
       # harden the referral path by performing additional queries
       # intensive and experimental
-      harden-referral-path = "no";
+      harden-referral-path = "yes";
 
       # harden against downgrades when multiple algorithms are advertised
       harden-algo-downgrade = "yes";

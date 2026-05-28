@@ -1149,7 +1149,7 @@ used:
     experimental
 
     ```
-    harden-referral-path=no
+    harden-referral-path=yes
     ```
 
 11. harden against downgrades when multiple algorithms are advertised
