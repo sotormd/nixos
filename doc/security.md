@@ -267,9 +267,8 @@ Several kernel parameters are used to harden the kernel. They are covered below:
 
     kernel will panic on uncorrectable memory errors, which can be exploited
 
-    mainly for systems with ECC memory
-
-    so this is unnecessary and can be disabled
+    mainly for systems with ECC memory so this is unnecessary and can be
+    disabled
 
     ```
     mce=0
