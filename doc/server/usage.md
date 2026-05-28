@@ -157,7 +157,7 @@ using your duckdns domain.
 
 Certificates are renewed using ACME, which stores them in `/var/lib/acme`.
 
-### Reverse Proxy
+### Locations
 
 The root of the web server returns a
 [homepage](https://github.com/sotormd/homepage) with links to all the services'
@@ -171,6 +171,7 @@ Reverse proxy is set up for the following services, if enabled:
 | `/vaultwarden/` | Vaultwarden web vault | Password manager            | `vars.services.vaultwarden.allow` |
 | `/i2pd/`        | I2PD web console      | Invisible Internet Protocol | `vars.services.i2pd.allow`        |
 | `/qbt/`         | qBittorrent webui     | Bittorrent client           | `vars.services.qbt.allow`         |
+| `/torrents/`    | qBittorrent torrents  | Bittorrent torrents         | `vars.services.qbt.allow`         |
 
 ## SearXNG
 
@@ -265,6 +266,9 @@ Additionally, two categories are created: Movies and TV.
 Default download directory for Movies is: `/srv/torrents/movies`.
 
 Default download directory for TV is: `/srv/torrents/tv`.
+
+The entirety of `/srv/torrents` can be viewed at the NGINX location
+`/torrents/`.
 
 ### Initial Setup
 

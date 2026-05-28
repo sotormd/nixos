@@ -38,11 +38,6 @@ let
           full = "qbittorrent";
           url = "https://${nginx.domain}/qbt/";
         })
-        (lib.optional qbt.enable {
-          short = "tr";
-          full = "torrents";
-          url = "https://${nginx.domain}/torrents/";
-        })
       ])
     ];
     n = 1;

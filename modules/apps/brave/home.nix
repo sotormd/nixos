@@ -38,13 +38,6 @@ let
           url = "https://${config.vars.selfhosted.qbt.domain}/qbt/";
         }
       ])
-      (lib.optional config.vars.selfhosted.qbt.enable [
-        {
-          short = "tr";
-          full = "torrents";
-          url = "https://${config.vars.selfhosted.qbt.domain}/torrents/";
-        }
-      ])
     ])
 
     "separator"
@@ -61,44 +54,14 @@ let
         url = "https://youtube.com";
       }
       {
-        short = "ig";
-        full = "instagram";
-        url = "https://instagram.com";
-      }
-      {
-        short = "dc";
-        full = "discord";
-        url = "https://discord.com/channels/@me";
-      }
-      {
-        short = "li";
-        full = "lichess";
-        url = "https://lichess.org";
-      }
-      {
-        short = "fm";
-        full = "lastfm";
-        url = "https://last.fm";
-      }
-      {
         short = "gh";
         full = "github";
         url = "https://github.com";
       }
       {
-        short = "cb";
-        full = "codeberg";
-        url = "https://codeberg.org";
-      }
-      {
         short = "mt";
         full = "monkeytype";
         url = "https://monkeytype.com";
-      }
-      {
-        short = "ch";
-        full = "chatgpt";
-        url = "https://chatgpt.com";
       }
       {
         short = "np";
@@ -120,17 +83,12 @@ let
         full = "arch wiki";
         url = "https://wiki.archlinux.org/title/Main_page";
       }
-      {
-        short = "fb";
-        full = "freebsd docs";
-        url = "https://docs.freebsd.org/en/books/handbook";
-      }
     ]
   ];
 
   homepageHtml = inputs.homepage.lib.makeHomepage {
     inherit layout;
-    n = 5;
+    n = 4;
     colors = {
       inherit (config.colors.homepage)
         bg
