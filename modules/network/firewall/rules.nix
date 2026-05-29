@@ -45,7 +45,10 @@ let
   libvirt-input = mkRules [
 
     (o config.virtualisation.libvirtd.enable ''
-      iifname "virbr*" ct state established,related,new accept
+      iifname "virbr*" ct state established,related accept
+      iifname "virbr*" tcp dport 53 ct state new accept
+      iifname "virbr*" udp dport 53 ct state new accept
+      iifname "virbr*" udp dport 67 ct state new accept
     '')
 
   ];

@@ -37,7 +37,10 @@ Unless explicitly mentioned, everything applies to both roles.
 
 Warnings:
 
-- Several hardening options may hinder performance.
+- Several hardening options may hinder performance or break certain workflows.
+  This configuration has been in use for a long time on my home network and
+  everything I require works well and is catered for this specific setup
+  **only**.
 
 Missing features:
 
@@ -242,7 +245,9 @@ Several kernel parameters are used to harden the kernel. They are covered below:
 
    virtualbox, nvidia modules may need manual signing
 
-   since MODULE_SIG is disabled on NixOS, this does nothing
+   **since MODULE_SIG is disabled on NixOS, this does nothing**
+
+   this parameter is still kept for reference/future use with custom kernels
 
    ```
    module.sig_enforce=1
@@ -257,7 +262,9 @@ Several kernel parameters are used to harden the kernel. They are covered below:
 
     this implies `module.sig_enforce=1`
 
-    since LOCKDOWN_LSM is disabled on NixOS, this does nothing
+    **since LOCKDOWN_LSM is disabled on NixOS, this does nothing**
+
+    this parameter is still kept for referece/future use with custom kernels
 
     ```
     lockdown=confidentiality
@@ -265,10 +272,11 @@ Several kernel parameters are used to harden the kernel. They are covered below:
 
 11. do not panic on uncorrectable memory errors
 
-    kernel will panic on uncorrectable memory errors, which can be exploited
+    this causes the kernel to panic on uncorrectable errors in ECC memory which
+    could be exploited
 
-    mainly for systems with ECC memory so this is unnecessary and can be
-    disabled
+    since we do not use ECC memory, this is unnecessary anyways and can be
+    disabled with this parameter
 
     ```
     mce=0
@@ -339,7 +347,8 @@ Several kernel parameters are used to harden the kernel. They are covered below:
 
 19. disable IPv6
 
-    no real security benefit, I just dont need this
+    note that disabling IPv6 has no security benefit whatsoever, I just do not
+    require it
 
     ```
     ipv6.disable=1
@@ -534,6 +543,8 @@ Several kernel parameters are used to harden the kernel. They are covered below:
 
     prevent smurf attacks and clock fingerprinting
 
+    note that this is more of a stealth thing, no real security benefits
+
     ```
     net.ipv4.icmp_echo_ignore_all=1
     net.ipv4.icmp_echo_ignore_broadcasts=1
@@ -552,7 +563,8 @@ Several kernel parameters are used to harden the kernel. They are covered below:
 
 27. disable TCP SACK
 
-    commonly exploited and mostly unnecessary
+    [commonly exploited](https://github.com/Netflix/security-bulletins/blob/master/advisories/third-party/2019-001.md)
+    and mostly unnecessary
 
     ```
     net.ipv4.tcp_sack=0
@@ -1191,6 +1203,9 @@ internal VM interfaces.
 Ports are opened on loopback / LAN / VM interfaces to specific addresses and
 interfaces based on enabled services.
 
+Currently, no services are bound to loopback so no ports are allowed. In case
+any apps require loopback, it can be satisfied using `bwrap --unshare-net`.
+
 Additionally, most ports are opened only to VM interfaces since services are
 reverse-proxied via NGINX. For the few ports that are opened to LAN, the ports
 are opened only to a select CIDR defined by the `vars.service.<name>.allow`
@@ -1200,6 +1215,8 @@ only `10.0.0.100` and `10.0.0.101` are allowed.
 
 Additionally, the services reverse-proxied via the NGINX are also restricted
 using `vars.service.<name>.allow`. See [NGINX](#nginx) for more information.
+
+Egress (`output`) through the LAN interface is unrestricted.
 
 > Laptop only
 
@@ -1213,7 +1230,8 @@ Ports are opened for the following services:
    - TCP `vars.services.ssh.port` is open on LAN to the private CIDR defined by
      `vars.services.ssh.allow`
 
-2. Libvirt interfaces (`virbr*`) are allowed in `input`, `forward` and `output`.
+2. Libvirt interfaces (`virbr*`) are allowed in `input` (dns, dhcp), `forward`
+   and `output` (see example below).
 
 > Server only
 
@@ -1292,7 +1310,10 @@ table inet filter {
 		tcp flags & (fin | syn | rst | ack) != syn ct state new drop
 		iifname "lo" ct state established,related accept
 		iifname "wlan0" ct state established,related accept
-		iifname "virbr*" ct state established,related,new accept
+		iifname "virbr*" ct state established,related accept
+		iifname "virbr*" tcp dport 53 ct state new accept
+		iifname "virbr*" udp dport 53 ct state new accept
+		iifname "virbr*" udp dport 67 ct state new accept
 	}
 
 	chain forward {
