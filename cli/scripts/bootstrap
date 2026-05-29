@@ -935,12 +935,12 @@ elif [ "$VERB" == "finish" ]; then
         exit 1
     fi
 
-    sudo umount /mnt/boot
-    sudo umount /mnt/persist
-    sudo umount /mnt/nix
-    sudo umount /mnt/var
-    sudo umount /mnt/home
-    sudo umount /mnt
+    sudo umount -l /mnt/boot || true
+    sudo umount -l /mnt/persist || true
+    sudo umount -l /mnt/nix || true
+    sudo umount -l /mnt/var || true
+    sudo umount -l /mnt/home || true
+    sudo umount -l /mnt || true
     sudo zpool export rpool
 
 ############# post-install
