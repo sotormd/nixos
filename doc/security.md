@@ -1261,6 +1261,8 @@ Ports are opened for the following services:
    - (http-proxy) TCP `4444` is forwarded and open on LAN to the private CIDR
      defined by `vars.services.i2pd.allow`
 
+   - (http-proxy) TCP `4444` is open on VM interface to `qbt` VM
+
    - (sam) TCP `7656` is open on VM interface to `qbt` VM
 
    - (web-console) TCP `7070` is open on VM interface to `nginx` VM
