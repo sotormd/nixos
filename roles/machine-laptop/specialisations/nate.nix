@@ -19,10 +19,13 @@ lib.mkIf (config.vars.modes.nate.enable && config.vars.features.impermanence.ena
         inputs.sops-nix.nixosModules.sops
         self.nixosModules.profiles.deskspec
       ];
-      users.users.${config.vars.user.name}.extraGroups = [ "networkmanager" ];
+      networking.wireless.enable = true;
+      networking.wireless.userControlled = true;
+      users.users.${config.vars.user.name}.extraGroups = [
+        "wpa_supplicant"
+        "networkmanager"
+      ];
       environment.sessionVariables.NIXOS_ROLE = lib.mkForce "laptop-mode-nate";
-      systemd.network.networks = lib.mkForce { };
-      networking.wireless.networks = lib.mkForce { };
       vars = {
         wireless.resolver = lib.mkForce "1.1.1.1";
         selfhosted = {

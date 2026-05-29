@@ -34,7 +34,6 @@ in
     network.host
     network.macchanger
     network.networkmanager
-    network.wireless
     services.auditd
     services.distrobox
     services.journald
