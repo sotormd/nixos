@@ -941,7 +941,7 @@ elif [ "$VERB" == "finish" ]; then
     sudo umount -l /mnt/var || true
     sudo umount -l /mnt/home || true
     sudo umount -l /mnt || true
-    sudo zpool export rpool
+    sudo zpool export rpool -f
 
 ############# post-install
 # LANZABOOTE
