@@ -7,6 +7,16 @@
   ...
 }:
 
+let
+  inherit (config.vars) services;
+  microvmsNeeded =
+    services.unbound.enable
+    || services.nginx.enable
+    || services.searxng.enable
+    || services.vaultwarden.enable
+    || services.i2pd.enable
+    || services.qbt.enable;
+in
 {
   imports = [ (modulesPath + "/installer/scan/not-detected.nix") ];
 
@@ -51,33 +61,25 @@
 
   # do not autostart microvms
   microvm.autostart = lib.mkForce [ ];
-  microvm.vms = {
-    unbound.restartIfChanged = false;
-    nginx.restartIfChanged = false;
-    searxng.restartIfChanged = false;
-    i2pd.restartIfChanged = false;
-    qbt.restartIfChanged = false;
-  };
 
   # start microvms with enough delays
   # otherwise the pi will explode if all
   # microvms start concurrently
   systemd.services.start-microvms = {
+    enable = microvmsNeeded;
     description = "Start MicroVMs";
     wantedBy = [ "multi-user.target" ];
     wants = [
       "network-online.target"
-      "ip-link-up.service"
       "wpa_supplicant-${config.vars.wireless.interface}.service"
     ];
     after = [
       "network-online.target"
-      "ip-link-up.service"
       "wpa_supplicant-${config.vars.wireless.interface}.service"
     ];
     serviceConfig =
       let
-        inherit (config.vars.services)
+        inherit (services)
           unbound
           nginx
           searxng
@@ -89,6 +91,7 @@
       in
       {
         Type = "oneshot";
+        RemainAfterExit = true;
         ExecStartPre = "${pkgs.writeShellScriptBin "start-microvms-pre" ''
           until ${pkgs.iputils}/bin/ping -c1 1.1.1.1 >/dev/null 2>&1; do
             sleep 2
@@ -148,6 +151,7 @@
   #
   # dont stop unbound
   systemd.services.stop-microvms = {
+    enable = microvmsNeeded;
     description = "Stop MicroVMs";
     serviceConfig = {
       Type = "oneshot";
@@ -193,13 +197,13 @@
   assertions =
     let
       nginxRequired = [
-        config.vars.services.vaultwarden.enable
-        config.vars.services.searxng.enable
-        config.vars.services.i2pd.enable
-        config.vars.services.qbt.enable
+        services.vaultwarden.enable
+        services.searxng.enable
+        services.i2pd.enable
+        services.qbt.enable
       ];
       i2pdRequired = [
-        config.vars.services.qbt.enable
+        services.qbt.enable
       ];
       featuresDisabled = [
         config.vars.features.secureboot.enable
@@ -218,7 +222,7 @@
     in
     [
       {
-        assertion = !(builtins.any (x: x) nginxRequired) || config.vars.services.nginx.enable;
+        assertion = !(builtins.any (x: x) nginxRequired) || services.nginx.enable;
         message = ''
           variables: nginx must be enabled if any dependent service is enabled
             - searxng
@@ -228,7 +232,7 @@
         '';
       }
       {
-        assertion = !(builtins.any (x: x) i2pdRequired) || config.vars.services.i2pd.enable;
+        assertion = !(builtins.any (x: x) i2pdRequired) || services.i2pd.enable;
         message = ''
           variables: i2pd must be enabled if any dependent service is enabled
             - qbt

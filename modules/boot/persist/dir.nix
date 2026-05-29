@@ -45,7 +45,10 @@ in
       pkgs.coreutils
       pkgs.findutils
     ];
-    serviceConfig.Type = "oneshot";
+    serviceConfig = {
+      Type = "oneshot";
+      RemainAfterExit = true;
+    };
     inherit script;
   };
 }

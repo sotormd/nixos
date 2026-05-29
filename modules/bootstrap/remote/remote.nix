@@ -17,6 +17,12 @@
   config = {
 
     services.openssh.enable = true;
+    services.openssh.settings = {
+      PubkeyAuthentication = true;
+      AuthenticationMethods = "publickey";
+      PasswordAuthentication = false;
+      PermitEmptyPasswords = false;
+    };
     users.users.nixos.openssh.authorizedKeys.keys = [ config.remote.sshKey ];
 
     networking = {
