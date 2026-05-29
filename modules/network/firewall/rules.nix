@@ -39,6 +39,35 @@ let
 
   ####################################################################################################################################################################
   #
+  # LIBVIRT
+  #
+
+  libvirt-input = mkRules [
+
+    (o config.virtualisation.libvirtd.enable ''
+      iifname "virbr*" ct state established,related,new accept
+    '')
+
+  ];
+
+  libvirt-forward = mkRules [
+
+    (o config.virtualisation.libvirtd.enable ''
+      iifname "virbr*" ct state new accept
+    '')
+
+  ];
+
+  libvirt-output = mkRules [
+
+    (o config.virtualisation.libvirtd.enable ''
+      oifname "virbr*" accept
+    '')
+
+  ];
+
+  ####################################################################################################################################################################
+  #
   # SVCVM SERVICES
   #
 
@@ -227,6 +256,7 @@ in
             tcp flags & (fin|syn|rst|ack) != syn ct state new drop
             iifname "lo" ct state established,related accept
             iifname "${interface}" ct state established,related accept
+            ${libvirt-input}
             ${svcvm-input}
             ${lo-services}
             ${lan-services}
@@ -236,6 +266,7 @@ in
           	type filter hook forward priority filter; policy drop;
             ct state invalid drop
         		ct state established,related accept
+            ${libvirt-forward}
             ${svcvm-forwards-internet}
             ${svcvm-forwards-ingress}
             ${svcvm-forwards-intervm}
@@ -247,6 +278,7 @@ in
         		ct state established,related accept
             oifname "lo" accept
             oifname "${interface}" accept
+            ${libvirt-output}
             ${svcvm-output}
         }
 
