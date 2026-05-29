@@ -24,6 +24,9 @@ Before proceeding, see [Server Requirements](./requirements.md).
 
 2. Write the generated image to a sd-card using `dd` or any equivalent tool.
 
+3. This document is also available in `/etc/current-flake/doc/server/setup.md`
+   in the installation environment.
+
 # Preparing the Device
 
 1. Boot into the newly created sd-card image on the target device.

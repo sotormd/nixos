@@ -1213,6 +1213,8 @@ Ports are opened for the following services:
    - TCP `vars.services.ssh.port` is open on LAN to the private CIDR defined by
      `vars.services.ssh.allow`
 
+2. Libvirt interfaces (`virbr*`) are allowed in `input`, `forward` and `output`.
+
 > Server only
 
 Ports are open based on the enabled services. See
@@ -1275,12 +1277,56 @@ Ports are opened for the following services:
 
 > Examples
 
-Example ruleset with NO services enabled:
+Example ruleset for Laptop with SSH disabled:
 
 Notes for example:
 
 - `wlan0` is the LAN interface.
-- This is how ruleset would look on Laptop with SSH disabled.
+- `virbr*` are libvirt interfaces.
+
+```
+table inet filter {
+	chain input {
+		type filter hook input priority filter; policy drop;
+		ct state invalid drop
+		tcp flags & (fin | syn | rst | ack) != syn ct state new drop
+		iifname "lo" ct state established,related accept
+		iifname "wlan0" ct state established,related accept
+		iifname "virbr*" ct state established,related,new accept
+	}
+
+	chain forward {
+		type filter hook forward priority filter; policy drop;
+		ct state invalid drop
+		ct state established,related accept
+		iifname "virbr*" ct state new accept
+	}
+
+	chain output {
+		type filter hook output priority filter; policy drop;
+		ct state invalid drop
+		ct state established,related accept
+		oifname "lo" accept
+		oifname "wlan0" accept
+		oifname "virbr*" accept
+	}
+}
+table ip nat {
+	chain prerouting {
+		type nat hook prerouting priority dstnat; policy accept;
+	}
+
+	chain postrouting {
+		type nat hook postrouting priority srcnat; policy accept;
+	}
+}
+```
+
+Example ruleset for Server with NO services enabled:
+
+Notes for example:
+
+- `wlan0` is the LAN interface.
 
 ```
 table inet filter {
@@ -1317,7 +1363,7 @@ table ip nat {
 }
 ```
 
-Example ruleset with ALL services enabled:
+Example ruleset for Server with ALL services enabled:
 
 Notes for example:
 
@@ -1331,7 +1377,6 @@ Notes for example:
 - `vaultwarden` is `10.204.6.2` on `svcvm6`
 - `i2pd` is `10.204.7.2` on `svcvm7`
 - `qbt` is `10.204.8.2` on `svcvm8`
-- This is how ruleset would look on Server with ALL services enabled.
 
 ```
 table inet filter {

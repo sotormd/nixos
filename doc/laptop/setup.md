@@ -28,6 +28,9 @@ Before proceeding, see [Laptop Requirements](./requirements.md).
 2. Write the generated image to a removable medium (eg. a usb stick) using `dd`
    or any equivalent tool.
 
+3. This document is also available in `/etc/current-flake/doc/laptop/setup.md`
+   in the installation environment.
+
 # Preparing the Device
 
 1. Disable secure boot for installation. It can be enabled later.
@@ -221,7 +224,12 @@ Before proceeding, see [Laptop Requirements](./requirements.md).
    nixos bootstrap install
    ```
 
-5. Finish installation. Remember to export the `rpool` zpool before rebooting.
+5. Finish installation and reboot.
+
+   ```bash
+   nixos bootstrap finish
+   sudo reboot
+   ```
 
    Remove the removable medium and boot into the newly installed NixOS
    installation.

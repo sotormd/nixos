@@ -919,6 +919,30 @@ elif [ "$VERB" == "install" ]; then
         git reset -- vars/vars.nix vars/secrets.yaml .sops.yaml
     )
 
+##########
+# FINISH
+######### laptop
+
+elif [ "$VERB" == "finish" ]; then
+
+    if ! [ "$ROLE" == "laptop" ]; then
+        echo "Error: unexpected role $ROLE" >&2
+        exit 1
+    fi
+
+    if ! [ "$MOUNT" == "/mnt" ]; then
+        echo "Error: unexpected root mount $MOUNT"
+        exit 1
+    fi
+
+    sudo umount /mnt/boot
+    sudo umount /mnt/persist
+    sudo umount /mnt/nix
+    sudo umount /mnt/var
+    sudo umount /mnt/home
+    sudo umount /mnt
+    sudo zpool export rpool
+
 ############# post-install
 # LANZABOOTE
 ############# laptop
