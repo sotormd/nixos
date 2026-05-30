@@ -99,6 +99,7 @@ Services features:
 | mac randomization             | `macchanger`                                                                                               |
 | anonymity                     | `i2pd`                                                                                                     |
 | networking                    | `systemd-networkd`                                                                                         |
+| tunnelling                    | `wireguard`                                                                                                |
 | wireless                      | `wpa_supplicant`                                                                                           |
 | dns                           | `unbound`                                                                                                  |
 | secure shell                  | `sshd`, `fail2ban`                                                                                         |
