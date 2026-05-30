@@ -73,6 +73,12 @@
     address = "10.0.0.2";
     resolver = "10.0.0.3";
   };
+  wireguard = {
+    address = "10.20.0.1";
+    port = 51820;
+    peers = [ ];
+    allow = "10.0.0.2/32";
+  };
 
   displays = {
     outputs = {
