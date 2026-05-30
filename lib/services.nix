@@ -31,6 +31,7 @@
   };
 
   ifaces = {
+    wireguard = "wg0";
     unbound = "svcvm3";
     nginx = "svcvm4";
     searxng = "svcvm5";

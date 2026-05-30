@@ -173,6 +173,30 @@ in
 
     };
 
+    wireguard = {
+
+      address = mkOption {
+        type = privateAddr;
+      };
+
+      port = mkOption {
+        type = types.port;
+      };
+
+      peers = mkOption {
+        type = types.listOf types.attrs;
+      };
+
+      forwarding = mkOption {
+        type = types.bool;
+      };
+
+      allow = mkOption {
+        type = privateCidr;
+      };
+
+    };
+
     displays = {
 
       outputs = mkOption {

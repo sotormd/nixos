@@ -756,7 +756,7 @@ using the `vars.selfhosted.*` variables.
    ```nix
    {
      enable = true;
-     address = "10.0.0.3";
+     address = "10.20.0.1";
      domain = "example.duckdns.org"; 
    }
    ```
@@ -773,6 +773,40 @@ using the `vars.selfhosted.*` variables.
    ```
 
    qBittorrent instance to use for the webui.
+
+Note that services are exposed using on Server using WireGuard. WireGuard is
+configured in the variables file under `vars.wireguard`.
+
+Example configuration for Laptop (`10.20.0.2` on wireguard) with a single peer
+Laptop (`10.20.0.1` on wireguard, `10.0.0.3` on LAN):
+
+```nix
+{
+  # wireguard vpn
+  wireguard = {
+
+    # wireguard address
+    address = "10.20.0.2";
+
+    # wireguard port
+    port = 51820;
+
+    # wireguard peers
+    peers = [
+      {
+        PublicKey = "dfk4SUxCbQQcR18XAkh3bGyrvOBd+nscYCZWiFUrkGA=";
+        Endpoint = "10.0.0.3:51820";
+        AllowedIPs = [ "10.20.0.1/32" ];
+        PersistentKeepalive = 25;
+      }
+    ];
+
+  };
+}
+```
+
+The Laptop has to be declared as a peer on the Server as well. See
+[Server Usage Documentation](../server/usage.md#wireguard).
 
 # Further Reading
 

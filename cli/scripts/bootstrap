@@ -367,6 +367,20 @@ elif [ "$VERB" == "vars" ]; then
 
   };
 
+  # wireguard vpn
+  wireguard = {
+
+    # wireguard address
+    address = "10.20.0.2";
+
+    # wireguard port
+    port = 51820;
+
+    # wireguard peers
+    peers = [ ];
+
+  };
+
   # displays
   displays = {
 
@@ -464,14 +478,14 @@ elif [ "$VERB" == "vars" ]; then
   services = {
 
     # ssh server
-    # allow is a private CIDR
     # port is a port
     # trusted-keys is a list of ed25519 ssh public keys
+    # allow is a private CIDR (LAN)
     ssh = {
       enable = false;
-      allow = "10.0.0.4/32";
       port = 2222;
       trusted-keys = [ ];
+      allow = "10.0.0.4/32";
     };
 
   };
@@ -620,72 +634,90 @@ the following values have been populated from the installation environment
 
   };
 
+  # wireguard vpn
+  wireguard = {
+
+    # wireguard address
+    address = "10.20.0.1";
+
+    # wireguard port
+    port = 51820;
+
+    # wireguard peers
+    peers = [ ];
+
+    # private CIDR (LAN) to allow
+    # used by nftables only
+    allow = "10.0.0.2/32";
+
+  };
+
   # service toggles
   services = {
 
     # ssh server
-    # allow is a private CIDR
     # port is a port
     # trusted-keys is a list of ed25519 ssh public keys
+    # allow is a private CIDR (LAN)
     ssh = {
       enable = false;
-      allow = "10.0.0.2/32";
       port = 2222;
       trusted-keys = [ ];
+      allow = "10.20.0.2/32";
     };
 
     # unbound dns resolver
-    # allow is a private CIDR
     # local-data is extra entries
+    # allow is a private CIDR (wireguard)
     unbound = {
       enable = false;
-      allow = "10.0.0.2/32";
       local-data = [
-        ''"example.duckdns.org. IN A 10.0.0.3"''
+        ''"example.duckdns.org. IN A 10.20.0.1"''
       ];
+      allow = "10.20.0.2/32";
     };
 
     # nginx web server
     # staging is to use Let's Encrypt staging
     # email is address used for acme
     # domain is a duckdns domain
-    # allow is a private CIDR
+    # allow is a private CIDR (wireguard)
     nginx = {
       enable = false;
       staging = false;
       email = "example@example";
       domain = "example.duckdns.org";
-      allow = "10.0.0.2/32";
+      allow = "10.20.0.2/32";
     };
 
     # searxng metasearch engine
-    # allow is a private CIDR
+    # allow is a private CIDR (wireguard)
     searxng = {
       enable = false;
-      allow = "10.0.0.2/32";
+      allow = "10.20.0.2/32";
     };
 
     # vaultwarden password manager
     # signups is whether to allow new signups
-    # allow is a private CIDR
+    # allow is a private CIDR (wireguard)
     vaultwarden = {
       enable = false;
       signups = false;
-      allow = "10.0.0.2/32";
+      allow = "10.20.0.2/32";
     };
 
     # i2pd router
-    # allow is a private CIDR
+    # allow is a private CIDR (wireguard)
     i2pd = {
       enable = false;
-      allow = "10.0.0.2/32";
+      allow = "10.20.0.2/32";
     };
 
     # qbittorrent bittorrent client
-    # allow is a private CIDR
+    # allow is a private CIDR (wireguard)
     qbt = {
       enable = false;
-      allow = "10.0.0.2/32";
+      allow = "10.20.0.2/32";
     };
 
   };
@@ -780,6 +812,11 @@ elif [ "$VERB" == "sops" ]; then
         SECRETS_SEED_KEY=$(nix key generate-secret --key-name seed)
     fi
 
+    if [ -z "${SECRETS_WIREGUARD_KEY:-}" ]; then
+        echo "SECRETS_WIREGUARD_KEY unset, left empty"
+        SECRETS_WIREGUARD_KEY=""
+    fi
+
     if [ "$ROLE" == "server" ]; then
 
         if [ -z "${SECRETS_DUCKDNS_TOKEN:-}" ]; then
@@ -859,6 +896,8 @@ EOF
         cat > "$TEMP_SECRETS" <<EOF
 hashedPassword: $SECRETS_HASHED_PASSWORD
 
+wireguard: $SECRETS_WIREGUARD_KEY
+
 wireless: |
   psk=$SECRETS_PSK
 
@@ -869,6 +908,8 @@ EOF
 
         cat > "$TEMP_SECRETS" <<EOF
 hashedPassword: $SECRETS_HASHED_PASSWORD
+
+wireguard: $SECRETS_WIREGUARD_KEY
 
 wireless: |
   psk=$SECRETS_PSK

@@ -191,5 +191,8 @@
     # tmux
     pkgs.tmux
 
+    # wireguard vpn tools
+    pkgs.wireguard-tools
+
   ];
 }

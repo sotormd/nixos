@@ -8,7 +8,8 @@ This document covers using the Server role.
 2. [Bind Mounts and External Disks](#bind-mounts-and-external-disks)
 3. [Services](#services)
 4. [MicroVMs](#microvms)
-5. [Further Reading](#further-reading)
+5. [WireGuard](#wireguard)
+6. [Further Reading](#further-reading)
 
 # System Maintenance
 
@@ -117,7 +118,7 @@ Enabled using `vars.services.unbound.enable`
 
 ### Ports
 
-Open on LAN to the private CIDR defined by `vars.services.unbound.allow`:
+Open on WireGuard to the private CIDR defined by `vars.services.unbound.allow`:
 
 1. `53/tcp` dns
 2. `53/udp` dns
@@ -142,7 +143,7 @@ Enabled using `vars.services.nginx.enable`.
 
 ### Ports
 
-Open on LAN to private CIDR defined by `vars.services.nginx.allow`:
+Open on WireGuard to private CIDR defined by `vars.services.nginx.allow`:
 
 1. `443` https
 
@@ -185,10 +186,6 @@ Enabled using `vars.services.searxng.enable`.
 
 SearXNG runs in a MicroVM. See [MicroVMs](#microvms) for more information.
 
-### Ports
-
-No ports are open on loopback or LAN.
-
 ### Search Engines
 
 The following search engines are enabled by default on the general tab:
@@ -213,10 +210,6 @@ Enabled using `vars.services.vaultwarden.enable`.
 
 Vaultwarden runs in a MicroVM. See [MicroVMs](#microvms) for more information.
 
-### Ports
-
-No ports are open on loopback or LAN.
-
 ### Vault
 
 The vault is stored at `/var/lib/bitwarden_rs`.
@@ -233,7 +226,7 @@ I2PD runs in a MicroVM. See [MicroVMs](#microvms) for more information.
 
 ### Ports
 
-Open on LAN to the private CIDR defined by `vars.services.i2pd.allow`:
+Open on WireGuard to the private CIDR defined by `vars.services.i2pd.allow`:
 
 1. `4444` HTTP proxy
 
@@ -250,10 +243,6 @@ qBittorrent runs in a MicroVM. See [MicroVMs](#microvms) for more information.
 ### Enabling
 
 Enabled using `vars.services.qbt.enable`.
-
-### Ports
-
-No ports are open on loopback or LAN.
 
 ### Data
 
@@ -316,6 +305,47 @@ password `toor`. For example:
 ```bash
 microvm -s nginx
 ```
+
+# WireGuard
+
+Services are exposed using WireGuard. WireGuard is configured in the variables
+file under `vars.wireguard`.
+
+Example configuration for Server (`10.20.0.1` on wireguard) with a single peer
+Laptop (`10.20.0.2` on wireguard, `10.0.0.2` on LAN):
+
+```nix
+{
+  # wireguard vpn
+  wireguard = {
+
+    # wireguard address
+    address = "10.20.0.1";
+
+    # wireguard port
+    port = 51820;
+
+    # wireguard peers
+    peers = [
+      {
+        PublicKey = "F3625gAtaFYmIl8Od3DaR+FWZYukzlkHNHZCuNAR0A4=";
+        AllowedIPs = "10.20.0.2/32";
+        PersistentKeepalive = 25;
+      }
+    ];
+
+    # private CIDR (LAN) to allow
+    # used by nftables only
+    allow = "10.0.0.2/32";
+
+  };
+}
+```
+
+Multiple peers can be added like this. The individual
+`vars.services.<name>.allow` CIDRs can then be set to WireGuard peer CIDRs.
+
+The Server has to be declared as a peer on the Laptop as well.
 
 # Further Reading
 

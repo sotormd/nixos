@@ -11,7 +11,7 @@
 ![screenshots gif](./doc/screenshots/nord.gif)
 
 ~~slightly overengineered~~ NixOS configuration flake for multiple hosts with
-ZFS, Impermanence, MicroVMs, etc
+ZFS, Impermanence, MicroVMs, WireGuard, etc
 
 # Features
 
@@ -61,7 +61,9 @@ Desktop features:
 
 Services features:
 
-- All selfhosted services run in MicroVMs
+- MicroVM services
+- WireGuard tunnelling
+- nftables firewall
 - [Unbound](https://github.com/NLnetLabs/unbound) dns server
 - [NGINX](https://github.com/nginx/nginx) web server & reverse proxy
 - ACME for [Let's Encrypt](https://letsencrypt.org/) certificates

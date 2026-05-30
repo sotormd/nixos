@@ -20,7 +20,7 @@ The targets covered in this document are:
 
 - Laptop, my laptop configuration for generic personal portable computers
 - Server, my home-server configuration for MicroVM service hosts that serve
-  their LAN
+  their LAN over WireGuard.
 
 Unless explicitly mentioned, everything applies to both roles.
 
@@ -72,21 +72,22 @@ Missing features:
 16. [USBGuard](#usbguard)
 17. [Wireless Networking](#wireless-networking)
 18. [DNS](#dns)
-19. [Firewall](#firewall)
-20. [MAC Randomization](#mac-randomization)
-21. [Secure Shell](#secure-shell)
-22. [Fail2Ban](#fail2ban)
-23. [NGINX](#nginx)
-24. [I2P and Anonymity](#i2p-and-anonymity)
-25. [Display Server](#display-server)
-26. [Desktop](#desktop)
-27. [Session Locking](#session-locking)
-28. [Bubblewrap](#bubblewrap)
-29. [xdg-dbus-proxy](#xdg-dbus-proxy)
-30. [Browsers](#browsers)
-31. [Search Engine](#search-engine)
-32. [Password Manager](#password-manager)
-33. [Virtualisation](#virtualisation)
+19. [WireGuard](#wireguard)
+20. [Firewall](#firewall)
+21. [MAC Randomization](#mac-randomization)
+22. [Secure Shell](#secure-shell)
+23. [Fail2Ban](#fail2ban)
+24. [NGINX](#nginx)
+25. [I2P and Anonymity](#i2p-and-anonymity)
+26. [Display Server](#display-server)
+27. [Desktop](#desktop)
+28. [Session Locking](#session-locking)
+29. [Bubblewrap](#bubblewrap)
+30. [xdg-dbus-proxy](#xdg-dbus-proxy)
+31. [Browsers](#browsers)
+32. [Search Engine](#search-engine)
+33. [Password Manager](#password-manager)
+34. [Virtualisation](#virtualisation)
 
 # Secure Boot
 
@@ -1085,7 +1086,8 @@ WPA3 (SAE / dragonfly) is used for wireless authentication on Laptop.
 
 # DNS
 
-The Unbound DNS resolver is hosted on Server. It runs in a MicroVM.
+The Unbound DNS resolver is hosted on Server. It runs in a MicroVM and is served
+over WireGuard.
 
 Additionally, [StevenBlack's host list](http://github.com/StevenBlack/hosts) is
 used to sinkhole domains in the Unbound DNS server hosted on Server.
@@ -1192,6 +1194,12 @@ used:
     use the resolver. Additionally, the VM interfaces are explicitly allowed to
     use the resolver if the respective services are enabled.
 
+# WireGuard
+
+Server serves services over [WireGuard](https://www.wireguard.com/) instead of
+directly serving over LAN. WireGuard peers are configured using the variables
+file and private keys are stored using SOPS.
+
 # Firewall
 
 The simpler NixOS `networking.firewall` is disabled. `nftables` is used instead.
@@ -1206,12 +1214,23 @@ interfaces based on enabled services.
 Currently, no services are bound to loopback so no ports are allowed. In case
 any apps require loopback, it can be satisfied using `bwrap --unshare-net`.
 
-Additionally, most ports are opened only to VM interfaces since services are
+Only SSH is served over LAN and [uses public key authentication](#secure-shell).
+Therefore, even though nftables filters by CIDR using `vars.services.ssh.allow`
+this is not used as a real source of identification.
+
+All other services are served over [WireGuard](#wireguard), which uses public
+key authentication. Currently this includes
+
+- Unbound dns
+- NGINX https
+- I2PD http proxy
+
+All other ports are opened only to VM interfaces internally since services are
 reverse-proxied via NGINX. For the few ports that are opened to LAN, the ports
 are opened only to a select CIDR defined by the `vars.service.<name>.allow`
 variables in the variables file. Since this value is a CIDR, it can be used to
-allow only specific IP addresses. For example, by setting it to `10.0.0.100/31`,
-only `10.0.0.100` and `10.0.0.101` are allowed.
+allow only specific IP addresses. For example, by setting it to
+`10.20.0.100/31`, only `10.20.0.100` and `10.20.0.101` are allowed.
 
 Additionally, the services reverse-proxied via the NGINX are also restricted
 using `vars.service.<name>.allow`. See [NGINX](#nginx) for more information.
@@ -1247,51 +1266,53 @@ Ports are opened for the following services:
 
 2. Unbound, if enabled using `vars.services.unbound.enable`:
 
-   - (dns) TCP `53` is forwarded and open on LAN to the private CIDR defined by
-     `vars.services.unbound.allow`
+   - (dns) TCP `53` is forwarded and open on WireGuard to the private CIDR
+     defined by `vars.services.unbound.allow`
 
-   - (dns) UDP `53` is forwarded and open on LAN to the private CIDR defined by
-     `vars.services.unbound.allow`
+   - (dns) UDP `53` is forwarded and open on WireGuard to the private CIDR
+     defined by `vars.services.unbound.allow`
 
-   - (dns) TCP `53` is open on VM interface to host
+   - (dns) TCP `53` is open internally on VM interface to host
 
-   - (dns) UDP `53` is open on VM interface to host
+   - (dns) UDP `53` is open internally on VM interface to host
 
-   - (dns) TCP `53` is open on VM interface to `nginx`, `searxng` and `i2pd` VMs
+   - (dns) TCP `53` is open internally on VM interface to `nginx`, `searxng` and
+     `i2pd` VMs
 
-   - (dns) UDP `53` is open on VM interface to `nginx`, `searxng` and `i2pd` VMs
+   - (dns) UDP `53` is open internally on VM interface to `nginx`, `searxng` and
+     `i2pd` VMs
 
 3. NGINX, if enabled using `vars.services.nginx.enable`:
 
-   - (https) TCP `443` is forwarded and open on LAN to the private CIDR defined
-     by `vars.services.nginx.allow`
+   - (https) TCP `443` is forwarded and open on WireGuard to the private CIDR
+     defined by `vars.services.nginx.allow`
 
 4. SearXNG, if enabled using `vars.services.searxng.enable`:
 
-   - (search-engine) TCP `8888` is open on VM interface to `nginx` VM
+   - (search-engine) TCP `8888` is open internally on VM interface to `nginx` VM
 
 5. Vaultwarden, if enabled using `vars.services.vaultwarden.enable`:
 
    - Cannot access the internet.
 
-   - (web-vault) TCP `8222` is open on VM interface to `nginx` VM
+   - (web-vault) TCP `8222` is open internally on VM interface to `nginx` VM
 
 6. I2PD, if enabled using `vars.services.i2pd.enable`:
 
-   - (http-proxy) TCP `4444` is forwarded and open on LAN to the private CIDR
-     defined by `vars.services.i2pd.allow`
+   - (http-proxy) TCP `4444` is forwarded and open on WireGuard to the private
+     CIDR defined by `vars.services.i2pd.allow`
 
-   - (http-proxy) TCP `4444` is open on VM interface to `qbt` VM
+   - (http-proxy) TCP `4444` is open internally on VM interface to `qbt` VM
 
-   - (sam) TCP `7656` is open on VM interface to `qbt` VM
+   - (sam) TCP `7656` is open internally on VM interface to `qbt` VM
 
-   - (web-console) TCP `7070` is open on VM interface to `nginx` VM
+   - (web-console) TCP `7070` is open internally on VM interface to `nginx` VM
 
 7. qBittorrent, if enabled using `vars.services.qbt.enable`:
 
    - Cannot access the internet, exclusively uses I2P.
 
-   - (web-ui) TCP `8080` is open on VM interface to `nginx` VM
+   - (web-ui) TCP `8080` is open internally on VM interface to `nginx` VM
 
 > Examples
 
@@ -1300,6 +1321,7 @@ Example ruleset for Laptop with SSH disabled:
 Notes for example:
 
 - `wlan0` is the LAN interface.
+- `wg0` is the WireGuard interface.
 - `virbr*` are libvirt interfaces.
 
 ```
@@ -1309,7 +1331,8 @@ table inet filter {
 		ct state invalid drop
 		tcp flags & (fin | syn | rst | ack) != syn ct state new drop
 		iifname "lo" ct state established,related accept
-		iifname "wlan0" ct state established,related accept
+		iifname "wlp1s0" ct state established,related accept
+		iifname "wg0" ct state established,related accept
 		iifname "virbr*" ct state established,related accept
 		iifname "virbr*" tcp dport 53 ct state new accept
 		iifname "virbr*" udp dport 53 ct state new accept
@@ -1328,7 +1351,8 @@ table inet filter {
 		ct state invalid drop
 		ct state established,related accept
 		oifname "lo" accept
-		oifname "wlan0" accept
+		oifname "wlp1s0" accept
+		oifname "wg0" accept
 		oifname "virbr*" accept
 	}
 }
@@ -1343,11 +1367,15 @@ table ip nat {
 }
 ```
 
-Example ruleset for Server with NO services enabled:
+Example ruleset for Server with NO services enabled, except SSH:
 
 Notes for example:
 
 - `wlan0` is the LAN interface.
+- `wg0` is the WireGuard interface.
+- `192.168.0.101` is the host.
+- `192.168.0.100` is a trusted client.
+- `2233` is the SSH port.
 
 ```
 table inet filter {
@@ -1357,6 +1385,8 @@ table inet filter {
 		tcp flags & (fin | syn | rst | ack) != syn ct state new drop
 		iifname "lo" ct state established,related accept
 		iifname "wlan0" ct state established,related accept
+		iifname "wg0" ct state established,related accept
+        ip saddr 192.168.0.100 ip daddr 192.168.0.101 iifname "wlan0" tcp dport 2233 ct state new accept
 	}
 
 	chain forward {
@@ -1371,6 +1401,7 @@ table inet filter {
 		ct state established,related accept
 		oifname "lo" accept
 		oifname "wlan0" accept
+		oifname "wg0" accept
 	}
 }
 table ip nat {
@@ -1389,9 +1420,11 @@ Example ruleset for Server with ALL services enabled:
 Notes for example:
 
 - `wlan0` is the LAN interface.
+- `wg0` is the WireGuard interface.
 - `192.168.0.101` is the host.
 - `192.168.0.100` is a trusted client.
 - `2233` is the SSH port.
+- `51820` is the WireGuard port.
 - `unbound` is `10.204.3.2` on `svcvm3`
 - `nginx` is `10.204.4.2` on `svcvm4`
 - `searxng` is `10.204.5.2` on `svcvm5`
@@ -1407,13 +1440,15 @@ table inet filter {
 		tcp flags & (fin | syn | rst | ack) != syn ct state new drop
 		iifname "lo" ct state established,related accept
 		iifname "wlan0" ct state established,related accept
+		iifname "wg0" ct state established,related accept
 		iifname "svcvm3" ct state established,related accept
 		iifname "svcvm4" ct state established,related accept
 		iifname "svcvm5" ct state established,related accept
 		iifname "svcvm6" ct state established,related accept
 		iifname "svcvm7" ct state established,related accept
 		iifname "svcvm8" ct state established,related accept
-		ip saddr 192.168.0.100 ip daddr 192.168.0.99 iifname "wlan0" tcp dport 2233 ct state new accept
+		ip saddr 192.168.0.100 ip daddr 192.168.0.101 iifname "wlan0" udp dport 51820 ct state new accept
+		ip saddr 192.168.0.100 ip daddr 192.168.0.101 iifname "wlan0" tcp dport 2233 ct state new accept
 	}
 
 	chain forward {
@@ -1424,10 +1459,10 @@ table inet filter {
 		ip saddr 10.204.4.2 iifname "svcvm4" oifname "wlan0" ct state new accept
 		ip saddr 10.204.5.2 iifname "svcvm5" oifname "wlan0" ct state new accept
 		ip saddr 10.204.7.2 iifname "svcvm7" oifname "wlan0" ct state new accept
-		ip saddr 192.168.0.100 iifname "wlan0" oifname "svcvm3" ip daddr 10.204.3.2 tcp dport 53 ct state new accept
-		ip saddr 192.168.0.100 iifname "wlan0" oifname "svcvm3" ip daddr 10.204.3.2 udp dport 53 ct state new accept
-		ip saddr 192.168.0.100 iifname "wlan0" oifname "svcvm4" ip daddr 10.204.4.2 tcp dport 443 ct state new accept
-		ip saddr 192.168.0.100 iifname "wlan0" oifname "svcvm7" ip daddr 10.204.7.2 tcp dport 4444 ct state new accept
+		ip saddr 10.104.0.2 iifname "wg0" oifname "svcvm3" ip daddr 10.204.3.2 tcp dport 53 ct state new accept
+		ip saddr 10.104.0.2 iifname "wg0" oifname "svcvm3" ip daddr 10.204.3.2 udp dport 53 ct state new accept
+		ip saddr 10.104.0.2 iifname "wg0" oifname "svcvm4" ip daddr 10.204.4.2 tcp dport 443 ct state new accept
+		ip saddr 10.104.0.2 iifname "wg0" oifname "svcvm7" ip daddr 10.204.7.2 tcp dport 4444 ct state new accept
 		ip saddr 10.204.4.2 iifname "svcvm4" ip daddr 10.204.3.2 oifname "svcvm3" tcp dport 53 ct state new accept
 		ip saddr 10.204.4.2 iifname "svcvm4" ip daddr 10.204.3.2 oifname "svcvm3" udp dport 53 ct state new accept
 		ip saddr 10.204.4.2 iifname "svcvm4" ip daddr 10.204.5.2 oifname "svcvm5" tcp dport 8888 ct state new accept
@@ -1448,6 +1483,7 @@ table inet filter {
 		ct state established,related accept
 		oifname "lo" accept
 		oifname "wlan0" accept
+		oifname "wg0" accept
 		ip daddr 10.204.3.2 tcp dport 53 ct state new accept
 		ip daddr 10.204.3.2 udp dport 53 ct state new accept
 	}
@@ -1455,10 +1491,10 @@ table inet filter {
 table ip nat {
 	chain prerouting {
 		type nat hook prerouting priority dstnat; policy accept;
-		ip saddr 192.168.0.100 iifname "wlan0" tcp dport 53 dnat to 10.204.3.2
-		ip saddr 192.168.0.100 iifname "wlan0" udp dport 53 dnat to 10.204.3.2
-		ip saddr 192.168.0.100 iifname "wlan0" tcp dport 443 dnat to 10.204.4.2
-		ip saddr 192.168.0.100 iifname "wlan0" tcp dport 4444 dnat to 10.204.7.2
+		ip saddr 10.104.0.2 iifname "wg0" tcp dport 53 dnat to 10.204.3.2
+		ip saddr 10.104.0.2 iifname "wg0" udp dport 53 dnat to 10.204.3.2
+		ip saddr 10.104.0.2 iifname "wg0" tcp dport 443 dnat to 10.204.4.2
+		ip saddr 10.104.0.2 iifname "wg0" tcp dport 4444 dnat to 10.204.7.2
 	}
 
 	chain postrouting {
@@ -1598,8 +1634,8 @@ for successive failed attempts up to 6144 hours.
 
 NGINX is used as a reverse proxy for several other services instead of directly
 opening ports. This is served over HTTPS with certificates from
-[Let's Encrypt](https://letsencrypt.org) managed with ACME on LAN to the private
-CIDR as defined by `vars.services.nginx.allow`.
+[Let's Encrypt](https://letsencrypt.org) managed with ACME to the private CIDR
+as defined by `vars.services.nginx.allow` over WireGuard.
 
 NGINX runs in a MicroVM.
 
@@ -2199,6 +2235,11 @@ Several services run in MicroVMs as covered above. These are
 Networking is covered above in [Firewall](#firewall). Rather than being bridged,
 the VMs use a
 [routed network model](https://microvm-nix.github.io/microvm.nix/routed-network.html).
+
+MicroVMs are preferred over bare-metal systemd services over the host /
+namespaces, cgroupds containers (docker, podman, systemd-nspawn) since they do
+not share the host kernel. The Server does not treat namespaces, cgroups, ... as
+a real security boundary.
 
 See [Server Usage Documentation](./server/usage.md#microvms) for more
 information.

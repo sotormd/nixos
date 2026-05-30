@@ -177,6 +177,9 @@ in
       git = lib.mkForce { };
       sshAliases = lib.mkForce { };
     };
+    wireguard = {
+      forwarding = lib.mkForce true;
+    };
     features = {
       secureboot.enable = lib.mkForce false;
     };
@@ -237,6 +240,10 @@ in
           variables: i2pd must be enabled if any dependent service is enabled
             - qbt
         '';
+      }
+      {
+        assertion = config.vars.wireguard.forwarding;
+        message = "variables: vars.wireguard.forwarding needs to be true";
       }
       {
         assertion = builtins.all (x: !x) featuresDisabled;

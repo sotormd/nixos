@@ -29,6 +29,7 @@ in
     network.host
     network.macchanger
     network.seed
+    network.wireguard
     network.wireless
     services.auditd
     services.journald

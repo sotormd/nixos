@@ -139,6 +139,9 @@
 
   # populate variables and drop unnecessary variables
   vars = lib.recursiveUpdate legacyVars {
+    wireguard = {
+      forwarding = lib.mkForce false;
+    };
     services = {
       unbound.enable = lib.mkForce false;
       nginx.enable = lib.mkForce false;
@@ -171,6 +174,10 @@
           variables: secureboot must be enabled if any dependent feature is enabled
             - impermanence
         '';
+      }
+      {
+        assertion = !config.vars.wireguard.forwarding;
+        message = "variables: vars.wireguard.forwarding cannot be true";
       }
       {
         assertion = builtins.all (x: !x) servicesDisabled;
