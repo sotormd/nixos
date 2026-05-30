@@ -211,5 +211,9 @@ in
     # disable promotions
     PromotionsEnabled = false;
 
+    # disable dns over https
+    # use the wireguard-backed unbound instead
+    DnsOverHttpsMode = "off";
+
   };
 }

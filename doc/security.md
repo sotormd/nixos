@@ -1992,6 +1992,7 @@ browsers.
      - Background Apps
      - Autoplay
      - Payment Method Query
+     - DNS over HTTPS (in favor of WireGuard-backed Unbound)
 
    - Use Site Per Process
    - Use Strict HTTPS-Only Mode
