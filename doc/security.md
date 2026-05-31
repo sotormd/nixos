@@ -4,23 +4,23 @@ This document attempts to cover the various security features for Laptop and
 Server roles.
 
 This is a larger document than other documents in this flake. It is possible
-that errors may have crept in while writing this document. In any case, the
-flake source should be referred to as the primary and only source of truth.
+that errors may be present in this document. In any case, the flake source
+should be referred to as the primary and only source of truth.
 
 # Threat Model
 
 Security without a threat model is meaningless. The threat model for this flake
-is general desktop / home usage, and NOT anything requiring specialized
-security, advanced privacy or defence against sophisticated targeted attacks.
-Consider [Qubes](https://www.qubes-os.org/) for decent security against these
-attacks, backed by the guarantees of the
+is general desktop / home usage with a semi-untrusted LAN, and NOT anything
+requiring specialized security, advanced privacy or defence against
+sophisticated targeted attacks. Consider [Qubes](https://www.qubes-os.org/) for
+decent security against these attacks, backed by the guarantees of the
 [Xen project hypervisor](https://xenproject.org/).
 
 The targets covered in this document are:
 
 - Laptop, my laptop configuration for generic personal portable computers
-- Server, my home-server configuration for MicroVM service hosts that serve
-  their LAN over WireGuard.
+- Server, my home-server configuration for hosts that serve MicroVM services on
+  WireGuard over LAN.
 
 Unless explicitly mentioned, everything applies to both roles.
 
@@ -38,9 +38,7 @@ Unless explicitly mentioned, everything applies to both roles.
 Warnings:
 
 - Several hardening options may hinder performance or break certain workflows.
-  This configuration has been in use for a long time on my home network and
-  everything I require works well and is catered for this specific setup
-  **only**.
+  This configuration caters to my specific setup **only**.
 
 Missing features:
 
@@ -62,32 +60,30 @@ Missing features:
 6. [sysctl Options](#sysctl-options)
 7. [Module Blacklists](#module-blacklists)
 8. [Audit Subsystem](#audit-subsystem)
-9. [Coredumps](#coredumps)
-10. [Emergency and Rescue](#emergency-and-rescue)
-11. [Systemd Services](#systemd-services)
-12. [Users and Privileges](#users-and-privileges)
-13. [Nix Package Manager](#nix-package-manager)
-14. [SOPS](#sops)
-15. [Encryption and Signing](#encryption-and-signing)
-16. [USBGuard](#usbguard)
-17. [Wireless Networking](#wireless-networking)
-18. [DNS](#dns)
-19. [WireGuard](#wireguard)
-20. [Firewall](#firewall)
-21. [MAC Randomization](#mac-randomization)
-22. [Secure Shell](#secure-shell)
-23. [Fail2Ban](#fail2ban)
-24. [NGINX](#nginx)
-25. [I2P and Anonymity](#i2p-and-anonymity)
-26. [Display Server](#display-server)
-27. [Desktop](#desktop)
-28. [Session Locking](#session-locking)
-29. [Bubblewrap](#bubblewrap)
-30. [xdg-dbus-proxy](#xdg-dbus-proxy)
-31. [Browsers](#browsers)
-32. [Search Engine](#search-engine)
-33. [Password Manager](#password-manager)
-34. [Virtualisation](#virtualisation)
+9. [Systemd Services](#systemd-services)
+10. [Users and Privileges](#users-and-privileges)
+11. [Nix Package Manager](#nix-package-manager)
+12. [SOPS](#sops)
+13. [Encryption and Signing](#encryption-and-signing)
+14. [USBGuard](#usbguard)
+15. [Wireless Networking](#wireless-networking)
+16. [DNS](#dns)
+17. [WireGuard](#wireguard)
+18. [Firewall](#firewall)
+19. [MAC Randomization](#mac-randomization)
+20. [Secure Shell](#secure-shell)
+21. [Fail2Ban](#fail2ban)
+22. [NGINX](#nginx)
+23. [I2P and Anonymity](#i2p-and-anonymity)
+24. [Display Server](#display-server)
+25. [Desktop](#desktop)
+26. [Session Locking](#session-locking)
+27. [Bubblewrap](#bubblewrap)
+28. [xdg-dbus-proxy](#xdg-dbus-proxy)
+29. [Browsers](#browsers)
+30. [Search Engine](#search-engine)
+31. [Password Manager](#password-manager)
+32. [Virtualisation](#virtualisation)
 
 # Secure Boot
 
@@ -162,6 +158,8 @@ Snapshots or tmpfs for rollbacks and bind mounts for state persistence.
 See [Impermanence](./filesystems.md#impermanence) for more information.
 
 # Kernel Parameters
+
+Kernel parameters should only be considered as a baseline.
 
 Several kernel parameters are used to harden the kernel. They are covered below:
 
@@ -239,12 +237,12 @@ Several kernel parameters are used to harden the kernel. They are covered below:
    oops=panic
    ```
 
-9. enforce signed modules
+9. ~~enforce signed modules~~
 
-   only allows kernel modules that have been signed with a valid key to be
-   loaded makes it harder to load a malicious kernel module
+   ~~only allows kernel modules that have been signed with a valid key to be
+   loaded makes it harder to load a malicious kernel module~~
 
-   virtualbox, nvidia modules may need manual signing
+   ~~virtualbox, nvidia modules may need manual signing~~
 
    **since MODULE_SIG is disabled on NixOS, this does nothing**
 
@@ -254,18 +252,18 @@ Several kernel parameters are used to harden the kernel. They are covered below:
    module.sig_enforce=1
    ```
 
-10. enable the kernel lockdown LSM
+10. ~~enable the kernel lockdown LSM~~
 
-    confidentiality is the strictest mode protects both kernel integrity and
-    prevents unauthorized access to kernel data
+    ~~confidentiality is the strictest mode protects both kernel integrity and
+    prevents unauthorized access to kernel data~~
 
-    establishes clear security boundary between userspace and kernel
+    ~~establishes clear security boundary between userspace and kernel~
 
-    this implies `module.sig_enforce=1`
+    ~~this implies `module.sig_enforce=1`~~
 
     **since LOCKDOWN_LSM is disabled on NixOS, this does nothing**
 
-    this parameter is still kept for referece/future use with custom kernels
+    this parameter is still kept for reference/future use with custom kernels
 
     ```
     lockdown=confidentiality
@@ -371,7 +369,9 @@ unused parameters due to high performance costs:
 
 # sysctl Options
 
-Several kernel parameters are used to harden the kernel. They are covered below:
+sysctl options should only be considered as a baseline.
+
+Several sysctl options are used to harden the kernel. They are covered below:
 
 1. enable ASLR
 
@@ -564,6 +564,8 @@ Several kernel parameters are used to harden the kernel. They are covered below:
 
 27. disable TCP SACK
 
+    note that disabling SACK isn't really necessary on modern kernels, but this
+    is kept since its
     [commonly exploited](https://github.com/Netflix/security-bulletins/blob/master/advisories/third-party/2019-001.md)
     and mostly unnecessary
 
@@ -640,6 +642,8 @@ Several kernel parameters are used to harden the kernel. They are covered below:
     ```
 
 # Module Blacklists
+
+Module blacklists should only be considered as general attack surface reduction.
 
 Several kernel modules are blacklisted to reduce the attack surface. They are
 covered below:
@@ -940,53 +944,52 @@ The Linux audit subsystem is enabled with the following rules:
   -a exit,always -S execve -k rules-run
   ```
 
-# Coredumps
-
-Coredumps are disabled to prevent leaking sensitive information.
-
-This is by disabling systemd coredumps, using PAM login limits, and using some
-sysctl options.
-
-# Emergency and Rescue
-
-The emergency and rescue targets and services are disabled.
-
 # Systemd Services
 
-Upstream Nixpkgs already hardens several common service, especially
-network-facing ones. Some services are additionally hardened with low-breakage
-service options. For example. `qbt.service` is hardened with these options:
+1. Service hardening
 
-```nix
-{
-  ProtectClock = true;
-  ProtectKernelTunables = true;
-  ProtectKernelModules = true;
-  ProtectKernelLogs = true;
-  ProtectControlGroups = true;
-  ProtectHome = true;
-  ProtectHostname = true;
-  SystemCallArchitectures = "native";
-  LockPersonality = true;
-  NoNewPrivileges = true;
-  PrivateDevices = true;
-  PrivateTmp = true;
-  RestrictRealtime = true;
-  RestrictSUIDSGID = true;
-  RemoveIPC = true;
-  PrivateUsers = true;
-  ProtectProc = "invisible";
-  ProcSubset = "pid";
-  ProtectSystem = "full";
-  RestrictAddressFamilies = [
-    "AF_INET"
-    "AF_NETLINK"
-  ];
-  RestrictNamespaces = true;
-  MemoryDenyWriteExecute = true;
-  SystemCallFilter = [ "@system-service" ];
-}
-```
+   Upstream Nixpkgs already hardens several common service, especially
+   network-facing ones. Some services are additionally hardened with
+   low-breakage service options. For example. `qbt.service` is hardened with
+   these options:
+
+   ```nix
+   {
+     ProtectClock = true;
+     ProtectKernelTunables = true;
+     ProtectKernelModules = true;
+     ProtectKernelLogs = true;
+     ProtectControlGroups = true;
+     ProtectHome = true;
+     ProtectHostname = true;
+     SystemCallArchitectures = "native";
+     LockPersonality = true;
+     NoNewPrivileges = true;
+     PrivateDevices = true;
+     PrivateTmp = true;
+     RestrictRealtime = true;
+     RestrictSUIDSGID = true;
+     RemoveIPC = true;
+     PrivateUsers = true;
+     ProtectProc = "invisible";
+     ProcSubset = "pid";
+     ProtectSystem = "full";
+     RestrictAddressFamilies = [
+       "AF_INET"
+       "AF_NETLINK"
+         ];
+     RestrictNamespaces = true;
+     MemoryDenyWriteExecute = true;
+     SystemCallFilter = [ "@system-service" ];
+   }
+   ```
+
+2. Coredumps are disabled to prevent leaking sensitive information.
+
+   This is by disabling systemd coredumps, using PAM login limits, and using
+   some sysctl options.
+
+3. The emergency and rescue targets and services are disabled.
 
 # Users and Privileges
 
@@ -1024,8 +1027,9 @@ to get root privileges.
 by the NixOS modules. This ensures that sensitive information does not end up in
 the world-readable Nix store. These secrets are encrypted using GPG.
 
-Also, the CLI ensures that the variables file and sops-nix secrets are never
-committed / pushed to a remote by always unstaging them after rebuilds.
+Also, the [bespoke CLI](./cli.md) ensures that the variables file and sops-nix
+secrets are **never** committed / pushed to a remote by always unstaging them
+after rebuilds, even though secrets are encrypted.
 
 # Encryption and Signing
 
@@ -1037,7 +1041,7 @@ signing and verification.
 USBGuard is used to protect against rogue USB devices like BadUSB.
 
 The policy is set to allow only patterns defined in the `usbs` list in the
-variables file. All other devices are blocked. For example, to allow a keyboard:
+variables file. ALL OTHER devices are blocked. For example, to allow a keyboard:
 
 ```nix
 usbs = [
@@ -1090,7 +1094,8 @@ The Unbound DNS resolver is hosted on Server. It runs in a MicroVM and is served
 over WireGuard.
 
 Additionally, [StevenBlack's host list](http://github.com/StevenBlack/hosts) is
-used to sinkhole domains in the Unbound DNS server hosted on Server.
+used to sinkhole domains (like PiHole, AdGuard) in the Unbound DNS server hosted
+on Server.
 
 > Server only
 
@@ -1196,20 +1201,24 @@ used:
 
 # WireGuard
 
-Server serves services over [WireGuard](https://www.wireguard.com/) instead of
-directly serving over LAN. WireGuard peers are configured using the variables
-file and private keys are stored using SOPS.
+Server serves services on [WireGuard](https://www.wireguard.com/) over LAN
+instead of directly serving over LAN. WireGuard peers are configured using the
+variables file and private keys are stored using SOPS.
+
+Note that no services are exposed to the internet, directly or otherwise. Server
+serves only its LAN (over WireGuard). Therefore, this is not a concern and out
+of scope for this flake.
 
 # Firewall
 
 The simpler NixOS `networking.firewall` is disabled. `nftables` is used instead.
 The userspace `nft` tool can be used for ad-hoc changes.
 
-By default, **NO** ports are open on **ANY** interface, not even loopback or
-internal VM interfaces.
+By default (ie, when no services are enabled in variables), **NO** ports are
+open on **ANY** interface, not even loopback or internal VM interfaces.
 
 Ports are opened on loopback / LAN / VM interfaces to specific addresses and
-interfaces based on enabled services.
+interfaces only based on enabled services.
 
 Currently, no services are bound to loopback so no ports are allowed. In case
 any apps require loopback, it can be satisfied using `bwrap --unshare-net`.
@@ -1225,17 +1234,38 @@ key authentication. Currently this includes
 - NGINX https
 - I2PD http proxy
 
+Access control to services is derived based on `allow` values in the variables
+file. As an illustration, to access the Vaultwarden webvault, clients must
+satisfy ALL of:
+
+- in the private LAN CIDR defined by `vars.wireguard.allow`, for nftables
+  filtering on LAN
+- declared as a peer with public key in `vars.wireguard.peers`, for WireGuard
+  tunnelling
+- in the private WireGuard CIDR defined by `vars.services.nginx.allow`, for
+  nftables filtering on WireGuard
+- in the private WireGuard CIDR defined by `vars.services.vaultwarden.allow`,
+  for NGINX allow rules
+
+All such access control requirements are documented in the
+[Server Usage Documentation](./server/usage.md).
+
 All other ports are opened only to VM interfaces internally since services are
-reverse-proxied via NGINX. For the few ports that are opened to LAN, the ports
-are opened only to a select CIDR defined by the `vars.service.<name>.allow`
-variables in the variables file. Since this value is a CIDR, it can be used to
-allow only specific IP addresses. For example, by setting it to
-`10.20.0.100/31`, only `10.20.0.100` and `10.20.0.101` are allowed.
+reverse-proxied via NGINX. For the few ports that are opened to LAN over
+WireGuard, the ports are opened only to a select private WireGuard CIDR defined
+by the `vars.service.<name>.allow` variables in the variables file. Since this
+value is a CIDR, it can be used to allow only specific private ranges. For
+example, by setting it to `10.20.0.100/31`, only `10.20.0.100` and `10.20.0.101`
+are allowed.
 
 Additionally, the services reverse-proxied via the NGINX are also restricted
 using `vars.service.<name>.allow`. See [NGINX](#nginx) for more information.
 
 Egress (`output`) through the LAN interface is unrestricted.
+
+Note that all services involve some form of cryptographic authentication -
+either SSH public key authentication or WireGuard public key authentication -
+and simply being on a "allowed" private CIDR is not sufficient.
 
 > Laptop only
 
@@ -1642,8 +1672,8 @@ NGINX runs in a MicroVM.
 Furthermore, all the reverse proxy locations are restricted using NGINX `allow`
 rules.
 
-For example, only the private CIDR `vars.services.vaultwarden.allow` is allowed
-on the `/vaultwarden/` location.
+For example, only the private WireGuard CIDR `vars.services.vaultwarden.allow`
+is allowed on the `/vaultwarden/` location.
 
 See [Server Usage Documenation](./server/usage.md#nginx) for more information.
 
@@ -1704,10 +1734,10 @@ unprivileged sandbox utility that is used by projects like
 [rpm-ostree](https://github.com/coreos/rpm-ostree/pull/209).
 
 It provides several useful sandboxing features while maintaining a small focused
-codebase to ensure a low overall attack surface. Furthermore, it is not a suid
-binary. [Firejail](https://github.com/netblue30/firejail), for example, is
-another sandboxing tool but uses suid binaries - which can act as a privilege
-escalation hole. Bubblewrap does not have these issues.
+codebase. Furthermore, it is not a suid binary.
+[Firejail](https://github.com/netblue30/firejail), for example, is another
+sandboxing tool but uses suid binaries - which can act as a privilege escalation
+hole. Bubblewrap does not have these issues.
 
 Bubblewrap sandboxes can be created using the `bwrap(1)` command-line interface.
 All the options used are covered in the browsers section.
@@ -1920,8 +1950,8 @@ browsers.
        ```
 
 2. Several
-   [Chromium Enterprise Policies](https://chromium.googlesource.com/chromium/src/+/HEAD/docs/enterprise/policies.md)
-   and some
+   [Chrome Enterprise Policies](https://chromeenterprise.google/policies) and
+   some
    [Brave-Specific Policies](https://support.brave.app/hc/en-us/articles/360039248271-Group-Policy)
    are used to harden the browser. Some of them involve:
 
@@ -2236,11 +2266,6 @@ Several services run in MicroVMs as covered above. These are
 Networking is covered above in [Firewall](#firewall). Rather than being bridged,
 the VMs use a
 [routed network model](https://microvm-nix.github.io/microvm.nix/routed-network.html).
-
-MicroVMs are preferred over bare-metal systemd services over the host /
-namespaces, cgroupds containers (docker, podman, systemd-nspawn) since they do
-not share the host kernel. The Server does not treat namespaces, cgroups, ... as
-a real security boundary.
 
 See [Server Usage Documentation](./server/usage.md#microvms) for more
 information.

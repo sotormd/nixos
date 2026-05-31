@@ -709,6 +709,16 @@ Trusted public keys are defined in `vars.services.ssh.trusted-keys`.
 
 Host keys are generated and stored under `/etc/ssh`.
 
+### Access Control
+
+Access control is enforced in the following places:
+
+Clients must satisfy ALL of:
+
+- in the private LAN CIDR defined by `vars.services.ssh.allow`, for nftables
+  filtering on LAN
+- public key in `vars.services.ssh.trusted-keys`, for OpenSSH authorization
+
 ### Example Variables Configuration
 
 For `vars.services.ssh`
@@ -725,6 +735,40 @@ For `vars.services.ssh`
 ```
 
 # Using Selfhosted Features
+
+Note that services are exposed using on Server using WireGuard. WireGuard is
+configured in the variables file under `vars.wireguard`.
+
+Example configuration for Laptop (`10.20.0.2` on wireguard) with a single peer
+Laptop (`10.20.0.1` on wireguard, `10.0.0.3` on LAN):
+
+```nix
+{
+  # wireguard vpn
+  wireguard = {
+
+    # wireguard address
+    address = "10.20.0.2";
+
+    # wireguard port
+    port = 51820;
+
+    # wireguard peers
+    peers = [
+      {
+        PublicKey = "dfk4SUxCbQQcR18XAkh3bGyrvOBd+nscYCZWiFUrkGA=";
+        Endpoint = "10.0.0.3:51820";
+        AllowedIPs = [ "10.20.0.1/32" ];
+        PersistentKeepalive = 25;
+      }
+    ];
+
+  };
+}
+```
+
+The Laptop has to be declared as a peer on the Server as well. See
+[Server Usage Documentation](../server/usage.md#wireguard).
 
 The Laptop can be configured to use several selfhosted features from a Server
 using the `vars.selfhosted.*` variables.
@@ -773,40 +817,6 @@ using the `vars.selfhosted.*` variables.
    ```
 
    qBittorrent instance to use for the webui.
-
-Note that services are exposed using on Server using WireGuard. WireGuard is
-configured in the variables file under `vars.wireguard`.
-
-Example configuration for Laptop (`10.20.0.2` on wireguard) with a single peer
-Laptop (`10.20.0.1` on wireguard, `10.0.0.3` on LAN):
-
-```nix
-{
-  # wireguard vpn
-  wireguard = {
-
-    # wireguard address
-    address = "10.20.0.2";
-
-    # wireguard port
-    port = 51820;
-
-    # wireguard peers
-    peers = [
-      {
-        PublicKey = "dfk4SUxCbQQcR18XAkh3bGyrvOBd+nscYCZWiFUrkGA=";
-        Endpoint = "10.0.0.3:51820";
-        AllowedIPs = [ "10.20.0.1/32" ];
-        PersistentKeepalive = 25;
-      }
-    ];
-
-  };
-}
-```
-
-The Laptop has to be declared as a peer on the Server as well. See
-[Server Usage Documentation](../server/usage.md#wireguard).
 
 # Further Reading
 

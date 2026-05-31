@@ -60,13 +60,13 @@ for more information.
 
 The following services are available:
 
-- SSH Server
-- Unbound
-- NGINX
-- SearXNG
-- Vaultwarden
-- I2PD
-- qBittorrent
+- [SSH Server](#ssh-server)
+- [Unbound](#unbound)
+- [NGINX](#nginx)
+- [SearXNG](#searxng)
+- [Vaultwarden](#vaultwarden)
+- [I2PD](#i2pd)
+- [qBittorrent](#qbittorrent)
 
 ## SSH Server
 
@@ -90,6 +90,16 @@ Open on LAN to the private CIDR defined by `vars.services.ssh.allow`:
 Trusted public keys are defined in `vars.services.ssh.trusted-keys`.
 
 Host keys are generated and stored under `/etc/ssh`.
+
+### Access Control
+
+Access control is enforced in the following places:
+
+Clients must satisfy ALL of:
+
+- in the private LAN CIDR defined by `vars.services.ssh.allow`, for nftables
+  filtering on LAN
+- public key in `vars.services.ssh.trusted-keys`, for OpenSSH authorization
 
 ### Example Variables Configuration
 
@@ -130,6 +140,21 @@ Additional entries can be added using `vars.services.unbound.local-data`.
 ### Data
 
 Data is stored under `/var/lib/unbound`.
+
+### Access Control
+
+Access control is enforced in the following places:
+
+Clients must satisfy ALL of:
+
+- in the private LAN CIDR defined by `vars.wireguard.allow`, for nftables
+  filtering on LAN
+- declared as a peer with public key in `vars.wireguard.peers`, for WireGuard
+  tunnelling
+- in the private WireGuard CIDR defined by `vars.services.unbound.allow`, for
+  nftables filtering on WireGuard
+- in the private WireGuard CIDR defined by `vars.services.unbound.allow`, for
+  Unbound's access control
 
 ## NGINX
 
@@ -176,6 +201,21 @@ possible locations are listed below:
 
 Note that NGINX itself is open to `vars.services.nginx.allow` only.
 
+### Access Control
+
+Access control is enforced in the following places:
+
+Clients must satisfy ALL of:
+
+- in the private LAN CIDR defined by `vars.wireguard.allow`, for nftables
+  filtering on LAN
+- declared as a peer with public key in `vars.wireguard.peers`, for WireGuard
+  tunnelling
+- in the private WireGuard CIDR defined by `vars.services.nginx.allow`, for
+  nftables filtering on WireGuard
+- in the private WireGuard CIDR defined by `vars.services.<name>.allow` for
+  specific [locations](#locations), for NGINX allow rules
+
 ## SearXNG
 
 Fast, private metasearch engine.
@@ -200,6 +240,21 @@ The following search engines are enabled by default on the general tab:
 
 Requires a secret key which is stored using sops-nix.
 
+### Access Control
+
+Access control is enforced in the following places:
+
+Clients must satisfy ALL of:
+
+- in the private LAN CIDR defined by `vars.wireguard.allow`, for nftables
+  filtering on LAN
+- declared as a peer with public key in `vars.wireguard.peers`, for WireGuard
+  tunnelling
+- in the private WireGuard CIDR defined by `vars.services.nginx.allow`, for
+  nftables filtering on WireGuard
+- in the private WireGuard CIDR defined by `vars.services.searxng.allow`, for
+  NGINX allow rules
+
 ## Vaultwarden
 
 Password manager.
@@ -213,6 +268,21 @@ Vaultwarden runs in a MicroVM. See [MicroVMs](#microvms) for more information.
 ### Vault
 
 The vault is stored at `/var/lib/bitwarden_rs`.
+
+### Access Control
+
+Access control is enforced in the following places:
+
+Clients must satisfy ALL of:
+
+- in the private LAN CIDR defined by `vars.wireguard.allow`, for nftables
+  filtering on LAN
+- declared as a peer with public key in `vars.wireguard.peers`, for WireGuard
+  tunnelling
+- in the private WireGuard CIDR defined by `vars.services.nginx.allow`, for
+  nftables filtering on WireGuard
+- in the private WireGuard CIDR defined by `vars.services.vaultwarden.allow`,
+  for NGINX allow rules
 
 ## I2PD
 
@@ -233,6 +303,34 @@ Open on WireGuard to the private CIDR defined by `vars.services.i2pd.allow`:
 ### Data
 
 Data is stored under `/var/lib/i2pd`.
+
+### Access Control
+
+Access control is enforced in the following places:
+
+For webconsole:
+
+Clients must satisfy ALL of:
+
+- in the private LAN CIDR defined by `vars.wireguard.allow`, for nftables
+  filtering on LAN
+- declared as a peer with public key in `vars.wireguard.peers`, for WireGuard
+  tunnelling
+- in the private WireGuard CIDR defined by `vars.services.nginx.allow`, for
+  nftables filtering on WireGuard
+- in the private WireGuard CIDR defined by `vars.services.i2pd.allow`, for NGINX
+  allow rules
+
+For HTTP proxy:
+
+Clients must satisfy ALL of:
+
+- in the private LAN CIDR defined by `vars.wireguard.allow`, for nftables
+  filtering on LAN
+- declared as a peer with public key in `vars.wireguard.peers`, for WireGuard
+  tunnelling
+- in the private WireGuard CIDR defined by `vars.services.i2pd.allow`, for
+  nftables filtering on WireGuard
 
 ## qBittorrent
 
@@ -275,11 +373,28 @@ systemctl status qbt
 Then, in the web ui `https://<your-duckdns-domain>/qbt/` under
 `Tools > Options > WebUI > Authentication` set a username and password.
 
+### Access Control
+
+Access control is enforced in the following places:
+
+Clients must satisfy ALL of:
+
+- in the private LAN CIDR defined by `vars.wireguard.allow`, for nftables
+  filtering on LAN
+- declared as a peer with public key in `vars.wireguard.peers`, for WireGuard
+  tunnelling
+- in the private WireGuard CIDR defined by `vars.services.nginx.allow`, for
+  nftables filtering on WireGuard
+- in the private WireGuard CIDR defined by `vars.services.qbt.allow`, for NGINX
+  allow rules
+
 # MicroVMs
 
 Several services run in MicroVMs. Each MicroVM uses its own interface and runs
-behind a NAT. The nftables firewall is used to allow restricted access to
-required regions. See [Firewall](../security.md#firewall) for more information.
+behind a NAT. Rather than being bridged, the VMs use a
+[routed network model](https://microvm-nix.github.io/microvm.nix/routed-network.html).
+The nftables firewall is used to allow restricted access to required regions.
+See [Firewall](../security.md#firewall) for more information.
 
 | MicroVM       | (internal) IP Address | Interface | Gateway      |
 | ------------- | --------------------- | --------- | ------------ |
@@ -308,8 +423,8 @@ microvm -s nginx
 
 # WireGuard
 
-Services are exposed using WireGuard. WireGuard is configured in the variables
-file under `vars.wireguard`.
+Services are exposed using WireGuard over LAN. WireGuard is configured in the
+variables file under `vars.wireguard`.
 
 Example configuration for Server (`10.20.0.1` on wireguard) with a single peer
 Laptop (`10.20.0.2` on wireguard, `10.0.0.2` on LAN):
