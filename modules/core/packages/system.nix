@@ -194,5 +194,8 @@
     # wireguard vpn tools
     pkgs.wireguard-tools
 
+    # tcpdump
+    pkgs.tcpdump
+
   ];
 }
