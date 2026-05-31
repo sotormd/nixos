@@ -1045,7 +1045,7 @@ variables file. ALL OTHER devices are blocked. For example, to allow a keyboard:
 
 ```nix
 usbs = [
-  ''id 05f0:0217 serial "" name "Keychron K2" hash "a0ef07fceb6fb77698f79a44a450121m" parent-hash "69d19c1a5733a31e7e6d9530e6k434a6" via-port "1-2" with-interface { 03:01:01 03:01:02 } with-connect-type "hotplug"''
+  ''id 05f0:0217 serial "" name "Keychron K2" hash "a0ef07fceb6fb77698f79a44a4501218" parent-hash "69d19c1a5733a31e7e6d9530e6k434a6" via-port "1-2" with-interface { 03:01:01 03:01:02 } with-connect-type "hotplug"''
 ];
 ```
 
@@ -1664,16 +1664,13 @@ for successive failed attempts up to 6144 hours.
 
 NGINX is used as a reverse proxy for several other services instead of directly
 opening ports. This is served over HTTPS with certificates from
-[Let's Encrypt](https://letsencrypt.org) managed with ACME to the private CIDR
-as defined by `vars.services.nginx.allow` over WireGuard.
-
-NGINX runs in a MicroVM.
+[Let's Encrypt](https://letsencrypt.org) managed with ACME. NGINX runs in a
+MicroVM and is served to the private CIDR as defined by
+`vars.services.nginx.allow` over WireGuard.
 
 Furthermore, all the reverse proxy locations are restricted using NGINX `allow`
-rules.
-
-For example, only the private WireGuard CIDR `vars.services.vaultwarden.allow`
-is allowed on the `/vaultwarden/` location.
+rules. For example, only the private WireGuard CIDR
+`vars.services.vaultwarden.allow` is allowed on the `/vaultwarden/` location.
 
 See [Server Usage Documenation](./server/usage.md#nginx) for more information.
 
