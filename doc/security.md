@@ -40,6 +40,13 @@ Warnings:
 - Several hardening options may hinder performance or break certain workflows.
   This configuration caters to my specific setup **only**.
 
+- Note that this document contains some options which aren't hardening or
+  security related and are more of privacy / personal preference. Such options
+  are noted.
+
+- Note that this document contains some options which, at the time of writing,
+  may be no-ops on NixOS. Such options are noted.
+
 Missing features:
 
 - AppArmor/SELinux support is not great under NixOS.
@@ -56,34 +63,34 @@ Missing features:
 2. [Memory Allocator](#memory-allocator)
 3. [Filesystems](#filesystems)
 4. [Impermanence](#impermanence)
-5. [Kernel Parameters](#kernel-parameters)
-6. [sysctl Options](#sysctl-options)
-7. [Module Blacklists](#module-blacklists)
-8. [Audit Subsystem](#audit-subsystem)
-9. [Systemd Services](#systemd-services)
-10. [Users and Privileges](#users-and-privileges)
-11. [Nix Package Manager](#nix-package-manager)
-12. [SOPS](#sops)
-13. [Encryption and Signing](#encryption-and-signing)
-14. [USBGuard](#usbguard)
-15. [Wireless Networking](#wireless-networking)
-16. [DNS](#dns)
-17. [WireGuard](#wireguard)
-18. [Firewall](#firewall)
-19. [MAC Randomization](#mac-randomization)
-20. [Secure Shell](#secure-shell)
-21. [Fail2Ban](#fail2ban)
-22. [NGINX](#nginx)
-23. [I2P and Anonymity](#i2p-and-anonymity)
-24. [Display Server](#display-server)
-25. [Desktop](#desktop)
-26. [Session Locking](#session-locking)
-27. [Bubblewrap](#bubblewrap)
-28. [xdg-dbus-proxy](#xdg-dbus-proxy)
-29. [Browsers](#browsers)
-30. [Search Engine](#search-engine)
-31. [Password Manager](#password-manager)
-32. [Virtualisation](#virtualisation)
+5. [Audit Subsystem](#audit-subsystem)
+6. [Systemd Services](#systemd-services)
+7. [Users and Privileges](#users-and-privileges)
+8. [Nix Package Manager](#nix-package-manager)
+9. [SOPS](#sops)
+10. [Encryption and Signing](#encryption-and-signing)
+11. [USBGuard](#usbguard)
+12. [Wireless Networking](#wireless-networking)
+13. [DNS](#dns)
+14. [WireGuard](#wireguard)
+15. [Firewall](#firewall)
+16. [Virtualisation](#virtualisation)
+17. [MAC Randomization](#mac-randomization)
+18. [Secure Shell](#secure-shell)
+19. [Fail2Ban](#fail2ban)
+20. [NGINX](#nginx)
+21. [I2P and Anonymity](#i2p-and-anonymity)
+22. [Display Server](#display-server)
+23. [Desktop](#desktop)
+24. [Session Locking](#session-locking)
+25. [Bubblewrap](#bubblewrap)
+26. [xdg-dbus-proxy](#xdg-dbus-proxy)
+27. [Browsers](#browsers)
+28. [Search Engine](#search-engine)
+29. [Password Manager](#password-manager)
+30. [Kernel Parameters](#kernel-parameters)
+31. [sysctl Options](#sysctl-options)
+32. [Module Blacklists](#module-blacklists)
 
 # Secure Boot
 
@@ -156,6 +163,1339 @@ Impermanence is implemented differently on Laptop and Server, without using the
 Snapshots or tmpfs for rollbacks and bind mounts for state persistence.
 
 See [Impermanence](./filesystems.md#impermanence) for more information.
+
+# Audit Subsystem
+
+The Linux audit subsystem is enabled with the following rules:
+
+- Log everytime a program is attempted to run
+
+  ```
+  -a exit,always -S execve -k rules-run
+  ```
+
+# Systemd Services
+
+1. Service hardening
+
+   Upstream Nixpkgs already hardens several common service, especially
+   network-facing ones. Some services are additionally hardened with
+   low-breakage service options. For example. `qbt.service` is hardened with
+   these options:
+
+   ```nix
+   {
+     ProtectClock = true;
+     ProtectKernelTunables = true;
+     ProtectKernelModules = true;
+     ProtectKernelLogs = true;
+     ProtectControlGroups = true;
+     ProtectHome = true;
+     ProtectHostname = true;
+     SystemCallArchitectures = "native";
+     LockPersonality = true;
+     NoNewPrivileges = true;
+     PrivateDevices = true;
+     PrivateTmp = true;
+     RestrictRealtime = true;
+     RestrictSUIDSGID = true;
+     RemoveIPC = true;
+     PrivateUsers = true;
+     ProtectProc = "invisible";
+     ProcSubset = "pid";
+     ProtectSystem = "full";
+     RestrictAddressFamilies = [
+       "AF_INET"
+       "AF_NETLINK"
+         ];
+     RestrictNamespaces = true;
+     MemoryDenyWriteExecute = true;
+     SystemCallFilter = [ "@system-service" ];
+   }
+   ```
+
+2. Coredumps are disabled to prevent leaking sensitive information.
+
+   This is by disabling systemd coredumps, using PAM login limits, and using
+   some sysctl options.
+
+3. The emergency and rescue targets and services are disabled.
+
+# Users and Privileges
+
+A single user is created, and is part of the wheel group.
+
+The root account is locked.
+
+Both `run0` and `sudo` are available for privilege elevation. However, `run0` is
+preferred and is used in the CLI. `sudo` is also aliased to `run0` in the bash
+shell.
+
+Other tools like `su` and `pkexec` are disabled by removing their setuid bit.
+
+# Nix Package Manager
+
+The Nix package manager and the Nix packaging model prevent various classes of
+supply chain attacks.
+
+The Nix package manager is hardened and can only be used by members of the wheel
+group. Furthermore, only the root user is part of `trusted-users`. This is
+important because adding a trusted user is essentially passwordless root.
+
+Nix is also set to only download and use cryptographically signed binaries.
+Remote building and copying signed closures can be done using
+[seed](./cli.md#build-remote-closures).
+
+Nonfree packages and broken packages are disabled.
+
+Untrusted flake configuration settings are disabled. These may allow the flake
+to get root privileges.
+
+# SOPS
+
+[sops-nix](https://github.com/Mic92/sops-nix) is used to store secrets consumed
+by the NixOS modules. This ensures that sensitive information does not end up in
+the world-readable Nix store. These secrets are encrypted using GPG.
+
+Also, the [bespoke CLI](./cli.md) ensures that the variables file and sops-nix
+secrets are **never** committed / pushed to a remote by always unstaging them
+after rebuilds, even though secrets are encrypted.
+
+# Encryption and Signing
+
+Age is available for modern encryption. The OpenBSD signify is available for
+signing and verification.
+
+# USBGuard
+
+USBGuard is used to protect against rogue USB devices like BadUSB.
+
+The policy is set to allow only patterns defined in the `usbs` list in the
+variables file. ALL OTHER devices are blocked. For example, to allow a keyboard:
+
+```nix
+usbs = [
+  ''id 05f0:0217 serial "" name "Keychron K2" hash "a0ef07fceb6fb77698f79a44a4501218" parent-hash "69d19c1a5733a31e7e6d9530e6k434a6" via-port "1-2" with-interface { 03:01:01 03:01:02 } with-connect-type "hotplug"''
+];
+```
+
+These descriptors can be found using the `usbguard(1)` command-line interface:
+
+```bash
+run0 usbguard list-devices
+```
+
+Additionally, devices with the following identifiers are explicitly rejected:
+
+1. Both mass storage device and HID input device
+
+   ```
+   reject with-interface all-of { 08:*:* 03:00:* }
+   reject with-interface all-of { 08:*:* 03:01:* }
+   ```
+
+2. Both mass storage device and wireless controller
+
+   ```
+   reject with-interface all-of { 08:*:* e0:*:* }
+   ```
+
+3. Both mass storage device and communications device
+
+   ```
+   reject with-interface all-of { 08:*:* 02:*:* }
+   ```
+
+USBGuard can be controlled using the `usbguard` command line interface. Only the
+`root` user is allowed to use the USBGuard IPC.
+
+# Wireless Networking
+
+`wpa_supplicant` is used for wireless connections. Network secrets are stored
+using SOPS.
+
+> Laptop only
+
+WPA3 (SAE / dragonfly) is used for wireless authentication on Laptop.
+
+# DNS
+
+The Unbound DNS resolver is hosted on Server. It runs in a MicroVM and is served
+over WireGuard.
+
+Additionally, [StevenBlack's host list](http://github.com/StevenBlack/hosts) is
+used to sinkhole domains (like PiHole, AdGuard) in the Unbound DNS server hosted
+on Server.
+
+> Server only
+
+The Unbound DNS server hosted on Server is hardened. The following options are
+used:
+
+1. disable ipv6
+
+   ```
+   prefer-ip6=no
+   prefer-ip4=yes
+   do-ip6=no
+   do-ip4=yes
+   ```
+
+2. hide information
+
+   ```
+   hide-identity=yes
+   hide-version=yes
+   hide-trustanchor=yes
+   hide-http-user-agent=yes
+   ```
+
+3. send minimum information to upstream servers
+
+   ```
+   qname-minimisation=yes
+   qname-minimisation-strict=yes
+   ```
+
+4. harden against very small EDNS buffer sizes
+
+   ```
+   harden-short-bufsize=yes
+   ```
+
+5. harden against large queries
+
+   ```
+   harden-large-queries=yes
+   ```
+
+6. harden against out of zone rrsets, to avoid spoofing attempts
+
+   ```
+   harden-glue=yes
+   ```
+
+7. harden against unverified glue rrsets
+
+   ```
+   harden-unverified-glue=yes
+   ```
+
+8. harden against receiving dnssec-stripped data
+
+   ```
+   harden-dnssec-stripped=yes
+   ```
+
+9. harden against queries that fall under dnssec-signed nxdomain names
+
+   ```
+   harden-below-nxdomain=yes
+   ```
+
+10. harden the referral path by performing additional queries, intensive and
+    experimental
+
+    ```
+    harden-referral-path=yes
+    ```
+
+11. harden against downgrades when multiple algorithms are advertised
+
+    ```
+    harden-algo-downgrade=yes
+    ```
+
+12. harden against unknown records in the authority and additional sections
+
+    ```
+    harden-unknown-additional=yes
+    ```
+
+13. use the dnssec nsec chain
+
+    ```
+    aggressive-nsec=yes
+    ```
+
+14. use random bits in the query to foil spoof attempts
+
+    ```
+    use-caps-for-id=yes
+    ```
+
+15. Unbound is also set to allow only specific clients using `access-control`.
+    Importantly, the private CIDR `vars.services.unbound.allow` is allowed to
+    use the resolver. Additionally, the VM interfaces are explicitly allowed to
+    use the resolver if the respective services are enabled.
+
+# WireGuard
+
+Server serves services on [WireGuard](https://www.wireguard.com/) over LAN
+instead of directly serving over LAN. WireGuard peers are configured using the
+variables file and private keys are stored using SOPS.
+
+Note that no services are exposed to the internet, directly or otherwise. Server
+serves only its LAN (over WireGuard). Therefore, this is not a concern and out
+of scope for this flake.
+
+# Firewall
+
+The simpler NixOS `networking.firewall` is disabled. `nftables` is used instead.
+The userspace `nft` tool can be used for ad-hoc changes.
+
+By default (ie, when no services are enabled in variables), **NO** ports are
+open on **ANY** interface, not even loopback or internal VM interfaces.
+
+Ports are opened on loopback / LAN / VM interfaces to specific addresses and
+interfaces only based on enabled services.
+
+Currently, no services are bound to loopback so no ports are allowed. In case
+any apps require loopback, it can be satisfied using `bwrap --unshare-net`.
+
+Only SSH is served over LAN and [uses public key authentication](#secure-shell).
+Therefore, even though nftables filters by CIDR using `vars.services.ssh.allow`
+this is not used as a real source of identification.
+
+All other services are served over [WireGuard](#wireguard), which uses public
+key authentication. Currently this includes
+
+- Unbound dns
+- NGINX https
+- I2PD http proxy
+
+Access control to services is derived based on `allow` values in the variables
+file. As an illustration, to access the Vaultwarden webvault, clients must
+satisfy ALL of:
+
+- in the private LAN CIDR defined by `vars.wireguard.allow`, for nftables
+  filtering on LAN
+- declared as a peer with public key in `vars.wireguard.peers`, for WireGuard
+  tunnelling
+- in the private WireGuard CIDR defined by `vars.services.nginx.allow`, for
+  nftables filtering on WireGuard
+- in the private WireGuard CIDR defined by `vars.services.vaultwarden.allow`,
+  for NGINX allow rules
+
+All such access control requirements are documented in the
+[Server Usage Documentation](./server/usage.md).
+
+All other ports are opened only to VM interfaces internally since services are
+reverse-proxied via NGINX. For the few ports that are opened to LAN over
+WireGuard, the ports are opened only to a select private WireGuard CIDR defined
+by the `vars.service.<name>.allow` variables in the variables file. Since this
+value is a CIDR, it can be used to allow only specific private ranges. For
+example, by setting it to `10.20.0.100/31`, only `10.20.0.100` and `10.20.0.101`
+are allowed.
+
+Additionally, the services reverse-proxied via the NGINX are also restricted
+using `vars.service.<name>.allow`. See [NGINX](#nginx) for more information.
+
+Egress (`output`) through the LAN interface is unrestricted.
+
+Note that all services involve some form of cryptographic authentication -
+either SSH public key authentication or WireGuard public key authentication -
+and simply being on a "allowed" private CIDR is not sufficient.
+
+> Laptop only
+
+Ports are open based on the enabled services (only SSH). See
+[Laptop Usage Documentation](./laptop/usage.md#ssh) for more information.
+
+Ports are opened for the following services:
+
+1. SSH, if enabled using `vars.services.ssh.enable`:
+
+   - TCP `vars.services.ssh.port` is open on LAN to the private CIDR defined by
+     `vars.services.ssh.allow`
+
+2. Libvirt interfaces (`virbr*`) are allowed in `input` (dns, dhcp), `forward`
+   and `output` (see example below).
+
+> Server only
+
+Ports are open based on the enabled services. See
+[Server Usage Documentation](./server/usage.md) for more information.
+
+Ports are opened for the following services:
+
+1. SSH, if enabled using `vars.services.ssh.enable`:
+
+   - TCP `vars.services.ssh.port` is open on LAN to the private CIDR defined by
+     `vars.services.ssh.allow`
+
+2. Unbound, if enabled using `vars.services.unbound.enable`:
+
+   - (dns) TCP `53` is forwarded and open on WireGuard to the private CIDR
+     defined by `vars.services.unbound.allow`
+
+   - (dns) UDP `53` is forwarded and open on WireGuard to the private CIDR
+     defined by `vars.services.unbound.allow`
+
+   - (dns) TCP `53` is open internally on VM interface to host
+
+   - (dns) UDP `53` is open internally on VM interface to host
+
+   - (dns) TCP `53` is open internally on VM interface to `nginx`, `searxng` and
+     `i2pd` VMs
+
+   - (dns) UDP `53` is open internally on VM interface to `nginx`, `searxng` and
+     `i2pd` VMs
+
+3. NGINX, if enabled using `vars.services.nginx.enable`:
+
+   - (https) TCP `443` is forwarded and open on WireGuard to the private CIDR
+     defined by `vars.services.nginx.allow`
+
+4. SearXNG, if enabled using `vars.services.searxng.enable`:
+
+   - (search-engine) TCP `8888` is open internally on VM interface to `nginx` VM
+
+5. Vaultwarden, if enabled using `vars.services.vaultwarden.enable`:
+
+   - Cannot access the internet.
+
+   - (web-vault) TCP `8222` is open internally on VM interface to `nginx` VM
+
+6. I2PD, if enabled using `vars.services.i2pd.enable`:
+
+   - (http-proxy) TCP `4444` is forwarded and open on WireGuard to the private
+     CIDR defined by `vars.services.i2pd.allow`
+
+   - (http-proxy) TCP `4444` is open internally on VM interface to `qbt` VM
+
+   - (sam) TCP `7656` is open internally on VM interface to `qbt` VM
+
+   - (web-console) TCP `7070` is open internally on VM interface to `nginx` VM
+
+7. qBittorrent, if enabled using `vars.services.qbt.enable`:
+
+   - Cannot access the internet, exclusively uses I2P.
+
+   - (web-ui) TCP `8080` is open internally on VM interface to `nginx` VM
+
+> Examples
+
+Example ruleset for Laptop with SSH disabled:
+
+Notes for example:
+
+- `wlan0` is the LAN interface.
+- `wg0` is the WireGuard interface.
+- `virbr*` are libvirt interfaces.
+
+```
+table inet filter {
+	chain input {
+		type filter hook input priority filter; policy drop;
+		ct state invalid drop
+		tcp flags & (fin | syn | rst | ack) != syn ct state new drop
+		iifname "lo" ct state established,related accept
+		iifname "wlp1s0" ct state established,related accept
+		iifname "wg0" ct state established,related accept
+		iifname "virbr*" ct state established,related accept
+		iifname "virbr*" tcp dport 53 ct state new accept
+		iifname "virbr*" udp dport 53 ct state new accept
+		iifname "virbr*" udp dport 67 ct state new accept
+	}
+
+	chain forward {
+		type filter hook forward priority filter; policy drop;
+		ct state invalid drop
+		ct state established,related accept
+		iifname "virbr*" ct state new accept
+	}
+
+	chain output {
+		type filter hook output priority filter; policy drop;
+		ct state invalid drop
+		ct state established,related accept
+		oifname "lo" accept
+		oifname "wlp1s0" accept
+		oifname "wg0" accept
+		oifname "virbr*" accept
+	}
+}
+table ip nat {
+	chain prerouting {
+		type nat hook prerouting priority dstnat; policy accept;
+	}
+
+	chain postrouting {
+		type nat hook postrouting priority srcnat; policy accept;
+	}
+}
+```
+
+Example ruleset for Server with NO services enabled, except SSH:
+
+Notes for example:
+
+- `wlan0` is the LAN interface.
+- `wg0` is the WireGuard interface.
+- `192.168.0.101` is the host.
+- `192.168.0.100` is a trusted client.
+- `2233` is the SSH port.
+
+```
+table inet filter {
+	chain input {
+		type filter hook input priority filter; policy drop;
+		ct state invalid drop
+		tcp flags & (fin | syn | rst | ack) != syn ct state new drop
+		iifname "lo" ct state established,related accept
+		iifname "wlan0" ct state established,related accept
+		iifname "wg0" ct state established,related accept
+        ip saddr 192.168.0.100 ip daddr 192.168.0.101 iifname "wlan0" tcp dport 2233 ct state new accept
+	}
+
+	chain forward {
+		type filter hook forward priority filter; policy drop;
+		ct state invalid drop
+		ct state established,related accept
+	}
+
+	chain output {
+		type filter hook output priority filter; policy drop;
+		ct state invalid drop
+		ct state established,related accept
+		oifname "lo" accept
+		oifname "wlan0" accept
+		oifname "wg0" accept
+	}
+}
+table ip nat {
+	chain prerouting {
+		type nat hook prerouting priority dstnat; policy accept;
+	}
+
+	chain postrouting {
+		type nat hook postrouting priority srcnat; policy accept;
+	}
+}
+```
+
+Example ruleset for Server with ALL services enabled:
+
+Notes for example:
+
+- `wlan0` is the LAN interface.
+- `wg0` is the WireGuard interface.
+- `192.168.0.101` is the host.
+- `192.168.0.100` is a trusted client.
+- `2233` is the SSH port.
+- `51820` is the WireGuard port.
+- `unbound` is `10.204.3.2` on `svcvm3`
+- `nginx` is `10.204.4.2` on `svcvm4`
+- `searxng` is `10.204.5.2` on `svcvm5`
+- `vaultwarden` is `10.204.6.2` on `svcvm6`
+- `i2pd` is `10.204.7.2` on `svcvm7`
+- `qbt` is `10.204.8.2` on `svcvm8`
+
+```
+table inet filter {
+	chain input {
+		type filter hook input priority filter; policy drop;
+		ct state invalid drop
+		tcp flags & (fin | syn | rst | ack) != syn ct state new drop
+		iifname "lo" ct state established,related accept
+		iifname "wlan0" ct state established,related accept
+		iifname "wg0" ct state established,related accept
+		iifname "svcvm3" ct state established,related accept
+		iifname "svcvm4" ct state established,related accept
+		iifname "svcvm5" ct state established,related accept
+		iifname "svcvm6" ct state established,related accept
+		iifname "svcvm7" ct state established,related accept
+		iifname "svcvm8" ct state established,related accept
+		ip saddr 192.168.0.100 ip daddr 192.168.0.101 iifname "wlan0" udp dport 51820 ct state new accept
+		ip saddr 192.168.0.100 ip daddr 192.168.0.101 iifname "wlan0" tcp dport 2233 ct state new accept
+	}
+
+	chain forward {
+		type filter hook forward priority filter; policy drop;
+		ct state invalid drop
+		ct state established,related accept
+		ip saddr 10.204.3.2 iifname "svcvm3" oifname "wlan0" ct state new accept
+		ip saddr 10.204.4.2 iifname "svcvm4" oifname "wlan0" ct state new accept
+		ip saddr 10.204.5.2 iifname "svcvm5" oifname "wlan0" ct state new accept
+		ip saddr 10.204.7.2 iifname "svcvm7" oifname "wlan0" ct state new accept
+		ip saddr 10.104.0.2 iifname "wg0" oifname "svcvm3" ip daddr 10.204.3.2 tcp dport 53 ct state new accept
+		ip saddr 10.104.0.2 iifname "wg0" oifname "svcvm3" ip daddr 10.204.3.2 udp dport 53 ct state new accept
+		ip saddr 10.104.0.2 iifname "wg0" oifname "svcvm4" ip daddr 10.204.4.2 tcp dport 443 ct state new accept
+		ip saddr 10.104.0.2 iifname "wg0" oifname "svcvm7" ip daddr 10.204.7.2 tcp dport 4444 ct state new accept
+		ip saddr 10.204.4.2 iifname "svcvm4" ip daddr 10.204.3.2 oifname "svcvm3" tcp dport 53 ct state new accept
+		ip saddr 10.204.4.2 iifname "svcvm4" ip daddr 10.204.3.2 oifname "svcvm3" udp dport 53 ct state new accept
+		ip saddr 10.204.4.2 iifname "svcvm4" ip daddr 10.204.5.2 oifname "svcvm5" tcp dport 8888 ct state new accept
+		ip saddr 10.204.4.2 iifname "svcvm4" ip daddr 10.204.6.2 oifname "svcvm6" tcp dport 8222 ct state new accept
+		ip saddr 10.204.4.2 iifname "svcvm4" ip daddr 10.204.7.2 oifname "svcvm7" tcp dport 7070 ct state new accept
+		ip saddr 10.204.4.2 iifname "svcvm4" ip daddr 10.204.8.2 oifname "svcvm8" tcp dport 8080 ct state new accept
+		ip saddr 10.204.5.2 iifname "svcvm5" ip daddr 10.204.3.2 oifname "svcvm3" tcp dport 53 ct state new accept
+		ip saddr 10.204.5.2 iifname "svcvm5" ip daddr 10.204.3.2 oifname "svcvm3" udp dport 53 ct state new accept
+		ip saddr 10.204.7.2 iifname "svcvm7" ip daddr 10.204.3.2 oifname "svcvm3" tcp dport 53 ct state new accept
+		ip saddr 10.204.7.2 iifname "svcvm7" ip daddr 10.204.3.2 oifname "svcvm3" udp dport 53 ct state new accept
+		ip saddr 10.204.8.2 iifname "svcvm8" ip daddr 10.204.7.2 oifname "svcvm7" tcp dport 7656 ct state new accept
+		ip saddr 10.204.8.2 iifname "svcvm8" ip daddr 10.204.7.2 oifname "svcvm7" tcp dport 4444 ct state new accept
+	}
+
+	chain output {
+		type filter hook output priority filter; policy drop;
+		ct state invalid drop
+		ct state established,related accept
+		oifname "lo" accept
+		oifname "wlan0" accept
+		oifname "wg0" accept
+		ip daddr 10.204.3.2 tcp dport 53 ct state new accept
+		ip daddr 10.204.3.2 udp dport 53 ct state new accept
+	}
+}
+table ip nat {
+	chain prerouting {
+		type nat hook prerouting priority dstnat; policy accept;
+		ip saddr 10.104.0.2 iifname "wg0" tcp dport 53 dnat to 10.204.3.2
+		ip saddr 10.104.0.2 iifname "wg0" udp dport 53 dnat to 10.204.3.2
+		ip saddr 10.104.0.2 iifname "wg0" tcp dport 443 dnat to 10.204.4.2
+		ip saddr 10.104.0.2 iifname "wg0" tcp dport 4444 dnat to 10.204.7.2
+	}
+
+	chain postrouting {
+		type nat hook postrouting priority srcnat; policy accept;
+		ip saddr 10.204.3.2 iifname "svcvm3" oifname "wlan0" masquerade
+		ip saddr 10.204.4.2 iifname "svcvm4" oifname "wlan0" masquerade
+		ip saddr 10.204.5.2 iifname "svcvm5" oifname "wlan0" masquerade
+		ip saddr 10.204.7.2 iifname "svcvm7" oifname "wlan0" masquerade
+	}
+}
+```
+
+# Virtualisation
+
+> Laptop only
+
+See
+[Laptop Usage Documentation](./laptop/usage.md#virtualisation-and-containers)
+for information about virtualisation with QEMU/KVM and libvirt/virt-manager.
+
+It is recommended to set up [Whonix](https://www.whonix.org/) for accessing the
+Tor network in an isolated environment. [This](https://www.whonix.org/wiki/KVM)
+official wiki page covers setting up Whonix in QEMU/KVM using libvirt.
+
+> Server only
+
+Several services run in MicroVMs as covered above. These are
+[microvm.nix](https://github.com/microvm-nix/microvm.nix) QEMU MicroVMs.
+Networking is covered above in [Firewall](#firewall). Rather than being bridged,
+the VMs use a
+[routed network model](https://microvm-nix.github.io/microvm.nix/routed-network.html).
+
+See [Server Usage Documentation](./server/usage.md#microvms) for more
+information.
+
+# MAC Randomization
+
+GNU MAC Changer is used to randomize the MAC address. Using a completely random
+MAC address can lead to MAC addresses which are very rare / impossible. This
+reduces anonymity significantly. Therefore, only non-vendor bits are randomized.
+
+# Secure Shell
+
+SSH can be enabled on both Server and Laptop. See
+[Laptop Usage Documentation](./laptop/usage.md#ssh) and
+[Server Usage Documentation](./server/usage.md#ssh) for details about using a
+non-default port, authorized keys, etc.
+
+The SSH configuration is hardened using the following options:
+
+1. Only the main user and group is allowed.
+
+2. Root login is disabled.
+
+   ```
+   PermitRootLogin no
+   ```
+
+3. Only publickey authentication is used. Password authentication is disabled.
+
+   ```
+   PubkeyAuthentication yes
+   AuthenticationMethods publickey
+   PasswordAuthentication no
+   PermitEmptyPasswords no
+   ```
+
+4. Options are set to reduce the brute-force window
+
+   ```
+   MaxSessions 2
+   MaxAuthTries 2
+   LoginGraceTime 20
+   ClientAliveInterval 300
+   ClientAliveCountMax 1
+   ```
+
+5. Unused features are disabled
+
+   ```
+   X11Forwarding no
+   AllowStreamLocalForwarding no
+   PermitTunnel no
+   PermitUserEnvironment no
+   KbdInteractiveAuthentication no
+   AllowTCPForwarding no
+   TCPKeepAlive no
+   AllowAgentForwarding no
+   ```
+
+6. Secure algorithms are used
+
+   - Post quantum algorithms for key exchange `KexAlgorithms`
+
+     ```
+     mlkem768x25519-sha256
+     sntrup761x25519-sha512
+     curve25519-sha256@libssh.org
+     ecdh-sha2-nistp521
+     ecdh-sha2-nistp384
+     ecdh-sha2-nistp256
+     diffie-hellman-group-exchange-sha256
+     ```
+
+   - `Ciphers`
+
+     ```
+     aes256-gcm@openssh.com
+     aes128-gcm@openssh.com
+     chacha20-poly1305@openssh.com
+     aes256-ctr
+     aes192-ctr
+     aes128-ctr
+     ```
+
+   - Message Authentication Codes `Macs`
+
+     ```
+     hmac-sha2-512-etm@openssh.com
+     hmac-sha2-256-etm@openssh.com
+     umac-128-etm@openssh.com
+     hmac-sha2-512
+     hmac-sha2-256
+     umac-128@openssh.com
+     ```
+
+7. Options are set to reduce identity leakage
+
+   ```
+   UseDns no
+   PrintMotd no
+   VersionAddendum none
+   ```
+
+8. Options are set to ensure safe filesystem permissions
+
+   ```
+   StrictModes yes
+   ```
+
+9. Verbose logging is enabled
+
+10. Only a `ed25519` host key is used
+
+11. Authorized keys are defined using `vars.services.ssh.trusted-keys` which
+    only accepts `ed25519` keys
+
+12. A nonstandard port can be used using `vars.services.ssh.port`
+
+# Fail2Ban
+
+Fail2Ban is used to limit brute force authentication attempts on SSH.
+
+It is configured to ban for 24 hours after 2 failed attempts, with increments
+for successive failed attempts up to 6144 hours.
+
+# NGINX
+
+> Server only
+
+NGINX is used as a reverse proxy for several other services instead of directly
+opening ports. This is served over HTTPS with certificates from
+[Let's Encrypt](https://letsencrypt.org) managed with ACME. NGINX runs in a
+MicroVM and is served to the private CIDR as defined by
+`vars.services.nginx.allow` over WireGuard.
+
+Furthermore, all the reverse proxy locations are restricted using NGINX `allow`
+rules. For example, only the private WireGuard CIDR
+`vars.services.vaultwarden.allow` is allowed on the `/vaultwarden/` location.
+
+See [Server Usage Documenation](./server/usage.md#nginx) for more information.
+
+# I2P and Anonymity
+
+> Laptop only
+
+1. I2P
+
+   The I2P network can be browsed using the
+   [i2p-browser](./laptop/usage.md#i2p-browser) which uses the I2P HTTP Proxy
+   hosted on Server.
+
+2. Tor
+
+   No Tor tooling is installed by default.
+
+   The Tor Browser and oniux can be installed and used in an ad-hoc Nix Shell.
+   However, this is discouraged and it is recommended to use Whonix instead. See
+   [Virtualisation](#virtualisation).
+
+> Server only
+
+The I2PD router is hosted on Server. It runs in a MicroVM. The qBittorrent
+torrent client, which also runs in a MicroVM, uses the I2P network via this
+router and does not have access to the clearnet at all.
+
+# Display Server
+
+> Laptop only
+
+The desktop is 100% wayland, with no X or Xwayland.
+
+# Desktop
+
+> Laptop only
+
+The swayfx compositor is used with minimal bells and whistles, a simple bar and
+some widgets.
+
+XDG desktop portals are disabled.
+
+# Session Locking
+
+> Laptop only
+
+The session is locked using `swaylock` after 60 seconds of inactivity, and
+suspended after further inactivity. This behaviour can be controlled using the
+waybar [idle_inhibitor Module](./laptop/usage.md#idle_inhibitor-module).
+
+# Bubblewrap
+
+> Laptop only
+
+[Bubblewrap](https://github.com/containers/bubblewrap) is a low-level
+unprivileged sandbox utility that is used by projects like
+[Flatpak](https://flatpak.org/) and
+[rpm-ostree](https://github.com/coreos/rpm-ostree/pull/209).
+
+It provides several useful sandboxing features while maintaining a small focused
+codebase. Furthermore, it is not a suid binary.
+[Firejail](https://github.com/netblue30/firejail), for example, is another
+sandboxing tool but uses suid binaries - which can act as a privilege escalation
+hole. Bubblewrap does not have these issues.
+
+Bubblewrap sandboxes can be created using the `bwrap(1)` command-line interface.
+All the options used are covered in the browsers section.
+
+# xdg-dbus-proxy
+
+> Laptop only
+
+[xdg-dbus-proxy](https://github.com/flatpak/xdg-dbus-proxy) is a filtering proxy
+for D-Bus connections. It is used in conjunction with bubblewrap because it lets
+you selectively allow D-Bus connections. Without it, bubblewrap can only enable
+D-Bus completely or disable it completely.
+
+It is used on Laptop to let browsers use select D-Bus connections.
+
+# Browsers
+
+> Laptop only
+
+Two hardened browsers are included. See
+[Laptop Usage Documentation](./laptop/usage.md#browsers) for more information
+about browser usage. This section covers the various hardening flags in the
+browsers.
+
+## Brave
+
+1. Runs in a bubblewrap sandbox with xdg-dbus-proxy
+
+   - Bubblewrap args:
+
+     - Bind Nix Store as readonly
+
+       ```
+       --ro-bind /nix/store /nix/store
+       ```
+
+     - Allow using Wayland
+
+       ```
+       --ro-bind "$XDG_RUNTIME_DIR/wayland-1" "$XDG_RUNTIME_DIR/wayland-1"
+       ```
+
+     - Bind fake passwd and group files as readonly
+
+       ```bash
+       users=$(mktemp -d)
+       echo "${user}:x:1000:1000:${user}:/home/${user}:${pkgs.coreutils}/bin/false" > "$users/passwd"
+       echo "${user}:x:1000:" > "$users/group"
+       ```
+
+       ```
+       --ro-bind "$users/passwd" /etc/passwd
+       --ro-bind "$users/group" /etc/group
+       ```
+
+     - Bind resolvconf as readonly
+
+       ```
+       --ro-bind /etc/resolv.conf /etc/resolv.conf
+       ```
+
+     - Bind [StevenBlack's host list](http://github.com/StevenBlack/hosts) as
+       readonly
+
+       ```
+       --ro-bind ${inputs.hosts.outPath}/alternates/fakenews-gambling-porn/hosts /etc/hosts
+       ```
+
+     - Bind fonts as readonly
+
+       ```
+       --ro-bind /etc/fonts /etc/fonts
+       ```
+
+     - Mount /tmp as tmpfs
+
+       ```
+       --tmpfs /tmp
+       ```
+
+     - Mount $HOME as tmpfs
+
+       ```
+       --tmpfs /home/${user}
+       ```
+
+     - Bind GTK files as readonly
+
+       ```
+       --ro-bind /home/${user}/.gtkrc-2.0 /home/${user}/.gtkrc-2.0
+       --ro-bind /home/${user}/.config/gtk-3.0 /home/${user}/.config/gtk-3.0
+       --ro-bind /home/${user}/.config/gtk-4.0 /home/${user}/.config/gtk-4.0
+       --ro-bind /home/${user}/.icons /home/${user}/.icons
+       --ro-bind /home/${user}/.Xresources /home/${user}/.Xresources
+       --ro-bind /home/${user}/.local/share/fonts /home/${user}/.local/share/fonts
+       --ro-bind /home/${user}/.local/share/icons /home/${user}/.local/share/icons
+       --ro-bind /home/${user}/.local/share/themes /home/${user}/.local/share/themes
+       --ro-bind /home/${user}/.config/dconf /home/${user}/.config/dconf
+       ```
+
+     - Mount **new** procfs and dev
+
+       ```
+       --proc /proc
+       --dev /dev
+       ```
+
+     - Unshare all supported namespaces
+
+       ```
+       --unshare-all
+       ```
+
+     - Share network
+
+       ```
+       --share-net
+       ```
+
+     - SIGKILL child processes when bubblewrap dies
+
+       ```
+       --die-with-parent
+       ```
+
+     - Create a new terminal session. Also protects against out-of-sandbox
+       command execution.
+
+       ```
+       --new-session
+       ```
+
+     - Create **new** runtime directory
+
+       ```
+       --dir "$XDG_RUNTIME_DIR"
+       ```
+
+     - Graphics acceleration. Check `chrome://gpu` to verify status.
+
+       ```
+       --dev-bind /dev/dri /dev/dri
+       --ro-bind /sys/dev/char /sys/dev/char
+       --ro-bind /sys/devices /sys/devices
+       --ro-bind /run/opengl-driver /run/opengl-driver
+       ```
+
+     - Pipewire
+
+       ```
+       --ro-bind "$XDG_RUNTIME_DIR/pipewire-0" "$XDG_RUNTIME_DIR/pipewire-0"
+       --ro-bind "$XDG_RUNTIME_DIR/pulse" "$XDG_RUNTIME_DIR/pulse"
+       ```
+
+     - Bind /tmp to $XDG_RUNTIME_DIR/bubblewrap-brave-tmp so that MPRIS album
+       art can be used
+
+       ```bash
+       brave_tmp="$XDG_RUNTIME_DIR/bubblewrap-brave-tmp"
+       mkdir -p "$brave_tmp"
+       ```
+
+       ```
+       --bind $brave_tmp /tmp
+       ```
+
+     - Bind Enterprise Policies as readonly
+
+       ```
+       --ro-bind /etc/static/brave /etc/static/brave
+       --ro-bind /etc/brave /etc/brave
+       ```
+
+     - Bind configuration directory
+
+       ```
+       --bind /home/${user}/.config/BraveSoftware/Brave-Browser /home/${user}/.config/BraveSoftware/Brave-Browser
+       ```
+
+     - Bind local state as readonly
+
+       ```
+       --ro-bind "${state}/Local State" "/home/${user}/.config/BraveSoftware/Brave-Browser/Local State"
+       ```
+
+     - Bind downloads directory
+
+       ```
+       --bind /home/${user}/Downloads /home/${user}/Downloads
+       ```
+
+   - xdg-dbus-proxy:
+
+     - Allow `org.mpris.MediaPlayer2` for use with `playerctl`
+
+       ```bash
+       proxy_dir=$(mktemp -d)
+       proxy_socket="$proxy_dir/bus"
+
+       xdg-dbus-proxy "$DBUS_SESSION_BUS_ADDRESS" "$proxy_socket" \
+       --filter \
+       --own="org.mpris.MediaPlayer2.*" \
+       --talk="org.mpris.MediaPlayer2.*" & proxy_pid=$!
+       ```
+
+     - Bind this proxy directory using bubblewrap
+
+       ```
+       --bind "$proxy_socket" "$XDG_RUNTIME_DIR/bus"
+       ```
+
+2. Several
+   [Chrome Enterprise Policies](https://chromeenterprise.google/policies) and
+   some
+   [Brave-Specific Policies](https://support.brave.app/hc/en-us/articles/360039248271-Group-Policy)
+   are used to harden the browser. Some of them involve:
+
+   - Disabling several Brave anti-features like:
+     - Brave Rewards
+     - Brave Wallet
+     - Brave VPN
+     - Brave AI Chat
+     - Brave News
+     - Brave Talk
+     - Brave Speedreader
+     - Brave Wayback Machine
+     - Brave P3A (Privacy Preserving Product Analytics)
+     - Brave Stats Ping
+     - Brave Web Discovery
+     - Brave Playlist
+     - Tor (breaks anonymity)
+
+   - Enabling useful Brave features:
+     - Brave DeAmp
+     - Brave Debouncing
+     - Brave Reduce Language Fingerprinting
+
+   - Default block some permissions and content:
+     - Clipboard
+     - Geolocation
+     - Insecure Content
+     - Notifications
+     - Popups
+     - Sensors
+     - Bluetooth
+     - Hid
+     - Usb
+     - Intrusive Ads
+     - Non-Proxied UDP
+
+   - Disable telemetry, services that require sending data to Google, and other
+     features to reduce attack surface:
+     - V8 JavaScript JIT
+     - V8 JavaScript Optimizations
+     - Metrics
+     - Feedback Surveys
+     - User Feedback
+     - Safe Browsing Extended Reporting
+     - Safe Browsing Deep Scanning
+     - Advanced Protection
+     - Domain Reliability
+     - Network Time Queries
+     - Keyed Anonymization Data Collection
+     - Accesibility Image Labels
+     - Media Recommendations
+     - Password Manager
+     - Autofill
+     - Add Profile
+     - PDF Reader
+     - External Extensions
+     - Shopping List
+     - Search Suggest
+     - Spellcheck
+     - Live Translate
+     - Media Router
+     - Sync
+     - Promotions
+     - Dinosaur Easter Egg
+     - Printing
+     - Bookmark Bar
+     - Third Party Cookies
+     - Background Apps
+     - Autoplay
+     - Payment Method Query
+     - DNS over HTTPS (in favor of WireGuard-backed Unbound)
+
+   - Use Site Per Process
+   - Use Strict HTTPS-Only Mode
+   - Use SearXNG as Search Engine
+
+3. Preferences file settings
+
+   - Auto redirect amp pages
+   - Auto redirect tracking URLs
+   - Prevent language fingerprinting
+   - Automatically remove unused permissions
+   - Aggressive trackers and ads blocking
+   - Block fingerprinting
+   - Block third party cookies
+   - Strict HTTPS upgrades
+   - Disable V8 JavaScript JIT
+   - Disable WebTorrent
+   - Disable social media components
+   - Disable Google push messaging services
+   - Disable saving contact information
+   - Disable search suggestions
+   - Limit autocompletions to history only
+
+4. Local state file settings
+
+   - Disable Brave P3A
+   - Disable Brave stats reporting
+   - Disable user experience metrics reporting
+
+5. Extensions
+
+   - uBlock Origin (further configured using policies)
+   - Dark Reader
+   - Vimium
+
+## I2P Browser
+
+1. Runs in a bubblewrap sandbox
+
+   - Bubblewrap args:
+
+     - Bind Nix Store as readonly
+
+       ```
+       --ro-bind /nix/store /nix/store
+       ```
+
+     - Allow using Wayland
+
+       ```
+       --ro-bind "$XDG_RUNTIME_DIR/wayland-1" "$XDG_RUNTIME_DIR/wayland-1" \
+       ```
+
+     - Bind fake passwd and group files as readonly
+
+       ```bash
+       users=$(mktemp -d)
+       echo "${user}:x:1000:1000:${user}:/home/${user}:${pkgs.coreutils}/bin/false" > "$users/passwd"
+       echo "${user}:x:1000:" > "$users/group"
+       ```
+
+       ```
+       --ro-bind "$users/passwd" /etc/passwd
+       --ro-bind "$users/group" /etc/group
+       ```
+
+     - Bind resolvconf as readonly
+
+       ```
+       --ro-bind /etc/resolv.conf /etc/resolv.conf
+       ```
+
+     - Bind fonts as readonly
+
+       ```
+       --ro-bind /etc/fonts /etc/fonts
+       ```
+
+     - Mount /tmp as tmpfs
+
+       ```
+       --tmpfs /tmp
+       ```
+
+     - Mount $HOME as tmpfs
+
+       ```
+       --tmpfs /home/${user}
+       ```
+
+     - Bind GTK files as readonly
+
+       ```
+       --ro-bind /home/${user}/.gtkrc-2.0 /home/${user}/.gtkrc-2.0
+       --ro-bind /home/${user}/.config/gtk-3.0 /home/${user}/.config/gtk-3.0
+       --ro-bind /home/${user}/.config/gtk-4.0 /home/${user}/.config/gtk-4.0
+       --ro-bind /home/${user}/.icons /home/${user}/.icons
+       --ro-bind /home/${user}/.Xresources /home/${user}/.Xresources
+       --ro-bind /home/${user}/.local/share/fonts /home/${user}/.local/share/fonts
+       --ro-bind /home/${user}/.local/share/icons /home/${user}/.local/share/icons
+       --ro-bind /home/${user}/.local/share/themes /home/${user}/.local/share/themes
+       --ro-bind /home/${user}/.config/dconf /home/${user}/.config/dconf
+       ```
+
+     - Mount **new** procfs and dev
+
+       ```
+       --proc /proc
+       --dev /dev
+       ```
+
+     - Unshare all supported namespaces
+
+       ```
+       --unshare-all
+       ```
+
+     - Share network
+
+       ```
+       --share-net
+       ```
+
+     - SIGKILL child processes when bubblewrap dies
+
+       ```
+       --die-with-parent
+       ```
+
+     - Create a new terminal session. Also protects against out-of-sandbox
+       command execution.
+
+       ```
+       --new-session
+       ```
+
+2. Firefox policies:
+
+   - Disabled features:
+     - Auto update
+     - Autofill address
+     - Autofill credit card
+     - Background updates
+     - About addons page
+     - About config page
+     - About profiles page
+     - About support page
+     - Accounts
+     - PDF viewer
+     - Developer tools
+     - Feedback commands
+     - Firefox accounts
+     - Firefox screenshots
+     - Firefox studies
+     - Forget button
+     - Form history
+     - Master password creation
+     - Password reveal
+     - Pocket
+     - Profile import
+     - Profile refresh
+     - Security bypass
+     - Set desktop background
+     - System addon update
+     - Telemetry
+     - Bookmarks toolbar
+     - Check default browser
+     - Encrypted media extensions
+     - Firefox home items
+     - Firefox suggest
+     - HTTPS only mode (disabled for i2p)
+     - Install addons permission
+     - Microsoft Entra SSO
+     - Default bookmarks
+     - Save logins
+     - First run page
+     - Post update page
+     - Password manager
+     - PDFjs
+     - Picture-in-picture
+     - Printing
+     - Search suggest
+     - Home button
+     - Show terms of use
+     - Translate
+     - WindowsSSO
+
+   - Enabled features:
+     - Start downloads in temp directory
+     - Prompt for download location
+     - Sanitize on shutdown
+     - Post quantum key agreement
+     - Tracking protection from Cryptomining, Fingerprinting and Email Tracking
+     - Encrypted client hello
+
+3. Profile options
+
+   - Use I2P HTTP proxy
+   - Disable suggestions except history
+   - Enable resist fingerprinting
+   - Disable JavaScript
+
+   - Default deny permissions:
+     - Camera
+     - Desktop notification
+     - Geolocation
+     - Microphone
+     - Screen wake lock
+     - xr
+     - Shortcuts
+
+# Search Engine
+
+The SearXNG metasearch engine is hosted on Server. It runs in a MicroVM. See
+[Server Usage Documentation](./server/usage.md#searxng) for information about
+default search engines.
+
+The Brave Browser uses SearXNG as the default search engine.
+
+# Password Manager
+
+The Vaultwarden password manager is hosted on Server. It runs in a MicroVM and
+does not have access to the internet.
 
 # Kernel Parameters
 
@@ -933,1336 +2273,3 @@ covered below:
     esp6
     rxrpc
     ```
-
-# Audit Subsystem
-
-The Linux audit subsystem is enabled with the following rules:
-
-- Log everytime a program is attempted to run
-
-  ```
-  -a exit,always -S execve -k rules-run
-  ```
-
-# Systemd Services
-
-1. Service hardening
-
-   Upstream Nixpkgs already hardens several common service, especially
-   network-facing ones. Some services are additionally hardened with
-   low-breakage service options. For example. `qbt.service` is hardened with
-   these options:
-
-   ```nix
-   {
-     ProtectClock = true;
-     ProtectKernelTunables = true;
-     ProtectKernelModules = true;
-     ProtectKernelLogs = true;
-     ProtectControlGroups = true;
-     ProtectHome = true;
-     ProtectHostname = true;
-     SystemCallArchitectures = "native";
-     LockPersonality = true;
-     NoNewPrivileges = true;
-     PrivateDevices = true;
-     PrivateTmp = true;
-     RestrictRealtime = true;
-     RestrictSUIDSGID = true;
-     RemoveIPC = true;
-     PrivateUsers = true;
-     ProtectProc = "invisible";
-     ProcSubset = "pid";
-     ProtectSystem = "full";
-     RestrictAddressFamilies = [
-       "AF_INET"
-       "AF_NETLINK"
-         ];
-     RestrictNamespaces = true;
-     MemoryDenyWriteExecute = true;
-     SystemCallFilter = [ "@system-service" ];
-   }
-   ```
-
-2. Coredumps are disabled to prevent leaking sensitive information.
-
-   This is by disabling systemd coredumps, using PAM login limits, and using
-   some sysctl options.
-
-3. The emergency and rescue targets and services are disabled.
-
-# Users and Privileges
-
-A single user is created, and is part of the wheel group.
-
-The root account is locked.
-
-Both `run0` and `sudo` are available for privilege elevation. However, `run0` is
-preferred and is used in the CLI. `sudo` is also aliased to `run0` in the bash
-shell.
-
-Other tools like `su` and `pkexec` are disabled by removing their setuid bit.
-
-# Nix Package Manager
-
-The Nix package manager and the Nix packaging model prevent various classes of
-supply chain attacks.
-
-The Nix package manager is hardened and can only be used by members of the wheel
-group. Furthermore, only the root user is part of `trusted-users`. This is
-important because adding a trusted user is essentially passwordless root.
-
-Nix is also set to only download and use cryptographically signed binaries.
-Remote building and copying signed closures can be done using
-[seed](./cli.md#build-remote-closures).
-
-Nonfree packages and broken packages are disabled.
-
-Untrusted flake configuration settings are disabled. These may allow the flake
-to get root privileges.
-
-# SOPS
-
-[sops-nix](https://github.com/Mic92/sops-nix) is used to store secrets consumed
-by the NixOS modules. This ensures that sensitive information does not end up in
-the world-readable Nix store. These secrets are encrypted using GPG.
-
-Also, the [bespoke CLI](./cli.md) ensures that the variables file and sops-nix
-secrets are **never** committed / pushed to a remote by always unstaging them
-after rebuilds, even though secrets are encrypted.
-
-# Encryption and Signing
-
-Age is available for modern encryption. The OpenBSD signify is available for
-signing and verification.
-
-# USBGuard
-
-USBGuard is used to protect against rogue USB devices like BadUSB.
-
-The policy is set to allow only patterns defined in the `usbs` list in the
-variables file. ALL OTHER devices are blocked. For example, to allow a keyboard:
-
-```nix
-usbs = [
-  ''id 05f0:0217 serial "" name "Keychron K2" hash "a0ef07fceb6fb77698f79a44a4501218" parent-hash "69d19c1a5733a31e7e6d9530e6k434a6" via-port "1-2" with-interface { 03:01:01 03:01:02 } with-connect-type "hotplug"''
-];
-```
-
-These descriptors can be found using the `usbguard(1)` command-line interface:
-
-```bash
-run0 usbguard list-devices
-```
-
-Additionally, devices with the following identifiers are explicitly rejected:
-
-1. Both mass storage device and HID input device
-
-   ```
-   reject with-interface all-of { 08:*:* 03:00:* }
-   reject with-interface all-of { 08:*:* 03:01:* }
-   ```
-
-2. Both mass storage device and wireless controller
-
-   ```
-   reject with-interface all-of { 08:*:* e0:*:* }
-   ```
-
-3. Both mass storage device and communications device
-
-   ```
-   reject with-interface all-of { 08:*:* 02:*:* }
-   ```
-
-USBGuard can be controlled using the `usbguard` command line interface. Only the
-`root` user is allowed to use the USBGuard IPC.
-
-# Wireless Networking
-
-`wpa_supplicant` is used for wireless connections. Network secrets are stored
-using SOPS.
-
-> Laptop only
-
-WPA3 (SAE / dragonfly) is used for wireless authentication on Laptop.
-
-# DNS
-
-The Unbound DNS resolver is hosted on Server. It runs in a MicroVM and is served
-over WireGuard.
-
-Additionally, [StevenBlack's host list](http://github.com/StevenBlack/hosts) is
-used to sinkhole domains (like PiHole, AdGuard) in the Unbound DNS server hosted
-on Server.
-
-> Server only
-
-The Unbound DNS server hosted on Server is hardened. The following options are
-used:
-
-1. disable ipv6
-
-   ```
-   prefer-ip6=no
-   prefer-ip4=yes
-   do-ip6=no
-   do-ip4=yes
-   ```
-
-2. hide information
-
-   ```
-   hide-identity=yes
-   hide-version=yes
-   hide-trustanchor=yes
-   hide-http-user-agent=yes
-   ```
-
-3. send minimum information to upstream servers
-
-   ```
-   qname-minimisation=yes
-   qname-minimisation-strict=yes
-   ```
-
-4. harden against very small EDNS buffer sizes
-
-   ```
-   harden-short-bufsize=yes
-   ```
-
-5. harden against large queries
-
-   ```
-   harden-large-queries=yes
-   ```
-
-6. harden against out of zone rrsets, to avoid spoofing attempts
-
-   ```
-   harden-glue=yes
-   ```
-
-7. harden against unverified glue rrsets
-
-   ```
-   harden-unverified-glue=yes
-   ```
-
-8. harden against receiving dnssec-stripped data
-
-   ```
-   harden-dnssec-stripped=yes
-   ```
-
-9. harden against queries that fall under dnssec-signed nxdomain names
-
-   ```
-   harden-below-nxdomain=yes
-   ```
-
-10. harden the referral path by performing additional queries, intensive and
-    experimental
-
-    ```
-    harden-referral-path=yes
-    ```
-
-11. harden against downgrades when multiple algorithms are advertised
-
-    ```
-    harden-algo-downgrade=yes
-    ```
-
-12. harden against unknown records in the authority and additional sections
-
-    ```
-    harden-unknown-additional=yes
-    ```
-
-13. use the dnssec nsec chain
-
-    ```
-    aggressive-nsec=yes
-    ```
-
-14. use random bits in the query to foil spoof attempts
-
-    ```
-    use-caps-for-id=yes
-    ```
-
-15. Unbound is also set to allow only specific clients using `access-control`.
-    Importantly, the private CIDR `vars.services.unbound.allow` is allowed to
-    use the resolver. Additionally, the VM interfaces are explicitly allowed to
-    use the resolver if the respective services are enabled.
-
-# WireGuard
-
-Server serves services on [WireGuard](https://www.wireguard.com/) over LAN
-instead of directly serving over LAN. WireGuard peers are configured using the
-variables file and private keys are stored using SOPS.
-
-Note that no services are exposed to the internet, directly or otherwise. Server
-serves only its LAN (over WireGuard). Therefore, this is not a concern and out
-of scope for this flake.
-
-# Firewall
-
-The simpler NixOS `networking.firewall` is disabled. `nftables` is used instead.
-The userspace `nft` tool can be used for ad-hoc changes.
-
-By default (ie, when no services are enabled in variables), **NO** ports are
-open on **ANY** interface, not even loopback or internal VM interfaces.
-
-Ports are opened on loopback / LAN / VM interfaces to specific addresses and
-interfaces only based on enabled services.
-
-Currently, no services are bound to loopback so no ports are allowed. In case
-any apps require loopback, it can be satisfied using `bwrap --unshare-net`.
-
-Only SSH is served over LAN and [uses public key authentication](#secure-shell).
-Therefore, even though nftables filters by CIDR using `vars.services.ssh.allow`
-this is not used as a real source of identification.
-
-All other services are served over [WireGuard](#wireguard), which uses public
-key authentication. Currently this includes
-
-- Unbound dns
-- NGINX https
-- I2PD http proxy
-
-Access control to services is derived based on `allow` values in the variables
-file. As an illustration, to access the Vaultwarden webvault, clients must
-satisfy ALL of:
-
-- in the private LAN CIDR defined by `vars.wireguard.allow`, for nftables
-  filtering on LAN
-- declared as a peer with public key in `vars.wireguard.peers`, for WireGuard
-  tunnelling
-- in the private WireGuard CIDR defined by `vars.services.nginx.allow`, for
-  nftables filtering on WireGuard
-- in the private WireGuard CIDR defined by `vars.services.vaultwarden.allow`,
-  for NGINX allow rules
-
-All such access control requirements are documented in the
-[Server Usage Documentation](./server/usage.md).
-
-All other ports are opened only to VM interfaces internally since services are
-reverse-proxied via NGINX. For the few ports that are opened to LAN over
-WireGuard, the ports are opened only to a select private WireGuard CIDR defined
-by the `vars.service.<name>.allow` variables in the variables file. Since this
-value is a CIDR, it can be used to allow only specific private ranges. For
-example, by setting it to `10.20.0.100/31`, only `10.20.0.100` and `10.20.0.101`
-are allowed.
-
-Additionally, the services reverse-proxied via the NGINX are also restricted
-using `vars.service.<name>.allow`. See [NGINX](#nginx) for more information.
-
-Egress (`output`) through the LAN interface is unrestricted.
-
-Note that all services involve some form of cryptographic authentication -
-either SSH public key authentication or WireGuard public key authentication -
-and simply being on a "allowed" private CIDR is not sufficient.
-
-> Laptop only
-
-Ports are open based on the enabled services (only SSH). See
-[Laptop Usage Documentation](./laptop/usage.md#ssh) for more information.
-
-Ports are opened for the following services:
-
-1. SSH, if enabled using `vars.services.ssh.enable`:
-
-   - TCP `vars.services.ssh.port` is open on LAN to the private CIDR defined by
-     `vars.services.ssh.allow`
-
-2. Libvirt interfaces (`virbr*`) are allowed in `input` (dns, dhcp), `forward`
-   and `output` (see example below).
-
-> Server only
-
-Ports are open based on the enabled services. See
-[Server Usage Documentation](./server/usage.md) for more information.
-
-Ports are opened for the following services:
-
-1. SSH, if enabled using `vars.services.ssh.enable`:
-
-   - TCP `vars.services.ssh.port` is open on LAN to the private CIDR defined by
-     `vars.services.ssh.allow`
-
-2. Unbound, if enabled using `vars.services.unbound.enable`:
-
-   - (dns) TCP `53` is forwarded and open on WireGuard to the private CIDR
-     defined by `vars.services.unbound.allow`
-
-   - (dns) UDP `53` is forwarded and open on WireGuard to the private CIDR
-     defined by `vars.services.unbound.allow`
-
-   - (dns) TCP `53` is open internally on VM interface to host
-
-   - (dns) UDP `53` is open internally on VM interface to host
-
-   - (dns) TCP `53` is open internally on VM interface to `nginx`, `searxng` and
-     `i2pd` VMs
-
-   - (dns) UDP `53` is open internally on VM interface to `nginx`, `searxng` and
-     `i2pd` VMs
-
-3. NGINX, if enabled using `vars.services.nginx.enable`:
-
-   - (https) TCP `443` is forwarded and open on WireGuard to the private CIDR
-     defined by `vars.services.nginx.allow`
-
-4. SearXNG, if enabled using `vars.services.searxng.enable`:
-
-   - (search-engine) TCP `8888` is open internally on VM interface to `nginx` VM
-
-5. Vaultwarden, if enabled using `vars.services.vaultwarden.enable`:
-
-   - Cannot access the internet.
-
-   - (web-vault) TCP `8222` is open internally on VM interface to `nginx` VM
-
-6. I2PD, if enabled using `vars.services.i2pd.enable`:
-
-   - (http-proxy) TCP `4444` is forwarded and open on WireGuard to the private
-     CIDR defined by `vars.services.i2pd.allow`
-
-   - (http-proxy) TCP `4444` is open internally on VM interface to `qbt` VM
-
-   - (sam) TCP `7656` is open internally on VM interface to `qbt` VM
-
-   - (web-console) TCP `7070` is open internally on VM interface to `nginx` VM
-
-7. qBittorrent, if enabled using `vars.services.qbt.enable`:
-
-   - Cannot access the internet, exclusively uses I2P.
-
-   - (web-ui) TCP `8080` is open internally on VM interface to `nginx` VM
-
-> Examples
-
-Example ruleset for Laptop with SSH disabled:
-
-Notes for example:
-
-- `wlan0` is the LAN interface.
-- `wg0` is the WireGuard interface.
-- `virbr*` are libvirt interfaces.
-
-```
-table inet filter {
-	chain input {
-		type filter hook input priority filter; policy drop;
-		ct state invalid drop
-		tcp flags & (fin | syn | rst | ack) != syn ct state new drop
-		iifname "lo" ct state established,related accept
-		iifname "wlp1s0" ct state established,related accept
-		iifname "wg0" ct state established,related accept
-		iifname "virbr*" ct state established,related accept
-		iifname "virbr*" tcp dport 53 ct state new accept
-		iifname "virbr*" udp dport 53 ct state new accept
-		iifname "virbr*" udp dport 67 ct state new accept
-	}
-
-	chain forward {
-		type filter hook forward priority filter; policy drop;
-		ct state invalid drop
-		ct state established,related accept
-		iifname "virbr*" ct state new accept
-	}
-
-	chain output {
-		type filter hook output priority filter; policy drop;
-		ct state invalid drop
-		ct state established,related accept
-		oifname "lo" accept
-		oifname "wlp1s0" accept
-		oifname "wg0" accept
-		oifname "virbr*" accept
-	}
-}
-table ip nat {
-	chain prerouting {
-		type nat hook prerouting priority dstnat; policy accept;
-	}
-
-	chain postrouting {
-		type nat hook postrouting priority srcnat; policy accept;
-	}
-}
-```
-
-Example ruleset for Server with NO services enabled, except SSH:
-
-Notes for example:
-
-- `wlan0` is the LAN interface.
-- `wg0` is the WireGuard interface.
-- `192.168.0.101` is the host.
-- `192.168.0.100` is a trusted client.
-- `2233` is the SSH port.
-
-```
-table inet filter {
-	chain input {
-		type filter hook input priority filter; policy drop;
-		ct state invalid drop
-		tcp flags & (fin | syn | rst | ack) != syn ct state new drop
-		iifname "lo" ct state established,related accept
-		iifname "wlan0" ct state established,related accept
-		iifname "wg0" ct state established,related accept
-        ip saddr 192.168.0.100 ip daddr 192.168.0.101 iifname "wlan0" tcp dport 2233 ct state new accept
-	}
-
-	chain forward {
-		type filter hook forward priority filter; policy drop;
-		ct state invalid drop
-		ct state established,related accept
-	}
-
-	chain output {
-		type filter hook output priority filter; policy drop;
-		ct state invalid drop
-		ct state established,related accept
-		oifname "lo" accept
-		oifname "wlan0" accept
-		oifname "wg0" accept
-	}
-}
-table ip nat {
-	chain prerouting {
-		type nat hook prerouting priority dstnat; policy accept;
-	}
-
-	chain postrouting {
-		type nat hook postrouting priority srcnat; policy accept;
-	}
-}
-```
-
-Example ruleset for Server with ALL services enabled:
-
-Notes for example:
-
-- `wlan0` is the LAN interface.
-- `wg0` is the WireGuard interface.
-- `192.168.0.101` is the host.
-- `192.168.0.100` is a trusted client.
-- `2233` is the SSH port.
-- `51820` is the WireGuard port.
-- `unbound` is `10.204.3.2` on `svcvm3`
-- `nginx` is `10.204.4.2` on `svcvm4`
-- `searxng` is `10.204.5.2` on `svcvm5`
-- `vaultwarden` is `10.204.6.2` on `svcvm6`
-- `i2pd` is `10.204.7.2` on `svcvm7`
-- `qbt` is `10.204.8.2` on `svcvm8`
-
-```
-table inet filter {
-	chain input {
-		type filter hook input priority filter; policy drop;
-		ct state invalid drop
-		tcp flags & (fin | syn | rst | ack) != syn ct state new drop
-		iifname "lo" ct state established,related accept
-		iifname "wlan0" ct state established,related accept
-		iifname "wg0" ct state established,related accept
-		iifname "svcvm3" ct state established,related accept
-		iifname "svcvm4" ct state established,related accept
-		iifname "svcvm5" ct state established,related accept
-		iifname "svcvm6" ct state established,related accept
-		iifname "svcvm7" ct state established,related accept
-		iifname "svcvm8" ct state established,related accept
-		ip saddr 192.168.0.100 ip daddr 192.168.0.101 iifname "wlan0" udp dport 51820 ct state new accept
-		ip saddr 192.168.0.100 ip daddr 192.168.0.101 iifname "wlan0" tcp dport 2233 ct state new accept
-	}
-
-	chain forward {
-		type filter hook forward priority filter; policy drop;
-		ct state invalid drop
-		ct state established,related accept
-		ip saddr 10.204.3.2 iifname "svcvm3" oifname "wlan0" ct state new accept
-		ip saddr 10.204.4.2 iifname "svcvm4" oifname "wlan0" ct state new accept
-		ip saddr 10.204.5.2 iifname "svcvm5" oifname "wlan0" ct state new accept
-		ip saddr 10.204.7.2 iifname "svcvm7" oifname "wlan0" ct state new accept
-		ip saddr 10.104.0.2 iifname "wg0" oifname "svcvm3" ip daddr 10.204.3.2 tcp dport 53 ct state new accept
-		ip saddr 10.104.0.2 iifname "wg0" oifname "svcvm3" ip daddr 10.204.3.2 udp dport 53 ct state new accept
-		ip saddr 10.104.0.2 iifname "wg0" oifname "svcvm4" ip daddr 10.204.4.2 tcp dport 443 ct state new accept
-		ip saddr 10.104.0.2 iifname "wg0" oifname "svcvm7" ip daddr 10.204.7.2 tcp dport 4444 ct state new accept
-		ip saddr 10.204.4.2 iifname "svcvm4" ip daddr 10.204.3.2 oifname "svcvm3" tcp dport 53 ct state new accept
-		ip saddr 10.204.4.2 iifname "svcvm4" ip daddr 10.204.3.2 oifname "svcvm3" udp dport 53 ct state new accept
-		ip saddr 10.204.4.2 iifname "svcvm4" ip daddr 10.204.5.2 oifname "svcvm5" tcp dport 8888 ct state new accept
-		ip saddr 10.204.4.2 iifname "svcvm4" ip daddr 10.204.6.2 oifname "svcvm6" tcp dport 8222 ct state new accept
-		ip saddr 10.204.4.2 iifname "svcvm4" ip daddr 10.204.7.2 oifname "svcvm7" tcp dport 7070 ct state new accept
-		ip saddr 10.204.4.2 iifname "svcvm4" ip daddr 10.204.8.2 oifname "svcvm8" tcp dport 8080 ct state new accept
-		ip saddr 10.204.5.2 iifname "svcvm5" ip daddr 10.204.3.2 oifname "svcvm3" tcp dport 53 ct state new accept
-		ip saddr 10.204.5.2 iifname "svcvm5" ip daddr 10.204.3.2 oifname "svcvm3" udp dport 53 ct state new accept
-		ip saddr 10.204.7.2 iifname "svcvm7" ip daddr 10.204.3.2 oifname "svcvm3" tcp dport 53 ct state new accept
-		ip saddr 10.204.7.2 iifname "svcvm7" ip daddr 10.204.3.2 oifname "svcvm3" udp dport 53 ct state new accept
-		ip saddr 10.204.8.2 iifname "svcvm8" ip daddr 10.204.7.2 oifname "svcvm7" tcp dport 7656 ct state new accept
-		ip saddr 10.204.8.2 iifname "svcvm8" ip daddr 10.204.7.2 oifname "svcvm7" tcp dport 4444 ct state new accept
-	}
-
-	chain output {
-		type filter hook output priority filter; policy drop;
-		ct state invalid drop
-		ct state established,related accept
-		oifname "lo" accept
-		oifname "wlan0" accept
-		oifname "wg0" accept
-		ip daddr 10.204.3.2 tcp dport 53 ct state new accept
-		ip daddr 10.204.3.2 udp dport 53 ct state new accept
-	}
-}
-table ip nat {
-	chain prerouting {
-		type nat hook prerouting priority dstnat; policy accept;
-		ip saddr 10.104.0.2 iifname "wg0" tcp dport 53 dnat to 10.204.3.2
-		ip saddr 10.104.0.2 iifname "wg0" udp dport 53 dnat to 10.204.3.2
-		ip saddr 10.104.0.2 iifname "wg0" tcp dport 443 dnat to 10.204.4.2
-		ip saddr 10.104.0.2 iifname "wg0" tcp dport 4444 dnat to 10.204.7.2
-	}
-
-	chain postrouting {
-		type nat hook postrouting priority srcnat; policy accept;
-		ip saddr 10.204.3.2 iifname "svcvm3" oifname "wlan0" masquerade
-		ip saddr 10.204.4.2 iifname "svcvm4" oifname "wlan0" masquerade
-		ip saddr 10.204.5.2 iifname "svcvm5" oifname "wlan0" masquerade
-		ip saddr 10.204.7.2 iifname "svcvm7" oifname "wlan0" masquerade
-	}
-}
-```
-
-# MAC Randomization
-
-GNU MAC Changer is used to randomize the MAC address. Using a completely random
-MAC address can lead to MAC addresses which are very rare / impossible. This
-reduces anonymity significantly. Therefore, only non-vendor bits are randomized.
-
-# Secure Shell
-
-SSH can be enabled on both Server and Laptop. See
-[Laptop Usage Documentation](./laptop/usage.md#ssh) and
-[Server Usage Documentation](./server/usage.md#ssh) for details about using a
-non-default port, authorized keys, etc.
-
-The SSH configuration is hardened using the following options:
-
-1. Only the main user and group is allowed.
-
-2. Root login is disabled.
-
-   ```
-   PermitRootLogin no
-   ```
-
-3. Only publickey authentication is used. Password authentication is disabled.
-
-   ```
-   PubkeyAuthentication yes
-   AuthenticationMethods publickey
-   PasswordAuthentication no
-   PermitEmptyPasswords no
-   ```
-
-4. Options are set to reduce the brute-force window
-
-   ```
-   MaxSessions 2
-   MaxAuthTries 2
-   LoginGraceTime 20
-   ClientAliveInterval 300
-   ClientAliveCountMax 1
-   ```
-
-5. Unused features are disabled
-
-   ```
-   X11Forwarding no
-   AllowStreamLocalForwarding no
-   PermitTunnel no
-   PermitUserEnvironment no
-   KbdInteractiveAuthentication no
-   AllowTCPForwarding no
-   TCPKeepAlive no
-   AllowAgentForwarding no
-   ```
-
-6. Secure algorithms are used
-
-   - Post quantum algorithms for key exchange `KexAlgorithms`
-
-     ```
-     mlkem768x25519-sha256
-     sntrup761x25519-sha512
-     curve25519-sha256@libssh.org
-     ecdh-sha2-nistp521
-     ecdh-sha2-nistp384
-     ecdh-sha2-nistp256
-     diffie-hellman-group-exchange-sha256
-     ```
-
-   - `Ciphers`
-
-     ```
-     aes256-gcm@openssh.com
-     aes128-gcm@openssh.com
-     chacha20-poly1305@openssh.com
-     aes256-ctr
-     aes192-ctr
-     aes128-ctr
-     ```
-
-   - Message Authentication Codes `Macs`
-
-     ```
-     hmac-sha2-512-etm@openssh.com
-     hmac-sha2-256-etm@openssh.com
-     umac-128-etm@openssh.com
-     hmac-sha2-512
-     hmac-sha2-256
-     umac-128@openssh.com
-     ```
-
-7. Options are set to reduce identity leakage
-
-   ```
-   UseDns no
-   PrintMotd no
-   VersionAddendum none
-   ```
-
-8. Options are set to ensure safe filesystem permissions
-
-   ```
-   StrictModes yes
-   ```
-
-9. Verbose logging is enabled
-
-10. Only a `ed25519` host key is used
-
-11. Authorized keys are defined using `vars.services.ssh.trusted-keys` which
-    only accepts `ed25519` keys
-
-12. A nonstandard port can be used using `vars.services.ssh.port`
-
-# Fail2Ban
-
-Fail2Ban is used to limit brute force authentication attempts on SSH.
-
-It is configured to ban for 24 hours after 2 failed attempts, with increments
-for successive failed attempts up to 6144 hours.
-
-# NGINX
-
-> Server only
-
-NGINX is used as a reverse proxy for several other services instead of directly
-opening ports. This is served over HTTPS with certificates from
-[Let's Encrypt](https://letsencrypt.org) managed with ACME. NGINX runs in a
-MicroVM and is served to the private CIDR as defined by
-`vars.services.nginx.allow` over WireGuard.
-
-Furthermore, all the reverse proxy locations are restricted using NGINX `allow`
-rules. For example, only the private WireGuard CIDR
-`vars.services.vaultwarden.allow` is allowed on the `/vaultwarden/` location.
-
-See [Server Usage Documenation](./server/usage.md#nginx) for more information.
-
-# I2P and Anonymity
-
-> Laptop only
-
-1. I2P
-
-   The I2P network can be browsed using the
-   [i2p-browser](./laptop/usage.md#i2p-browser) which uses the I2P HTTP Proxy
-   hosted on Server.
-
-2. Tor
-
-   No Tor tooling is installed by default.
-
-   The Tor Browser and oniux can be installed and used in an ad-hoc Nix Shell.
-   However, this is discouraged and it is recommended to use Whonix instead. See
-   [Virtualisation](#virtualisation).
-
-> Server only
-
-The I2PD router is hosted on Server. It runs in a MicroVM. The qBittorrent
-torrent client, which also runs in a MicroVM, uses the I2P network via this
-router and does not have access to the clearnet at all.
-
-# Display Server
-
-> Laptop only
-
-The desktop is 100% wayland, with no X or Xwayland.
-
-# Desktop
-
-> Laptop only
-
-The swayfx compositor is used with minimal bells and whistles, a simple bar and
-some widgets.
-
-XDG desktop portals are disabled.
-
-# Session Locking
-
-> Laptop only
-
-The session is locked using `swaylock` after 60 seconds of inactivity, and
-suspended after further inactivity. This behaviour can be controlled using the
-waybar [idle_inhibitor Module](./laptop/usage.md#idle_inhibitor-module).
-
-# Bubblewrap
-
-> Laptop only
-
-[Bubblewrap](https://github.com/containers/bubblewrap) is a low-level
-unprivileged sandbox utility that is used by projects like
-[Flatpak](https://flatpak.org/) and
-[rpm-ostree](https://github.com/coreos/rpm-ostree/pull/209).
-
-It provides several useful sandboxing features while maintaining a small focused
-codebase. Furthermore, it is not a suid binary.
-[Firejail](https://github.com/netblue30/firejail), for example, is another
-sandboxing tool but uses suid binaries - which can act as a privilege escalation
-hole. Bubblewrap does not have these issues.
-
-Bubblewrap sandboxes can be created using the `bwrap(1)` command-line interface.
-All the options used are covered in the browsers section.
-
-# xdg-dbus-proxy
-
-> Laptop only
-
-[xdg-dbus-proxy](https://github.com/flatpak/xdg-dbus-proxy) is a filtering proxy
-for D-Bus connections. It is used in conjunction with bubblewrap because it lets
-you selectively allow D-Bus connections. Without it, bubblewrap can only enable
-D-Bus completely or disable it completely.
-
-It is used on Laptop to let browsers use select D-Bus connections.
-
-# Browsers
-
-> Laptop only
-
-Two hardened browsers are included. See
-[Laptop Usage Documentation](./laptop/usage.md#browsers) for more information
-about browser usage. This section covers the various hardening flags in the
-browsers.
-
-## Brave
-
-1. Runs in a bubblewrap sandbox with xdg-dbus-proxy
-
-   - Bubblewrap args:
-
-     - Bind Nix Store as readonly
-
-       ```
-       --ro-bind /nix/store /nix/store
-       ```
-
-     - Allow using Wayland
-
-       ```
-       --ro-bind "$XDG_RUNTIME_DIR/wayland-1" "$XDG_RUNTIME_DIR/wayland-1"
-       ```
-
-     - Bind fake passwd and group files as readonly
-
-       ```bash
-       users=$(mktemp -d)
-       echo "${user}:x:1000:1000:${user}:/home/${user}:${pkgs.coreutils}/bin/false" > "$users/passwd"
-       echo "${user}:x:1000:" > "$users/group"
-       ```
-
-       ```
-       --ro-bind "$users/passwd" /etc/passwd
-       --ro-bind "$users/group" /etc/group
-       ```
-
-     - Bind resolvconf as readonly
-
-       ```
-       --ro-bind /etc/resolv.conf /etc/resolv.conf
-       ```
-
-     - Bind [StevenBlack's host list](http://github.com/StevenBlack/hosts) as
-       readonly
-
-       ```
-       --ro-bind ${inputs.hosts.outPath}/alternates/fakenews-gambling-porn/hosts /etc/hosts
-       ```
-
-     - Bind fonts as readonly
-
-       ```
-       --ro-bind /etc/fonts /etc/fonts
-       ```
-
-     - Mount /tmp as tmpfs
-
-       ```
-       --tmpfs /tmp
-       ```
-
-     - Mount $HOME as tmpfs
-
-       ```
-       --tmpfs /home/${user}
-       ```
-
-     - Bind GTK files as readonly
-
-       ```
-       --ro-bind /home/${user}/.gtkrc-2.0 /home/${user}/.gtkrc-2.0
-       --ro-bind /home/${user}/.config/gtk-3.0 /home/${user}/.config/gtk-3.0
-       --ro-bind /home/${user}/.config/gtk-4.0 /home/${user}/.config/gtk-4.0
-       --ro-bind /home/${user}/.icons /home/${user}/.icons
-       --ro-bind /home/${user}/.Xresources /home/${user}/.Xresources
-       --ro-bind /home/${user}/.local/share/fonts /home/${user}/.local/share/fonts
-       --ro-bind /home/${user}/.local/share/icons /home/${user}/.local/share/icons
-       --ro-bind /home/${user}/.local/share/themes /home/${user}/.local/share/themes
-       --ro-bind /home/${user}/.config/dconf /home/${user}/.config/dconf
-       ```
-
-     - Mount **new** procfs and dev
-
-       ```
-       --proc /proc
-       --dev /dev
-       ```
-
-     - Unshare all supported namespaces
-
-       ```
-       --unshare-all
-       ```
-
-     - Share network
-
-       ```
-       --share-net
-       ```
-
-     - SIGKILL child processes when bubblewrap dies
-
-       ```
-       --die-with-parent
-       ```
-
-     - Create a new terminal session. Also protects against out-of-sandbox
-       command execution.
-
-       ```
-       --new-session
-       ```
-
-     - Create **new** runtime directory
-
-       ```
-       --dir "$XDG_RUNTIME_DIR"
-       ```
-
-     - Graphics acceleration. Check `chrome://gpu` to verify status.
-
-       ```
-       --dev-bind /dev/dri /dev/dri
-       --ro-bind /sys/dev/char /sys/dev/char
-       --ro-bind /sys/devices /sys/devices
-       --ro-bind /run/opengl-driver /run/opengl-driver
-       ```
-
-     - Pipewire
-
-       ```
-       --ro-bind "$XDG_RUNTIME_DIR/pipewire-0" "$XDG_RUNTIME_DIR/pipewire-0"
-       --ro-bind "$XDG_RUNTIME_DIR/pulse" "$XDG_RUNTIME_DIR/pulse"
-       ```
-
-     - Bind /tmp to $XDG_RUNTIME_DIR/bubblewrap-brave-tmp so that MPRIS album
-       art can be used
-
-       ```bash
-       brave_tmp="$XDG_RUNTIME_DIR/bubblewrap-brave-tmp"
-       mkdir -p "$brave_tmp"
-       ```
-
-       ```
-       --bind $brave_tmp /tmp
-       ```
-
-     - Bind Enterprise Policies as readonly
-
-       ```
-       --ro-bind /etc/static/brave /etc/static/brave
-       --ro-bind /etc/brave /etc/brave
-       ```
-
-     - Bind configuration directory
-
-       ```
-       --bind /home/${user}/.config/BraveSoftware/Brave-Browser /home/${user}/.config/BraveSoftware/Brave-Browser
-       ```
-
-     - Bind local state as readonly
-
-       ```
-       --ro-bind "${state}/Local State" "/home/${user}/.config/BraveSoftware/Brave-Browser/Local State"
-       ```
-
-     - Bind downloads directory
-
-       ```
-       --bind /home/${user}/Downloads /home/${user}/Downloads
-       ```
-
-   - xdg-dbus-proxy:
-
-     - Allow `org.mpris.MediaPlayer2` for use with `playerctl`
-
-       ```bash
-       proxy_dir=$(mktemp -d)
-       proxy_socket="$proxy_dir/bus"
-
-       xdg-dbus-proxy "$DBUS_SESSION_BUS_ADDRESS" "$proxy_socket" \
-       --filter \
-       --own="org.mpris.MediaPlayer2.*" \
-       --talk="org.mpris.MediaPlayer2.*" & proxy_pid=$!
-       ```
-
-     - Bind this proxy directory using bubblewrap
-
-       ```
-       --bind "$proxy_socket" "$XDG_RUNTIME_DIR/bus"
-       ```
-
-2. Several
-   [Chrome Enterprise Policies](https://chromeenterprise.google/policies) and
-   some
-   [Brave-Specific Policies](https://support.brave.app/hc/en-us/articles/360039248271-Group-Policy)
-   are used to harden the browser. Some of them involve:
-
-   - Disabling several Brave anti-features like:
-     - Brave Rewards
-     - Brave Wallet
-     - Brave VPN
-     - Brave AI Chat
-     - Brave News
-     - Brave Talk
-     - Brave Speedreader
-     - Brave Wayback Machine
-     - Brave P3A (Privacy Preserving Product Analytics)
-     - Brave Stats Ping
-     - Brave Web Discovery
-     - Brave Playlist
-     - Tor (breaks anonymity)
-
-   - Enabling useful Brave features:
-     - Brave DeAmp
-     - Brave Debouncing
-     - Brave Reduce Language Fingerprinting
-
-   - Default block some permissions and content:
-     - Clipboard
-     - Geolocation
-     - Insecure Content
-     - Notifications
-     - Popups
-     - Sensors
-     - Bluetooth
-     - Hid
-     - Usb
-     - Intrusive Ads
-     - Non-Proxied UDP
-
-   - Disable telemetry, services that require sending data to Google, and other
-     features to reduce attack surface:
-     - V8 JavaScript JIT
-     - V8 JavaScript Optimizations
-     - Metrics
-     - Feedback Surveys
-     - User Feedback
-     - Safe Browsing Extended Reporting
-     - Safe Browsing Deep Scanning
-     - Advanced Protection
-     - Domain Reliability
-     - Network Time Queries
-     - Keyed Anonymization Data Collection
-     - Accesibility Image Labels
-     - Media Recommendations
-     - Password Manager
-     - Autofill
-     - Add Profile
-     - PDF Reader
-     - External Extensions
-     - Shopping List
-     - Search Suggest
-     - Spellcheck
-     - Live Translate
-     - Media Router
-     - Sync
-     - Promotions
-     - Dinosaur Easter Egg
-     - Printing
-     - Bookmark Bar
-     - Third Party Cookies
-     - Background Apps
-     - Autoplay
-     - Payment Method Query
-     - DNS over HTTPS (in favor of WireGuard-backed Unbound)
-
-   - Use Site Per Process
-   - Use Strict HTTPS-Only Mode
-   - Use SearXNG as Search Engine
-
-3. Preferences file settings
-
-   - Auto redirect amp pages
-   - Auto redirect tracking URLs
-   - Prevent language fingerprinting
-   - Automatically remove unused permissions
-   - Aggressive trackers and ads blocking
-   - Block fingerprinting
-   - Block third party cookies
-   - Strict HTTPS upgrades
-   - Disable V8 JavaScript JIT
-   - Disable WebTorrent
-   - Disable social media components
-   - Disable Google push messaging services
-   - Disable saving contact information
-   - Disable search suggestions
-   - Limit autocompletions to history only
-
-4. Local state file settings
-
-   - Disable Brave P3A
-   - Disable Brave stats reporting
-   - Disable user experience metrics reporting
-
-5. Extensions
-
-   - uBlock Origin (further configured using policies)
-   - Dark Reader
-   - Vimium
-
-## I2P Browser
-
-1. Runs in a bubblewrap sandbox
-
-   - Bubblewrap args:
-
-     - Bind Nix Store as readonly
-
-       ```
-       --ro-bind /nix/store /nix/store
-       ```
-
-     - Allow using Wayland
-
-       ```
-       --ro-bind "$XDG_RUNTIME_DIR/wayland-1" "$XDG_RUNTIME_DIR/wayland-1" \
-       ```
-
-     - Bind fake passwd and group files as readonly
-
-       ```bash
-       users=$(mktemp -d)
-       echo "${user}:x:1000:1000:${user}:/home/${user}:${pkgs.coreutils}/bin/false" > "$users/passwd"
-       echo "${user}:x:1000:" > "$users/group"
-       ```
-
-       ```
-       --ro-bind "$users/passwd" /etc/passwd
-       --ro-bind "$users/group" /etc/group
-       ```
-
-     - Bind resolvconf as readonly
-
-       ```
-       --ro-bind /etc/resolv.conf /etc/resolv.conf
-       ```
-
-     - Bind fonts as readonly
-
-       ```
-       --ro-bind /etc/fonts /etc/fonts
-       ```
-
-     - Mount /tmp as tmpfs
-
-       ```
-       --tmpfs /tmp
-       ```
-
-     - Mount $HOME as tmpfs
-
-       ```
-       --tmpfs /home/${user}
-       ```
-
-     - Bind GTK files as readonly
-
-       ```
-       --ro-bind /home/${user}/.gtkrc-2.0 /home/${user}/.gtkrc-2.0
-       --ro-bind /home/${user}/.config/gtk-3.0 /home/${user}/.config/gtk-3.0
-       --ro-bind /home/${user}/.config/gtk-4.0 /home/${user}/.config/gtk-4.0
-       --ro-bind /home/${user}/.icons /home/${user}/.icons
-       --ro-bind /home/${user}/.Xresources /home/${user}/.Xresources
-       --ro-bind /home/${user}/.local/share/fonts /home/${user}/.local/share/fonts
-       --ro-bind /home/${user}/.local/share/icons /home/${user}/.local/share/icons
-       --ro-bind /home/${user}/.local/share/themes /home/${user}/.local/share/themes
-       --ro-bind /home/${user}/.config/dconf /home/${user}/.config/dconf
-       ```
-
-     - Mount **new** procfs and dev
-
-       ```
-       --proc /proc
-       --dev /dev
-       ```
-
-     - Unshare all supported namespaces
-
-       ```
-       --unshare-all
-       ```
-
-     - Share network
-
-       ```
-       --share-net
-       ```
-
-     - SIGKILL child processes when bubblewrap dies
-
-       ```
-       --die-with-parent
-       ```
-
-     - Create a new terminal session. Also protects against out-of-sandbox
-       command execution.
-
-       ```
-       --new-session
-       ```
-
-2. Firefox policies:
-
-   - Disabled features:
-     - Auto update
-     - Autofill address
-     - Autofill credit card
-     - Background updates
-     - About addons page
-     - About config page
-     - About profiles page
-     - About support page
-     - Accounts
-     - PDF viewer
-     - Developer tools
-     - Feedback commands
-     - Firefox accounts
-     - Firefox screenshots
-     - Firefox studies
-     - Forget button
-     - Form history
-     - Master password creation
-     - Password reveal
-     - Pocket
-     - Profile import
-     - Profile refresh
-     - Security bypass
-     - Set desktop background
-     - System addon update
-     - Telemetry
-     - Bookmarks toolbar
-     - Check default browser
-     - Encrypted media extensions
-     - Firefox home items
-     - Firefox suggest
-     - HTTPS only mode (disabled for i2p)
-     - Install addons permission
-     - Microsoft Entra SSO
-     - Default bookmarks
-     - Save logins
-     - First run page
-     - Post update page
-     - Password manager
-     - PDFjs
-     - Picture-in-picture
-     - Printing
-     - Search suggest
-     - Home button
-     - Show terms of use
-     - Translate
-     - WindowsSSO
-
-   - Enabled features:
-     - Start downloads in temp directory
-     - Prompt for download location
-     - Sanitize on shutdown
-     - Post quantum key agreement
-     - Tracking protection from Cryptomining, Fingerprinting and Email Tracking
-     - Encrypted client hello
-
-3. Profile options
-
-   - Use I2P HTTP proxy
-   - Disable suggestions except history
-   - Enable resist fingerprinting
-   - Disable JavaScript
-
-   - Default deny permissions:
-     - Camera
-     - Desktop notification
-     - Geolocation
-     - Microphone
-     - Screen wake lock
-     - xr
-     - Shortcuts
-
-# Search Engine
-
-The SearXNG metasearch engine is hosted on Server. It runs in a MicroVM. See
-[Server Usage Documentation](./server/usage.md#searxng) for information about
-default search engines.
-
-The Brave Browser uses SearXNG as the default search engine.
-
-# Password Manager
-
-The Vaultwarden password manager is hosted on Server. It runs in a MicroVM and
-does not have access to the internet.
-
-# Virtualisation
-
-> Laptop only
-
-See
-[Laptop Usage Documentation](./laptop/usage.md#virtualisation-and-containers)
-for information about virtualisation with QEMU/KVM and libvirt/virt-manager.
-
-It is recommended to set up [Whonix](https://www.whonix.org/) for accessing the
-Tor network in an isolated environment. [This](https://www.whonix.org/wiki/KVM)
-official wiki page covers setting up Whonix in QEMU/KVM using libvirt.
-
-> Server only
-
-Several services run in MicroVMs as covered above. These are
-[microvm.nix](https://github.com/microvm-nix/microvm.nix) QEMU MicroVMs.
-Networking is covered above in [Firewall](#firewall). Rather than being bridged,
-the VMs use a
-[routed network model](https://microvm-nix.github.io/microvm.nix/routed-network.html).
-
-See [Server Usage Documentation](./server/usage.md#microvms) for more
-information.
