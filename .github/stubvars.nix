@@ -144,6 +144,7 @@
       local-data = [
         ''"test.unbound. IN A 127.0.0.1"''
       ];
+      debug = true;
     };
     nginx = {
       enable = true;
@@ -151,23 +152,28 @@
       email = "stub@stub";
       domain = "example.duckdns.org";
       allow = "10.0.0.2/32";
+      debug = true;
     };
     searxng = {
       enable = true;
       allow = "10.0.0.2/32";
+      debug = true;
     };
     vaultwarden = {
       enable = true;
       signups = true;
       allow = "10.0.0.2/32";
+      debug = true;
     };
     i2pd = {
       enable = true;
       allow = "10.0.0.2/32";
+      debug = true;
     };
     qbt = {
       enable = true;
       allow = "10.0.0.2/32";
+      debug = true;
     };
   };
 

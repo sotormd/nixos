@@ -44,7 +44,7 @@ let
           "searxng" = config.sops.secrets.searxng.path;
         };
       };
-      debug = true;
+      debug = config.vars.services.searxng.debug;
     };
     svcfg.searxng =
       let

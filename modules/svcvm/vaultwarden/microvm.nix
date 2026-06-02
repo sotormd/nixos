@@ -46,7 +46,7 @@ let
         ];
         creds = { };
       };
-      debug = true;
+      debug = config.vars.services.vaultwarden.debug;
     };
     svcfg.vaultwarden =
       let

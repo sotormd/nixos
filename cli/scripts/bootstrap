@@ -669,12 +669,14 @@ the following values have been populated from the installation environment
     # unbound dns resolver
     # local-data is extra entries
     # allow is a private CIDR (wireguard)
+    # debug is whether to allow debugging
     unbound = {
       enable = false;
       local-data = [
         ''"example.duckdns.org. IN A 10.20.0.1"''
       ];
       allow = "10.20.0.2/32";
+      debug = true;
     };
 
     # nginx web server
@@ -682,42 +684,52 @@ the following values have been populated from the installation environment
     # email is address used for acme
     # domain is a duckdns domain
     # allow is a private CIDR (wireguard)
+    # debug is whether to allow debugging
     nginx = {
       enable = false;
       staging = false;
       email = "example@example";
       domain = "example.duckdns.org";
       allow = "10.20.0.2/32";
+      debug = true;
     };
 
     # searxng metasearch engine
     # allow is a private CIDR (wireguard)
+    # debug is whether to allow debugging
     searxng = {
       enable = false;
       allow = "10.20.0.2/32";
+      debug = true;
     };
 
     # vaultwarden password manager
     # signups is whether to allow new signups
     # allow is a private CIDR (wireguard)
+    # debug is whether to allow debugging
     vaultwarden = {
       enable = false;
       signups = false;
       allow = "10.20.0.2/32";
+      debug = true;
     };
 
     # i2pd router
     # allow is a private CIDR (wireguard)
+    # debug is whether to allow debugging
     i2pd = {
       enable = false;
       allow = "10.20.0.2/32";
+      debug = true;
     };
 
     # qbittorrent bittorrent client
     # allow is a private CIDR (wireguard)
+    # debug is whether to allow debugging
     qbt = {
       enable = false;
       allow = "10.20.0.2/32";
+      debug = true;
     };
 
   };

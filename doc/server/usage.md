@@ -415,7 +415,8 @@ systemctl restart microvm@searxng
 ```
 
 It is possible to SSH into the MicroVMs using VSOCK from the host with the root
-password `toor`. For example:
+password `toor` if the corresponding `vars.services.<name>.debug` is set to
+`true`. For example, if `vars.services.nginx.debug` is set to `true`:
 
 ```bash
 microvm -s nginx

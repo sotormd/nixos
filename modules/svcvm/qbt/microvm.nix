@@ -53,7 +53,7 @@ let
         ];
         creds = { };
       };
-      debug = true;
+      debug = config.vars.services.qbt.debug;
     };
     svcfg.qbt = {
       id = ids.qbt;

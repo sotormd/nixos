@@ -319,6 +319,9 @@ in
         local-data = mkOption {
           type = types.listOf types.str;
         };
+        debug = mkOption {
+          type = types.bool;
+        };
       };
 
       nginx = {
@@ -337,6 +340,9 @@ in
         domain = mkOption {
           type = types.strMatching "^[a-z0-9]([a-z0-9-]{0,61}[a-z0-9])?\\.duckdns\\.org$";
         };
+        debug = mkOption {
+          type = types.bool;
+        };
       };
 
       searxng = {
@@ -345,6 +351,9 @@ in
         };
         allow = mkOption {
           type = privateCidr;
+        };
+        debug = mkOption {
+          type = types.bool;
         };
       };
 
@@ -358,6 +367,9 @@ in
         signups = mkOption {
           type = types.bool;
         };
+        debug = mkOption {
+          type = types.bool;
+        };
       };
 
       i2pd = {
@@ -367,6 +379,9 @@ in
         allow = mkOption {
           type = privateCidr;
         };
+        debug = mkOption {
+          type = types.bool;
+        };
       };
 
       qbt = {
@@ -375,6 +390,9 @@ in
         };
         allow = mkOption {
           type = privateCidr;
+        };
+        debug = mkOption {
+          type = types.bool;
         };
       };
 

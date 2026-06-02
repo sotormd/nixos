@@ -47,7 +47,7 @@ let
         ];
         creds = { };
       };
-      debug = true;
+      debug = config.vars.services.unbound.debug;
     };
     svcfg.unbound =
       let

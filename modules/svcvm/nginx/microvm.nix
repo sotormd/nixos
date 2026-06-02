@@ -71,7 +71,7 @@ let
           "duckdns" = config.sops.secrets.duckdns.path;
         };
       };
-      debug = true;
+      debug = config.vars.services.nginx.debug;
     };
     svcfg.nginx =
       let

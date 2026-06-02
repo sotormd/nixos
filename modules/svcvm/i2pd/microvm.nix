@@ -46,7 +46,7 @@ let
         ];
         creds = { };
       };
-      debug = true;
+      debug = config.vars.services.i2pd.debug;
     };
     svcfg.i2pd =
       let
