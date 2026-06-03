@@ -283,11 +283,11 @@
         "nvf": "nvf"
       },
       "locked": {
-        "lastModified": 1778860076,
-        "narHash": "sha256-bfYhX4mI1WG53aBduZ0s87fkgBr23nnEI7yz9+59o4Y=",
+        "lastModified": 1780481770,
+        "narHash": "sha256-3VkYJaNtqXkqXodNbpBemcdLOarskVjAGRTMdszkH7I=",
         "owner": "sotormd",
         "repo": "neovim",
-        "rev": "8bc15a5cd620d7b8741f9eb2dd629e9dc1ff9d42",
+        "rev": "1c9ed793910dade570c31a530577f3304b4b53b1",
         "type": "github"
       },
       "original": {
