@@ -161,6 +161,11 @@
 
     in
     {
-      inherit formatter nixosConfigurations nixosModules;
+      inherit
+        formatter
+        lib
+        nixosConfigurations
+        nixosModules
+        ;
     };
 }
