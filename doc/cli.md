@@ -13,13 +13,14 @@ role-specific setup documentation.
 
 1. [Overview](#overview)
 2. [Applying a new configuration](#applying-a-new-configuration)
-3. [Updating the lockfile](#updating-the-lockfile)
-4. [Garbage collect](#garbage-collect)
-5. [Edit variables and secrets](#edit-variables-and-secrets)
-6. [Push local changes](#push-local-changes)
-7. [Build remote closures](#build-remote-closures)
-8. [Miscellaneous](#miscellaneous)
-9. [Implementation details](#implementation-details)
+3. [Building a new configuration](#building-a-new-configuration)
+4. [Updating the lockfile](#updating-the-lockfile)
+5. [Garbage collect](#garbage-collect)
+6. [Edit variables and secrets](#edit-variables-and-secrets)
+7. [Push local changes](#push-local-changes)
+8. [Build remote closures](#build-remote-closures)
+9. [Miscellaneous](#miscellaneous)
+10. [Implementation details](#implementation-details)
 
 # Overview
 
@@ -52,7 +53,7 @@ See [Miscellaneous](#miscellaneous) for more cases where this is useful.
 
 # Applying a new configuration
 
-Safe workflow wrapper around `nixos-rebuild`.
+Safe workflow wrapper around `nixos-rebuild <test|boot|switch>`.
 
 ```bash
 nixos apply <test|boot|switch>
@@ -93,6 +94,38 @@ Examples:
 
    ```bash
    yes | nixos apply boot
+   ```
+
+# Building a new configuration
+
+Safe workflow wrapper around `nixos-rebuild build`.
+
+```bash
+nixos build
+```
+
+The `build` command does the following extra things:
+
+1. stages changes to git
+2. displays diff since last git commit
+3. displays checksum of variables and sops-nix secrets
+4. asks user for confirmation before rebuilding
+5. ensures variables and sops-nix secrets are unstaged after rebuild
+
+For a detailed description of `nixos-rebuild build`: see `nixos-rebuild(8)`
+
+Examples:
+
+1. Build new configuration
+
+   ```bash
+   nixos build
+   ```
+
+2. Build new configuration, and skip confirmation:
+
+   ```bash
+   yes | nixos build
    ```
 
 # Updating the lockfile

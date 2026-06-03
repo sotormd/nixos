@@ -1,0 +1,46 @@
+#!/usr/bin/env bash
+
+set -euo pipefail
+
+DIR="$__NIXOS_MOUNT$__NIXOS_GLOBALS_FLAKE"
+ROLE="$__NIXOS_ROLE"
+
+(
+    cd "$DIR"
+
+    trap 'git reset -- vars/vars.nix vars/secrets.yaml .sops.yaml' EXIT
+
+    git add .
+
+    if [ "$ROLE" == "laptop" ]; then
+
+        GIT_PAGER=cat git diff HEAD -- ':!vars/vars.nix' ':!vars/secrets.yaml' ':!.sops.yaml'
+
+    fi
+
+    echo
+    vars_file="$DIR/vars/vars.nix"
+    sops_file="$DIR/vars/secrets.yaml"
+    vars_hash=$(sha256sum "$vars_file" | awk '{print $1}')
+    vars_r=$((16#${vars_hash:0:2}))
+    vars_g=$((16#${vars_hash:2:2}))
+    vars_b=$((16#${vars_hash:4:2}))
+    sops_hash=$(sha256sum "$sops_file" | awk '{print $1}')
+    sops_r=$((16#${sops_hash:0:2}))
+    sops_g=$((16#${sops_hash:2:2}))
+    sops_b=$((16#${sops_hash:4:2}))
+    echo -e "\033[1m\033[38;2;${vars_r};${vars_g};${vars_b}mvars:\033[0m $vars_hash $(stat -c %y "$vars_file")"
+    echo -e "\033[1m\033[38;2;${sops_r};${sops_g};${sops_b}msops:\033[0m $sops_hash $(stat -c %y "$sops_file")"
+
+    read -p "continue? [Y/n]: " confirm
+    confirm=${confirm:-Y}
+
+    if [[ $confirm =~ ^[Yy]$ ]]; then
+
+        run0 nixos-rebuild build --flake ".#machine-$ROLE" --fallback
+
+    else
+        echo "cancelled"
+    fi
+)
+
