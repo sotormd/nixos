@@ -1,4 +1,9 @@
-{ config, lib, ... }:
+{
+  config,
+  pkgs,
+  lib,
+  ...
+}:
 
 let
   inherit (config.svcfg) i2pd;
@@ -51,10 +56,22 @@ in
   };
 
   # ensure appropriate permissions on data directories
-  systemd.tmpfiles.rules = [
-    "d /var/lib/i2pd 700 i2pd i2pd -"
-    "Z /var/lib/i2pd 700 i2pd i2pd -"
-  ];
+  systemd.services.fix-i2pd-perms = {
+    wantedBy = [ "multi-user.target" ];
+    after = [ "var-lib-i2pd.mount" ];
+    before = [ "i2pd.service" ];
+    path = [
+      pkgs.coreutils
+      pkgs.findutils
+    ];
+    serviceConfig.Type = "oneshot";
+    script = ''
+      mkdir -p /var/lib/i2pd
+      find /var/lib/i2pd -type d -exec chmod 700 {} +
+      find /var/lib/i2pd -type f -exec chmod 600 {} +
+      chown -R i2pd:i2pd /var/lib/i2pd
+    '';
+  };
 
   # ensure appropriate uid/gid
   users.users.i2pd = {

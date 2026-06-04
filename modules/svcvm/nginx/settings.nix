@@ -1,4 +1,4 @@
-{ config, ... }:
+{ config, pkgs, ... }:
 
 let
   inherit (config.svcfg) nginx;
@@ -46,12 +46,29 @@ in
   };
 
   # ensure appropriate permissions on data directories
-  systemd.tmpfiles.rules = [
-    "d /var/lib/acme 750 acme acme -"
-    "Z /var/lib/acme 750 acme acme -"
-    "d /srv/static 755 root root -"
-    "Z /srv/static 755 root root -"
-  ];
+  systemd.services.fix-nginx-perms = {
+    wantedBy = [ "multi-user.target" ];
+    after = [
+      "var-lib-acme.mount"
+      "srv-static.mount"
+    ];
+    before = [ "nginx.service" ];
+    path = [
+      pkgs.coreutils
+      pkgs.findutils
+    ];
+    serviceConfig.Type = "oneshot";
+    script = ''
+      mkdir -p /var/lib/acme
+      find /var/lib/acme -type d -exec chmod 750 {} +
+      find /var/lib/acme -type f -exec chmod 640 {} +
+      chown -R acme:acme /var/lib/acme
+      mkdir -p /srv/static
+      find /srv/static -type d -exec chmod 755 {} +
+      find /srv/static -type f -exec chmod 644 {} +
+      chown -R root:root /srv/static
+    '';
+  };
 
   # ensure appropriate uid/gid
   users = {

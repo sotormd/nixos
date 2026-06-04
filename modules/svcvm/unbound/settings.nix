@@ -1,4 +1,4 @@
-{ config, ... }:
+{ config, pkgs, ... }:
 
 let
   inherit (config.svcfg) unbound;
@@ -99,10 +99,22 @@ in
   };
 
   # ensure appropriate permissions on data directories
-  systemd.tmpfiles.rules = [
-    "d /var/lib/unbound 700 unbound unbound -"
-    "Z /var/lib/unbound 700 unbound unbound -"
-  ];
+  systemd.services.fix-unbound-perms = {
+    wantedBy = [ "multi-user.target" ];
+    after = [ "var-lib-unbound.mount" ];
+    before = [ "unbound.service" ];
+    path = [
+      pkgs.coreutils
+      pkgs.findutils
+    ];
+    serviceConfig.Type = "oneshot";
+    script = ''
+      mkdir -p /var/lib/unbound
+      find /var/lib/unbound -type d -exec chmod 700 {} +
+      find /var/lib/unbound -type f -exec chmod 600 {} +
+      chown -R unbound:unbound /var/lib/unbound
+    '';
+  };
 
   # ensure appropriate uid/gid
   users.users.unbound = {

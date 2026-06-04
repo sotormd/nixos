@@ -188,12 +188,29 @@ in
   };
 
   # ensure appropriate permissions on data directories
-  systemd.tmpfiles.rules = [
-    "d /var/lib/qbt 700 qbt qbt -"
-    "Z /var/lib/qbt 700 qbt qbt -"
-    "d /srv/torrents 750 qbt qbt -" # 750 so that the group can be used in the nginx vm
-    "Z /srv/torrents 750 qbt qbt -"
-  ];
+  systemd.services.fix-qbt-perms = {
+    wantedBy = [ "multi-user.target" ];
+    after = [
+      "var-lib-qbt.mount"
+      "srv-torrents.mount"
+    ];
+    before = [ "qbt.service" ];
+    path = [
+      pkgs.coreutils
+      pkgs.findutils
+    ];
+    serviceConfig.Type = "oneshot";
+    script = ''
+      mkdir -p /var/lib/qbt
+      find /var/lib/qbt -type d -exec chmod 700 {} +
+      find /var/lib/qbt -type f -exec chmod 600 {} +
+      chown -R qbt:qbt /var/lib/qbt
+      mkdir /srv/torrents
+      find /srv/torrents -type d -exec chmod 750 {} +
+      find /srv/torrents -type f -exec chmod 640 {} +
+      chown -R qbt:qbt /srv/torrents
+    '';
+  };
 
   # ensure appropriate uid/gid
   users.users.qbt = {

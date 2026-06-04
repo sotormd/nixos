@@ -1,4 +1,4 @@
-{ config, ... }:
+{ config, pkgs, ... }:
 
 let
   inherit (config.svcfg) vaultwarden;
@@ -46,10 +46,22 @@ in
   };
 
   # ensure appropriate permissions on data directories
-  systemd.tmpfiles.rules = [
-    "d /var/lib/bitwarden_rs 700 vaultwarden vaultwarden -"
-    "Z /var/lib/bitwarden_rs 700 vaultwarden vaultwarden -"
-  ];
+  systemd.services.fix-vaultwarden-perms = {
+    wantedBy = [ "multi-user.target" ];
+    after = [ "var-lib-bitwarden_rs.mount" ];
+    before = [ "vaultwarden.service" ];
+    path = [
+      pkgs.coreutils
+      pkgs.findutils
+    ];
+    serviceConfig.Type = "oneshot";
+    script = ''
+      mkdir -p /var/lib/bitwarden_rs
+      find /var/lib/bitwarden_rs -type d -exec chmod 700 {} +
+      find /var/lib/bitwarden_rs -type f -exec chmod 600 {} +
+      chown -R vaultwarden:vaultwarden /var/lib/bitwarden_rs
+    '';
+  };
 
   # ensure appropriate uid/gid
   users.users.vaultwarden = {
