@@ -112,7 +112,7 @@ let
     text = ''
       @-moz-document url("about:newtab"), url("about:home") {
         :root[lwt-newtab-brighttext] {
-          --newtab-background-color: #2e3440 !important;
+          --newtab-background-color: #${config.colors.bg0} !important;
         }
       }
     '';
