@@ -176,6 +176,9 @@
     # sops
     pkgs.sops
 
+    # openssl
+    pkgs.openssl
+
     # secureboot
     pkgs.sbctl
 
