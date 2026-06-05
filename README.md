@@ -207,6 +207,9 @@ Here are some of my other flakes that are related to my NixOS tooling:
 - [droid](https://github.com/sotormd/droid), nix-on-droid configuration
 - [pattern](https://github.com/sotormd/pattern), Atomic, image-based systems
   with A/B updates, provisioned using Nix
+- [polevault](https://github.com/sotormd/polevault), A
+  [pattern](https://github.com/sotormd/pattern) to access backup vaultwarden
+  vaults when away from main server
 - [flag](https://github.com/sotormd/flag), A
   [pattern](https://github.com/sotormd/pattern) for my VMs
 - [nate](https://github.com/sotormd/nate), MATE desktop for my NixOS needs
