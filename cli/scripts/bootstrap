@@ -1021,13 +1021,8 @@ elif [ "$VERB" == "lanzaboote" ]; then
 
 elif [ "$VERB" == "impermanence" ]; then
 
-    if [ -n "$(ls -A -- "$PERSIST_DIR_ROOT" 2>/dev/null)" ]; then
+    if [ -n "$(sudo ls -A -- "$PERSIST_DIR_ROOT" 2>/dev/null)" ]; then
         echo "Error: $PERSIST_DIR_ROOT is not empty" >&2
-        exit 1
-    fi
-
-    if [ -d "$PERSIST_DIR_HOME" ]; then
-        echo "Error: $PERSIST_DIR_HOME already exists" >&2
         exit 1
     fi
 
