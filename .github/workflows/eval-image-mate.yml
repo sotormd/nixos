@@ -16,5 +16,5 @@ jobs:
         uses: DeterminateSystems/nix-installer-action@main
 
       - name: MATE image evaluation
-        run: nix eval .#nixosConfigurations.image-mate.config.system.build.toplevel --json
+        run: nix eval .#nixosConfigurations.image-mate-x86_64-linux.config.system.build.toplevel --json
 

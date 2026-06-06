@@ -13,6 +13,7 @@ if [ "$HOST" == "" ]; then
 else
 
     role=$(ssh "$HOST" 'printf "%s" "$NIXOS_ROLE"')
+    arch=$(ssh "$HOST" 'nix eval --impure --raw --expr builtins.currentSystem')
     if [ -z "$role" ]; then
         echo "NIXOS_ROLE is not set on $HOST" >&2
         exit 1
@@ -27,7 +28,7 @@ else
     trap cleanup INT TERM EXIT
 
     rsync -avz --exclude=".git" "$HOST:/persist/nixos/" "$sourcedir"
-    flake="$sourcedir#machine-$role"
+    flake="$sourcedir#machine-$role-$arch"
     (
         cd "$workdir"
         nixos-rebuild build --flake "$flake"

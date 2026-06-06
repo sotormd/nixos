@@ -34,7 +34,7 @@ include useful tools for installation, recovery, etc.
    build artifacts.
 
    ```bash
-   nix build github:sotormd/nixos#nixosConfigurations.image-mate.config.system.build.isoImage
+   nix build github:sotormd/nixos#nixosConfigurations.image-mate-x86_64-linux.config.system.build.isoImage
    ```
 
 1. GNOME image
@@ -44,7 +44,7 @@ include useful tools for installation, recovery, etc.
    build artifacts.
 
    ```bash
-   nix build github:sotormd/nixos#nixosConfigurations.image-gnome.config.system.build.isoImage
+   nix build github:sotormd/nixos#nixosConfigurations.image-gnome-x86_64-linux.config.system.build.isoImage
    ```
 
 1. Minimal image
@@ -54,13 +54,13 @@ include useful tools for installation, recovery, etc.
    build artifacts.
 
    ```bash
-   nix build github:sotormd/nixos#nixosConfigurations.image-minimal.config.system.build.isoImage
+   nix build github:sotormd/nixos#nixosConfigurations.image-minimal-x86_64-linux.config.system.build.isoImage
    ```
 
 1. SD image
 
    ```bash
-   nix build github:sotormd/nixos#nixosConfigurations.image-sd.config.system.build.sdImage
+   nix build github:sotormd/nixos#nixosConfigurations.image-sd-aarch64-linux.config.system.build.sdImage
    ```
 
 # Further Configuration
@@ -106,7 +106,7 @@ For example, to build a GNOME image with NH enabled.
 This can then be built normally, like earlier:
 
 ```bash
-nix build .#my-gnome-image.config.system.build.isoImage
+nix build .#nixosConfigurations.my-gnome-image.config.system.build.isoImage
 ```
 
 </details>

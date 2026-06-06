@@ -141,12 +141,15 @@
       # targets
       targets = fromTOML (builtins.readFile ./targets.toml);
 
+      # machine & image nixosConfigurations
       machineConfigurations = lib.listToAttrs (
-        map (m: lib.nameValuePair "machine-${m.name}" (mkMachine m.name m.arch)) targets.machines
+        map (m: lib.nameValuePair "machine-${m.name}-${m.arch}" (mkMachine m.name m.arch)) targets.machines
       );
       imageConfigurations = lib.listToAttrs (
-        map (i: lib.nameValuePair "image-${i.name}" (mkImage i.name i.arch)) targets.images
+        map (i: lib.nameValuePair "image-${i.name}-${i.arch}" (mkImage i.name i.arch)) targets.images
       );
+
+      # image nixosModules
       imageModules = lib.listToAttrs (
         map (i: lib.nameValuePair "image-${i.name}" (mkImageModule i.name)) targets.images
       );
@@ -156,6 +159,7 @@
         ) targets.images
       );
 
+      # nixosConfigurations & nixosModules
       nixosConfigurations = machineConfigurations // imageConfigurations;
       nixosModules = modules // profiles // imageModules // imageRemoteModules;
 

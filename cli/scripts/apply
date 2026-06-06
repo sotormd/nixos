@@ -12,6 +12,8 @@ fi
 DIR="$__NIXOS_MOUNT$__NIXOS_GLOBALS_FLAKE"
 ROLE="$__NIXOS_ROLE"
 
+ARCH="$(nix eval --impure --raw --expr builtins.currentSystem)"
+
 (
     cd "$DIR"
 
@@ -44,7 +46,7 @@ ROLE="$__NIXOS_ROLE"
 
     if [[ $confirm =~ ^[Yy]$ ]]; then
 
-        run0 nixos-rebuild $VERB --flake ".#machine-$ROLE" --fallback
+        run0 nixos-rebuild $VERB --flake ".#machine-$ROLE-$ARCH" --fallback
 
     else
         echo "cancelled"

@@ -18,7 +18,7 @@ jobs:
         run: |
           nix run nixpkgs#nixos-generators -- \
             --format iso \
-            --flake .#image-minimal \
+            --flake .#image-minimal-x86_64-linux \
             -o /tmp/minimal-image
 
       - name: Upload minimal ISO

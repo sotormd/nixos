@@ -2,4 +2,9 @@
 
 set -euo pipefail
 
-nix flake update --flake "$__NIXOS_MOUNT$__NIXOS_GLOBALS_FLAKE" "$@"
+DIR="$__NIXOS_MOUNT$__NIXOS_GLOBALS_FLAKE"
+
+(
+    cd  "$DIR"
+    nix flake update "$@"
+)

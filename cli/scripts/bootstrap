@@ -30,6 +30,7 @@ ARG2="${3:-}"
 ROLE="$__NIXOS_ROLE"
 MOUNT="$__NIXOS_MOUNT"
 DIR="$MOUNT$__NIXOS_GLOBALS_FLAKE"
+ARCH="$(nix eval --impure --raw --expr builtins.currentSystem)"
 
 # for variables
 VARS_DIR="$DIR/vars"
@@ -967,7 +968,7 @@ elif [ "$VERB" == "install" ]; then
         cd "$DIR"
         git add .
 
-        sudo nixos-install --root "$MOUNT" --flake ".#machine-laptop" --no-root-passwd
+        sudo nixos-install --root "$MOUNT" --flake ".#machine-$ROLE-$ARCH" --no-root-passwd
 
         git reset -- vars/vars.nix vars/secrets.yaml .sops.yaml
     )
