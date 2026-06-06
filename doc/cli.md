@@ -107,10 +107,7 @@ nixos build
 The `build` command does the following extra things:
 
 1. stages changes to git
-2. displays diff since last git commit
-3. displays checksum of variables and sops-nix secrets
-4. asks user for confirmation before rebuilding
-5. ensures variables and sops-nix secrets are unstaged after rebuild
+2. ensures variables and sops-nix secrets are unstaged after rebuild
 
 For a detailed description of `nixos-rebuild build`: see `nixos-rebuild(8)`
 
@@ -120,12 +117,6 @@ Examples:
 
    ```bash
    nixos build
-   ```
-
-2. Build new configuration, and skip confirmation:
-
-   ```bash
-   yes | nixos build
    ```
 
 # Updating the lockfile
