@@ -1753,7 +1753,7 @@ Several sysctl options are used to harden the kernel. They are covered below:
 
 7. control use of performance events system by unprivileged users
 
-   > =2 disallows kernel profiling by unprivileged users
+   `>=2` disallows kernel profiling by unprivileged users
 
    ```
    kernel.perf_event_paranoid=3
