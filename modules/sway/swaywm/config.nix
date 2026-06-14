@@ -178,7 +178,7 @@ let
       # BRIGHTNESS
       #
       bindsym XF86MonBrightnessDown exec ${pkgs.brightness0}/bin/brightness 5%-
-      bindsym XF86MonBrightnessUp exec ${pkgs.brightness0}/bin/brightness +5%
+      bindsym XF86MonBrightnessUp exec ${pkgs.brightness0}/bin/brightness 5%+
 
       #
       # FLOATING
