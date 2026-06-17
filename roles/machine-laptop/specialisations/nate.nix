@@ -6,7 +6,7 @@
   ...
 }:
 
-lib.mkIf (config.vars.modes.nate.enable && config.vars.features.impermanence.enable) {
+lib.mkIf config.vars.modes.nate.enable {
 
   specialisation.nate = {
     inheritParentConfig = false;

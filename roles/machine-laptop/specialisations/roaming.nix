@@ -5,7 +5,7 @@
   ...
 }:
 
-lib.mkIf (config.vars.modes.roaming.enable && config.vars.features.impermanence.enable) {
+lib.mkIf config.vars.modes.roaming.enable {
 
   specialisation.roaming = {
     inheritParentConfig = true;

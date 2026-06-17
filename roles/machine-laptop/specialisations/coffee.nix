@@ -6,7 +6,7 @@
   ...
 }:
 
-lib.mkIf (config.vars.modes.coffee.enable && config.vars.features.impermanence.enable) {
+lib.mkIf config.vars.modes.coffee.enable {
 
   specialisation.coffee = {
     inheritParentConfig = false;

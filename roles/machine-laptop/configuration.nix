@@ -158,6 +158,11 @@
       securebootRequired = [
         config.vars.features.impermanence.enable
       ];
+      impermanenceRequired = [
+        config.vars.modes.roaming.enable
+        config.vars.modes.coffee.enable
+        config.vars.modes.nate.enable
+      ];
       servicesDisabled = [
         config.vars.services.unbound.enable
         config.vars.services.nginx.enable
@@ -173,6 +178,15 @@
         message = ''
           variables: secureboot must be enabled if any dependent feature is enabled
             - impermanence
+        '';
+      }
+      {
+        assertion = !(builtins.any (x: x) impermanenceRequired) || config.vars.features.impermanence.enable;
+        message = ''
+          variables: impermanence must be enabled if any dependent mode is enabled
+            - roaming
+            - coffee
+            - nate
         '';
       }
       {
