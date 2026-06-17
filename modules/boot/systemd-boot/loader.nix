@@ -6,7 +6,7 @@
   # set a respectable bootloader resolution
   boot.loader.systemd-boot.consoleMode = "max";
 
-  # limit entries to 10
+  # limit entries to 20
   boot.loader.systemd-boot.configurationLimit = 20;
 
   # prevent tampering boot parameters
