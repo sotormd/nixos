@@ -41,7 +41,7 @@ in
     "/persist"
   ]
 
-  # nosuid,nodev
+  # nosuid,nodev,noexec
   // lib.mkSelfData [
     "/persist/sops-nix"
     "/tmp"
