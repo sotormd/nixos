@@ -30,7 +30,6 @@ let
 in
 {
   systemd.tmpfiles.rules = [
-    "d ${home} 0700 ${user} ${user} -"
     "L ${home}/.gtkrc-2.0 - - - - ${gtk2}"
     "Z ${home}/.gtkrc-2.0 - ${user} ${user} -"
     "d ${home}/.config 0700 ${user} ${user} -"
