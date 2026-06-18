@@ -31,7 +31,7 @@ else
     flake="$sourcedir#machine-$role-$arch"
     (
         cd "$workdir"
-        nixos-rebuild build --flake "$flake"
+        nixos-rebuild build --flake "$flake" --fallback
         run0 nix store sign ./result -k "$KEY" --recursive
         nix copy --to "ssh://$HOST" ./result
     )
