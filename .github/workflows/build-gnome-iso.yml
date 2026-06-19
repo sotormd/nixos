@@ -1,11 +1,17 @@
 name: Build Image - GNOME
 
 on:
+  push:
   workflow_dispatch:
 
 jobs:
   build:
     runs-on: ubuntu-latest
+
+    if: >
+      github.event_name == 'workflow_dispatch' ||
+      (github.event_name == 'push' &&
+       contains(join(github.event.commits.*.message, ','), 'chore: update lockfile'))
 
     steps:
       - name: Checkout repo
