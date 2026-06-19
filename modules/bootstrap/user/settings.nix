@@ -18,7 +18,10 @@
       enable = true;
       wheelNeedsPassword = false;
     };
-    run0.wheelNeedsPassword = false;
+    run0 = {
+      enable = true;
+      wheelNeedsPassword = false;
+    };
     polkit.enable = true;
   };
 

@@ -8,6 +8,9 @@
     '')
   ];
 
+  # enable run0
+  security.run0.enable = true;
+
   # require password for members of wheel group
   security.run0.wheelNeedsPassword = true;
 
