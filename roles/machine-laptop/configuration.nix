@@ -1,5 +1,6 @@
 {
   config,
+  pkgs,
   lib,
   modulesPath,
   legacyVars,
@@ -130,6 +131,12 @@
     "vm.mmap_rnd_bits" = lib.mkForce "32";
     # laptop doesnt need to forward packets
     "net.ipv4.ip_forward" = lib.mkForce "0";
+  };
+
+  # wait a bit before starting wpa_supplicant
+  systemd.services."wpa_supplicant-${config.vars.wireless.interface}" = {
+    after = [ "systemd-networkd.service" ];
+    serviceConfig.ExecStartPre = "${pkgs.writeShellScriptBin "wpa_supplicant-delay" "sleep 8"}/bin/wpa_supplicant-delay";
   };
 
   # environment variables
