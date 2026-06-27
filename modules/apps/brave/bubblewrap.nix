@@ -1,13 +1,25 @@
 {
   config,
   inputs,
+  lib,
   pkgs,
   ...
 }:
 
 let
-  inherit (import ./executable.nix { inherit config pkgs; }) executable;
+  inherit
+    (import ./policies.nix {
+      inherit
+        config
+        inputs
+        lib
+        pkgs
+        ;
+    })
+    policies
+    ;
   inherit (import ./state.nix { inherit pkgs; }) state;
+  inherit (import ./executable.nix { inherit config pkgs; }) executable;
 
   user = config.vars.user.name;
 
@@ -91,8 +103,7 @@ let
         --ro-bind "$XDG_RUNTIME_DIR/pulse" "$XDG_RUNTIME_DIR/pulse" \
         --bind "$proxy_socket" "$XDG_RUNTIME_DIR/bus" \
         --bind "$brave_tmp" /tmp \
-        --ro-bind /etc/static/brave /etc/static/brave \
-        --ro-bind /etc/brave /etc/brave \
+        --ro-bind ${policies}/extra.json /etc/brave/policies/managed/extra.json \
         --bind /home/${user}/.config/BraveSoftware/Brave-Browser /home/${user}/.config/BraveSoftware/Brave-Browser \
         --ro-bind "${state}/Local State" "/home/${user}/.config/BraveSoftware/Brave-Browser/Local State" \
         --bind /home/${user}/Downloads /home/${user}/Downloads \

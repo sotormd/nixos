@@ -1157,8 +1157,7 @@ browsers.
      - Bind Enterprise Policies as readonly
 
        ```
-       --ro-bind /etc/static/brave /etc/static/brave
-       --ro-bind /etc/brave /etc/brave
+       --ro-bind ${policies}/extra.json /etc/brave/policies/managed/extra.json
        ```
 
      - Bind configuration directory

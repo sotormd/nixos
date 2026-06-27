@@ -1,12 +1,23 @@
 {
   config,
   inputs,
+  lib,
   pkgs,
   ...
 }:
 
 let
-  inherit (import ./bubblewrap.nix { inherit config inputs pkgs; }) jail;
+  inherit
+    (import ./bubblewrap.nix {
+      inherit
+        config
+        inputs
+        lib
+        pkgs
+        ;
+    })
+    jail
+    ;
   inherit (import ./desktop.nix { inherit pkgs; }) desktop;
 in
 {
