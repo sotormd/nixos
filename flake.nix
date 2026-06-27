@@ -108,8 +108,19 @@
       # profiles, collections of modules
       profiles = import ./profiles;
 
+      # overlays
+      # the modules set their own overlays
+      # this is for anything that originates here
+      # eg, lib and alternate branches
+      overlays = [ (_: _: { inherit lib; }) ];
+
       # create a machine module
-      mkMachineModule = role: (_: { imports = [ ./roles/machine-${role} ]; });
+      mkMachineModule =
+        role:
+        (_: {
+          imports = [ ./roles/machine-${role} ];
+          nixpkgs = { inherit overlays; };
+        });
 
       # create a "machine"
       mkMachine =
@@ -124,7 +135,12 @@
         };
 
       # create an image module
-      mkImageModule = role: (_: { imports = [ ./roles/image-${role} ]; });
+      mkImageModule =
+        role:
+        (_: {
+          imports = [ ./roles/image-${role} ];
+          nixpkgs = { inherit overlays; };
+        });
 
       # create an "image"
       mkImage =

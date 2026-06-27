@@ -1,8 +1,9 @@
 {
-  config,
   inputs,
   lib,
-  pkgs,
+  writeTextFile,
+  colors,
+  vars,
   ...
 }:
 
@@ -10,32 +11,32 @@ let
   layout = [
 
     (lib.flatten [
-      (lib.optional config.vars.selfhosted.searxng.enable [
+      (lib.optional vars.selfhosted.searxng.enable [
         {
           short = "sx";
           full = "searxng";
-          url = "https://${config.vars.selfhosted.searxng.domain}/searxng/";
+          url = "https://${vars.selfhosted.searxng.domain}/searxng/";
         }
       ])
-      (lib.optional config.vars.selfhosted.vaultwarden.enable [
+      (lib.optional vars.selfhosted.vaultwarden.enable [
         {
           short = "vw";
           full = "vaultwarden";
-          url = "https://${config.vars.selfhosted.vaultwarden.domain}/vaultwarden/";
+          url = "https://${vars.selfhosted.vaultwarden.domain}/vaultwarden/";
         }
       ])
-      (lib.optional config.vars.selfhosted.i2pd.enable [
+      (lib.optional vars.selfhosted.i2pd.enable [
         {
           short = "ip";
           full = "i2pd";
-          url = "https://${config.vars.selfhosted.i2pd.domain}/i2pd/";
+          url = "https://${vars.selfhosted.i2pd.domain}/i2pd/";
         }
       ])
-      (lib.optional config.vars.selfhosted.qbt.enable [
+      (lib.optional vars.selfhosted.qbt.enable [
         {
           short = "qb";
           full = "qbittorrent";
-          url = "https://${config.vars.selfhosted.qbt.domain}/qbt/";
+          url = "https://${vars.selfhosted.qbt.domain}/qbt/";
         }
       ])
     ])
@@ -90,7 +91,7 @@ let
     inherit layout;
     n = 4;
     colors = {
-      inherit (config.colors.homepage)
+      inherit (colors.homepage)
         bg
         btnbg
         fg
@@ -98,16 +99,14 @@ let
         hover
         ;
     };
-    font = config.colors.fonts.normal;
+    font = colors.fonts.normal;
   };
 
-  homepage = pkgs.writeTextFile {
+  homepage = writeTextFile {
     name = "homepage";
     text = homepageHtml;
     destination = "/share/home.html";
     executable = false;
   };
 in
-{
-  inherit homepage;
-}
+homepage

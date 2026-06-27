@@ -1,20 +1,27 @@
-{ config, pkgs, ... }:
+{
+  dunst,
+  runtimeShell,
+  symlinkJoin,
+  writeTextFile,
+  configuration,
+  ...
+}:
 
 let
-  inherit (import ./config.nix { inherit config pkgs; }) configuration;
-
-  dunstWrapperScript = pkgs.writeTextFile {
+  dunstWrapperScript = writeTextFile {
     name = "dunst-wrapper-script";
     text = ''
-      ${pkgs.dunst}/bin/dunst -config ${configuration}/dunstrc "$@"
+      #!${runtimeShell}
+
+      ${dunst}/bin/dunst -config ${configuration}/dunstrc "$@"
     '';
     destination = "/bin/dunst";
     executable = true;
   };
 
-  dunstWrapped = pkgs.symlinkJoin {
+  dunstWrapped = symlinkJoin {
     name = "dunst-wrapped";
-    paths = [ pkgs.dunst ];
+    paths = [ dunst ];
 
     # replace the dunst binary with our wrapper
     postBuild = ''
@@ -23,6 +30,4 @@ let
     '';
   };
 in
-{
-  inherit dunstWrapped;
-}
+dunstWrapped

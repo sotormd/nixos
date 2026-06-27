@@ -1,22 +1,27 @@
-{ config, pkgs, ... }:
+{
+  rofi,
+  runtimeShell,
+  symlinkJoin,
+  writeTextFile,
+  configuration,
+  ...
+}:
 
 let
-  inherit (import ./config.nix { inherit config pkgs; }) configuration;
-
-  rofiWrapperScript = pkgs.writeTextFile {
+  rofiWrapperScript = writeTextFile {
     name = "rofi-wrapper-script";
     text = ''
-      #!${pkgs.runtimeShell}
+      #!${runtimeShell}
 
-      ${pkgs.rofi}/bin/rofi -config ${configuration}/config.rasi "$@"
+      ${rofi}/bin/rofi -config ${configuration}/config.rasi "$@"
     '';
     destination = "/bin/rofi";
     executable = true;
   };
 
-  rofiWrapped = pkgs.symlinkJoin {
+  rofiWrapped = symlinkJoin {
     name = "rofi-wrapped";
-    paths = [ pkgs.rofi ];
+    paths = [ rofi ];
 
     # replace the rofi binary with our wrapper
     postBuild = ''
@@ -25,6 +30,4 @@ let
     '';
   };
 in
-{
-  inherit rofiWrapped;
-}
+rofiWrapped

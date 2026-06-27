@@ -1,14 +1,16 @@
 {
-  config,
   lib,
-  pkgs,
+  eww0,
+  media0,
+  volume0,
+  writeTextFile,
+  scripts,
+  vars,
   ...
 }:
 
 let
-  inherit (import ./scripts.nix { inherit pkgs; }) scripts;
-
-  count = lib.length (lib.attrNames config.vars.displays.outputs);
+  count = lib.length (lib.attrNames vars.displays.outputs);
 
   indices = lib.genList (i: i) count;
 
@@ -33,7 +35,7 @@ let
     )
   );
 
-  configuration = pkgs.writeTextFile {
+  configuration = writeTextFile {
     name = "waybar-config";
     text = ''
       [
@@ -67,18 +69,18 @@ let
           },
           "clock": {
             "format": "<span size='12000' rise='-1000'>󰥔</span> <span rise='-1000'>{:%I:%M %p}</span>",
-            "on-click": "${pkgs.eww0}/bin/eww open --toggle calendar --screen $(swaymsg -t get_outputs | jq -r '.[] | select(.focused) | .name')",
+            "on-click": "${eww0}/bin/eww open --toggle calendar --screen $(swaymsg -t get_outputs | jq -r '.[] | select(.focused) | .name')",
             "tooltip": false
           },
           "custom/playerctl": {
-            "exec": "${pkgs.media0}/bin/media waybar",
+            "exec": "${media0}/bin/media waybar",
             "interval": 1,
             "max-length": 70,
-            "on-click": "${pkgs.media0}/bin/media play-pause",
+            "on-click": "${media0}/bin/media play-pause",
             "on-click-right": "${scripts}/animation.sh",
-            "on-click-middle": "${pkgs.media0}/bin/media stop",
-            "on-scroll-down": "${pkgs.media0}/bin/media previous",
-            "on-scroll-up": "${pkgs.media0}/bin/media next",
+            "on-click-middle": "${media0}/bin/media stop",
+            "on-scroll-down": "${media0}/bin/media previous",
+            "on-scroll-up": "${media0}/bin/media next",
             "return-type": "json"
           },
           "height": 32,
@@ -132,8 +134,8 @@ let
             "format-muted": "<span size='12000'></span>  <span>Muted</span>",
             "on-click": "wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle",
             "on-click-right": "pavucontrol",
-            "on-scroll-up": "${pkgs.volume0}/bin/volume 1%+",
-            "on-scroll-down": "${pkgs.volume0}/bin/volume 1%-",
+            "on-scroll-up": "${volume0}/bin/volume 1%+",
+            "on-scroll-down": "${volume0}/bin/volume 1%-",
             "tooltip": false
           },
           "sway/window": {
@@ -157,6 +159,4 @@ let
     executable = false;
   };
 in
-{
-  inherit configuration;
-}
+configuration

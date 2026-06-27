@@ -1,24 +1,29 @@
-{ config, pkgs, ... }:
+{
+  eww,
+  runtimeShell,
+  symlinkJoin,
+  writeTextFile,
+  configuration,
+  scripts,
+  ...
+}:
 
 let
-  inherit (import ./config.nix { inherit config pkgs; }) configuration;
-  inherit (import ./scripts.nix { inherit pkgs; }) scripts;
-
-  ewwWrapperScript = pkgs.writeTextFile {
+  ewwWrapperScript = writeTextFile {
     name = "eww-wrapper-script";
     text = ''
-      #!${pkgs.runtimeShell}
+      #!${runtimeShell}
 
-      ${pkgs.eww}/bin/eww --config ${configuration} "$@"
+      ${eww}/bin/eww --config ${configuration} "$@"
     '';
     destination = "/bin/eww";
     executable = true;
   };
 
-  ewwWrapperCal = pkgs.writeTextFile {
+  ewwWrapperCal = writeTextFile {
     name = "eww-wrapper-cal";
     text = ''
-      #!${pkgs.runtimeShell}
+      #!${runtimeShell}
 
       ${scripts}/cal.sh
     '';
@@ -26,10 +31,10 @@ let
     executable = true;
   };
 
-  ewwWrapperDock = pkgs.writeTextFile {
+  ewwWrapperDock = writeTextFile {
     name = "eww-wrapper-dock";
     text = ''
-      #!${pkgs.runtimeShell}
+      #!${runtimeShell}
 
       ${scripts}/dock.py
     '';
@@ -37,10 +42,10 @@ let
     executable = true;
   };
 
-  ewwWrapped = pkgs.symlinkJoin {
+  ewwWrapped = symlinkJoin {
     name = "eww-wrapped";
     paths = [
-      pkgs.eww
+      eww
       ewwWrapperCal
       ewwWrapperDock
     ];
@@ -52,6 +57,4 @@ let
     '';
   };
 in
-{
-  inherit ewwWrapped;
-}
+ewwWrapped

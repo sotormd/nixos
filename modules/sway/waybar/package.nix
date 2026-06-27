@@ -1,28 +1,28 @@
 {
-  config,
-  lib,
-  pkgs,
+  waybar,
+  runtimeShell,
+  symlinkJoin,
+  writeTextFile,
+  configuration,
+  style,
   ...
 }:
 
 let
-  inherit (import ./config.nix { inherit config lib pkgs; }) configuration;
-  inherit (import ./style.nix { inherit config pkgs; }) style;
-
-  waybarWrapperScript = pkgs.writeTextFile {
+  waybarWrapperScript = writeTextFile {
     name = "waybar-wrapper-script";
     text = ''
-      #!${pkgs.runtimeShell}
+      #!${runtimeShell}
 
-      ${pkgs.waybar}/bin/waybar --config ${configuration}/config.json --style ${style}/style.css "$@"
+      ${waybar}/bin/waybar --config ${configuration}/config.json --style ${style}/style.css "$@"
     '';
     destination = "/bin/waybar";
     executable = true;
   };
 
-  waybarWrapped = pkgs.symlinkJoin {
+  waybarWrapped = symlinkJoin {
     name = "waybar";
-    paths = [ pkgs.waybar ];
+    paths = [ waybar ];
 
     # replace the waybar binary with our wrapper
     postBuild = ''
@@ -31,6 +31,4 @@ let
     '';
   };
 in
-{
-  inherit waybarWrapped;
-}
+waybarWrapped

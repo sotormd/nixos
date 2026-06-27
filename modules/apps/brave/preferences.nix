@@ -1,4 +1,4 @@
-{ config, pkgs, ... }:
+{ writeTextFile, colors, ... }:
 
 let
   initialPreferences = {
@@ -112,10 +112,10 @@ let
 
     # fonts
     webkit.webprefs.fonts = {
-      fixed.Zyyy = "${config.colors.fonts.monospace}";
-      sansserif.Zyyy = "${config.colors.fonts.sansserif}";
-      serif.Zyyy = "${config.colors.fonts.serif}";
-      standard.Zyyy = "${config.colors.fonts.normal}";
+      fixed.Zyyy = "${colors.fonts.monospace}";
+      sansserif.Zyyy = "${colors.fonts.sansserif}";
+      serif.Zyyy = "${colors.fonts.serif}";
+      standard.Zyyy = "${colors.fonts.normal}";
     };
 
     #####################
@@ -130,13 +130,11 @@ let
     };
   };
 
-  preferences = pkgs.writeTextFile {
+  preferences = writeTextFile {
     name = "brave-preferences";
     text = builtins.toJSON initialPreferences;
     destination = "/initial_preferences";
     executable = false;
   };
 in
-{
-  inherit preferences;
-}
+preferences

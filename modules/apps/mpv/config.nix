@@ -1,7 +1,7 @@
-{ pkgs, ... }:
+{ writeTextFile, ... }:
 
 let
-  configuration = pkgs.writeTextFile {
+  configuration = writeTextFile {
     name = "mpv-config";
     text = ''
       hwdec=auto-safe
@@ -13,6 +13,4 @@ let
     executable = false;
   };
 in
-{
-  inherit configuration;
-}
+configuration

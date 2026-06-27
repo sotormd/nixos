@@ -1,9 +1,7 @@
-{ config, pkgs, ... }:
+{ writeTextFile, style, ... }:
 
 let
-  inherit (import ./style.nix { inherit config pkgs; }) style;
-
-  configuration = pkgs.writeTextFile {
+  configuration = writeTextFile {
     name = "rofi-config";
     text = ''
       configuration {
@@ -17,6 +15,4 @@ let
     executable = false;
   };
 in
-{
-  inherit configuration;
-}
+configuration

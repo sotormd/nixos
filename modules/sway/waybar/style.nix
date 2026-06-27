@@ -1,11 +1,11 @@
-{ config, pkgs, ... }:
+{ writeTextFile, colors, ... }:
 
 let
-  style = pkgs.writeTextFile {
+  style = writeTextFile {
     name = "waybar-style";
     text = ''
       * {
-        font-family: '${config.colors.fonts.normal}';
+        font-family: '${colors.fonts.normal}';
         background: transparent;
       }
 
@@ -16,15 +16,15 @@ let
 
       #mode {
         font-style: italic;
-        color: #${config.colors.waybar.mode.text};
+        color: #${colors.waybar.mode.text};
         margin-left: 5px;
       }
 
       #workspaces {
         all: unset;
-        border: solid 3px #${config.colors.waybar.workspaces.border};
-        color: #${config.colors.waybar.workspaces.text};
-        background: #${config.colors.bg0};
+        border: solid 3px #${colors.waybar.workspaces.border};
+        color: #${colors.waybar.workspaces.text};
+        background: #${colors.bg0};
       }
 
       #workspaces,
@@ -68,7 +68,7 @@ let
       }
 
       #workspaces button:hover {
-        background-color: #${config.colors.waybar.workspaces.hover};
+        background-color: #${colors.waybar.workspaces.hover};
       }
 
       #workspaces button.focused {
@@ -77,19 +77,19 @@ let
 
       @keyframes background-switch {
         0% {
-          background: linear-gradient(45deg, #${config.colors.waybar.animation.a}, #${config.colors.waybar.animation.b}, #${config.colors.waybar.animation.c}, #${config.colors.waybar.animation.d}, #${config.colors.waybar.animation.e}, #${config.colors.waybar.animation.f}, #${config.colors.waybar.animation.g}, #${config.colors.waybar.animation.h});
+          background: linear-gradient(45deg, #${colors.waybar.animation.a}, #${colors.waybar.animation.b}, #${colors.waybar.animation.c}, #${colors.waybar.animation.d}, #${colors.waybar.animation.e}, #${colors.waybar.animation.f}, #${colors.waybar.animation.g}, #${colors.waybar.animation.h});
         }
         25% {
-          background: linear-gradient(45deg, #${config.colors.waybar.animation.h}, #${config.colors.waybar.animation.a}, #${config.colors.waybar.animation.b}, #${config.colors.waybar.animation.c}, #${config.colors.waybar.animation.d}, #${config.colors.waybar.animation.e}, #${config.colors.waybar.animation.f}, #${config.colors.waybar.animation.g});
+          background: linear-gradient(45deg, #${colors.waybar.animation.h}, #${colors.waybar.animation.a}, #${colors.waybar.animation.b}, #${colors.waybar.animation.c}, #${colors.waybar.animation.d}, #${colors.waybar.animation.e}, #${colors.waybar.animation.f}, #${colors.waybar.animation.g});
         }
         50% {
-          background: linear-gradient(45deg, #${config.colors.waybar.animation.g}, #${config.colors.waybar.animation.h}, #${config.colors.waybar.animation.a}, #${config.colors.waybar.animation.b}, #${config.colors.waybar.animation.c}, #${config.colors.waybar.animation.d}, #${config.colors.waybar.animation.e}, #${config.colors.waybar.animation.f});
+          background: linear-gradient(45deg, #${colors.waybar.animation.g}, #${colors.waybar.animation.h}, #${colors.waybar.animation.a}, #${colors.waybar.animation.b}, #${colors.waybar.animation.c}, #${colors.waybar.animation.d}, #${colors.waybar.animation.e}, #${colors.waybar.animation.f});
         }
         75% {
-          background: linear-gradient(45deg, #${config.colors.waybar.animation.f}, #${config.colors.waybar.animation.g}, #${config.colors.waybar.animation.h}, #${config.colors.waybar.animation.a}, #${config.colors.waybar.animation.b}, #${config.colors.waybar.animation.c}, #${config.colors.waybar.animation.d}, #${config.colors.waybar.animation.e});
+          background: linear-gradient(45deg, #${colors.waybar.animation.f}, #${colors.waybar.animation.g}, #${colors.waybar.animation.h}, #${colors.waybar.animation.a}, #${colors.waybar.animation.b}, #${colors.waybar.animation.c}, #${colors.waybar.animation.d}, #${colors.waybar.animation.e});
         }
         100% {
-          background: linear-gradient(45deg, #${config.colors.waybar.animation.e}, #${config.colors.waybar.animation.f}, #${config.colors.waybar.animation.g}, #${config.colors.waybar.animation.h}, #${config.colors.waybar.animation.a}, #${config.colors.waybar.animation.b}, #${config.colors.waybar.animation.c}, #${config.colors.waybar.animation.d});
+          background: linear-gradient(45deg, #${colors.waybar.animation.e}, #${colors.waybar.animation.f}, #${colors.waybar.animation.g}, #${colors.waybar.animation.h}, #${colors.waybar.animation.a}, #${colors.waybar.animation.b}, #${colors.waybar.animation.c}, #${colors.waybar.animation.d});
         }
       }
 
@@ -113,34 +113,32 @@ let
       #pulseaudio,
       #battery,
       #clock {
-        color: #${config.colors.waybar.modules.text};
+        color: #${colors.waybar.modules.text};
       }
 
       #idle_inhibitor {
-        background-color: #${config.colors.waybar.util.bg};
+        background-color: #${colors.waybar.util.bg};
       }
 
       #network {
-        background-color: #${config.colors.waybar.network.bg};
+        background-color: #${colors.waybar.network.bg};
       }
 
       #pulseaudio {
-        background-color: #${config.colors.waybar.audio.bg};
+        background-color: #${colors.waybar.audio.bg};
       }
 
       #battery {
-        background-color: #${config.colors.waybar.battery.bg};
-        color: #${config.colors.waybar.modules.text};
+        background-color: #${colors.waybar.battery.bg};
+        color: #${colors.waybar.modules.text};
       }
 
       #clock {
-        background-color: #${config.colors.waybar.clock.bg};
+        background-color: #${colors.waybar.clock.bg};
       }
     '';
     destination = "/style.css";
     executable = false;
   };
 in
-{
-  inherit style;
-}
+style

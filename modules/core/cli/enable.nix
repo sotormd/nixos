@@ -1,8 +1,8 @@
 { pkgs, ... }:
 
 let
-  package = import ./bin.nix { inherit pkgs; };
+  package = pkgs.callPackage ./bin.nix { };
 in
 {
-  environment.systemPackages = [ package.nixosWrapper ];
+  environment.systemPackages = [ package ];
 }

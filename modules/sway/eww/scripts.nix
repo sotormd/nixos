@@ -1,10 +1,16 @@
-{ pkgs, ... }:
+{
+  python3,
+  runtimeShell,
+  symlinkJoin,
+  writeTextFile,
+  ...
+}:
 
 let
-  calSh = pkgs.writeTextFile {
+  calSh = writeTextFile {
     name = "eww-script-cal";
     text = ''
-      #!${pkgs.runtimeShell}
+      #!${runtimeShell}
 
             (while (true) do
                 ${calPy}/cal.py
@@ -15,10 +21,10 @@ let
     executable = true;
   };
 
-  doCalendarAction = pkgs.writeTextFile {
+  doCalendarAction = writeTextFile {
     name = "eww-script-calendar-action";
     text = ''
-      #!${pkgs.runtimeShell}
+      #!${runtimeShell}
 
       if [[ -z "$1" ]]; then
           echo You did not specify an action
@@ -76,7 +82,7 @@ let
     executable = true;
   };
 
-  calPy = pkgs.writeTextFile {
+  calPy = writeTextFile {
     name = "eww-script-cal";
     text = ''
       #!/usr/bin/env python3
@@ -140,17 +146,17 @@ let
     executable = true;
   };
 
-  dockClientsJson = pkgs.writeTextFile {
+  dockClientsJson = writeTextFile {
     name = "eww-dock-clients";
     text = builtins.readFile ./dock-clients.json;
     destination = "/dock-clients.json";
     executable = false;
   };
 
-  dockPy = pkgs.writeTextFile {
+  dockPy = writeTextFile {
     name = "eww-scripts-dock";
     text = ''
-      #!${pkgs.python3.withPackages (ps: with ps; [ i3ipc ])}/bin/python3
+      #!${python3.withPackages (ps: with ps; [ i3ipc ])}/bin/python3
 
       import os
       import sys
@@ -395,7 +401,7 @@ let
     executable = true;
   };
 
-  scripts = pkgs.symlinkJoin {
+  scripts = symlinkJoin {
     name = "eww-scripts";
     paths = [
       calSh
@@ -406,6 +412,4 @@ let
     ];
   };
 in
-{
-  inherit scripts;
-}
+scripts

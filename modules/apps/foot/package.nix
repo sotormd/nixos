@@ -1,30 +1,27 @@
-{ config, pkgs, ... }:
+{
+  foot,
+  runtimeShell,
+  symlinkJoin,
+  writeTextFile,
+  configuration,
+  ...
+}:
 
 let
-  inherit (import ./config.nix { inherit config pkgs; }) configuration;
-
-  footWrapperScript = pkgs.writeTextFile {
+  footWrapperScript = writeTextFile {
     name = "foot-wrapper-script";
     text = ''
-      #!${pkgs.runtimeShell}
+      #!${runtimeShell}
 
-      FOCUSED_OUT="$(swaymsg -t get_outputs -r | jq -r '.[] | select(.focused == true).name')"
-
-      if [ "$FOCUSED_OUT" = "${config.vars.displays.outputs.laptop.identifier}" ]; then
-        SIZE=7
-      else
-        SIZE=10
-      fi
-
-      ${pkgs.foot}/bin/foot --config=${configuration}/foot.ini --font "${config.colors.fonts.monospace}:size=$SIZE" "$@"
+      ${foot}/bin/foot --config=${configuration}/foot.ini "$@"
     '';
     destination = "/bin/foot";
     executable = true;
   };
 
-  footWrapped = pkgs.symlinkJoin {
+  footWrapped = symlinkJoin {
     name = "foot";
-    paths = [ pkgs.foot ];
+    paths = [ foot ];
 
     # replace the foot binary with our wrapper
     postBuild = ''
@@ -33,6 +30,4 @@ let
     '';
   };
 in
-{
-  inherit footWrapped;
-}
+footWrapped

@@ -1,29 +1,28 @@
 {
-  config,
-  pkgs,
-  lib,
+  coreutils,
+  runtimeShell,
+  writeTextFile,
+  executable,
+  profile,
   ...
 }:
 
 let
-  inherit (import ./policies.nix) policies;
-  inherit (import ./profile.nix { inherit config pkgs lib; }) profile;
-
-  script = pkgs.writeTextFile {
+  script = writeTextFile {
     name = "i2p-browser-script";
     text = ''
-      #!${pkgs.runtimeShell}
+      #!${runtimeShell}
 
       set -euo pipefail
 
       baseProfile="${profile}"
-      timestamp="$(${pkgs.coreutils}/bin/date +%s)"
+      timestamp="$(${coreutils}/bin/date +%s)"
       tmpProfile="/tmp/i2p-browser-''${timestamp}"
 
-      ${pkgs.coreutils}/bin/mkdir -p "$tmpProfile"
-      ${pkgs.coreutils}/bin/cp -r --no-preserve=mode,ownership,timestamps "$baseProfile"/* "$tmpProfile"/
+      ${coreutils}/bin/mkdir -p "$tmpProfile"
+      ${coreutils}/bin/cp -r --no-preserve=mode,ownership,timestamps "$baseProfile"/* "$tmpProfile"/
 
-      exec ${pkgs.wrapFirefox pkgs.firefox-unwrapped { extraPolicies = policies; }}/bin/firefox \
+      exec ${executable}/bin/firefox \
         --no-remote \
         --profile "$tmpProfile" \
         "$@"
@@ -32,6 +31,4 @@ let
     executable = true;
   };
 in
-{
-  inherit script;
-}
+script

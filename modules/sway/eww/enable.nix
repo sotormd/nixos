@@ -1,9 +1,15 @@
 { config, pkgs, ... }:
 
 let
-  package = import ./package.nix { inherit config pkgs; };
+  scripts = pkgs.callPackage ./scripts.nix { };
+  style = pkgs.callPackage ./style.nix { inherit (config) colors; };
+  configuration = pkgs.callPackage ./config.nix {
+    inherit scripts style;
+    inherit (config) vars;
+  };
+  package = pkgs.callPackage ./package.nix { inherit configuration scripts; };
 in
 {
-  users.users.${config.vars.user.name}.packages = [ package.ewwWrapped ];
-  nixpkgs.overlays = [ (_: _: { eww0 = package.ewwWrapped; }) ];
+  users.users.${config.vars.user.name}.packages = [ package ];
+  nixpkgs.overlays = [ (_: _: { eww0 = package; }) ];
 }

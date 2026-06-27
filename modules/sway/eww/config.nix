@@ -1,10 +1,18 @@
-{ config, pkgs, ... }:
+{
+  fortune,
+  playerctl,
+  media0,
+  swaylock0,
+  symlinkJoin,
+  writeTextFile,
+  scripts,
+  style,
+  vars,
+  ...
+}:
 
 let
-  inherit (import ./style.nix { inherit config pkgs; }) style;
-  inherit (import ./scripts.nix { inherit pkgs; }) scripts;
-
-  yuck = pkgs.writeTextFile {
+  yuck = writeTextFile {
     name = "eww-yuck";
     text =
       let
@@ -12,12 +20,12 @@ let
       in
       ''
         (defvar dock-items-json "[]")
-        (defpoll SONG :interval "1s" `${pkgs.media0}/bin/media title`)
-        (defpoll ARTIST :interval "1s" `${pkgs.media0}/bin/media artist`)
-        (defpoll STATUS :interval "1s" `${pkgs.media0}/bin/media status`)
-        (defpoll CURRENT :interval "1s" `${pkgs.media0}/bin/media perc`)
-        (defpoll COVER :interval "1s" `${pkgs.media0}/bin/media art`)
-        (defpoll LYRICS :interval "1s" `${pkgs.media0}/bin/media lyrics`)
+        (defpoll SONG :interval "1s" `${media0}/bin/media title`)
+        (defpoll ARTIST :interval "1s" `${media0}/bin/media artist`)
+        (defpoll STATUS :interval "1s" `${media0}/bin/media status`)
+        (defpoll CURRENT :interval "1s" `${media0}/bin/media perc`)
+        (defpoll COVER :interval "1s" `${media0}/bin/media art`)
+        (defpoll LYRICS :interval "1s" `${media0}/bin/media lyrics`)
         (defvar calendar-json "[]")
         (defvar calendar-selected-month "")
         (defvar calendar-selected-month-pretty "")
@@ -27,7 +35,7 @@ let
         (defpoll cpu-ghz :interval "1s" "cat /proc/cpuinfo | grep \"cpu MHz\" | head -n 1 | awk '{printf \"%.1fGHz\\n\", \$4/1000}'")
         (defpoll zfs-perc :interval "1s" "zpool iostat | awk '/rpool/ {print 100 * \$2 / (\$2 + \$3)}'")
         (defpoll zfs-gib :interval "1s" "zpool iostat | awk '/rpool/ {print \$2}'")
-        (defpoll fortune :interval "600s" "${pkgs.fortune}/bin/fortune -n 35 -s")
+        (defpoll fortune :interval "600s" "${fortune}/bin/fortune -n 35 -s")
 
         (defwidget calendar-custom []
                    (box :class "calendar"
@@ -185,7 +193,7 @@ let
                        :space-evenly true
                        :hexpand true
                        :vexpand false
-                       (label :class "host" :xalign 0 :text "${config.vars.user.name}@${config.vars.device.hostName}")
+                       (label :class "host" :xalign 0 :text "${vars.user.name}@${vars.device.hostName}")
                        (label :class "uptime" :xalign 1 :text uptime))
                      (box
                        :class "start-inner-box-system"
@@ -211,9 +219,9 @@ let
                                (label :halign "center" :class "song" :wrap "true" :text SONG)
                                (label :halign "center" :class "artist" :wrap "true" :text ARTIST)
                                (box :orientation "h" :spacing 10 :halign "center" :space-evenly "true" :vexpand "false" :hexpand "false"
-                                    (eventbox :class "btn_prev" :cursor "hand2" :onclick "${pkgs.playerctl}/bin/playerctl previous" (box :class "btn_prev" "󰒮"))
-                                    (eventbox :class "btn_play" :cursor "hand2" :onclick "${pkgs.playerctl}/bin/playerctl play-pause" (box :class "btn_play" STATUS))
-                                    (eventbox :class "btn_next" :cursor "hand2" :onclick "${pkgs.playerctl}/bin/playerctl next" (box :class "btn_next" "󰒭")))
+                                    (eventbox :class "btn_prev" :cursor "hand2" :onclick "${playerctl}/bin/playerctl previous" (box :class "btn_prev" "󰒮"))
+                                    (eventbox :class "btn_play" :cursor "hand2" :onclick "${playerctl}/bin/playerctl play-pause" (box :class "btn_play" STATUS))
+                                    (eventbox :class "btn_next" :cursor "hand2" :onclick "${playerctl}/bin/playerctl next" (box :class "btn_next" "󰒭")))
                                (box :class "music_bar" :halign "center" :vexpand "false" :hexpand "false"
                                     (scale :active "false" :min 0 :max 100 :value CURRENT))))
                      (box
@@ -244,7 +252,7 @@ let
                          :class "fortune-refresh"
                          :cursor "hand2"
                          :halign "end"
-                         :onclick "eww update fortune=\"\$(${pkgs.fortune}/bin/fortune -n 30 -s)\""
+                         :onclick "eww update fortune=\"\$(${fortune}/bin/fortune -n 30 -s)\""
                          (box :class "fortune-refresh-inner" :orientation "v" "󱛬")))
                      (box
                        :class "start-inner-box"
@@ -252,7 +260,7 @@ let
                        (eventbox
                          :class "leave-box"
                          :cursor "hand2"
-                         :onclick "${pkgs.swaylock0}/bin/swaylock &"
+                         :onclick "${swaylock0}/bin/swaylock &"
                          (box :class "lock" "󰌾"))
                        (eventbox
                          :class "leave-box"
@@ -286,7 +294,7 @@ let
                      (eventbox
                        :class "leave-box"
                        :cursor "hand2"
-                       :onclick "eww close leavewindow; swaymsg mode default; ${pkgs.swaylock0}/bin/swaylock &"
+                       :onclick "eww close leavewindow; swaymsg mode default; ${swaylock0}/bin/swaylock &"
                        (box :class "lock" "󰌾"))
                      (eventbox
                        :class "leave-box"
@@ -348,7 +356,7 @@ let
     executable = false;
   };
 
-  configuration = pkgs.symlinkJoin {
+  configuration = symlinkJoin {
     name = "eww-config";
     paths = [
       yuck
@@ -356,6 +364,4 @@ let
     ];
   };
 in
-{
-  inherit configuration;
-}
+configuration

@@ -1,22 +1,27 @@
-{ config, pkgs, ... }:
+{
+  zathura,
+  runtimeShell,
+  symlinkJoin,
+  writeTextFile,
+  zathurarc,
+  ...
+}:
 
 let
-  inherit (import ./config.nix { inherit config pkgs; }) zathurarc;
-
-  zathuraWrapperScript = pkgs.writeTextFile {
+  zathuraWrapperScript = writeTextFile {
     name = "zathura-wrapper-script";
     text = ''
-      #!${pkgs.runtimeShell}
+      #!${runtimeShell}
 
-      ${pkgs.zathura}/bin/zathura --config-dir=${zathurarc} "$@"
+      ${zathura}/bin/zathura --config-dir=${zathurarc} "$@"
     '';
     destination = "/bin/zathura";
     executable = true;
   };
 
-  zathuraWrapped = pkgs.symlinkJoin {
+  zathuraWrapped = symlinkJoin {
     name = "zathura-wrapped";
-    paths = [ pkgs.zathura ];
+    paths = [ zathura ];
 
     # replace the zathura binary with our wrapper
     postBuild = ''
@@ -25,6 +30,4 @@ let
     '';
   };
 in
-{
-  inherit zathuraWrapped;
-}
+zathuraWrapped

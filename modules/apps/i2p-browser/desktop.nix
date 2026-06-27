@@ -1,7 +1,7 @@
-{ pkgs, ... }:
+{ makeDesktopItem, ... }:
 
 let
-  desktop = pkgs.makeDesktopItem {
+  desktop = makeDesktopItem {
     name = "i2p-browser-desktop";
     desktopName = "I2P Browser";
     genericName = "Web Browser";
@@ -17,6 +17,4 @@ let
     startupNotify = true;
   };
 in
-{
-  inherit desktop;
-}
+desktop

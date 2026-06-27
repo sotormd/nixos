@@ -1,9 +1,11 @@
 { config, pkgs, ... }:
 
 let
-  package = import ./package.nix { inherit config pkgs; };
+  style = pkgs.callPackage ./style.nix { inherit (config) colors; };
+  configuration = pkgs.callPackage ./config.nix { inherit style; };
+  package = pkgs.callPackage ./package.nix { inherit configuration; };
 in
 {
-  users.users.${config.vars.user.name}.packages = [ package.rofiWrapped ];
-  nixpkgs.overlays = [ (_: _: { rofi0 = package.rofiWrapped; }) ];
+  users.users.${config.vars.user.name}.packages = [ package ];
+  nixpkgs.overlays = [ (_: _: { rofi0 = package; }) ];
 }

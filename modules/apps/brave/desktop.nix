@@ -1,7 +1,7 @@
-{ pkgs, ... }:
+{ makeDesktopItem, ... }:
 
 let
-  desktop = pkgs.makeDesktopItem {
+  desktop = makeDesktopItem {
     name = "brave-browser";
     desktopName = "Brave Web Browser";
     genericName = "Web Browser";
@@ -32,6 +32,4 @@ let
     startupNotify = true;
   };
 in
-{
-  inherit desktop;
-}
+desktop

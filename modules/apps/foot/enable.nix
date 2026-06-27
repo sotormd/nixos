@@ -1,9 +1,10 @@
 { config, pkgs, ... }:
 
 let
-  package = import ./package.nix { inherit config pkgs; };
+  configuration = pkgs.callPackage ./config.nix { inherit (config) colors; };
+  package = pkgs.callPackage ./package.nix { inherit configuration; };
 in
 {
-  users.users.${config.vars.user.name}.packages = [ package.footWrapped ];
-  nixpkgs.overlays = [ (_: _: { foot0 = package.footWrapped; }) ];
+  users.users.${config.vars.user.name}.packages = [ package ];
+  nixpkgs.overlays = [ (_: _: { foot0 = package; }) ];
 }

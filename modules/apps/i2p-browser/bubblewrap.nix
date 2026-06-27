@@ -1,25 +1,26 @@
 {
-  config,
-  pkgs,
-  lib,
+  bubblewrap,
+  coreutils,
+  runtimeShell,
+  writeTextFile,
+  script,
+  vars,
   ...
 }:
 
 let
-  inherit (import ./script.nix { inherit config pkgs lib; }) script;
+  user = vars.user.name;
 
-  user = config.vars.user.name;
-
-  jail = pkgs.writeTextFile {
+  jail = writeTextFile {
     name = "i2p-browser-jail";
     text = ''
-      #!${pkgs.runtimeShell}
+      #!${runtimeShell}
 
       set -euo pipefail
 
       users=$(mktemp -d)
 
-      echo "${user}:x:1000:1000:${user}:/home/${user}:${pkgs.coreutils}/bin/false" > "$users/passwd"
+      echo "${user}:x:1000:1000:${user}:/home/${user}:${coreutils}/bin/false" > "$users/passwd"
       echo "${user}:x:1000:" > "$users/group"
 
       cleanup() { 
@@ -27,7 +28,7 @@ let
       }
       trap cleanup INT TERM EXIT
 
-      ${pkgs.bubblewrap}/bin/bwrap \
+      ${bubblewrap}/bin/bwrap \
         --ro-bind /nix/store /nix/store \
         --ro-bind "$XDG_RUNTIME_DIR/wayland-1" "$XDG_RUNTIME_DIR/wayland-1" \
         --ro-bind "$users/passwd" /etc/passwd \
@@ -57,6 +58,4 @@ let
     executable = true;
   };
 in
-{
-  inherit jail;
-}
+jail

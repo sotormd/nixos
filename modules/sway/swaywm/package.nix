@@ -1,27 +1,27 @@
 {
-  config,
-  lib,
-  pkgs,
+  swayfx,
+  runtimeShell,
+  symlinkJoin,
+  writeTextFile,
+  configuration,
   ...
 }:
 
 let
-  inherit (import ./config.nix { inherit config lib pkgs; }) configuration;
-
-  swayWrapperScript = pkgs.writeTextFile {
+  swayWrapperScript = writeTextFile {
     name = "sway-wrapper-script";
     text = ''
-      #!${pkgs.runtimeShell}
+      #!${runtimeShell}
 
-      ${pkgs.swayfx}/bin/sway --config ${configuration}/config "$@"
+      ${swayfx}/bin/sway --config ${configuration}/config "$@"
     '';
     destination = "/bin/sway";
     executable = true;
   };
 
-  swayWrapped = pkgs.symlinkJoin {
+  swayWrapped = symlinkJoin {
     name = "sway-wrapped";
-    paths = [ pkgs.swayfx ];
+    paths = [ swayfx ];
 
     # replace the sway binary with our wrapper
     postBuild = ''
@@ -30,6 +30,4 @@ let
     '';
   };
 in
-{
-  inherit swayWrapped;
-}
+swayWrapped

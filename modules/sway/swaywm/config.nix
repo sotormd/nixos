@@ -1,13 +1,34 @@
 {
-  config,
   lib,
-  pkgs,
+  brightness0,
+  cliphist,
+  dconf,
+  dunst0,
+  eww0,
+  foot0,
+  grim,
+  mate-polkit,
+  media0,
+  rofi0,
+  slurp,
+  swayidle,
+  swaylock0,
+  sway-contrib,
+  volume0,
+  waybar0,
+  xkcd0,
+  writeTextFile,
+  colors,
+  wallpapers,
+  vars,
   ...
 }:
 
 let
+  backgrounds.wallpaper = wallpapers.nord.space;
+
   orderedOutputs = lib.sort (a: b: a.name < b.name) (
-    lib.mapAttrsToList (name: value: { inherit name value; }) config.vars.displays.outputs
+    lib.mapAttrsToList (name: value: { inherit name value; }) vars.displays.outputs
   );
 
   indexedOutputs = lib.listToAttrs (
@@ -75,16 +96,14 @@ let
 
   outputLines = lib.concatStringsSep "\n\n" (map (item: renderOutput item.value) orderedOutputs);
 
-  backgrounds = import ./backgrounds.nix { inherit config lib; };
-
-  configuration = pkgs.writeTextFile {
+  configuration = writeTextFile {
     name = "sway-config";
     text = ''
       #
       # LAUNCH APPS
       #
-      bindsym Mod4+d exec ${pkgs.rofi0}/bin/rofi -show run
-      bindsym Mod4+Return exec ${pkgs.foot0}/bin/foot
+      bindsym Mod4+d exec ${rofi0}/bin/rofi -show run
+      bindsym Mod4+Return exec ${foot0}/bin/foot
 
       #
       # FOCUS
@@ -154,31 +173,31 @@ let
       bindsym Mod4+Page_Up workspace prev
       bindsym Mod4+ctrl+Right workspace next
       bindsym Mod4+ctrl+Left workspace prev
-      bindsym Mod4+g exec swaymsg workspace $(swaymsg -t get_workspaces -r | jq -r '.[].name' | ${pkgs.rofi0}/bin/rofi -dmenu -p "")
+      bindsym Mod4+g exec swaymsg workspace $(swaymsg -t get_workspaces -r | jq -r '.[].name' | ${rofi0}/bin/rofi -dmenu -p "")
       ${workspaceFocusLines}
 
       #
       # MOVE TO WORKSPACE
       #
-      bindsym Mod4+shift+g exec swaymsg move workspace $(swaymsg -t get_workspaces -r | jq -r '.[].name' | ${pkgs.rofi0}/bin/rofi -dmenu -p "")
+      bindsym Mod4+shift+g exec swaymsg move workspace $(swaymsg -t get_workspaces -r | jq -r '.[].name' | ${rofi0}/bin/rofi -dmenu -p "")
       ${workspaceMoveLines}
 
       #
       # AUDIO
       #
-      bindsym XF86AudioPrev exec ${pkgs.media0}/bin/media previous
-      bindsym XF86AudioPlay exec ${pkgs.media0}/bin/media play-pause
-      bindsym Mod4+XF86AudioPlay exec ${pkgs.media0}/bin/media stop
-      bindsym XF86AudioNext exec ${pkgs.media0}/bin/media next
+      bindsym XF86AudioPrev exec ${media0}/bin/media previous
+      bindsym XF86AudioPlay exec ${media0}/bin/media play-pause
+      bindsym Mod4+XF86AudioPlay exec ${media0}/bin/media stop
+      bindsym XF86AudioNext exec ${media0}/bin/media next
       bindsym XF86AudioMute exec wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle
-      bindsym XF86AudioLowerVolume exec ${pkgs.volume0}/bin/volume 5%-
-      bindsym XF86AudioRaiseVolume exec ${pkgs.volume0}/bin/volume 5%+
+      bindsym XF86AudioLowerVolume exec ${volume0}/bin/volume 5%-
+      bindsym XF86AudioRaiseVolume exec ${volume0}/bin/volume 5%+
 
       #
       # BRIGHTNESS
       #
-      bindsym XF86MonBrightnessDown exec ${pkgs.brightness0}/bin/brightness 5%-
-      bindsym XF86MonBrightnessUp exec ${pkgs.brightness0}/bin/brightness 5%+
+      bindsym XF86MonBrightnessDown exec ${brightness0}/bin/brightness 5%-
+      bindsym XF86MonBrightnessUp exec ${brightness0}/bin/brightness 5%+
 
       #
       # FLOATING
@@ -204,22 +223,22 @@ let
       #
       # COLORS & FONTS
       #
-      client.focused ${config.colors.sway.focused.border} ${config.colors.sway.focused.background} ${config.colors.sway.focused.text} ${config.colors.sway.focused.indicator} ${config.colors.sway.focused.childBorder}
-      client.focused_inactive ${config.colors.sway.focusedInactive.border} ${config.colors.sway.focusedInactive.background} ${config.colors.sway.focusedInactive.text} ${config.colors.sway.focusedInactive.indicator} ${config.colors.sway.focusedInactive.childBorder}
-      client.unfocused ${config.colors.sway.unfocused.border} ${config.colors.sway.unfocused.background} ${config.colors.sway.unfocused.text} ${config.colors.sway.unfocused.indicator} ${config.colors.sway.unfocused.childBorder}
-      client.urgent ${config.colors.sway.urgent.border} ${config.colors.sway.urgent.background} ${config.colors.sway.urgent.text} ${config.colors.sway.urgent.indicator} ${config.colors.sway.urgent.childBorder}
-      client.background ${config.colors.sway.background}
+      client.focused ${colors.sway.focused.border} ${colors.sway.focused.background} ${colors.sway.focused.text} ${colors.sway.focused.indicator} ${colors.sway.focused.childBorder}
+      client.focused_inactive ${colors.sway.focusedInactive.border} ${colors.sway.focusedInactive.background} ${colors.sway.focusedInactive.text} ${colors.sway.focusedInactive.indicator} ${colors.sway.focusedInactive.childBorder}
+      client.unfocused ${colors.sway.unfocused.border} ${colors.sway.unfocused.background} ${colors.sway.unfocused.text} ${colors.sway.unfocused.indicator} ${colors.sway.unfocused.childBorder}
+      client.urgent ${colors.sway.urgent.border} ${colors.sway.urgent.background} ${colors.sway.urgent.text} ${colors.sway.urgent.indicator} ${colors.sway.urgent.childBorder}
+      client.background ${colors.sway.background}
       client.placeholder #000000 #0c0c0c #ffffff #000000 #0c0c0c
-      font pango:${config.colors.fonts.normal} 8.000000
+      font pango:${colors.fonts.normal} 8.000000
 
       #
       # GTK 4.0 SETTINGS
       #
-      exec ${pkgs.dconf}/bin/dconf write /org/gnome/desktop/interface/font-name "'${config.colors.fonts.normal} 10'"
-      exec ${pkgs.dconf}/bin/dconf write /org/gnome/desktop/interface/icon-theme "'${config.colors.gtk.icons.name}'"
-      exec ${pkgs.dconf}/bin/dconf write /org/gnome/desktop/interface/gtk-theme "'${config.colors.gtk.theme.name}'"
-      exec ${pkgs.dconf}/bin/dconf write /org/gnome/desktop/interface/color-scheme "'prefer-dark'"
-      exec ${pkgs.dconf}/bin/dconf write /org/gnome/desktop/wm/preferences/button-layout "':'"
+      exec ${dconf}/bin/dconf write /org/gnome/desktop/interface/font-name "'${colors.fonts.normal} 10'"
+      exec ${dconf}/bin/dconf write /org/gnome/desktop/interface/icon-theme "'${colors.gtk.icons.name}'"
+      exec ${dconf}/bin/dconf write /org/gnome/desktop/interface/gtk-theme "'${colors.gtk.theme.name}'"
+      exec ${dconf}/bin/dconf write /org/gnome/desktop/interface/color-scheme "'prefer-dark'"
+      exec ${dconf}/bin/dconf write /org/gnome/desktop/wm/preferences/button-layout "':'"
 
 
 
@@ -252,15 +271,15 @@ let
       #
       # LEAVE MODE
       #
-      bindsym Mod4+Escape mode leave; exec ${pkgs.eww0}/bin/eww open leavewindow --screen $(swaymsg -t get_outputs | jq -r '.[] | select(.focused) | .name')
+      bindsym Mod4+Escape mode leave; exec ${eww0}/bin/eww open leavewindow --screen $(swaymsg -t get_outputs | jq -r '.[] | select(.focused) | .name')
       mode "leave" {
-        bindsym Escape mode default; exec ${pkgs.eww0}/bin/eww close leavewindow
-        bindsym Return mode default; exec ${pkgs.eww0}/bin/eww close leavewindow
-        bindsym l mode default; exec ${pkgs.eww0}/bin/eww close leavewindow; exec ${pkgs.swaylock0}/bin/swaylock
-        bindsym r mode default; exec ${pkgs.eww0}/bin/eww close leavewindow; exec systemctl reboot
-        bindsym s mode default; exec ${pkgs.eww0}/bin/eww close leavewindow; exec systemctl suspend
-        bindsym u mode default; exec ${pkgs.eww0}/bin/eww close leavewindow; exec systemctl poweroff
-        bindsym x mode default; exec ${pkgs.eww0}/bin/eww close leavewindow; exec swaymsg exit
+        bindsym Escape mode default; exec ${eww0}/bin/eww close leavewindow
+        bindsym Return mode default; exec ${eww0}/bin/eww close leavewindow
+        bindsym l mode default; exec ${eww0}/bin/eww close leavewindow; exec ${swaylock0}/bin/swaylock
+        bindsym r mode default; exec ${eww0}/bin/eww close leavewindow; exec systemctl reboot
+        bindsym s mode default; exec ${eww0}/bin/eww close leavewindow; exec systemctl suspend
+        bindsym u mode default; exec ${eww0}/bin/eww close leavewindow; exec systemctl poweroff
+        bindsym x mode default; exec ${eww0}/bin/eww close leavewindow; exec swaymsg exit
       }
 
       #
@@ -283,8 +302,8 @@ let
       #
       # QUICK SCREENSHOT
       #
-      bindsym Mod4+shift+s exec ${pkgs.sway-contrib.grimshot}/bin/grimshot copy area
-      bindsym Print exec ${pkgs.sway-contrib.grimshot}/bin/grimshot save screen
+      bindsym Mod4+shift+s exec ${sway-contrib.grimshot}/bin/grimshot copy area
+      bindsym Print exec ${sway-contrib.grimshot}/bin/grimshot save screen
 
       #
       # SCREENSHOT MODE
@@ -294,7 +313,7 @@ let
         bindsym Escape mode default
         bindsym Return mode default
         bindsym c mode screenshot-copy
-        bindsym p mode default; exec ${pkgs.slurp}/bin/slurp -p | ${pkgs.grim}/bin/grim -g - - | magick - txt: | awk 'NR==2 { print tolower($3) }' | wl-copy
+        bindsym p mode default; exec ${slurp}/bin/slurp -p | ${grim}/bin/grim -g - - | magick - txt: | awk 'NR==2 { print tolower($3) }' | wl-copy
         bindsym s mode screenshot-save
       }
 
@@ -304,9 +323,9 @@ let
       mode "screenshot-copy" {
         bindsym Escape mode default
         bindsym Return mode default
-        bindsym a mode default; exec ${pkgs.sway-contrib.grimshot}/bin/grimshot copy area
-        bindsym s mode default; exec ${pkgs.sway-contrib.grimshot}/bin/grimshot copy screen
-        bindsym w mode default; exec ${pkgs.sway-contrib.grimshot}/bin/grimshot copy window
+        bindsym a mode default; exec ${sway-contrib.grimshot}/bin/grimshot copy area
+        bindsym s mode default; exec ${sway-contrib.grimshot}/bin/grimshot copy screen
+        bindsym w mode default; exec ${sway-contrib.grimshot}/bin/grimshot copy window
       }
 
       #
@@ -315,9 +334,9 @@ let
       mode "screenshot-save" {
         bindsym Escape mode default
         bindsym Return mode default
-        bindsym a mode default; exec ${pkgs.sway-contrib.grimshot}/bin/grimshot savecopy area
-        bindsym s mode default; exec ${pkgs.sway-contrib.grimshot}/bin/grimshot savecopy screen
-        bindsym w mode default; exec ${pkgs.sway-contrib.grimshot}/bin/grimshot savecopy window
+        bindsym a mode default; exec ${sway-contrib.grimshot}/bin/grimshot savecopy area
+        bindsym s mode default; exec ${sway-contrib.grimshot}/bin/grimshot savecopy screen
+        bindsym w mode default; exec ${sway-contrib.grimshot}/bin/grimshot savecopy window
       }
 
       #
@@ -326,47 +345,47 @@ let
       bar {
         font pango:monospace 8.000000
         position top
-        swaybar_command ${pkgs.waybar0}/bin/waybar
+        swaybar_command ${waybar0}/bin/waybar
       }
 
       #
       # EWW
       #
-      exec ${pkgs.eww0}/bin/eww daemon
-      exec ${pkgs.eww0}/bin/eww-cal-init
-      exec ${pkgs.eww0}/bin/eww-dock-init
-      bindsym Mod4+Tab exec ${pkgs.eww0}/bin/eww open dock --toggle --screen $(swaymsg -t get_outputs | jq -r '.[] | select(.focused) | .name')
-      bindsym Mod4+grave exec ${pkgs.eww0}/bin/eww open start --toggle --screen $(swaymsg -t get_outputs | jq -r '.[] | select(.focused) | .name')
+      exec ${eww0}/bin/eww daemon
+      exec ${eww0}/bin/eww-cal-init
+      exec ${eww0}/bin/eww-dock-init
+      bindsym Mod4+Tab exec ${eww0}/bin/eww open dock --toggle --screen $(swaymsg -t get_outputs | jq -r '.[] | select(.focused) | .name')
+      bindsym Mod4+grave exec ${eww0}/bin/eww open start --toggle --screen $(swaymsg -t get_outputs | jq -r '.[] | select(.focused) | .name')
 
       #
       # DUNST
       #
-      exec ${pkgs.dunst0}/bin/dunst
+      exec ${dunst0}/bin/dunst
 
       #
       # CLIPHIST
       #
-      exec wl-paste --watch ${pkgs.cliphist}/bin/cliphist store
-      bindsym Mod4+c exec exec ${pkgs.cliphist}/bin/cliphist list | ${pkgs.rofi0}/bin/rofi -dmenu -p '' | ${pkgs.cliphist}/bin/cliphist decode | wl-copy
-      bindsym Mod4+shift+c exec ${pkgs.cliphist}/bin/cliphist wipe
+      exec wl-paste --watch ${cliphist}/bin/cliphist store
+      bindsym Mod4+c exec exec ${cliphist}/bin/cliphist list | ${rofi0}/bin/rofi -dmenu -p '' | ${cliphist}/bin/cliphist decode | wl-copy
+      bindsym Mod4+shift+c exec ${cliphist}/bin/cliphist wipe
 
       #
       # SWAYIDLE
       #
-      exec ${pkgs.swayidle}/bin/swayidle \
-      timeout 60 '${pkgs.swaylock0}/bin/swaylock' \
+      exec ${swayidle}/bin/swayidle \
+      timeout 60 '${swaylock0}/bin/swaylock' \
       timeout 120 'systemctl suspend' \
-      before-sleep '${pkgs.swaylock0}/bin/swaylock'
+      before-sleep '${swaylock0}/bin/swaylock'
 
       #
       # XKCD-WALL
       #
-      exec ${pkgs.xkcd0}/bin/xkcd-refresh
+      exec ${xkcd0}/bin/xkcd-refresh
 
       #
       # POLKIT AGENT
       #
-      exec ${pkgs.mate-polkit}/libexec/polkit-mate-authentication-agent-1
+      exec ${mate-polkit}/libexec/polkit-mate-authentication-agent-1
 
       #
       # DBUS
@@ -391,6 +410,4 @@ let
     executable = false;
   };
 in
-{
-  inherit configuration;
-}
+configuration

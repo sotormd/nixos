@@ -1,3 +1,5 @@
+{ firefox-unwrapped, wrapFirefox, ... }:
+
 let
   policies = {
     AppAutoUpdate = false;
@@ -82,7 +84,7 @@ let
     TranslateEnabled = false;
     WindowsSSO = false;
   };
+
+  firefox = wrapFirefox firefox-unwrapped { extraPolicies = policies; };
 in
-{
-  inherit policies;
-}
+firefox

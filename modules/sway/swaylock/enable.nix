@@ -1,22 +1,25 @@
 {
   config,
   inputs,
-  lib,
   pkgs,
   ...
 }:
 
 let
-  package = import ./package.nix { inherit config lib pkgs; };
-  xkcd = import ./xkcd.nix { inherit config inputs pkgs; };
+  configuration = pkgs.callPackage ./config.nix { inherit (config) colors vars; };
+  package = pkgs.callPackage ./package.nix { inherit configuration; };
+  xkcd = pkgs.callPackage ./xkcd.nix {
+    inherit inputs;
+    inherit (config) colors wallpapers vars;
+  };
 in
 {
   users.users.${config.vars.user.name}.packages = [
-    package.swaylockWrapped
-    xkcd.xkcdWrapped
+    package
+    xkcd
   ];
   nixpkgs.overlays = [
-    (_: _: { swaylock0 = package.swaylockWrapped; })
-    (_: _: { xkcd0 = xkcd.xkcdWrapped; })
+    (_: _: { swaylock0 = package; })
+    (_: _: { xkcd0 = xkcd; })
   ];
 }

@@ -1,53 +1,63 @@
-{ pkgs, ... }:
+{
+  brightnessctl,
+  dunst,
+  gawk,
+  playerctl,
+  python3,
+  wireplumber,
+  runtimeShell,
+  writeTextFile,
+  ...
+}:
 
 let
-  volume = pkgs.writeTextFile {
+  volume = writeTextFile {
     name = "dunst-scripts-volume";
     text = ''
-      #!${pkgs.runtimeShell}
+      #!${runtimeShell}
 
       # change this to +5% or -5% when binding keys
       change="$1"
 
       # apply volume change
-      ${pkgs.wireplumber}/bin/wpctl set-volume @DEFAULT_AUDIO_SINK@ "$change"
+      ${wireplumber}/bin/wpctl set-volume @DEFAULT_AUDIO_SINK@ "$change"
 
       # get current volume as 0–100 integer
-      vol=$(${pkgs.wireplumber}/bin/wpctl get-volume @DEFAULT_AUDIO_SINK@ | ${pkgs.gawk}/bin/awk '{printf "%d", $2 * 100}')
+      vol=$(${wireplumber}/bin/wpctl get-volume @DEFAULT_AUDIO_SINK@ | ${gawk}/bin/awk '{printf "%d", $2 * 100}')
 
       # show dunst progress bar
-      ${pkgs.dunst}/bin/dunstify -a "volume" -r 9999 "Volume: $vol%" -h int:value:"$vol" -t 1500
+      ${dunst}/bin/dunstify -a "volume" -r 9999 "Volume: $vol%" -h int:value:"$vol" -t 1500
     '';
     destination = "/bin/volume";
     executable = true;
   };
 
-  brightness = pkgs.writeTextFile {
+  brightness = writeTextFile {
     name = "dunst-scripts-brightness";
     text = ''
-      #!${pkgs.runtimeShell}
+      #!${runtimeShell}
 
       change="$1"
 
       # Apply brightness change
-      ${pkgs.brightnessctl}/bin/brightnessctl set "$change"
+      ${brightnessctl}/bin/brightnessctl set "$change"
 
       # Compute % value
-      lvl=$(${pkgs.brightnessctl}/bin/brightnessctl g)
-      max=$(${pkgs.brightnessctl}/bin/brightnessctl m)
+      lvl=$(${brightnessctl}/bin/brightnessctl g)
+      max=$(${brightnessctl}/bin/brightnessctl m)
       pct=$(( lvl * 100 / max ))
 
       # Send dunst progress bar
-      ${pkgs.dunst}/bin/dunstify -a "brightness" -r 9998 "Brightness: $pct%" -h int:value:"$pct" -t 1500
+      ${dunst}/bin/dunstify -a "brightness" -r 9998 "Brightness: $pct%" -h int:value:"$pct" -t 1500
     '';
     destination = "/bin/brightness";
     executable = true;
   };
 
-  media = pkgs.writeTextFile {
+  media = writeTextFile {
     name = "dunst-scripts-media";
     text = ''
-      #!${pkgs.python3.withPackages (ps: with ps; [ syncedlyrics ])}/bin/python3
+      #!${python3.withPackages (ps: with ps; [ syncedlyrics ])}/bin/python3
 
       import argparse
       import html
@@ -58,7 +68,7 @@ let
       import syncedlyrics
       import sys
 
-      PLAYERCTL="${pkgs.playerctl}/bin/playerctl"
+      PLAYERCTL="${playerctl}/bin/playerctl"
       TIMEOUT = 0.25
       RETRY_COUNT = 3
       RUNTIME = os.environ.get("XDG_RUNTIME_DIR", "/tmp")

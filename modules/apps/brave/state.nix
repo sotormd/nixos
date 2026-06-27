@@ -1,4 +1,4 @@
-{ pkgs, ... }:
+{ writeTextFile, ... }:
 
 let
   # configuration at '~/.config/BraveSoftware/Brave-Browser/Local State'
@@ -15,13 +15,11 @@ let
     brave.widevine_opted_in = true;
   };
 
-  state = pkgs.writeTextFile {
+  state = writeTextFile {
     name = "brave-state";
     text = builtins.toJSON localState;
     destination = "/Local State";
     executable = false;
   };
 in
-{
-  inherit state;
-}
+state

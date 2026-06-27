@@ -1,22 +1,27 @@
-{ config, pkgs, ... }:
+{
+  inkscape,
+  runtimeShell,
+  symlinkJoin,
+  writeTextFile,
+  preferences,
+  ...
+}:
 
 let
-  inherit (import ./config.nix { inherit config pkgs; }) preferences;
-
-  inkscapeWrapperScript = pkgs.writeTextFile {
+  inkscapeWrapperScript = writeTextFile {
     name = "inkscape-wrapper-script";
     text = ''
-      #!${pkgs.runtimeShell}
+      #!${runtimeShell}
 
-      env INKSCAPE_PROFILE_DIR="${preferences}" ${pkgs.inkscape}/bin/inkscape "$@"
+      env INKSCAPE_PROFILE_DIR="${preferences}" ${inkscape}/bin/inkscape "$@"
     '';
     destination = "/bin/inkscape";
     executable = true;
   };
 
-  inkscapeWrapped = pkgs.symlinkJoin {
+  inkscapeWrapped = symlinkJoin {
     name = "inkscape-wrapped";
-    paths = [ pkgs.inkscape ];
+    paths = [ inkscape ];
 
     # replace the inkscape binary with our wrapper
     postBuild = ''
@@ -25,6 +30,4 @@ let
     '';
   };
 in
-{
-  inherit inkscapeWrapped;
-}
+inkscapeWrapped

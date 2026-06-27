@@ -1,28 +1,29 @@
 {
-  config,
-  lib,
-  pkgs,
+  swaylock,
+  xkcd0,
+  runtimeShell,
+  symlinkJoin,
+  writeTextFile,
+  configuration,
   ...
 }:
 
 let
-  inherit (import ./config.nix { inherit config lib pkgs; }) configuration;
-
-  swaylockWrapperScript = pkgs.writeTextFile {
+  swaylockWrapperScript = writeTextFile {
     name = "swaylock-wrapper-script";
     text = ''
-      #!${pkgs.runtimeShell}
+      #!${runtimeShell}
 
-      ${pkgs.swaylock}/bin/swaylock --config ${configuration}/config "$@"
-      ${pkgs.xkcd0}/bin/xkcd-refresh
+      ${swaylock}/bin/swaylock --config ${configuration}/config "$@"
+      ${xkcd0}/bin/xkcd-refresh
     '';
     destination = "/bin/swaylock";
     executable = true;
   };
 
-  swaylockWrapped = pkgs.symlinkJoin {
+  swaylockWrapped = symlinkJoin {
     name = "swaylock-wrapped";
-    paths = [ pkgs.swaylock ];
+    paths = [ swaylock ];
 
     # replace the swaylock binary with our wrapper
     postBuild = ''
@@ -31,6 +32,4 @@ let
     '';
   };
 in
-{
-  inherit swaylockWrapped;
-}
+swaylockWrapped

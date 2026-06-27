@@ -1,8 +1,9 @@
 { config, pkgs, ... }:
 
 let
-  package = import ./package.nix { inherit config pkgs; };
+  preferences = pkgs.callPackage ./config.nix { inherit (config) colors; };
+  package = pkgs.callPackage ./package.nix { inherit preferences; };
 in
 {
-  users.users.${config.vars.user.name}.packages = [ package.inkscapeWrapped ];
+  users.users.${config.vars.user.name}.packages = [ package ];
 }

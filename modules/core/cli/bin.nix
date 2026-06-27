@@ -1,4 +1,9 @@
-{ pkgs, ... }:
+{
+  runtimeShell,
+  symlinkJoin,
+  writeTextFile,
+  ...
+}:
 
 let
   scriptNames = [
@@ -15,8 +20,8 @@ let
 
   mkScript =
     name:
-    pkgs.writeTextFile {
-      inherit name;
+    writeTextFile {
+      name = "cli-script-${name}";
       text = builtins.readFile ../../../cli/scripts/${name};
       destination = "/${name}";
       executable = true;
@@ -24,25 +29,36 @@ let
 
   scripts = map mkScript scriptNames;
 
-  scriptsDir = pkgs.symlinkJoin {
-    name = "nixos-scripts";
+  scriptsDir = symlinkJoin {
+    name = "cli-scripts";
     paths = scripts;
   };
 
-  nixosRaw = pkgs.writeShellScriptBin "nixos" (builtins.readFile ../../../cli/nixos);
+  nixosRaw = writeTextFile {
+    name = "cli-nixos-raw";
+    text = builtins.readFile ../../../cli/nixos;
+    destination = "/bin/nixos";
+    executable = true;
+  };
 
-  nixosWithScripts = pkgs.writeShellScriptBin "nixos" ''
-    export NIXOS_SCRIPTS=${scriptsDir}
-    ${nixosRaw}/bin/nixos "$@"
-  '';
-in
-{
-  nixosWrapper = pkgs.symlinkJoin {
-    name = "nixos-wrapper";
+  nixosWithScripts = writeTextFile {
+    name = "cli-nixos-with-scripts";
+    text = ''
+        #!${runtimeShell}
+      export NIXOS_SCRIPTS=${scriptsDir}
+      ${nixosRaw}/bin/nixos "$@"
+    '';
+    destination = "/bin/nixos";
+    executable = true;
+  };
+
+  nixosWrapper = symlinkJoin {
+    name = "cli-nixos-wrapper";
     paths = [ nixosWithScripts ];
     postBuild = ''
       mkdir -p $out/share/man/man1
       install -m644 ${./nixos.1} $out/share/man/man1/nixos.1
     '';
   };
-}
+in
+nixosWrapper

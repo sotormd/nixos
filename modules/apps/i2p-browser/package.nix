@@ -1,20 +1,17 @@
 {
-  config,
-  pkgs,
-  lib,
+  symlinkJoin,
+  jail,
+  desktop,
   ...
 }:
 
 let
-  inherit (import ./bubblewrap.nix { inherit config pkgs lib; }) jail;
-  inherit (import ./desktop.nix { inherit pkgs; }) desktop;
-in
-{
-  i2pBrowser = pkgs.symlinkJoin {
+  i2pBrowser = symlinkJoin {
     name = "i2p-browser";
     paths = [
       jail
       desktop
     ];
   };
-}
+in
+i2pBrowser

@@ -1,7 +1,7 @@
-{ config, pkgs, ... }:
+{ writeTextFile, colors, ... }:
 
 let
-  style = pkgs.writeTextFile {
+  style = writeTextFile {
     name = "eww-style";
     text = ''
        .dock {
@@ -9,7 +9,7 @@ let
         }
 
         .center-dock, .left-dock {
-          background: #${config.colors.eww.bg1};
+          background: #${colors.eww.bg1};
           border-radius: 7px;
           margin: 5px;
           margin-top: 0px;
@@ -22,21 +22,21 @@ let
             background: transparent;
             min-width: 20px;
             min-height: 20px;
-            font-family: "${config.colors.fonts.monospace}";
-            border-top: 3px solid #${config.colors.eww.bg1};
-            border-bottom: 3px solid #${config.colors.eww.bg1};
+            font-family: "${colors.fonts.monospace}";
+            border-top: 3px solid #${colors.eww.bg1};
+            border-bottom: 3px solid #${colors.eww.bg1};
             margin-top: 0px;
             margin-bottom: 0px;
             margin-left: 10px;
             margin-right: 10px;
-            color: #${config.colors.eww.dock.active};
+            color: #${colors.eww.dock.active};
 
             &.focused {
-              border-bottom: 3px solid #${config.colors.eww.dock.active};
+              border-bottom: 3px solid #${colors.eww.dock.active};
             }
 
             &.empty {
-              color: #${config.colors.eww.dock.unfocused};
+              color: #${colors.eww.dock.unfocused};
             }
           }
 
@@ -70,14 +70,14 @@ let
         .widget {
           border-radius: 7px;
           margin: 5px;
-          background: #${config.colors.eww.bg1};
+          background: #${colors.eww.bg1};
         }
 
         .calendar {
-          color: #${config.colors.eww.calendar.unfocused};
+          color: #${colors.eww.calendar.unfocused};
           font-size: 9pt;
           font-weight: 500;
-          font-family: "${config.colors.fonts.normal}";
+          font-family: "${colors.fonts.normal}";
           margin-bottom: 14px;
 
           .week-row {
@@ -87,8 +87,8 @@ let
               font-size: 14pt;
               font-weight: bold;
               .day-cell {
-                background: #${config.colors.eww.calendar.accent};
-                color: #${config.colors.eww.calendar.focused};
+                background: #${colors.eww.calendar.accent};
+                color: #${colors.eww.calendar.focused};
                 &:nth-child(1) {
                   border-radius: 7px 0px 0px 7px;
                 }
@@ -117,7 +117,7 @@ let
               min-height: 25px;
               .line {
                 margin: 0 16px;
-                border-top: 6px solid #${config.colors.eww.bg3};
+                border-top: 6px solid #${colors.eww.bg3};
               }
             }
           }
@@ -134,39 +134,39 @@ let
             }
 
             &.other-month {
-              color: #${config.colors.eww.bg3};
+              color: #${colors.eww.bg3};
             }
             &.today {
-              background: #${config.colors.eww.calendar.accent};
-              color: #${config.colors.eww.bg1};
+              background: #${colors.eww.calendar.accent};
+              color: #${colors.eww.bg1};
             }
           }
         }
 
         .today-button {
-          color: #${config.colors.eww.calendar.accent};
+          color: #${colors.eww.calendar.accent};
           border-radius: 6px;
           font-size: 2.5em;
           padding-top: 5px;
-          background: #${config.colors.eww.bg1};
+          background: #${colors.eww.bg1};
           padding: 3px;
           margin: 3px;
         }
 
         .year-next:hover, .year-prev:hover, .month-prev:hover, .month-next:hover, .fortune-refresh:hover {
-          background: #${config.colors.eww.bg2};
+          background: #${colors.eww.bg2};
           border-radius: 7px;
         }
 
         .year-next:active, .year-prev:active, .month-prev:active, .month-next:active, .fortune-refresh:active {
-          background: #${config.colors.eww.bg3};
+          background: #${colors.eww.bg3};
           border-radius: 7px;
         }
 
         .month, .year {
           font-weight: 900;
           font-size: 0.8em;
-          font-family: "${config.colors.fonts.monospace}";
+          font-family: "${colors.fonts.monospace}";
         }
 
         .start, .leavewindow {
@@ -176,44 +176,44 @@ let
         }
 
         .start-box {
-          background: #${config.colors.eww.bg1};
+          background: #${colors.eww.bg1};
           border-radius : 7px;
         }
 
         .leave-widget-box {
-          border: 5px solid #${config.colors.eww.bg1};
+          border: 5px solid #${colors.eww.bg1};
         }
 
         .start-inner-box, .leave-widget-box {
-          background: #${config.colors.eww.bg0};
+          background: #${colors.eww.bg0};
           border-radius: 7px;
           padding: 10px;
           margin: 5px;
         }
 
         .uptime {
-          color: #${config.colors.eww.start.uptime};
+          color: #${colors.eww.start.uptime};
           font-weight: 700;
         }
 
         .host {
-          color: #${config.colors.eww.start.host};
+          color: #${colors.eww.start.host};
           font-weight: 900;
           font-size: 2em;
         }
 
         .leave-box {
-          color: #${config.colors.eww.start.leave};
+          color: #${colors.eww.start.leave};
           font-size: 2em;
           border-radius: 7px;
         }
 
         .leave-box:hover {
-          background: #${config.colors.eww.bg1};
+          background: #${colors.eww.bg1};
         }
 
         .leave-box:active {
-          background: #${config.colors.eww.bg2};
+          background: #${colors.eww.bg2};
         }
 
         .lock, .poweroff {
@@ -233,7 +233,7 @@ let
         }
 
         .system-box-cpu, .system-box-ram, .system-box-zfs {
-          background-color: #${config.colors.eww.bg0};
+          background-color: #${colors.eww.bg0};
           border: none;
           border-radius: 7px;
           padding: 14px 18px 14px 18px;
@@ -253,14 +253,14 @@ let
         }
 
         .system-circle {
-          background-color: #${config.colors.eww.bg1};
+          background-color: #${colors.eww.bg1};
           border: none;
           border-radius: 100%;
           padding: 0px;
         }
 
         .system-circle-text {
-          background-color: #${config.colors.eww.bg2};
+          background-color: #${colors.eww.bg2};
           border: none;
           border-radius: 100%;
           padding: 40px;
@@ -269,9 +269,9 @@ let
         }
 
         .system-text {
-          background-color: #${config.colors.eww.bg2};
-          border: 1px solid #${config.colors.eww.bg3};
-          color: #${config.colors.eww.start.system.text};
+          background-color: #${colors.eww.bg2};
+          border: 1px solid #${colors.eww.bg3};
+          color: #${colors.eww.start.system.text};
           border-radius: 16px;
           font-size : 1em;
           padding: 0px 8px 0px 8px;
@@ -280,26 +280,26 @@ let
         }
 
         .system-circle-cpu {
-          color: #${config.colors.eww.start.system.cpu};
+          color: #${colors.eww.start.system.cpu};
         }
 
         .system-circle-ram {
-          color: #${config.colors.eww.start.system.ram};
+          color: #${colors.eww.start.system.ram};
         }
 
         .system-circle-zfs {
-          color: #${config.colors.eww.start.system.zfs};
+          color: #${colors.eww.start.system.zfs};
         }
 
         .fortune {
-          color: #${config.colors.eww.start.fortune};
+          color: #${colors.eww.start.fortune};
           font-weight: 700;
         }
 
         .fortune-refresh {
           border-radius: 7px;
           font-size: 2em;
-          color: #${config.colors.eww.start.fortune};
+          color: #${colors.eww.start.fortune};
         }
 
         .fortune-refresh-inner {
@@ -320,14 +320,14 @@ let
         }
 
         .song {
-          color: #${config.colors.eww.start.music.title};
+          color: #${colors.eww.start.music.title};
           font-size : 16px;
           font-weight : bold;
           margin-top: 10px;
         }
 
         .artist {
-          color: #${config.colors.eww.start.music.artist};
+          color: #${colors.eww.start.music.artist};
           font-size : 12px;
           font-weight : 600;
         }
@@ -341,23 +341,23 @@ let
           border-radius: 40px;
         }
         .btn_prev:hover, .btn_play:hover, .btn_next:hover {
-          background-color: #${config.colors.eww.bg1};
+          background-color: #${colors.eww.bg1};
         }
         .btn_prev:active, .btn_play:active, .btn_next:active {
-          background-color: #${config.colors.eww.bg2};
+          background-color: #${colors.eww.bg2};
         }
         .btn_prev {
-          color: #${config.colors.eww.start.music.skip};
+          color: #${colors.eww.start.music.skip};
           font-size : 32px;
           font-weight : normal;
         }
         .btn_play {
-          color: #${config.colors.eww.start.music.play};
+          color: #${colors.eww.start.music.play};
           font-size : 48px;
           font-weight : bold;
         }
         .btn_next {
-          color: #${config.colors.eww.start.music.skip};
+          color: #${colors.eww.start.music.skip};
           font-size : 32px;
           font-weight : normal;
         }
@@ -365,12 +365,12 @@ let
         .music_bar scale trough highlight {
           all: unset;
           border-radius: 2px;
-          background-color: #${config.colors.eww.start.music.slider};
+          background-color: #${colors.eww.start.music.slider};
         }
         .music_bar scale trough {
           all: unset;
           border-radius: 2px;
-          background-color: #${config.colors.eww.bg3};
+          background-color: #${colors.eww.bg3};
           min-height: 10px;
           min-width: 310px;
         }
@@ -380,13 +380,13 @@ let
 
       .lyrics-box {
         background-color: transparent;
-        font-family: "${config.colors.fonts.normal}";
+        font-family: "${colors.fonts.normal}";
       }
 
       .lyrics-line {
         border: none;
         background: none;
-        color: #${config.colors.eww.start.music.lyrics};
+        color: #${colors.eww.start.music.lyrics};
         font-size: 10pt;
         font-weight: 700;
         margin: 2px 0;
@@ -404,6 +404,4 @@ let
     executable = false;
   };
 in
-{
-  inherit style;
-}
+style

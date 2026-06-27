@@ -1,13 +1,18 @@
-{ config, pkgs, ... }:
+{
+  writeTextFile,
+  colors,
+  vars,
+  ...
+}:
 
 let
-  configuration = pkgs.writeTextFile {
+  configuration = writeTextFile {
     name = "swaylock-config";
     text = ''
-      font=${config.colors.fonts.normal}
+      font=${colors.fonts.normal}
       font-size=16
 
-      image=/home/${config.vars.user.name}/.local/share/xkcd.png
+      image=/home/${vars.user.name}/.local/share/xkcd.png
 
       indicator-radius=90
       indicator-thickness=7
@@ -19,9 +24,9 @@ let
       inside-caps-lock-color=00000000
 
       ring-color=00000000
-      ring-clear-color=${config.colors.swaylock.clear}
-      ring-ver-color=${config.colors.swaylock.verifying}
-      ring-wrong-color=${config.colors.swaylock.wrong}
+      ring-clear-color=${colors.swaylock.clear}
+      ring-ver-color=${colors.swaylock.verifying}
+      ring-wrong-color=${colors.swaylock.wrong}
       ring-caps-lock-color=00000000
 
       line-color=00000000
@@ -42,8 +47,8 @@ let
       text-wrong-color=00000000
       text-caps-lock-color=00000000
 
-      key-hl-color=${config.colors.swaylock.verifying}
-      bs-hl-color=${config.colors.swaylock.clear}
+      key-hl-color=${colors.swaylock.verifying}
+      bs-hl-color=${colors.swaylock.clear}
       caps-lock-key-hl-color=00000000
       caps-lock-bs-hl-color=00000000
 
@@ -53,6 +58,4 @@ let
     executable = false;
   };
 in
-{
-  inherit configuration;
-}
+configuration

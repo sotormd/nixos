@@ -1,7 +1,12 @@
-{ config, pkgs, ... }:
+{
+  inkscape,
+  writeTextFile,
+  colors,
+  ...
+}:
 
 let
-  preferences = pkgs.writeTextFile {
+  preferences = writeTextFile {
     name = "inkscape-preferences";
     text = ''
       <?xml version="1.0" encoding="UTF-8" standalone="no"?>
@@ -101,11 +106,11 @@ let
            id="template">
           <group
              id="base"
-             pagecolor="#${config.colors.inkscape.pagecolor}"
-             deskcolor="#${config.colors.inkscape.deskcolor}"
+             pagecolor="#${colors.inkscape.pagecolor}"
+             deskcolor="#${colors.inkscape.deskcolor}"
              pageopacity="0"
              pagecheckerboard="0"
-             bordercolor="#${config.colors.inkscape.bordercolor}"
+             bordercolor="#${colors.inkscape.bordercolor}"
              borderopacity="1"
              objecttolerance="10.0"
              gridtolerance="10.0"
@@ -970,7 +975,7 @@ let
              mode="1">
             <group
                id="shown"
-               ver${pkgs.inkscape.version}="1" />
+               ver${inkscape.version}="1" />
           </group>
           <group
              id="rendering" />
@@ -1107,8 +1112,8 @@ let
         <group
            id="theme"
            defaultPreferDarkTheme="0"
-           defaultIconTheme="${config.colors.gtk.icons.name}"
-           defaultGtkTheme="${config.colors.gtk.theme.name}"
+           defaultIconTheme="${colors.gtk.icons.name}"
+           defaultGtkTheme="${colors.gtk.theme.name}"
            narrowSpinButton="1"
            preferDarkTheme="1"
            darkTheme="1"
@@ -1127,6 +1132,4 @@ let
     destination = "/preferences.xml";
   };
 in
-{
-  inherit preferences;
-}
+preferences

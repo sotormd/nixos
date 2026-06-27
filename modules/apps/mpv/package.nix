@@ -1,22 +1,27 @@
-{ pkgs, ... }:
+{
+  mpv,
+  runtimeShell,
+  symlinkJoin,
+  writeTextFile,
+  configuration,
+  ...
+}:
 
 let
-  inherit (import ./config.nix { inherit pkgs; }) configuration;
-
-  mpvWrapperScript = pkgs.writeTextFile {
+  mpvWrapperScript = writeTextFile {
     name = "mpv-wrapper-script";
     text = ''
-      #!${pkgs.runtimeShell}
+      #!${runtimeShell}
 
-      ${pkgs.mpv}/bin/mpv --config-dir=${configuration} "$@"
+      ${mpv}/bin/mpv --config-dir=${configuration} "$@"
     '';
     destination = "/bin/mpv";
     executable = true;
   };
 
-  mpvWrapped = pkgs.symlinkJoin {
+  mpvWrapped = symlinkJoin {
     name = "mpv-wrapped";
-    paths = [ pkgs.mpv ];
+    paths = [ mpv ];
 
     # replace the mpv binary with our wrapper
     postBuild = ''
@@ -25,6 +30,4 @@ let
     '';
   };
 in
-{
-  inherit mpvWrapped;
-}
+mpvWrapped

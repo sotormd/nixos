@@ -1,24 +1,12 @@
 {
-  config,
-  inputs,
   lib,
-  pkgs,
+  writeTextFile,
+  homepage,
+  vars,
   ...
 }:
 
 let
-  inherit
-    (import ./home.nix {
-      inherit
-        config
-        inputs
-        lib
-        pkgs
-        ;
-    })
-    homepage
-    ;
-
   basePolicies = {
     # permission settings
     DefaultClipboardSetting = 2;
@@ -73,22 +61,22 @@ let
     DefaultSearchProviderEnabled = true;
 
     DefaultSearchProviderImageURL = lib.concatStrings (
-      lib.choose config.vars.selfhosted.searxng.enable
-        "https://${config.vars.selfhosted.searxng.domain}/searxng/static/themes/simple/img/favicon.svg"
+      lib.choose vars.selfhosted.searxng.enable
+        "https://${vars.selfhosted.searxng.domain}/searxng/static/themes/simple/img/favicon.svg"
         "https://duckduckgo.com/assets/logo_header_mobile.alt.v109.svg"
     );
 
     DefaultSearchProviderKeyword = lib.concatStrings (
-      lib.choose config.vars.selfhosted.searxng.enable ":sx" ":ddg"
+      lib.choose vars.selfhosted.searxng.enable ":sx" ":ddg"
     );
 
     DefaultSearchProviderName = lib.concatStrings (
-      lib.choose config.vars.selfhosted.searxng.enable "SearXNG" "DuckDuckGo"
+      lib.choose vars.selfhosted.searxng.enable "SearXNG" "DuckDuckGo"
     );
 
     DefaultSearchProviderSearchURL = lib.concatStrings (
-      lib.choose config.vars.selfhosted.searxng.enable
-        "https://${config.vars.selfhosted.searxng.domain}/searxng/search?q={searchTerms}"
+      lib.choose vars.selfhosted.searxng.enable
+        "https://${vars.selfhosted.searxng.domain}/searxng/search?q={searchTerms}"
         "https://duckduckgo.com/?q={searchTerms}"
     );
 
@@ -203,8 +191,8 @@ let
     # disable V8
     DefaultJavaScriptJitSetting = 2;
     DefaultJavaScriptOptimizerSetting = 2;
-    JavaScriptJitAllowedForSites = [ config.vars.selfhosted.vaultwarden.domain ];
-    JavaScriptOptimizerAllowedForSites = [ config.vars.selfhosted.vaultwarden.domain ];
+    JavaScriptJitAllowedForSites = [ vars.selfhosted.vaultwarden.domain ];
+    JavaScriptOptimizerAllowedForSites = [ vars.selfhosted.vaultwarden.domain ];
 
     # disable promotions
     PromotionsEnabled = false;
@@ -230,13 +218,11 @@ let
       };
     };
 
-  policies = pkgs.writeTextFile {
+  policies = writeTextFile {
     name = "brave-policies";
     text = builtins.toJSON (basePolicies // extensionPolicies);
     destination = "/extra.json";
     executable = false;
   };
 in
-{
-  inherit policies;
-}
+policies

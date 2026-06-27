@@ -1,10 +1,15 @@
-{ pkgs, ... }:
+{
+  runtimeShell,
+  symlinkJoin,
+  writeTextFile,
+  ...
+}:
 
 let
-  animationScript = pkgs.writeTextFile {
+  animationScript = writeTextFile {
     name = "waybar-script-animation";
     text = ''
-      #!${pkgs.runtimeShell}
+      #!${runtimeShell}
 
       FILE="$XDG_RUNTIME_DIR/waybar-noanimation"
 
@@ -18,11 +23,9 @@ let
     executable = true;
   };
 
-  scripts = pkgs.symlinkJoin {
+  scripts = symlinkJoin {
     name = "waybar-scripts";
     paths = [ animationScript ];
   };
 in
-{
-  inherit scripts;
-}
+scripts

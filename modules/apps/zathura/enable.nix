@@ -1,8 +1,9 @@
 { config, pkgs, ... }:
 
 let
-  package = import ./package.nix { inherit config pkgs; };
+  zathurarc = pkgs.callPackage ./config.nix { inherit (config) colors; };
+  package = pkgs.callPackage ./package.nix { inherit zathurarc; };
 in
 {
-  users.users.${config.vars.user.name}.packages = [ package.zathuraWrapped ];
+  users.users.${config.vars.user.name}.packages = [ package ];
 }

@@ -1,14 +1,10 @@
-{
-  config,
-  lib,
-  pkgs,
-  ...
-}:
+{ config, pkgs, ... }:
 
 let
-  package = import ./package.nix { inherit config lib pkgs; };
+  configuration = pkgs.callPackage ./config.nix { inherit (config) colors wallpapers vars; };
+  package = pkgs.callPackage ./package.nix { inherit configuration; };
 in
 {
-  users.users.${config.vars.user.name}.packages = [ package.swayWrapped ];
-  nixpkgs.overlays = [ (_: _: { sway0 = package.swayWrapped; }) ];
+  users.users.${config.vars.user.name}.packages = [ package ];
+  nixpkgs.overlays = [ (_: _: { sway0 = package; }) ];
 }

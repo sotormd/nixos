@@ -1,31 +1,17 @@
 {
-  config,
-  inputs,
-  lib,
-  pkgs,
+  symlinkJoin,
+  jail,
+  desktop,
   ...
 }:
 
 let
-  inherit
-    (import ./bubblewrap.nix {
-      inherit
-        config
-        inputs
-        lib
-        pkgs
-        ;
-    })
-    jail
-    ;
-  inherit (import ./desktop.nix { inherit pkgs; }) desktop;
-in
-{
-  brave = pkgs.symlinkJoin {
+  brave = symlinkJoin {
     name = "brave";
     paths = [
       jail
       desktop
     ];
   };
-}
+in
+brave

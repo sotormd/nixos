@@ -1,16 +1,18 @@
 {
-  config,
-  pkgs,
   lib,
+  writeTextFile,
+  symlinkJoin,
+  colors,
+  vars,
   ...
 }:
 
 let
   inherit (lib) ports;
 
-  proxy = config.vars.selfhosted.i2pd.address;
+  proxy = vars.selfhosted.i2pd.address;
 
-  userJs = pkgs.writeTextFile {
+  userJs = writeTextFile {
     name = "i2p-browser-userjs";
     text = ''
       user_pref("network.proxy.type", 1);
@@ -44,8 +46,8 @@ let
 
       user_pref("browser.tabs.inTitlebar", 0);
       user_pref("font.default.x-western", "sans-serif");
-      user_pref("font.name.sans-serif.x-western", "${config.colors.fonts.normal}");
-      user_pref("font.name.serif.x-western", "${config.colors.fonts.normal}");
+      user_pref("font.name.sans-serif.x-western", "${colors.fonts.normal}");
+      user_pref("font.name.serif.x-western", "${colors.fonts.normal}");
       user_pref("toolkit.legacyUserProfileCustomizations.stylesheets", true);
 
       user_pref("media.peerconnection.enabled", false);
@@ -59,7 +61,7 @@ let
     destination = "/user.js";
   };
 
-  userChrome = pkgs.writeTextFile {
+  userChrome = writeTextFile {
     name = "i2p-browser-userchrome";
     text = ''
       /* Hide unnecessary toolbar items */
@@ -80,7 +82,7 @@ let
       #sidebar-button { display: none !important; }
 
       #urlbar-input { padding-left: 20px !important; }
-      #urlbar, #searchbar .searchbar-textbox { font-family: ${config.colors.fonts.normal} !important; }
+      #urlbar, #searchbar .searchbar-textbox { font-family: ${colors.fonts.normal} !important; }
 
       /* Hide tab strip and related UI */
       #TabsToolbar {
@@ -107,19 +109,19 @@ let
     destination = "/chrome/userChrome.css";
   };
 
-  userContent = pkgs.writeTextFile {
+  userContent = writeTextFile {
     name = "i2p-browser-usercontent";
     text = ''
       @-moz-document url("about:newtab"), url("about:home") {
         :root[lwt-newtab-brighttext] {
-          --newtab-background-color: #${config.colors.bg0} !important;
+          --newtab-background-color: #${colors.bg0} !important;
         }
       }
     '';
     destination = "/chrome/userContent.css";
   };
 
-  profile = pkgs.symlinkJoin {
+  profile = symlinkJoin {
     name = "i2p-browser-profile";
     paths = [
       userJs
@@ -128,6 +130,4 @@ let
     ];
   };
 in
-{
-  inherit profile;
-}
+profile
