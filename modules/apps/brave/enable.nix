@@ -6,12 +6,13 @@
 }:
 
 let
+  args = import ./args.nix;
   preferences = pkgs.callPackage ./preferences.nix { inherit (config) colors; };
+  executable = pkgs.callPackage ./executable.nix { inherit args preferences; };
   homepage = pkgs.callPackage ./home.nix {
     inherit inputs;
     inherit (config) colors vars;
   };
-  executable = pkgs.callPackage ./executable.nix { inherit preferences; };
   policies = pkgs.callPackage ./policies.nix {
     inherit homepage;
     inherit (config) vars;

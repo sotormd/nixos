@@ -6,7 +6,8 @@
 }:
 
 let
-  executable = pkgs.callPackage ./executable.nix { };
+  policies = import ./policies.nix;
+  executable = pkgs.callPackage ./executable.nix { inherit policies; };
   profile = pkgs.callPackage ./profile.nix { inherit (config) colors vars; };
   script = pkgs.callPackage ./script.nix { inherit executable profile; };
   jail = pkgs.callPackage ./bubblewrap.nix {
