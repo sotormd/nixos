@@ -19,9 +19,10 @@
     "sd_mod"
   ];
 
-  # for kvm on amd devices
+  # for kvm
   boot.kernelModules = [
     "kvm-amd"
+    "kvm-intel"
   ];
 
   boot.kernelParams = [
@@ -124,6 +125,7 @@
 
   # microcode
   hardware.cpu.amd.updateMicrocode = lib.mkDefault config.hardware.enableRedistributableFirmware;
+  hardware.cpu.intel.updateMicrocode = lib.mkDefault config.hardware.enableRedistributableFirmware;
 
   # kernel sysctl options
   boot.kernel.sysctl = {

@@ -9,9 +9,9 @@ This document covers the requirements for the Laptop role.
 
 1. `x86_64-linux` architecture
 
-2. AMD chipset
+2. AMD/Intel chipset
 
-3. No specific graphics requirements (eg. no NVIDIA)
+3. No discrete graphics
 
 4. UEFI firmware
 

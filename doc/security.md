@@ -2230,17 +2230,7 @@ covered below:
     firewire-core
     ```
 
-23. intel thunderbolt
-
-    high-speed data and power transfer
-
-    can blacklist unless using thunderbolt
-
-    ```
-    thunderbolt
-    ```
-
-24. bluetooth
+23. bluetooth
 
     can blacklist unless using bluetooth
 
@@ -2249,7 +2239,7 @@ covered below:
     btusb
     ```
 
-25. usb video class devices
+24. usb video class devices
 
     can blacklist unless using webcam
 
@@ -2257,7 +2247,7 @@ covered below:
     uvcvideo
     ```
 
-26. annoying PC speaker module
+25. annoying PC speaker module
 
     can blacklist unless deaf
 
@@ -2265,7 +2255,7 @@ covered below:
     pcspkr
     ```
 
-27. dirtyfrag mitigation
+26. dirtyfrag mitigation
 
     ```
     esp4

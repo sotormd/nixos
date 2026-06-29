@@ -142,11 +142,6 @@ let
     # can blacklist unless using old firewire devices
     "firewire-core"
 
-    # intel thunderbolt
-    # high-speed data and power transfer
-    # can blacklist unless using thunderbolt
-    "thunderbolt"
-
     # bluetooth
     # can blacklist unless using bluetooth
     "bluetooth"
