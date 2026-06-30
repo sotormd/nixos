@@ -156,9 +156,10 @@ recovery, etc.)
 These images provide a preconfigured environment for setting up this flake, and
 include useful tools for installation, recovery, etc.
 
-It is also possible to further configure these images for specific installation
-setups. Modules for remote installation over a wireless network are also
-provided.
+This flake also provides image `nixosModules` which can be consumed by
+downstream flakes. It is also possible to further configure these images for
+specific installation setups. Modules for remote installation over a wireless
+network are also provided.
 
 See [Images Documentation](./doc/images.md) for more details.
 
@@ -185,11 +186,21 @@ workflow examples.
   `nixosModules.modules.*`.
 - [`./profiles/`](./profiles) are high-level collections of modules, which are
   exposed under `nixosModules.profiles.*`.
-- [`./roles/`](./roles) are the final outputs provided by this flake, each role
-  is a full system configuration composed of several profiles/modules.
+- [`./roles/`](./roles) are the final `nixosConfiguration` outputs provided by
+  this flake, each role is a full system configuration composed of several
+  profiles/modules.
 - Variables capture the differences between multiple instances of the same role.
   Variables are not provided in this flake and are defined on a per-deployment
   basis.
+
+The roles include both `image-*` roles and `machine-*` roles. Images are full
+systems and can be used directly to build images as covered above. The machine
+roles do NOT correspond to real hosts. A real host is described by the
+combination of a role `nixosConfiguration` along with variables and secrets
+which are defined during bootstrap. This allows the roles to cater to various
+setups and network topologies. Adding new hardware and/or distributing services
+across new hardware should involve zero code changes to this flake, and are
+entirely handled by variables.
 
 # Related Flakes
 
