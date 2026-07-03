@@ -12,6 +12,7 @@
 
   # kernel modules you probably need
   boot.initrd.availableKernelModules = [
+    "thunderbolt"
     "nvme"
     "xhci_pci"
     "usbhid"

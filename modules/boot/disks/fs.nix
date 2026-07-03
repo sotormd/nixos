@@ -12,6 +12,6 @@
   services.zfs.autoScrub.enable = true;
 
   # respect zfs safety stuff
-  boot.zfs.forceImportRoot = false;
+  boot.zfs.forceImportRoot = true;
   boot.zfs.forceImportAll = false;
 }
