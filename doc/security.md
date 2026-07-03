@@ -2239,15 +2239,7 @@ covered below:
     btusb
     ```
 
-24. usb video class devices
-
-    can blacklist unless using webcam
-
-    ```
-    uvcvideo
-    ```
-
-25. annoying PC speaker module
+24. annoying PC speaker module
 
     can blacklist unless deaf
 
@@ -2255,7 +2247,7 @@ covered below:
     pcspkr
     ```
 
-26. dirtyfrag mitigation
+25. dirtyfrag mitigation
 
     ```
     esp4

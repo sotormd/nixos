@@ -147,10 +147,6 @@ let
     "bluetooth"
     "btusb"
 
-    # usb video class devices
-    # can blacklist unless using webcam
-    "uvcvideo"
-
     # annoying PC speaker module
     # can blacklist unless deaf
     "pcspkr"
