@@ -6,5 +6,6 @@ in
 {
   imports = [
     boot.uboot
+    boot.quiet
   ];
 }

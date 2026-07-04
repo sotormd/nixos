@@ -1663,27 +1663,13 @@ Several kernel parameters are used to harden the kernel. They are covered below:
     kvm.nx_huge_pages=force
     ```
 
-17. quiet boot
-
-    do not print unnecessary text during boot
-
-    no real security benefit
-
-    ```
-    quiet
-    loglevel=3
-    rd.systemd.show_status=false
-    rd.udev.log_level=3
-    udev.log_priority=3
-    ```
-
-18. prevent kaudit overflow
+17. prevent kaudit overflow
 
     ```
     audit_backlog_limit=8192
     ```
 
-19. disable IPv6
+18. disable IPv6
 
     note that disabling IPv6 has no security benefit whatsoever, I just do not
     require it

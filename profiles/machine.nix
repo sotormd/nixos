@@ -18,7 +18,6 @@ in
     boot.localization
     boot.malloc
     boot.persist
-    boot.quiet
     boot.stage-1
     boot.users
     core.cli
