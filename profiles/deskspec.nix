@@ -21,7 +21,6 @@ in
     boot.localization
     boot.malloc
     boot.persist
-    boot.quiet
     boot.secureboot
     boot.stage-1
     boot.systemd-boot
