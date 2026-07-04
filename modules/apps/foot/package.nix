@@ -4,6 +4,7 @@
   symlinkJoin,
   writeTextFile,
   configuration,
+  colors,
   ...
 }:
 
@@ -13,7 +14,15 @@ let
     text = ''
       #!${runtimeShell}
 
-      ${foot}/bin/foot --config=${configuration}/foot.ini "$@"
+      FOCUSED_OUT="$(swaymsg -t get_outputs -r | jq -r '.[] | select(.focused == true).name')"
+
+      if [ "$FOCUSED_OUT" = "eDP-1" ]; then
+        SIZE=7
+      else
+        SIZE=10
+      fi
+
+      ${foot}/bin/foot --config=${configuration}/foot.ini --font "${colors.fonts.monospace}:size=$SIZE" "$@"
     '';
     destination = "/bin/foot";
     executable = true;
