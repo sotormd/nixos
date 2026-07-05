@@ -19,7 +19,6 @@ in
     boot.disks
     boot.kernel
     boot.localization
-    boot.malloc
     boot.persist
     boot.secureboot
     boot.stage-1
