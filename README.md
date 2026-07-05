@@ -140,10 +140,11 @@ Services features:
 
 This flake uses role-based configuration.
 
-| Role   | Description                        | Documentation                                                                                                  |
-| ------ | ---------------------------------- | -------------------------------------------------------------------------------------------------------------- |
-| Laptop | Configuration for my laptops.      | [Requirements](./doc/laptop/requirements.md) - [Setup](./doc/laptop/setup.md) - [Usage](./doc/laptop/usage.md) |
-| Server | Configuration for my home-servers. | [Requirements](./doc/server/requirements.md) - [Setup](./doc/server/setup.md) - [Usage](./doc/server/usage.md) |
+| Role   | Description                            | Documentation                                                                                                  |
+| ------ | -------------------------------------- | -------------------------------------------------------------------------------------------------------------- |
+| Laptop | Configuration for my laptops.          | [Requirements](./doc/laptop/requirements.md) - [Setup](./doc/laptop/setup.md) - [Usage](./doc/laptop/usage.md) |
+| Server | Configuration for my home-servers.     | [Requirements](./doc/server/requirements.md) - [Setup](./doc/server/setup.md) - [Usage](./doc/server/usage.md) |
+| Pi     | Configuration for my Raspberry Pi 4bs. | [Requirements](./doc/pi/requirements.md) - [Setup](./doc/pi/setup.md) - [Usage](./doc/pi/usage.md)             |
 
 Some previous roles have been moved to separate repos, see
 [Related Flakes](#related-flakes).

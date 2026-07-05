@@ -6,15 +6,20 @@ in
 {
   imports = [
     apps.brave
+    apps.dev
     apps.file-roller
     apps.foot
+    apps.git
     apps.i2p-browser
     apps.inkscape
     apps.mousepad
     apps.mpv
     apps.neovim
+    apps.sandbox
     apps.thunar
     apps.zathura
+    services.distrobox
+    services.libvirtd
     services.pipewire
     sway.cage
     sway.dunst

@@ -1,4 +1,4 @@
-name: Evaluate Machine - Server
+name: Evaluate Machine - Pi
 
 on:
   push:
@@ -33,5 +33,6 @@ jobs:
       - name: Stage changes
         run: git add .
 
-      - name: Server evaluation
-        run: nix eval .#nixosConfigurations.machine-server-x86_64-linux.config.system.build.toplevel --json
+      - name: Pi evaluation
+        run: nix eval .#nixosConfigurations.machine-pi-aarch64-linux.config.system.build.toplevel --json
+

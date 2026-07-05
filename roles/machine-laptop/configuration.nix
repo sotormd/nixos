@@ -26,19 +26,6 @@
     "kvm-intel"
   ];
 
-  boot.kernelParams = [
-    # disable password timeout for luks devices
-    "luks.options=timeout=0"
-    "rd.luks.options=timeout=0"
-
-    # assume root device is already there
-    # do not wait for it to appear
-    "rootflags=x-systemd.device-timeout=0"
-
-    # nvme speedup
-    "nvme_core.default_ps_max_latency_us=0"
-  ];
-
   # swap with random encryption
   swapDevices = [
     {

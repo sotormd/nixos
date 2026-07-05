@@ -14,8 +14,8 @@
     inputs.wallpapers.nixosModules.wallpapers
 
     self.nixosModules.profiles.desktop
+    self.nixosModules.profiles.efitop
     self.nixosModules.profiles.machine
-    self.nixosModules.profiles.workstation
 
   ];
 }

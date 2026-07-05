@@ -4,6 +4,10 @@ arch = "x86_64-linux"
 
 [[machines]]
 name = "server"
+arch = "x86_64-linux"
+
+[[machines]]
+name = "pi"
 arch = "aarch64-linux"
 
 [[images]]

@@ -20,51 +20,146 @@ in
 {
   imports = [ (modulesPath + "/installer/scan/not-detected.nix") ];
 
+  # kernel modules you probably need
   boot.initrd.availableKernelModules = [
+    "thunderbolt"
+    "nvme"
     "xhci_pci"
     "usbhid"
+    "usb_storage"
+    "sd_mod"
   ];
+
+  # for kvm
+  boot.kernelModules = [
+    "kvm-amd"
+    "kvm-intel"
+  ];
+
+  # swap with random encryption
+  swapDevices = [
+    {
+      device = "/dev/disk/by-partuuid/${config.vars.partitions.swap}";
+      randomEncryption = true;
+    }
+  ];
+
+  # main root partition
+  boot.initrd.luks.devices = {
+    root = {
+      device = "/dev/disk/by-partuuid/${config.vars.partitions.root}";
+      preLVM = true;
+    };
+  };
 
   # filesystems
   fileSystems = {
 
-    # root partition
+    # boot partition
+    # nosuid,nodev,noexec
+    "/boot" = {
+      device = "/dev/disk/by-partuuid/${config.vars.partitions.boot}";
+      fsType = "vfat";
+      options = [
+        "fmask=0022"
+        "dmask=0022"
+      ]
+      ++ lib.mountData;
+    };
+
+    # rpool/nixos/root -> /
     "/" = {
-      device = "/dev/disk/by-partuuid/${config.vars.partitions.root}";
-      fsType = "ext4";
+      device = "rpool/nixos/root";
+      fsType = "zfs";
+    };
+
+    # rpool/nixos/home -> /home
+    # nosuid,nodev,noexec
+    "/home" = {
+      device = "rpool/nixos/home";
+      fsType = "zfs";
+      options = lib.mountData;
+    };
+
+    # rpool/nixos/var -> /var
+    # nosuid,nodev,noexec
+    "/var" = {
+      device = "rpool/nixos/var";
+      fsType = "zfs";
+      options = lib.mountData;
+    };
+
+    # rpool/nixos/etc -> /etc
+    # nosuid,nodev,noexec
+    "/etc" = {
+      device = "rpool/nixos/etc";
+      fsType = "zfs";
+      options = lib.mountData;
+    };
+
+    # rpool/nixos/srv -> /srv
+    # nosuid,nodev,noexec
+    "/srv" = {
+      device = "rpool/nixos/srv";
+      fsType = "zfs";
+      options = lib.mountData;
+    };
+
+    # rpool/nixos/nix -> /nix
+    "/nix" = {
+      device = "rpool/nixos/nix";
+      fsType = "zfs";
+    };
+
+    # rpool/nixos/persist -> /persist
+    "/persist" = {
+      device = "rpool/nixos/persist";
+      fsType = "zfs";
+      neededForBoot = true;
     };
 
   }
 
   # nosuid,nodev
   // lib.mkSelfHarden [
-    "/persist"
+    "/persist/nixos"
   ]
 
   # nosuid,nodev,noexec
   // lib.mkSelfData [
+    "/bin"
+    "/lib"
+    "/lib64"
     "/persist/sops-nix"
+    "/root"
     "/tmp"
   ];
 
-  # so that the raspberry pi doesn't explode
-  nix.settings.max-jobs = 1;
-  nix.settings.cores = 1;
+  # microcode
+  hardware.cpu.amd.updateMicrocode = lib.mkDefault config.hardware.enableRedistributableFirmware;
+  hardware.cpu.intel.updateMicrocode = lib.mkDefault config.hardware.enableRedistributableFirmware;
 
   # kernel sysctl options
   boot.kernel.sysctl = {
     # increase bits of entropy used for mmap ASLR
-    "vm.mmap_rnd_bits" = lib.mkForce "33";
+    "vm.mmap_rnd_bits" = lib.mkForce "32";
     # server needs to forward packets
     "net.ipv4.ip_forward" = lib.mkForce "1";
   };
 
+  # wait a bit before starting wpa_supplicant
+  systemd.services."wpa_supplicant-${config.vars.wireless.interface}" = {
+    after = [ "systemd-networkd.service" ];
+    serviceConfig.ExecStartPre = "${pkgs.writeShellScriptBin "wpa_supplicant-delay" "sleep 8"}/bin/wpa_supplicant-delay";
+  };
+
+  # do not suspend when lid is closed
+  services.logind.settings.Login.HandleLidSwitch = "ignore";
+
   # do not autostart microvms
   microvm.autostart = lib.mkForce [ ];
 
-  # start microvms with enough delays
-  # otherwise the pi will explode if all
-  # microvms start concurrently
+  # start microvms
   systemd.services.start-microvms = {
     enable = microvmsNeeded;
     description = "Start MicroVMs";
@@ -87,7 +182,7 @@ in
           i2pd
           qbt
           ;
-        step = "180";
+        step = "10";
       in
       {
         Type = "oneshot";
@@ -145,10 +240,6 @@ in
   };
 
   # stop microvms
-  # probably need this before
-  # a flake re-eval or rebuild
-  # so that it doesn't explode
-  #
   # dont stop unbound
   systemd.services.stop-microvms = {
     enable = microvmsNeeded;
@@ -180,9 +271,6 @@ in
     wireguard = {
       forwarding = lib.mkForce true;
     };
-    features = {
-      secureboot.enable = lib.mkForce false;
-    };
     modes = {
       roaming.enable = lib.mkForce false;
       gnome.enable = lib.mkForce false;
@@ -206,9 +294,6 @@ in
       ];
       i2pdRequired = [
         services.qbt.enable
-      ];
-      featuresDisabled = [
-        config.vars.features.secureboot.enable
       ];
       selfhostedDisabled = [
         config.vars.selfhosted.searxng.enable
@@ -242,10 +327,6 @@ in
       {
         assertion = config.vars.wireguard.forwarding;
         message = "variables: vars.wireguard.forwarding needs to be true";
-      }
-      {
-        assertion = builtins.all (x: !x) featuresDisabled;
-        message = "variables: unsupported vars.features.* are enabled";
       }
       {
         assertion = builtins.all (x: !x) selfhostedDisabled;

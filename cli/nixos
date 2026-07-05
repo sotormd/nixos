@@ -13,8 +13,8 @@ if [ -z "${NIXOS_ROLE:-}" ]; then
     exit 1
 fi
 
-# allowed roles: laptop, server
-if ! [[ "${NIXOS_ROLE:-}" =~ ^(laptop|server)$ ]]; then
+# allowed roles: laptop, server, pi
+if ! [[ "${NIXOS_ROLE:-}" =~ ^(laptop|server|pi)$ ]]; then
   echo "Error: unexpected role $NIXOS_ROLE" >&2
   exit 1
 fi

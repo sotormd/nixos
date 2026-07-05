@@ -10,10 +10,11 @@ This document covers using the Laptop role.
 4. [Other Applications](#other-applications)
 5. [Virtualisation and Containers](#virtualisation-and-containers)
 6. [Specialisation Modes](#specialisation-modes)
-7. [Services](#services)
-8. [Using Selfhosted Features](#using-selfhosted-features)
-9. [Development](#development)
-10. [Further Reading](#further-reading)
+7. [Bind Mounts and External Disks](#bind-mounts-and-external-disks)
+8. [Services](#services)
+9. [Using Selfhosted Features](#using-selfhosted-features)
+10. [Development](#development)
+11. [Further Reading](#further-reading)
 
 # System Maintenance
 
@@ -662,6 +663,14 @@ Notable changes from the default configuration:
 GNOME Mode can be enabled using `vars.modes.gnome.enable` and used by booting
 into the `gnome` specialisation from the boot menu.
 
+# Bind Mounts and External Disks
+
+The variables file can be used to create bind mounts, which can be used to put
+files in expected data directories from external disks.
+
+See [Additional Disks and Mounts](../filesystems.md#additional-disks-and-mounts)
+for more information.
+
 # Services
 
 Only the SSH server is available.
@@ -751,7 +760,11 @@ The Laptop has to be declared as a peer on the Server as well. See
 The Laptop can be configured to use several selfhosted features from a Server
 using the `vars.selfhosted.*` variables.
 
-1. `vars.selfhosted.searxng`
+1. Unbound DNS resolver
+
+   Set the `vars.wireless.resolver` to the Server WireGuard peer address.
+
+1. SearXNG metasearch engine `vars.selfhosted.searxng`
 
    ```nix
    {
@@ -762,7 +775,7 @@ using the `vars.selfhosted.*` variables.
 
    SearXNG instance to use for web search.
 
-2. `vars.selfhosted.vaultwarden`
+1. Vaultwarden password manager `vars.selfhosted.vaultwarden`
 
    ```nix
    {
@@ -773,7 +786,7 @@ using the `vars.selfhosted.*` variables.
 
    Vaultwarden instance to use for the web vault.
 
-3. `vars.selfhosted.i2pd`
+1. I2PD i2p router `vars.selfhosted.i2pd`
 
    ```nix
    {
@@ -785,7 +798,7 @@ using the `vars.selfhosted.*` variables.
 
    I2PD router to use for the webconsole and HTTP proxy.
 
-4. `vars.selfhosted.qbt`
+1. qBittorrent bittorrent client `vars.selfhosted.qbt`
 
    ```nix
    {

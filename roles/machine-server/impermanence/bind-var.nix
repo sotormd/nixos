@@ -4,7 +4,7 @@ lib.mkIf config.vars.features.impermanence.enable {
 
   fileSystems =
 
-    # nosuid,nodev,noexec
+    # nosuid, nodev, noexec
     lib.mkPersistData "/persist/root" [
 
       # needed by nixos
@@ -13,20 +13,14 @@ lib.mkIf config.vars.features.impermanence.enable {
       # needed by systemd
       "/var/lib/systemd"
 
-      # needed by ZFS
-      "/etc/zfs"
-
-      # ssh host keys
-      "/etc/ssh"
+      # secure boot
+      "/var/lib/sbctl"
 
       # unbound data
       "/var/lib/unbound"
 
       # nginx acme certificates
       "/var/lib/acme"
-
-      # nginx static data
-      "/srv/static"
 
       # vaultwarden vault
       "/var/lib/bitwarden_rs"
@@ -36,9 +30,6 @@ lib.mkIf config.vars.features.impermanence.enable {
 
       # qbt data
       "/var/lib/qbt"
-
-      # qbt torrents
-      "/srv/torrents"
 
       # logs
       "/var/log"

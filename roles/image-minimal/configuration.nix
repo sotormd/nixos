@@ -5,10 +5,5 @@
 
   isoImage.edition = "minimal";
 
-  environment = {
-    sessionVariables = {
-      NIXOS_ROLE = "laptop";
-      NIXOS_MOUNT = "/mnt";
-    };
-  };
+  environment.sessionVariables.NIXOS_MOUNT = "/mnt";
 }

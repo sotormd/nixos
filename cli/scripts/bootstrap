@@ -50,13 +50,14 @@ PERSIST_DIR_HOME="$MOUNT$__NIXOS_GLOBALS_IMPERMANENCE/home/$USER"
 
 ########
 # DISKS
-######## laptop
+######## laptop, server
 
 if [ "$VERB" == "disks" ]; then
 
-    if ! [ "$ROLE" == "laptop" ]; then
-        echo "Error: unexpected role $ROLE" >&2
-        exit 1
+    # allowed roles: laptop, server
+    if ! [[ "${ROLE:-}" =~ ^(laptop|server)$ ]]; then
+      echo "Error: unexpected role $ROLE" >&2
+      exit 1
     fi
 
     : "${ARG1:?Error: expected argument (boot/swap/root/mount)}"
@@ -187,13 +188,14 @@ if [ "$VERB" == "disks" ]; then
 
 ########
 # CLONE
-######## laptop, server
+######## laptop, server, pi
 
 elif [ "$VERB" == "clone" ]; then
 
-    if ! [[ "$ROLE" =~ ^(server|laptop)$ ]]; then
-        echo "Error: unexpected role $ROLE" >&2
-        exit 1
+    # allowed roles: laptop, server, pi
+    if ! [[ "${ROLE:-}" =~ ^(laptop|server|pi)$ ]]; then
+      echo "Error: unexpected role $ROLE" >&2
+      exit 1
     fi
 
     sudo mkdir -p "$DIR"
@@ -202,9 +204,15 @@ elif [ "$VERB" == "clone" ]; then
 
 #######
 # VARS
-####### laptop, server
+####### laptop, server, pi
 
 elif [ "$VERB" == "vars" ]; then
+
+    # allowed roles: laptop, server, pi
+    if ! [[ "${ROLE:-}" =~ ^(laptop|server|pi)$ ]]; then
+      echo "Error: unexpected role $ROLE" >&2
+      exit 1
+    fi
 
     MACHINE_ID="$(tr -d '\n' < /etc/machine-id)"
     HOST_ID="${MACHINE_ID:0:8}"
@@ -216,7 +224,7 @@ elif [ "$VERB" == "vars" ]; then
         exit 1
     fi
 
-    if [ "$ROLE" == "laptop" ]; then
+    if [[ "${ROLE:-}" =~ ^(laptop)$ ]]; then
 
         BOOT=${BOOT:-}
         SWAP=${SWAP:-}
@@ -441,7 +449,7 @@ elif [ "$VERB" == "vars" ]; then
   # use selfhosted features
   selfhosted = {
 
-    # searxng search engine
+    # searxng metasearch engine
     # used for web searches
     # domain is a duckdns domain
     searxng = {
@@ -467,7 +475,7 @@ elif [ "$VERB" == "vars" ]; then
       domain = "example.duckdns.org";
     };
 
-    # qBittorrent torrent client
+    # qBittorrent bittorrent client
     # used for webui
     # domain is a duckdns domain
     qbt = {
@@ -514,7 +522,262 @@ the following values have been populated from the installation environment
 - partitions.swap
 - partitions.root'
 
-    elif [ "$ROLE" == "server" ]; then
+    elif [[ "${ROLE:-}" =~ ^(server)$ ]]; then
+
+        BOOT=${BOOT:-}
+        SWAP=${SWAP:-}
+        ROOT=${ROOT:-}
+
+        # create vars file
+        cat > "$VARS" <<EOF
+# variables are used to capture differences in hosts using the same role
+
+# this file was automatically generated during bootstrap
+# use this file to store variables consumed by the flake
+
+# note that variables end up in the world-readable nix store
+# use sops-nix secrets for sensitive information
+
+# before rebuilding, ensure that all variables are properly defined
+# invalid / inaccurate variables can lead to a broken system
+# bootstrap DOES NOT POPULATE VARIABLES with sane values, only examples
+
+# the following values have been populated from the installation environment
+# - device.machineId
+# - device.hostId
+# - partitions.boot
+# - partitions.swap
+# - partitions.root
+
+{
+
+  # device variables
+  device = {
+
+    # hostname in /etc/hostname
+    hostName = "example";
+
+    # machine id in /etc/machine-id
+    # required by systemd for consistent logs
+    # passed as a boot parameter
+    machineId = "$MACHINE_ID";
+
+    # host id
+    # required by ZFS
+    hostId = "$HOST_ID";
+
+  };
+
+  # partition PARTUUIDS
+  # get these from /dev/disk/by-partuuid/...
+  partitions = {
+
+    # FAT32 boot partition
+    boot = "${BOOT##*/}";
+
+    # swap partition
+    swap = "${SWAP##*/}";
+
+    # LUKS partition with rpool
+    root = "${ROOT##*/}";
+
+  };
+
+  # additional filesystem mounts
+  filesystem = {
+
+    # configure luks encrypted devices
+    # each entry should have a uuid and keyfile
+    luks = { };
+
+    # configure mounts
+    # directly map to fileSystems.* blocks
+    mount = {
+
+      # raw mounts, no additional options
+      raw = { };
+
+      # nosuid, nodev
+      harden = { };
+
+      # nosuid, nodev, noexec
+      data = { };
+
+      # nosuid, nodev, ro
+      immutable = { };
+
+      # nosuid, nodev, noexec, ro
+      static = { };
+
+    };
+
+  };
+
+  # usbguard allowed devices
+  # all others are blocked
+  usbs = [ ];
+
+  # user information
+  user = {
+
+    # nsswitch username in /etc/passwd
+    name = "example";
+
+  };
+
+  # localization and internationalization
+  localization = {
+
+    # Continent/City timezone
+    timeZone = "UTC";
+
+    # keyboard layout
+    keyboard = "us";
+
+    # locale
+    locale = "en_US.UTF-8";
+
+  };
+
+  # wpa_supplicant wireless networking
+  wireless = {
+
+    # wireless NIC identifier
+    interface = "wlp1s0";
+
+    # wireless network ssid
+    ssid = "example";
+
+    # wireless network gateway
+    gateway = "10.0.0.1";
+
+    # static IP address
+    address = "10.0.0.2";
+
+    # primary DNS resolver
+    resolver = "10.0.0.3";
+
+  };
+
+  # wireguard vpn
+  wireguard = {
+
+    # wireguard address
+    address = "10.20.0.2";
+
+    # wireguard port
+    port = 51820;
+
+    # wireguard peers
+    peers = [ ];
+
+    # private CIDR (LAN) to allow
+    # used by nftables only
+    allow = "10.0.0.2/32";
+
+  };
+
+  # additional feature toggles
+  features = {
+
+    # secureboot with lanzaboote
+    secureboot.enable = false;
+
+    # impermanence with ZFS and bind mounts
+    impermanence.enable = false;
+
+  };
+
+  # service toggles
+  services = {
+
+    # ssh server
+    # port is a port
+    # trusted-keys is a list of ed25519 ssh public keys
+    # allow is a private CIDR (LAN)
+    ssh = {
+      enable = false;
+      port = 2222;
+      trusted-keys = [ ];
+      allow = "10.0.0.4/32";
+    };
+
+    # unbound dns resolver
+    # local-data is extra entries
+    # allow is a private CIDR (wireguard)
+    # debug is whether to allow debugging
+    unbound = {
+      enable = false;
+      local-data = [
+        ''"example.duckdns.org. IN A 10.20.0.1"''
+      ];
+      allow = "10.20.0.2/32";
+      debug = true;
+    };
+
+    # searxng metasearch engine
+    # allow is a private CIDR (wireguard)
+    # debug is whether to allow debugging
+    searxng = {
+      enable = false;
+      allow = "10.20.0.2/32";
+      debug = true;
+    };
+
+    # vaultwarden password manager
+    # signups is whether to allow new signups
+    # allow is a private CIDR (wireguard)
+    # debug is whether to allow debugging
+    vaultwarden = {
+      enable = false;
+      signups = false;
+      allow = "10.20.0.2/32";
+      debug = true;
+    };
+
+    # i2pd router
+    # allow is a private CIDR (wireguard)
+    # debug is whether to allow debugging
+    i2pd = {
+      enable = false;
+      allow = "10.20.0.2/32";
+      debug = true;
+    };
+
+    # qbittorrent bittorrent client
+    # allow is a private CIDR (wireguard)
+    # debug is whether to allow debugging
+    qbt = {
+      enable = false;
+      allow = "10.20.0.2/32";
+      debug = true;
+    };
+
+  };
+
+  # seed this machine remotely
+  # trusted-keys is a list of nix public keys
+  seed = {
+    enable = false;
+    trusted-keys = [ ];
+  };
+
+}
+EOF
+
+        echo 'before rebuilding, ensure that all variables are properly defined
+invalid / inaccurate variables can lead to a broken system
+bootstrap DOES NOT POPULATE VARIABLES with sane values, only examples
+
+the following values have been populated from the installation environment
+- device.machineId
+- device.hostId
+- partitions.boot
+- partitions.swap
+- partitions.root'
+
+
+    elif [[ "${ROLE:-}" =~ ^(pi)$ ]]; then
 
         # create vars file
         cat > "$VARS" <<EOF
@@ -649,10 +912,6 @@ the following values have been populated from the installation environment
     # wireguard peers
     peers = [ ];
 
-    # private CIDR (LAN) to allow
-    # used by nftables only
-    allow = "10.0.0.2/32";
-
   };
 
   # service toggles
@@ -667,72 +926,6 @@ the following values have been populated from the installation environment
       port = 2222;
       trusted-keys = [ ];
       allow = "10.20.0.2/32";
-    };
-
-    # unbound dns resolver
-    # local-data is extra entries
-    # allow is a private CIDR (wireguard)
-    # debug is whether to allow debugging
-    unbound = {
-      enable = false;
-      local-data = [
-        ''"example.duckdns.org. IN A 10.20.0.1"''
-      ];
-      allow = "10.20.0.2/32";
-      debug = true;
-    };
-
-    # nginx web server
-    # staging is to use Let's Encrypt staging
-    # email is address used for acme
-    # domain is a duckdns domain
-    # allow is a private CIDR (wireguard)
-    # debug is whether to allow debugging
-    nginx = {
-      enable = false;
-      staging = false;
-      email = "example@example";
-      domain = "example.duckdns.org";
-      allow = "10.20.0.2/32";
-      debug = true;
-    };
-
-    # searxng metasearch engine
-    # allow is a private CIDR (wireguard)
-    # debug is whether to allow debugging
-    searxng = {
-      enable = false;
-      allow = "10.20.0.2/32";
-      debug = true;
-    };
-
-    # vaultwarden password manager
-    # signups is whether to allow new signups
-    # allow is a private CIDR (wireguard)
-    # debug is whether to allow debugging
-    vaultwarden = {
-      enable = false;
-      signups = false;
-      allow = "10.20.0.2/32";
-      debug = true;
-    };
-
-    # i2pd router
-    # allow is a private CIDR (wireguard)
-    # debug is whether to allow debugging
-    i2pd = {
-      enable = false;
-      allow = "10.20.0.2/32";
-      debug = true;
-    };
-
-    # qbittorrent bittorrent client
-    # allow is a private CIDR (wireguard)
-    # debug is whether to allow debugging
-    qbt = {
-      enable = false;
-      allow = "10.20.0.2/32";
-      debug = true;
     };
 
   };
@@ -770,9 +963,15 @@ the following values have been populated from the installation environment
 
 #######
 # SOPS
-####### laptop, server
+####### laptop, server, pi
 
 elif [ "$VERB" == "sops" ]; then
+
+    # allowed roles: laptop, server, pi
+    if ! [[ "${ROLE:-}" =~ ^(laptop|server|pi)$ ]]; then
+      echo "Error: unexpected role $ROLE" >&2
+      exit 1
+    fi
 
     mkdir -p "$VARS_DIR"
 
@@ -832,7 +1031,7 @@ elif [ "$VERB" == "sops" ]; then
         SECRETS_WIREGUARD_KEY=""
     fi
 
-    if [ "$ROLE" == "server" ]; then
+    if [[ "${ROLE:-}" =~ ^(server)$ ]]; then
 
         if [ -z "${SECRETS_DUCKDNS_TOKEN:-}" ]; then
             echo "SECRETS_DUCKDNS_TOKEN unset, left empty"
@@ -906,7 +1105,7 @@ creation_rules:
 EOF
 
     #create the secrets file
-    if [ "$ROLE" == "laptop" ]; then
+    if [[ "${ROLE:-}" =~ ^(laptop|pi)$ ]]; then
 
         cat > "$TEMP_SECRETS" <<EOF
 hashedPassword: $SECRETS_HASHED_PASSWORD
@@ -919,7 +1118,7 @@ wireless: |
 seed: $SECRETS_SEED_KEY
 EOF
 
-    elif [ "$ROLE" == "server" ]; then
+    elif [[ "${ROLE:-}" =~ ^(server)$ ]]; then
 
         cat > "$TEMP_SECRETS" <<EOF
 hashedPassword: $SECRETS_HASHED_PASSWORD
@@ -952,14 +1151,16 @@ EOF
 
 ##########
 # INSTALL
-########## laptop
+########## laptop, server
 
 elif [ "$VERB" == "install" ]; then
 
-    if ! [ "$ROLE" == "laptop" ]; then
-        echo "Error: unexpected role $ROLE" >&2
-        exit 1
+    # allowed roles: laptop, server
+    if ! [[ "${ROLE:-}" =~ ^(laptop|server)$ ]]; then
+      echo "Error: unexpected role $ROLE" >&2
+      exit 1
     fi
+
 
     if ! [ "$MOUNT" == "/mnt" ]; then
         echo "Error: unexpected root mount $MOUNT"
@@ -977,14 +1178,16 @@ elif [ "$VERB" == "install" ]; then
 
 ##########
 # FINISH
-######### laptop
+######### laptop, server
 
 elif [ "$VERB" == "finish" ]; then
 
-    if ! [ "$ROLE" == "laptop" ]; then
-        echo "Error: unexpected role $ROLE" >&2
-        exit 1
+    # allowed roles: laptop, server
+    if ! [[ "${ROLE:-}" =~ ^(laptop|server)$ ]]; then
+      echo "Error: unexpected role $ROLE" >&2
+      exit 1
     fi
+
 
     if ! [ "$MOUNT" == "/mnt" ]; then
         echo "Error: unexpected root mount $MOUNT"
@@ -1001,14 +1204,16 @@ elif [ "$VERB" == "finish" ]; then
 
 ############# post-install
 # LANZABOOTE
-############# laptop
+############# laptop, server
 
 elif [ "$VERB" == "lanzaboote" ]; then
 
-    if ! [ "$ROLE" == "laptop" ]; then
-        echo "Error: unexpected role $ROLE" >&2
-        exit 1
+    # allowed roles: laptop, server
+    if ! [[ "${ROLE:-}" =~ ^(laptop|server)$ ]]; then
+      echo "Error: unexpected role $ROLE" >&2
+      exit 1
     fi
+
 
     if [ "$ARG1" == "create" ]; then
         nix shell nixpkgs#sbctl --command sudo sbctl create-keys
@@ -1020,9 +1225,15 @@ elif [ "$VERB" == "lanzaboote" ]; then
 
 ############### post-install
 # IMPERMANENCE
-############### laptop, server
+############### laptop, server, pi
 
 elif [ "$VERB" == "impermanence" ]; then
+
+    # allowed roles: laptop, server, pi
+    if ! [[ "${ROLE:-}" =~ ^(laptop|server|pi)$ ]]; then
+      echo "Error: unexpected role $ROLE" >&2
+      exit 1
+    fi
 
     if [ -n "$(sudo ls -A -- "$PERSIST_DIR_ROOT" 2>/dev/null)" ]; then
         echo "Error: $PERSIST_DIR_ROOT is not empty" >&2
@@ -1068,18 +1279,18 @@ elif [ "$VERB" == "impermanence" ]; then
     # HOME
     sudo mkdir -p "$PERSIST_DIR_HOME"
 
-    if [ "$ROLE" == "laptop" ]; then
+    if [[ "${ROLE:-}" =~ ^(laptop)$ ]]; then
 
         # populate /persist/root/
         echo "Populating /persist/root/"
         persist_dirs "$PERSIST_DIR_ROOT" "$MOUNT$REAL_ROOT" \
             "/var/lib/nixos" \
             "/var/lib/systemd" \
-            "/etc/zfs" \
-            "/etc/ssh" \
             "/var/lib/sbctl" \
             "/var/lib/libvirt" \
-            "/var/log"
+            "/var/log" \
+            "/etc/zfs" \
+            "/etc/ssh"
 
         # populate /persist/root/home/
         echo "Populating /persist/root/home/"
@@ -1092,23 +1303,35 @@ elif [ "$VERB" == "impermanence" ]; then
             "/.ssh" \
             "/.local/share/containers"
 
-    elif [ "$ROLE" == "server" ]; then
+    elif [[ "${ROLE:-}" =~ ^(server)$ ]]; then
         
         # populate /persist/root/
         echo "Populating /persist/root/"
         persist_dirs "$PERSIST_DIR_ROOT" "$MOUNT$REAL_ROOT"  \
             "/var/lib/nixos" \
             "/var/lib/systemd" \
-            "/etc/zfs" \
-            "/etc/ssh" \
-            "/var/log" \
+            "/var/lib/sbctl" \
             "/var/lib/unbound" \
             "/var/lib/acme" \
-            "/srv/static" \
             "/var/lib/bitwarden_rs" \
             "/var/lib/i2pd" \
             "/var/lib/qbt" \
+            "/var/log" \
+            "/etc/zfs" \
+            "/etc/ssh" \
+            "/srv/static" \
             "/srv/torrents"
+
+    elif [[ "${ROLE:-}" =~ ^(pi)$ ]]; then
+        
+        # populate /persist/root/
+        echo "Populating /persist/root/"
+        persist_dirs "$PERSIST_DIR_ROOT" "$MOUNT$REAL_ROOT"  \
+            "/var/lib/nixos" \
+            "/var/lib/systemd" \
+            "/var/log" \
+            "/etc/zfs" \
+            "/etc/ssh"
 
     fi
 

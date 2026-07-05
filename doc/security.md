@@ -21,6 +21,7 @@ The targets covered in this document are:
 - Laptop, my laptop configuration for generic personal portable computers
 - Server, my home-server configuration for hosts that serve MicroVM services on
   WireGuard over LAN.
+- Pi, my Raspberry Pi 4bs.
 
 Unless explicitly mentioned, everything applies to both roles.
 
@@ -93,7 +94,7 @@ Missing features:
 
 # Secure Boot
 
-> Laptop only
+> Laptop, Server only
 
 Secure Boot is used to ensure that the bootloader is signed before loading.
 Secure Boot support for NixOS is provided by the
@@ -132,7 +133,7 @@ vulnerabilities.
    ZFS, which provides advanced self-healing capabilities and administration, is
    supported out-of-the-box.
 
-   It is the also root filesystem on Laptop.
+   It is the also root filesystem on Laptop and Server.
 
 3. Encrypted Mounts
 
@@ -144,7 +145,7 @@ vulnerabilities.
 
    Several `fs.*` sysctls are set. See [sysctl Options](#sysctl-options).
 
-> Laptop only
+> Laptop, Server only
 
 LUKS encryption with a passphrase is enabled for the root partition, containing
 the main ZFS rpool.
@@ -157,8 +158,8 @@ Impermanence ensures a clean filesystem after every reboot. Only explicitly
 declared state survives across reboots, and anything else is purged. This
 greatly reduces the persistent attack surface.
 
-Impermanence is implemented differently on Laptop and Server, without using the
-[library](https://github.com/nix-community/impermanence), using either ZFS
+Impermanence is implemented differently on Laptop, Server and Pi, without using
+the [library](https://github.com/nix-community/impermanence), using either ZFS
 Snapshots or tmpfs for rollbacks and bind mounts for state persistence.
 
 See [Impermanence](./filesystems.md#impermanence) for more information.
@@ -313,7 +314,7 @@ USBGuard can be controlled using the `usbguard` command line interface. Only the
 `wpa_supplicant` is used for wireless connections. Network secrets are stored
 using SOPS.
 
-> Laptop only
+> Laptop, Server only
 
 WPA3 (SAE / dragonfly) is used for wireless authentication on Laptop.
 
@@ -499,7 +500,7 @@ and simply being on a "allowed" private CIDR is not sufficient.
 > Laptop only
 
 Ports are open based on the enabled services (only SSH). See
-[Laptop Usage Documentation](./laptop/usage.md#ssh) for more information.
+[Laptop Usage Documentation](./laptop/usage.md#ssh-server) for more information.
 
 Ports are opened for the following services:
 
@@ -572,6 +573,18 @@ Ports are opened for the following services:
    - Cannot access the internet, exclusively uses I2P.
 
    - (web-ui) TCP `8080` is open internally on VM interface to `nginx` VM
+
+> Pi only
+
+Ports are open based on the enabled services (only SSH). See
+[Pi Usage Documentation](./pi/usage.md#ssh-server) for more information.
+
+Ports are opened for the following services:
+
+1. SSH, if enabled using `vars.services.ssh.enable`:
+
+   - TCP `vars.services.ssh.port` is open on LAN to the private CIDR defined by
+     `vars.services.ssh.allow`
 
 > Examples
 
@@ -797,9 +810,10 @@ reduces anonymity significantly. Therefore, only non-vendor bits are randomized.
 
 # Secure Shell
 
-SSH can be enabled on both Server and Laptop. See
-[Laptop Usage Documentation](./laptop/usage.md#ssh) and
-[Server Usage Documentation](./server/usage.md#ssh) for details about using a
+SSH can be enabled on all roles. See
+[Laptop Usage Documentation](./laptop/usage.md#ssh-server),
+[Server Usage Documentation](./server/usage.md#ssh-server) and
+[Pi Usage Documentation](./pi/usage.md#ssh-server) for details about using a
 non-default port, authorized keys, etc.
 
 The SSH configuration is hardened using the following options:
@@ -1940,13 +1954,13 @@ Several sysctl options are used to harden the kernel. They are covered below:
     vm.mmap_rnd_compat_bits=16
     ```
 
-    > Laptop only
+    > Laptop, Server only
 
     ```
     vm.mmap_rnd_bits=32
     ```
 
-    > Server only
+    > Pi only
 
     ```
     vm.mmap_rnd_bits=33

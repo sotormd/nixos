@@ -1,7 +1,7 @@
 # Filesystem and Impermanence
 
-This document covers the filesystem configuration and Impermanence on the Laptop
-and Server roles.
+This document covers the filesystem configuration and Impermanence on the
+Laptop, Server and Pi roles.
 
 # Contents
 
@@ -12,7 +12,7 @@ and Server roles.
 
 # Root Filesystems
 
-## Laptop
+## Laptop and Server
 
 ### Partitions
 
@@ -56,7 +56,7 @@ rpool/nixos/srv@blank
 
 The blank snapshots are relevant for Impermanence.
 
-## Server
+## Pi
 
 The upstream NixOS SD Card image disk layout is used. The root filesystem is
 `ext4`.
@@ -84,7 +84,8 @@ profiles, for example:
 Profiles are used for Impermanence as well as general hardening without
 Impermanence.
 
-On the Laptop role, the following directories are hardened without Impermanence:
+On Laptop and Server roles, the following directories are hardened **without
+Impermanence**:
 
 | Path                | Profile |
 | ------------------- | ------- |
@@ -101,7 +102,7 @@ On the Laptop role, the following directories are hardened without Impermanence:
 | `/tmp`              | Data    |
 | `/var`              | Data    |
 
-On the Server role, the following directories are hardened without Impermanence:
+On the Pi role, the following directories are hardened **without Impermanence**:
 
 | Path                | Profile |
 | ------------------- | ------- |
@@ -112,8 +113,7 @@ On the Server role, the following directories are hardened without Impermanence:
 Note that Impermanence is required to harden various other directories on
 Server.
 
-Additionally, directories persisted using Impermanence on Laptop and Server are
-also hardened.
+Additionally, directories persisted using Impermanence are also hardened.
 
 # Additional Disks and Mounts
 
@@ -347,13 +347,13 @@ This flake implements Impermanence without using the
 
 This section covers the inner workings of Impermanence.
 
-Setting up Impermanence is covered in the role-specific setup documentation:
+Setting up Impermanence is covered in the role-specific setup documentation. See
+[Laptop Setup Documentation](./laptop/setup.md#setting-up-impermanence),
+[Server Setup Documentation](./server/setup.md#setting-up-impermanence) and
+[Pi Setup Documentation](./pi/setup.md#setting-up-impermanence) for more
+information.
 
-[Laptop Setup Documentation](./laptop/setup.md#setting-up-impermanence)
-
-[Server Setup Documentation](./server/setup.md#setting-up-impermanence)
-
-## Laptop
+## Laptop and Server
 
 Impermanence is implemented using ZFS snapshots and bind mounts.
 
@@ -392,31 +392,7 @@ the `fileSystems.*` options in NixOS.
 
 The various helper functions covered above are used to create these bind mounts.
 
-The following directories are persisted by default:
-
-| Path                                    | Description                 | Profile |
-| --------------------------------------- | --------------------------- | ------- |
-| `/etc/zfs`                              | needed by ZFS               | Data    |
-| `/etc/ssh`                              | ssh host keys               | Data    |
-| `/var/lib/nixos`                        | needed by nixos             | Data    |
-| `/var/lib/systemd`                      | needed by systemd           | Data    |
-| `/var/lib/sbctl`                        | secure boot keys            | Data    |
-| `/var/lib/libvirt`                      | libvirt vms                 | Data    |
-| `/var/log`                              | logs                        | Data    |
-| `~/Documents`                           | user documents              | Data    |
-| `~/Downloads`                           | user downloaders            | Data    |
-| `~/Pictures`                            | user pictures               | Data    |
-| `~/Projects`                            | user projects               | Harden  |
-| `~/.config/BraveSoftware/Brave-Browser` | Brave browser configuration | Harden  |
-| `~/.ssh`                                | user ssh data               | Data    |
-| `~/.local/share/containers`             | distrobox containers        | Raw     |
-
-> Brave directory cannot be `noexec` since it stores Widevine executables.
-
-> Distrobox containers directory cannot be `nosuid` since `sudo` needs to be
-> usable within containers.
-
-The directories are based on the recommendations in the NixOS
+The persisted directories are based on the recommendations in the NixOS
 [Manual](https://nixos.org/manual/nixos/stable/#ch-system-state) and system
 services.
 
@@ -430,6 +406,50 @@ At any given point, to see the files that will be thrown out by Impermanence:
 # zfs diff rpool/nixos/srv@blank
 ```
 
+The following directories are persisted by default:
+
+#### Laptop
+
+| Path                                    | Description                 | Profile |
+| --------------------------------------- | --------------------------- | ------- |
+| `/var/lib/nixos`                        | needed by nixos             | Data    |
+| `/var/lib/systemd`                      | needed by systemd           | Data    |
+| `/var/lib/sbctl`                        | secure boot keys            | Data    |
+| `/var/lib/libvirt`                      | libvirt vms                 | Data    |
+| `/var/log`                              | logs                        | Data    |
+| `/etc/zfs`                              | needed by ZFS               | Data    |
+| `/etc/ssh`                              | ssh host keys               | Data    |
+| `~/Documents`                           | user documents              | Data    |
+| `~/Downloads`                           | user downloaders            | Data    |
+| `~/Pictures`                            | user pictures               | Data    |
+| `~/Projects`                            | user projects               | Harden  |
+| `~/.config/BraveSoftware/Brave-Browser` | Brave browser configuration | Harden  |
+| `~/.ssh`                                | user ssh data               | Data    |
+| `~/.local/share/containers`             | distrobox containers        | Raw     |
+
+> Brave directory cannot be `noexec` since it stores Widevine executables.
+
+> Distrobox containers directory cannot be `nosuid` since `sudo` needs to be
+> usable within containers.
+
+#### Server
+
+| Path                    | Description             | Profile |
+| ----------------------- | ----------------------- | ------- |
+| `/var/lib/nixos`        | needed by nixos         | Data    |
+| `/var/lib/systemd`      | needed by systemd       | Data    |
+| `/var/lib/sbctl`        | secure boot keys        | Data    |
+| `/var/lib/unbound`      | unbound data            | Data    |
+| `/var/lib/acme`         | nginx acme certificates | Data    |
+| `/var/lib/bitwarden_rs` | vaultwarden vault       | Data    |
+| `/var/lib/i2pd`         | i2pd router data        | Data    |
+| `/var/lib/qbt`          | qbittorrent data        | Data    |
+| `/var/log`              | logs                    | Data    |
+| `/etc/zfs`              | needed by ZFS           | Data    |
+| `/etc/ssh`              | ssh host keys           | Data    |
+| `/srv/static`           | nginx static data       | Data    |
+| `/srv/torrents`         | qbittorrent torrents    | Data    |
+
 ### Adding Directories
 
 It is possible to use the variables file to add your own directories by manually
@@ -439,7 +459,7 @@ Another option is to create ZFS datasets for persistent things, like `rpool/vms`
 for VM disks as covered in the
 [Laptop Usage Documentation](./laptop/usage.md#virtual-machines).
 
-## Server
+## Pi
 
 Impermanence is implemented using tmpfs and bind mounts.
 
@@ -472,26 +492,19 @@ the `fileSystems.*` options in NixOS.
 
 The various helper functions covered above are used to create these bind mounts.
 
-The following directories are persisted by default:
-
-| Path                    | Description             | Profile |
-| ----------------------- | ----------------------- | ------- |
-| `/var/lib/nixos`        | needed by nixos         | Data    |
-| `/var/lib/systemd`      | needed by systemd       | Data    |
-| `/etc/zfs`              | needed by ZFS           | Data    |
-| `/etc/ssh`              | ssh host keys           | Data    |
-| `/var/lib/unbound`      | unbound data            | Data    |
-| `/var/lib/acme`         | nginx acme certificates | Data    |
-| `/srv/static`           | nginx static data       | Data    |
-| `/var/lib/bitwarden_rs` | vaultwarden vault       | Data    |
-| `/var/lib/i2pd`         | i2pd router data        | Data    |
-| `/var/lib/qbt`          | qbittorrent data        | Data    |
-| `/srv/torrents`         | qbittorrent torrents    | Data    |
-| `/var/log`              | logs                    | Data    |
-
-The directories are based on the recommendations in the NixOS
+The persisted directories are based on the recommendations in the NixOS
 [Manual](https://nixos.org/manual/nixos/stable/#ch-system-state) and system
 services.
+
+The following directories are persisted by default:
+
+| Path               | Description       | Profile |
+| ------------------ | ----------------- | ------- |
+| `/var/lib/nixos`   | needed by nixos   | Data    |
+| `/var/lib/systemd` | needed by systemd | Data    |
+| `/var/log`         | logs              | Data    |
+| `/etc/zfs`         | needed by ZFS     | Data    |
+| `/etc/ssh`         | ssh host keys     | Data    |
 
 ### Adding Directories
 

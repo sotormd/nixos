@@ -323,6 +323,12 @@ Before proceeding, see [Laptop Requirements](./requirements.md).
    nixos bootstrap impermanence
    ```
 
+   Also note that if any directories were bind mounted using the variables file
+   from external disks to the locations where the services expect them to be,
+   these have to be re-evaluated. Impermanence creates its own bind mounts, so
+   the variables file should be updated to bind mount things from the external
+   disks to `/persist/root` instead.
+
 2. Set `impermanence.enable` to `true` in `features` section of the variables
    file.
 
@@ -342,3 +348,6 @@ For more details, see
 # Further Reading
 
 - [Laptop Usage Documentation](./usage.md)
+- [Security Features](../security.md)
+- [Filesystem and Impermanence Documentation](../filesystems.md)
+- [CLI Documentation](../cli.md)
