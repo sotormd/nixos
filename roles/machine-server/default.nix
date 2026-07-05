@@ -7,6 +7,7 @@
 
     ./configuration.nix
 
+    inputs.lanzaboote.nixosModules.lanzaboote
     inputs.microvm-nix.nixosModules.host
     inputs.sops-nix.nixosModules.sops
 
