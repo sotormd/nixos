@@ -113,19 +113,19 @@ The `rofi` launcher has several other uses, see:
 
 ## Additional Keybinds
 
-| Action              | Keybind                 |
-| ------------------- | ----------------------- |
-| Play / Pause media  | `XF86AudioPlay`         |
-| Stop media          | `$mod+XF86AudioPlay`    |
-| Next media          | `XF86AudioNext`         |
-| Previous media      | `XF86AudioPrev`         |
-| Mute audio          | `XF86AudioMute`         |
-| Increase volume     | `XF86AudioRaiseVolume`  |
-| Decrease volume     | `XF86AudioLowerVolume`  |
-| Increase brightness | `XF86MonBrightnessUp`   |
-| Decrease brightness | `XF86MonBrightnessDown` |
-| Translucent window  | `$mod+t`                |
-| Opaque window       | `$mod+o`                |
+| Action              | Keybind                                |
+| ------------------- | -------------------------------------- |
+| Play / Pause media  | `XF86AudioPlay` / `Copilot+]`          |
+| Stop media          | `$mod+XF86AudioPlay` / `Copilot+alt+]` |
+| Next media          | `XF86AudioNext` / `Copilot+\`          |
+| Previous media      | `XF86AudioPrev` / `Copilot+[`          |
+| Mute audio          | `XF86AudioMute`                        |
+| Increase volume     | `XF86AudioRaiseVolume`                 |
+| Decrease volume     | `XF86AudioLowerVolume`                 |
+| Increase brightness | `XF86MonBrightnessUp`                  |
+| Decrease brightness | `XF86MonBrightnessDown`                |
+| Translucent window  | `$mod+t`                               |
+| Opaque window       | `$mod+o`                               |
 
 All media commands are dispatched via `playerctl`.
 

@@ -187,8 +187,12 @@ let
       #
       bindsym XF86AudioPrev exec ${media0}/bin/media previous
       bindsym XF86AudioPlay exec ${media0}/bin/media play-pause
-      bindsym Mod4+XF86AudioPlay exec ${media0}/bin/media stop
       bindsym XF86AudioNext exec ${media0}/bin/media next
+      bindsym Mod4+XF86AudioPlay exec ${media0}/bin/media stop
+      bindsym Mod4+shift+F23+bracketleft exec ${media0}/bin/media previous
+      bindsym Mod4+shift+F23+bracketright exec ${media0}/bin/media play-pause
+      bindsym Mod4+shift+F23+backslash exec ${media0}/bin/media next
+      bindsym Mod4+shift+F23+alt+bracketright exec ${media0}/bin/media stop
       bindsym XF86AudioMute exec wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle
       bindsym XF86AudioLowerVolume exec ${volume0}/bin/volume 5%-
       bindsym XF86AudioRaiseVolume exec ${volume0}/bin/volume 5%+
