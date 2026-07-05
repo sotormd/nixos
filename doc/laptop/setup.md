@@ -14,14 +14,13 @@ Before proceeding, see [Laptop Requirements](./requirements.md).
 2. [Preparing the Device](#preparing-the-device)
 3. [Partitioning Disks](#partitioning-disks)
 4. [Installing NixOS](#installing-nixos)
-5. [Setting up Secure Boot](#setting-up-secureboot)
+5. [Setting up Secure Boot](#setting-up-secure-boot)
 6. [Setting up Impermanence](#setting-up-impermanence)
 7. [Further Reading](#further-reading)
 
 # Obtaining a Live NixOS Image
 
-1. Build any of the three included images for `x86_64-linux`: MATE, GNOME or
-   Minimal.
+1. Build any of the two included images for `x86_64-linux`: GNOME or Minimal.
 
    For more information, see [Images Documentation](../images.md).
 
@@ -158,6 +157,8 @@ Before proceeding, see [Laptop Requirements](./requirements.md).
    sudo zfs create rpool/nixos/root -o mountpoint=legacy
    sudo zfs create rpool/nixos/home -o mountpoint=legacy
    sudo zfs create rpool/nixos/var -o mountpoint=legacy
+   sudo zfs create rpool/nixos/etc -o mountpoint=legacy
+   sudo zfs create rpool/nixos/srv -o mountpoint=legacy
    sudo zfs create rpool/nixos/nix -o mountpoint=legacy
    sudo zfs create rpool/nixos/persist -o mountpoint=legacy
    ```
@@ -169,6 +170,8 @@ Before proceeding, see [Laptop Requirements](./requirements.md).
    sudo zfs snapshot rpool/nixos/root@blank
    sudo zfs snapshot rpool/nixos/home@blank
    sudo zfs snapshot rpool/nixos/var@blank
+   sudo zfs snapshot rpool/nixos/etc@blank
+   sudo zfs snapshot rpool/nixos/srv@blank
    ```
 
 9. Mount ZFS datasets.
@@ -177,6 +180,8 @@ Before proceeding, see [Laptop Requirements](./requirements.md).
    sudo mkdir -p /mnt && sudo mount rpool/nixos/root /mnt -t zfs
    sudo mkdir -p /mnt/home && sudo mount rpool/nixos/home /mnt/home -t zfs
    sudo mkdir -p /mnt/var && sudo mount rpool/nixos/var /mnt/var -t zfs
+   sudo mkdir -p /mnt/etc && sudo mount rpool/nixos/etc /mnt/etc -t zfs
+   sudo mkdir -p /mnt/srv && sudo mount rpool/nixos/srv /mnt/srv -t zfs
    sudo mkdir -p /mnt/nix && sudo mount rpool/nixos/nix /mnt/nix -t zfs
    sudo mkdir -p /mnt/persist && sudo mount rpool/nixos/persist /mnt/persist -t zfs
    ```

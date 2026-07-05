@@ -105,8 +105,7 @@
 
   modes = {
     roaming.enable = true;
-    nate.enable = true;
-    coffee.enable = true;
+    gnome.enable = true;
   };
 
   selfhosted = {

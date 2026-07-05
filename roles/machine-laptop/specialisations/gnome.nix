@@ -6,17 +6,25 @@
   ...
 }:
 
-lib.mkIf config.vars.modes.coffee.enable {
+lib.mkIf config.vars.modes.gnome.enable {
 
-  specialisation.coffee = {
+  specialisation.gnome = {
     inheritParentConfig = false;
     configuration = {
       imports = [
-        ../impermanence
+        ../impermanence/bind-etc.nix
+        ../impermanence/bind-root.nix
+        ../impermanence/bind-srv.nix
+        ../impermanence/bind-var.nix
+        ../impermanence/rollback-etc.nix
+        ../impermanence/rollback-home.nix
+        ../impermanence/rollback-root.nix
+        ../impermanence/rollback-srv.nix
+        ../impermanence/rollback-var.nix
         ../configuration.nix
-        inputs.coffee.nixosModules.coffee
         inputs.lanzaboote.nixosModules.lanzaboote
         inputs.sops-nix.nixosModules.sops
+        self.nixosModules.modules.desktop.gnome
         self.nixosModules.profiles.deskspec
       ];
       networking.wireless.enable = true;
@@ -25,7 +33,7 @@ lib.mkIf config.vars.modes.coffee.enable {
         "wpa_supplicant"
         "networkmanager"
       ];
-      environment.sessionVariables.NIXOS_ROLE = lib.mkForce "laptop-mode-coffee";
+      environment.sessionVariables.NIXOS_ROLE = lib.mkForce "laptop-mode-gnome";
       vars = {
         wireless.resolver = lib.mkForce "1.1.1.1";
         selfhosted = {

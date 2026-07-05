@@ -106,6 +106,9 @@
     # stateVersion
     core.state = _: { imports = [ ./core/state ]; };
 
+    # gnome desktop
+    desktop.gnome = _: { imports = [ ./desktop/gnome ]; };
+
     # nftables firewall
     network.firewall = _: { imports = [ ./network/firewall ]; };
 

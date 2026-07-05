@@ -150,8 +150,8 @@ Some previous roles have been moved to separate repos, see
 
 # Bootstrap Images
 
-Four images: MATE, GNOME, Minimal and SD are included (for installation,
-recovery, etc.)
+Three images: GNOME, Minimal and SD are included (for installation, recovery,
+etc.)
 
 These images provide a preconfigured environment for setting up this flake, and
 include useful tools for installation, recovery, etc.

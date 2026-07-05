@@ -32,22 +32,26 @@ Three partitions are used:
 
 ### ZFS Datasets
 
-The bootstrap script creates four datasets:
+The bootstrap script creates seven datasets:
 
 ```
 rpool/nixos/root       mounted at /
 rpool/nixos/home       mounted at /home
 rpool/nixos/var        mounted at /var
+rpool/nixos/etc        mounted at /etc
+rpool/nixos/srv        mounted at /srv
 rpool/nixos/nix        mounted at /nix
 rpool/nixos/persist    mounted at /persist
 ```
 
-Two blank snapshots are also created at this time:
+Five blank snapshots are also created at this time:
 
 ```
 rpool/nixos/root@blank
 rpool/nixos/home@blank
 rpool/nixos/var@blank
+rpool/nixos/etc@blank
+rpool/nixos/srv@blank
 ```
 
 The blank snapshots are relevant for Impermanence.
@@ -355,25 +359,28 @@ Impermanence is implemented using ZFS snapshots and bind mounts.
 
 ### ZFS Snapshots
 
-As covered [above](#root-filesystems), the bootstrap script creates two blank
+As covered [above](#root-filesystems), the bootstrap script creates five blank
 snapshots:
 
 ```
 rpool/nixos/root@blank
 rpool/nixos/home@blank
 rpool/nixos/var@blank
+rpool/nixos/etc@blank
+rpool/nixos/srv@blank
 ```
 
 During the Impermanence setup (post-install), the bootstrap script populates
 `/persist/root` with the default directories to persist.
 
 During early boot, systemd services roll back the `rpool/nixos/root`,
-`rpool/nixos/home` and `rpool/nixos/var` datasets.
+`rpool/nixos/home`, `rpool/nixos/var`, `rpool/nixos/etc` and `rpool/nixos/srv`
+datasets.
 
-So, in early boot, the `/`, `/home` and `/var` directories are **completely
-empty**. Nix populates it with relevant files from `/nix` based on the system
-closure. All other directories are persisted using bind mounts from
-`/persist/root`.
+So, in early boot, the `/`, `/home`, `/var`, `/etc` and `/srv` directories are
+**completely empty**. Nix populates it with relevant files from `/nix` based on
+the system closure. All other directories are persisted using bind mounts from
+`/persist/root`. Only `/persist` and `/nix` survive across reboots.
 
 ### Persisted Directories
 
@@ -389,10 +396,10 @@ The following directories are persisted by default:
 
 | Path                                    | Description                 | Profile |
 | --------------------------------------- | --------------------------- | ------- |
-| `/var/lib/nixos`                        | needed by nixos             | Data    |
-| `/var/lib/systemd`                      | needed by systemd           | Data    |
 | `/etc/zfs`                              | needed by ZFS               | Data    |
 | `/etc/ssh`                              | ssh host keys               | Data    |
+| `/var/lib/nixos`                        | needed by nixos             | Data    |
+| `/var/lib/systemd`                      | needed by systemd           | Data    |
 | `/var/lib/fail2ban`                     | fail2ban data               | Data    |
 | `/var/lib/sbctl`                        | secure boot keys            | Data    |
 | `/var/lib/libvirt`                      | libvirt vms                 | Data    |
@@ -417,9 +424,11 @@ services.
 At any given point, to see the files that will be thrown out by Impermanence:
 
 ```console
-# zfs diff rpool/root@blank
-# zfs diff rpool/home@blank
-# zfs diff rpool/var@blank
+# zfs diff rpool/nixos/root@blank
+# zfs diff rpool/nixos/home@blank
+# zfs diff rpool/nixos/var@blank
+# zfs diff rpool/nixos/etc@blank
+# zfs diff rpool/nixos/srv@blank
 ```
 
 ### Adding Directories

@@ -244,11 +244,7 @@ in
         type = types.bool;
       };
 
-      nate.enable = mkOption {
-        type = types.bool;
-      };
-
-      coffee.enable = mkOption {
+      gnome.enable = mkOption {
         type = types.bool;
       };
 

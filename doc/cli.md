@@ -90,10 +90,10 @@ Examples:
    nixos apply switch
    ```
 
-2. Make the new configuration the boot default, and skip confirmation:
+2. Make the new configuration the boot default
 
    ```bash
-   yes | nixos apply boot
+   nixos apply boot
    ```
 
 # Building a new configuration
@@ -373,7 +373,6 @@ It is _generally_ safe to pipe into and out of the included scripts **except**
 
 ```bash
 nixos cat modules/machines/server/searxng/engines.nix | wl-copy
-yes | nixos apply switch
 ```
 
 **The output of `nixos bootstrap` IS NOT STABLE and should not be used for

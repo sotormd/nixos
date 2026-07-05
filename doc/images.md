@@ -2,9 +2,6 @@
 
 Three images are offered for the `x86_64-linux` architecture:
 
-1. **MATE**: NixOS with
-   [my MATE configuration](https://github.com/sotormd/nate).
-
 1. **GNOME**: NixOS with the GNOME desktop environment.
 
 1. **Minimal**: A minimal NixOS environment.
@@ -26,16 +23,6 @@ include useful tools for installation, recovery, etc.
 3. [Remote Installs](#remote-installs)
 
 # Usage
-
-1. MATE image
-
-   If you do not wish to build this image, you can get one from the
-   [Github Actions](https://github.com/sotormd/nixos/actions/workflows/build-mate-iso.yml)
-   build artifacts.
-
-   ```bash
-   nix build github:sotormd/nixos#nixosConfigurations.image-mate-x86_64-linux.config.system.build.isoImage
-   ```
 
 1. GNOME image
 
@@ -70,14 +57,13 @@ further configure images.
 
 The available modules are:
 
-- `image-mate`
 - `image-gnome`
 - `image-minimal`
 - `image-sd`
 
 <details>
 
-<summary>Click to expand: Example</summary>
+<summary>Click to expand: Example Usage</summary>
 
 For example, to build a GNOME image with NH enabled.
 
@@ -122,14 +108,13 @@ over wireless networks significantly easier.
 
 The available modules are:
 
-- `image-mate-remote`
 - `image-gnome-remote`
 - `image-minimal-remote`
 - `image-sd-remote`
 
 <details>
 
-<summary>Click to expand: Example</summary>
+<summary>Click to expand: Example Usage</summary>
 
 For example, to build a SD image for a Raspberry-Pi for remote installs over a
 wireless network:

@@ -7,10 +7,6 @@ name = "server"
 arch = "aarch64-linux"
 
 [[images]]
-name = "mate"
-arch = "x86_64-linux"
-
-[[images]]
 name = "gnome"
 arch = "x86_64-linux"
 

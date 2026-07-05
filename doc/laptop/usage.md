@@ -12,7 +12,8 @@ This document covers using the Laptop role.
 6. [Specialisation Modes](#specialisation-modes)
 7. [Services](#services)
 8. [Using Selfhosted Features](#using-selfhosted-features)
-9. [Further Reading](#further-reading)
+9. [Development](#development)
+10. [Further Reading](#further-reading)
 
 # System Maintenance
 
@@ -628,6 +629,11 @@ Podman is also used as the backend for Distrobox.
 The following "modes" can be enabled on the Laptop role. Modes are implemented
 using specialisations.
 
+Modes are available only if Impermanence is enabled. This ensures that
+mode-specific files do not persist across reboots.
+
+The bespoke `nixos` CLI cannot be used within the modes.
+
 ## Roaming Mode
 
 Roaming Mode refers to the `roaming` specialisation that sets up an environment
@@ -641,48 +647,20 @@ Notable changes from the default configuration:
 Roaming Mode can be used by booting into the `roaming` specialisation from the
 boot menu.
 
-> Roaming Mode is available only if Impermanence is enabled. This ensures that
-> NetworkManager-specific files do not persist across reboots.
+## GNOME Mode
 
-The bespoke `nixos` CLI cannot be used within Roaming Mode.
-
-## Nate Mode
-
-Nate Mode refers to the `nate` specialisation that sets up an environment using
-[my MATE configuration](https://github.com/sotormd/nate).
+GNOME Mode refers to the `gnome` specialisation that sets up a full GNOME
+desktop.
 
 Notable changes from the default configuration:
 
-- sway desktop replaced with MATE
+- sway desktop replaced with GNOME
+- firefox browser is installed
 - wpa_supplicant replaced by NetworkManager
 - all selfhosted features are disabled
 
-Nate Mode can be enabled using `vars.modes.nate.enable` and used by booting into
-the `nate` specialisation from the boot menu.
-
-> Nate Mode is available only if Impermanence is enabled. This ensures that
-> mode-specific files do not persist across reboots.
-
-The bespoke `nixos` CLI cannot be used within Nate Mode.
-
-## Coffee Mode
-
-Coffee Mode refers to the `coffee` specialisation that sets up an environment
-using [my openbox configuration](https://github.com/sotormd/coffee).
-
-Notable changes from the default configuration:
-
-- sway desktop replaced with openbox
-- wpa_supplicant replaced by NetworkManager
-- all selfhosted features are disabled
-
-Coffee Mode can be enabled using `vars.modes.coffee.enable` and used by booting
-into the `coffee` specialisation from the boot menu.
-
-> Coffee Mode is available only if Impermanence is enabled. This ensures that
-> mode-specific files do not persist across reboots.
-
-The bespoke `nixos` CLI cannot be used within Coffee Mode.
+GNOME Mode can be enabled using `vars.modes.gnome.enable` and used by booting
+into the `gnome` specialisation from the boot menu.
 
 # Services
 
@@ -817,6 +795,54 @@ using the `vars.selfhosted.*` variables.
    ```
 
    qBittorrent instance to use for the webui.
+
+# Development
+
+## Neovim
+
+Neovim is installed using
+[this configuration](https://github.com/sotormd/neovim). It can be launched from
+the terminal using any of the aliases:
+
+```bash
+neovim
+```
+
+```bash
+vim
+```
+
+```bash
+vi
+```
+
+## Git
+
+Git is configured in the variables file under `vars.user.git`. This includes
+options for signed commits.
+
+Example usage:
+
+```nix
+{
+  name = "example";
+  email = "example@example";
+  signing-key = "/home/example/.ssh/id_ed25519_example_git_sign.pub";
+  allowed-signers = "/home/example/.ssh/git_allowed_signers";
+}
+```
+
+The allowed-signers file should contents should be as git expects it. Example:
+
+```
+example ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIIoZXCKsWoH1R2MCeLXRDxeDrRdRGuOHG92sArhmlkT2 example@example
+```
+
+## Language Toolchains
+
+Although things like `cargo`, `rustc`, `go`, `ghc`, `ghci`, `stack`, `cabal`,
+`gcc`, `python3` are all installed, `nix` should be preferred for development
+via dev shells, etc.
 
 # Further Reading
 

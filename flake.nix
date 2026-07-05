@@ -75,16 +75,6 @@
       url = "github:sotormd/homepage";
     };
 
-    # my mate configuration
-    nate = {
-      url = "github:sotormd/nate";
-    };
-
-    # my openbox configuration
-    coffee = {
-      url = "github:sotormd/coffee";
-    };
-
   };
 
   outputs =

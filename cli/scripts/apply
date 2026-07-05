@@ -2,10 +2,10 @@
 
 set -euo pipefail
 
-VERB=$1
+VERB=${1:?Error: expected verb (test/boot/switch)}
 
 if ! [[ "$VERB" =~ ^(test|boot|switch)$ ]]; then
-  echo "Error: expected verb (test/boot/switch)" >&2
+  echo "Error: unexpected verb $VERB, expected test, boot or switch" >&2
   exit 1
 fi
 
@@ -20,12 +20,7 @@ ARCH="$(nix eval --impure --raw --expr builtins.currentSystem)"
     trap 'git reset -- vars/vars.nix vars/secrets.yaml .sops.yaml' EXIT
 
     git add .
-
-    if [ "$ROLE" == "laptop" ]; then
-
-        GIT_PAGER=cat git diff HEAD -- ':!vars/vars.nix' ':!vars/secrets.yaml' ':!.sops.yaml'
-
-    fi
+    git diff HEAD -- ':!vars/vars.nix' ':!vars/secrets.yaml' ':!.sops.yaml'
 
     echo
     vars_file="$DIR/vars/vars.nix"

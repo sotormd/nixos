@@ -185,8 +185,7 @@ in
     };
     modes = {
       roaming.enable = lib.mkForce false;
-      nate.enable = lib.mkForce false;
-      coffee.enable = lib.mkForce false;
+      gnome.enable = lib.mkForce false;
     };
     selfhosted = {
       searxng.enable = lib.mkForce false;
@@ -219,8 +218,7 @@ in
       ];
       modesDisabled = [
         config.vars.modes.roaming.enable
-        config.vars.modes.nate.enable
-        config.vars.modes.coffee.enable
+        config.vars.modes.gnome.enable
       ];
     in
     [

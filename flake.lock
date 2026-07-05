@@ -1,20 +1,5 @@
 {
   "nodes": {
-    "coffee": {
-      "locked": {
-        "lastModified": 1777785892,
-        "narHash": "sha256-dDpodOKwCTZN6BKu4bnImr2VXgoIgjEp06W3FcY/atg=",
-        "owner": "sotormd",
-        "repo": "coffee",
-        "rev": "24a667c3df7b80bf3de183a537a64fa95f566abb",
-        "type": "github"
-      },
-      "original": {
-        "owner": "sotormd",
-        "repo": "coffee",
-        "type": "github"
-      }
-    },
     "colors": {
       "locked": {
         "lastModified": 1778920238,
@@ -233,21 +218,6 @@
         "type": "github"
       }
     },
-    "nate": {
-      "locked": {
-        "lastModified": 1775622121,
-        "narHash": "sha256-0o8ipRLg2n0am/SoKa7Wvzilpvg4yOai8eNJXlHIfJg=",
-        "owner": "sotormd",
-        "repo": "nate",
-        "rev": "2ce723cd9e7c422d95b6f35f25313d49471b1fea",
-        "type": "github"
-      },
-      "original": {
-        "owner": "sotormd",
-        "repo": "nate",
-        "type": "github"
-      }
-    },
     "ndg": {
       "inputs": {
         "nixpkgs": [
@@ -391,13 +361,11 @@
     },
     "root": {
       "inputs": {
-        "coffee": "coffee",
         "colors": "colors",
         "homepage": "homepage",
         "hosts": "hosts",
         "lanzaboote": "lanzaboote",
         "microvm-nix": "microvm-nix",
-        "nate": "nate",
         "neovim": "neovim",
         "nixpkgs": "nixpkgs_2",
         "sops-nix": "sops-nix",

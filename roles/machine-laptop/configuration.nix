@@ -92,6 +92,22 @@
       options = lib.mountData;
     };
 
+    # rpool/nixos/etc -> /etc
+    # nosuid,nodev,noexec
+    "/etc" = {
+      device = "rpool/nixos/etc";
+      fsType = "zfs";
+      options = lib.mountData;
+    };
+
+    # rpool/nixos/srv -> /srv
+    # nosuid,nodev,noexec
+    "/srv" = {
+      device = "rpool/nixos/srv";
+      fsType = "zfs";
+      options = lib.mountData;
+    };
+
     # rpool/nixos/nix -> /nix
     "/nix" = {
       device = "rpool/nixos/nix";
@@ -115,12 +131,10 @@
   # nosuid,nodev,noexec
   // lib.mkSelfData [
     "/bin"
-    "/etc"
     "/lib"
     "/lib64"
     "/persist/sops-nix"
     "/root"
-    "/srv"
     "/tmp"
   ];
 
@@ -170,8 +184,7 @@
       ];
       impermanenceRequired = [
         config.vars.modes.roaming.enable
-        config.vars.modes.coffee.enable
-        config.vars.modes.nate.enable
+        config.vars.modes.gnome.enable
       ];
       servicesDisabled = [
         config.vars.services.unbound.enable
