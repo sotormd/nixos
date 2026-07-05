@@ -107,7 +107,7 @@ For `vars.services.ssh`
 
 # Using Selfhosted Features
 
-The Pi can only use the Server for DNS.
+The Pi can only use the Server for DNS and I2P HTTP proxy.
 
 Note that services are exposed using on Server using WireGuard. WireGuard is
 configured in the variables file under `vars.wireguard`.
@@ -146,6 +146,10 @@ The Pi has to be declared as a peer on the Server as well. See
 1. Unbound DNS resolver
 
    Set the `vars.wireless.resolver` to the Server WireGuard peer address.
+
+2. I2P HTTP Proxy
+
+   The I2P HTTP Proxy can be used as usual, no configuration is required.
 
 # Further Reading
 
