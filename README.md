@@ -102,7 +102,7 @@ Services features:
 | tunnelling                    | `wireguard`                                                                                                |
 | wireless                      | `wpa_supplicant`                                                                                           |
 | dns                           | `unbound`                                                                                                  |
-| secure shell                  | `sshd`, `fail2ban`                                                                                         |
+| secure shell                  | `openssh`                                                                                                  |
 | display server                | `wayland`                                                                                                  |
 | compositor                    | `swayfx`, `cage`                                                                                           |
 | bar                           | `waybar`                                                                                                   |

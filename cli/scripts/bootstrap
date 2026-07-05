@@ -1077,7 +1077,6 @@ elif [ "$VERB" == "impermanence" ]; then
             "/var/lib/systemd" \
             "/etc/zfs" \
             "/etc/ssh" \
-            "/var/lib/fail2ban" \
             "/var/lib/sbctl" \
             "/var/lib/libvirt" \
             "/var/log"
@@ -1103,7 +1102,6 @@ elif [ "$VERB" == "impermanence" ]; then
             "/etc/zfs" \
             "/etc/ssh" \
             "/var/log" \
-            "/var/lib/fail2ban" \
             "/var/lib/unbound" \
             "/var/lib/acme" \
             "/srv/static" \

@@ -77,20 +77,19 @@ Missing features:
 16. [Virtualisation](#virtualisation)
 17. [MAC Randomization](#mac-randomization)
 18. [Secure Shell](#secure-shell)
-19. [Fail2Ban](#fail2ban)
-20. [NGINX](#nginx)
-21. [I2P and Anonymity](#i2p-and-anonymity)
-22. [Display Server](#display-server)
-23. [Desktop](#desktop)
-24. [Session Locking](#session-locking)
-25. [Bubblewrap](#bubblewrap)
-26. [xdg-dbus-proxy](#xdg-dbus-proxy)
-27. [Browsers](#browsers)
-28. [Search Engine](#search-engine)
-29. [Password Manager](#password-manager)
-30. [Kernel Parameters](#kernel-parameters)
-31. [sysctl Options](#sysctl-options)
-32. [Module Blacklists](#module-blacklists)
+19. [NGINX](#nginx)
+20. [I2P and Anonymity](#i2p-and-anonymity)
+21. [Display Server](#display-server)
+22. [Desktop](#desktop)
+23. [Session Locking](#session-locking)
+24. [Bubblewrap](#bubblewrap)
+25. [xdg-dbus-proxy](#xdg-dbus-proxy)
+26. [Browsers](#browsers)
+27. [Search Engine](#search-engine)
+28. [Password Manager](#password-manager)
+29. [Kernel Parameters](#kernel-parameters)
+30. [sysctl Options](#sysctl-options)
+31. [Module Blacklists](#module-blacklists)
 
 # Secure Boot
 
@@ -903,13 +902,6 @@ The SSH configuration is hardened using the following options:
     only accepts `ed25519` keys
 
 12. A nonstandard port can be used using `vars.services.ssh.port`
-
-# Fail2Ban
-
-Fail2Ban is used to limit brute force authentication attempts on SSH.
-
-It is configured to ban for 24 hours after 2 failed attempts, with increments
-for successive failed attempts up to 6144 hours.
 
 # NGINX
 

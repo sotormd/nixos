@@ -400,7 +400,6 @@ The following directories are persisted by default:
 | `/etc/ssh`                              | ssh host keys               | Data    |
 | `/var/lib/nixos`                        | needed by nixos             | Data    |
 | `/var/lib/systemd`                      | needed by systemd           | Data    |
-| `/var/lib/fail2ban`                     | fail2ban data               | Data    |
 | `/var/lib/sbctl`                        | secure boot keys            | Data    |
 | `/var/lib/libvirt`                      | libvirt vms                 | Data    |
 | `/var/log`                              | logs                        | Data    |
@@ -481,7 +480,6 @@ The following directories are persisted by default:
 | `/var/lib/systemd`      | needed by systemd       | Data    |
 | `/etc/zfs`              | needed by ZFS           | Data    |
 | `/etc/ssh`              | ssh host keys           | Data    |
-| `/var/lib/fail2ban`     | fail2ban data           | Data    |
 | `/var/lib/unbound`      | unbound data            | Data    |
 | `/var/lib/acme`         | nginx acme certificates | Data    |
 | `/srv/static`           | nginx static data       | Data    |

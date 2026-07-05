@@ -13,9 +13,6 @@ lib.mkIf config.vars.features.impermanence.enable {
       # needed by systemd
       "/var/lib/systemd"
 
-      # fail2ban data
-      "/var/lib/fail2ban"
-
       # secure boot
       "/var/lib/sbctl"
 
