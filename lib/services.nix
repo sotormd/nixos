@@ -230,7 +230,6 @@
             startWhenNeeded = true;
             settings.PermitRootLogin = "yes";
           };
-          systemd.sockets.sshd.socketConfig.ListenStream = [ "vsock::22" ];
           users.users.root.password = "toor";
         };
       })

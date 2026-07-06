@@ -205,7 +205,7 @@ in
       find /var/lib/qbt -type d -exec chmod 700 {} +
       find /var/lib/qbt -type f -exec chmod 600 {} +
       chown -R qbt:qbt /var/lib/qbt
-      mkdir /srv/torrents
+      mkdir -p /srv/torrents
       find /srv/torrents -type d -exec chmod 750 {} +
       find /srv/torrents -type f -exec chmod 640 {} +
       chown -R qbt:qbt /srv/torrents
