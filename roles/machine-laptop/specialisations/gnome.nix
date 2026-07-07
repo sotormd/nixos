@@ -12,15 +12,7 @@ lib.mkIf config.vars.modes.gnome.enable {
     inheritParentConfig = false;
     configuration = {
       imports = [
-        ../impermanence/bind-etc.nix
-        ../impermanence/bind-root.nix
-        ../impermanence/bind-srv.nix
-        ../impermanence/bind-var.nix
-        ../impermanence/rollback-etc.nix
-        ../impermanence/rollback-home.nix
-        ../impermanence/rollback-root.nix
-        ../impermanence/rollback-srv.nix
-        ../impermanence/rollback-var.nix
+        ../impermanence
         ../configuration.nix
         inputs.lanzaboote.nixosModules.lanzaboote
         inputs.sops-nix.nixosModules.sops
