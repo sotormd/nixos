@@ -45,6 +45,12 @@
     "vm.mmap_rnd_bits" = lib.mkForce "33";
   };
 
+  # start ssh after wireless
+  systemd.services.sshd = lib.mkIf config.vars.services.ssh.enable {
+    after = [ "wpa_supplicant-${config.vars.wireless.interface}.service" ];
+    wants = [ "wpa_supplicant-${config.vars.wireless.interface}.service" ];
+  };
+
   # environment variables
   environment.sessionVariables = {
     NIXOS_ROLE = "pi";
