@@ -87,31 +87,27 @@ Impermanence.
 On Laptop and Server roles, the following directories are hardened **without
 Impermanence**:
 
-| Path                | Profile |
-| ------------------- | ------- |
-| `/bin`              | Data    |
-| `/boot`             | Data    |
-| `/etc`              | Data    |
-| `/home`             | Data    |
-| `/lib`              | Data    |
-| `/lib64`            | Data    |
-| `/persist/nixos`    | Harden  |
-| `/persist/sops-nix` | Data    |
-| `/root`             | Data    |
-| `/srv`              | Data    |
-| `/tmp`              | Data    |
-| `/var`              | Data    |
+| Path     | Profile |
+| -------- | ------- |
+| `/bin`   | Data    |
+| `/boot`  | Data    |
+| `/etc`   | Data    |
+| `/home`  | Data    |
+| `/lib`   | Data    |
+| `/lib64` | Data    |
+| `/root`  | Data    |
+| `/srv`   | Data    |
+| `/tmp`   | Data    |
+| `/var`   | Data    |
 
 On the Pi role, the following directories are hardened **without Impermanence**:
 
-| Path                | Profile |
-| ------------------- | ------- |
-| `/persist`          | Harden  |
-| `/persist/sops-nix` | Data    |
-| `/tmp`              | Data    |
+| Path       | Profile |
+| ---------- | ------- |
+| `/persist` | Harden  |
+| `/tmp`     | Data    |
 
-Note that Impermanence is required to harden various other directories on
-Server.
+Note that Impermanence is required to harden various other directories on Pi.
 
 Additionally, directories persisted using Impermanence are also hardened.
 

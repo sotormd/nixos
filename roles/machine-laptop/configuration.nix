@@ -110,17 +110,11 @@
 
   }
 
-  # nosuid,nodev
-  // lib.mkSelfHarden [
-    "/persist/nixos"
-  ]
-
   # nosuid,nodev,noexec
   // lib.mkSelfData [
     "/bin"
     "/lib"
     "/lib64"
-    "/persist/sops-nix"
     "/root"
     "/tmp"
   ];
