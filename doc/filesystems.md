@@ -347,11 +347,7 @@ This flake implements Impermanence without using the
 
 This section covers the inner workings of Impermanence.
 
-Setting up Impermanence is covered in the role-specific setup documentation. See
-[Laptop Setup Documentation](./laptop/setup.md#setting-up-impermanence),
-[Server Setup Documentation](./server/setup.md#setting-up-impermanence) and
-[Pi Setup Documentation](./pi/setup.md#setting-up-impermanence) for more
-information.
+Setting up Impermanence is covered in the role-specific setup documentation.
 
 ## Laptop and Server
 

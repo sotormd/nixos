@@ -100,9 +100,6 @@ Secure Boot is used to ensure that the bootloader is signed before loading.
 Secure Boot support for NixOS is provided by the
 [lanzaboote](https://github.com/nix-community/lanzaboote) project.
 
-Note that Secure Boot can only be enabled post-installation. See
-[Setting up Secure Boot](./laptop/setup.md#setting-up-secure-boot).
-
 # Memory Allocator
 
 The [`graphene-hardened`](https://github.com/GrapheneOS/hardened_malloc) malloc
@@ -499,8 +496,7 @@ and simply being on a "allowed" private CIDR is not sufficient.
 
 > Laptop only
 
-Ports are open based on the enabled services (only SSH). See
-[Laptop Usage Documentation](./laptop/usage.md#ssh-server) for more information.
+Ports are open based on the enabled services (only SSH).
 
 Ports are opened for the following services:
 
@@ -514,8 +510,7 @@ Ports are opened for the following services:
 
 > Server only
 
-Ports are open based on the enabled services. See
-[Server Usage Documentation](./server/usage.md) for more information.
+Ports are open based on the enabled services.
 
 Ports are opened for the following services:
 
@@ -810,11 +805,8 @@ reduces anonymity significantly. Therefore, only non-vendor bits are randomized.
 
 # Secure Shell
 
-SSH can be enabled on all roles. See
-[Laptop Usage Documentation](./laptop/usage.md#ssh-server),
-[Server Usage Documentation](./server/usage.md#ssh-server) and
-[Pi Usage Documentation](./pi/usage.md#ssh-server) for details about using a
-non-default port, authorized keys, etc.
+SSH can be enabled on all roles. See role-specific documentation for details
+about using a non-default port, authorized keys, etc.
 
 The SSH configuration is hardened using the following options:
 

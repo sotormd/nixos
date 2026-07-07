@@ -766,46 +766,18 @@ using the `vars.selfhosted.*` variables.
 
 1. SearXNG metasearch engine `vars.selfhosted.searxng`
 
-   ```nix
-   {
-     enable = true;
-     domain = "example.duckdns.org"; 
-   }
-   ```
-
    SearXNG instance to use for web search.
 
 1. Vaultwarden password manager `vars.selfhosted.vaultwarden`
-
-   ```nix
-   {
-     enable = true;
-     domain = "example.duckdns.org"; 
-   }
-   ```
 
    Vaultwarden instance to use for the web vault.
 
 1. I2PD i2p router `vars.selfhosted.i2pd`
 
-   ```nix
-   {
-     enable = true;
-     address = "10.20.0.1";
-     domain = "example.duckdns.org"; 
-   }
-   ```
-
-   I2PD router to use for the webconsole and HTTP proxy.
+   I2PD router to use for the webconsole and HTTP proxy (for i2p-browser). The
+   HTTP proxy can be independently used with no further configuration.
 
 1. qBittorrent bittorrent client `vars.selfhosted.qbt`
-
-   ```nix
-   {
-     enable = true;
-     domain = "example.duckdns.org"; 
-   }
-   ```
 
    qBittorrent instance to use for the webui.
 
