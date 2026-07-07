@@ -7,8 +7,7 @@ This document covers using the Pi role.
 1. [System Maintenance](#system-maintenance)
 2. [Bind Mounts and External Disks](#bind-mounts-and-external-disks)
 3. [Services](#services)
-4. [Using Selfhosted Features](#using-selfhosted-features)
-5. [Further Reading](#further-reading)
+4. [Further Reading](#further-reading)
 
 # System Maintenance
 
@@ -104,52 +103,6 @@ For `vars.services.ssh`
   ];
 }
 ```
-
-# Using Selfhosted Features
-
-The Pi can only use the Server for DNS and I2P HTTP proxy.
-
-Note that services are exposed using on Server using WireGuard. WireGuard is
-configured in the variables file under `vars.wireguard`.
-
-Example configuration for Pi (`10.20.0.2` on wireguard) with a single peer Pi
-(`10.20.0.1` on wireguard, `10.0.0.3` on LAN):
-
-```nix
-{
-  # wireguard vpn
-  wireguard = {
-
-    # wireguard address
-    address = "10.20.0.2";
-
-    # wireguard port
-    port = 51820;
-
-    # wireguard peers
-    peers = [
-      {
-        PublicKey = "dfk4SUxCbQQcR18XAkh3bGyrvOBd+nscYCZWiFUrkGA=";
-        Endpoint = "10.0.0.3:51820";
-        AllowedIPs = [ "10.20.0.1/32" ];
-        PersistentKeepalive = 25;
-      }
-    ];
-
-  };
-}
-```
-
-The Pi has to be declared as a peer on the Server as well. See
-[Server Usage Documentation](../server/usage.md#wireguard).
-
-1. Unbound DNS resolver
-
-   Set the `vars.wireless.resolver` to the Server WireGuard peer address.
-
-2. I2P HTTP Proxy
-
-   The I2P HTTP Proxy can be used as usual, no configuration is required.
 
 # Further Reading
 
