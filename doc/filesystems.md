@@ -30,6 +30,13 @@ Three partitions are used:
 
    LUKS passphrase-encrypted partition containing the ZFS `rpool`.
 
+   It is also possible to set up TPM unlocking, if required, with
+   `systemd-cryptenroll`. For example, to bind to PCR 7 (Secure Boot):
+
+   ```console
+   # systemd-cryptenroll --tpm2-device=auto --tpm2-pcrs=7 /dev/nvme0n1p6
+   ```
+
 ### ZFS Datasets
 
 The bootstrap script creates seven datasets:

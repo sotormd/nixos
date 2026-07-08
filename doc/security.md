@@ -145,7 +145,7 @@ vulnerabilities.
 > Laptop, Server only
 
 LUKS encryption with a passphrase is enabled for the root partition, containing
-the main ZFS rpool.
+the main ZFS rpool. It is also possible to use TPM unlocking.
 
 Random encryption is used on the swap partition.
 
