@@ -13,6 +13,7 @@ in
 {
   imports = [
     apps.bash
+    apps.btop
     boot.disks
     boot.kernel
     boot.localization

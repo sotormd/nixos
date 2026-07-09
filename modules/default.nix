@@ -7,6 +7,9 @@
     # brave web browser
     apps.brave = _: { imports = [ ./apps/brave ]; };
 
+    # btop status monitor
+    apps.btop = _: { imports = [ ./apps/btop ]; };
+
     # automatic cpu speed & power optimizer
     apps.cpufreq = _: { imports = [ ./apps/cpufreq ]; };
 
