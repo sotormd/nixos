@@ -2,9 +2,6 @@
 
 This document covers the requirements for the Server role.
 
-> These requirements reflect the hardware this role is designed and tested for.
-> Other configurations may work but are not guaranteed.
-
 # Required
 
 1. `x86_64-linux` architecture
