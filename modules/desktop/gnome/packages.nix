@@ -1,5 +1,5 @@
 { pkgs, ... }:
 
 {
-  environment.systemPackages = [ pkgs.firefox ];
+  environment.systemPackages = [ pkgs.librewolf ];
 }

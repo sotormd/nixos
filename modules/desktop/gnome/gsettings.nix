@@ -4,7 +4,7 @@
   services.desktopManager.gnome = {
     favoriteAppsOverride = ''
       [org.gnome.shell]
-      favorite-apps=[ 'firefox.desktop', 'org.gnome.Console.desktop', 'org.gnome.Nautilus.desktop' ]
+      favorite-apps=[ 'librewolf.desktop', 'org.gnome.Console.desktop', 'org.gnome.Nautilus.desktop' ]
     '';
     extraGSettingsOverrides = ''
       [org.gnome.Terminal.Legacy.Profile:/org/gnome/terminal/legacy/profiles/:aaaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee/]

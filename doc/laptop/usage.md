@@ -656,7 +656,8 @@ desktop.
 Notable changes from the default configuration:
 
 - sway desktop replaced with GNOME
-- firefox browser is installed
+- librewolf browser is installed
+- graphene-hardened malloc is not used
 - wpa_supplicant replaced by NetworkManager
 - all selfhosted features are disabled
 
