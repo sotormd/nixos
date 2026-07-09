@@ -1,7 +1,7 @@
 # Security Features Summary
 
-This document attempts to cover the various security features for Laptop and
-Server roles.
+This document attempts to cover the various security features for Laptop, Server
+and Pi roles.
 
 This is a larger document than other documents in this flake. It is possible
 that errors may be present in this document. In any case, the flake source
