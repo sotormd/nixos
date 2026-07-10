@@ -401,6 +401,75 @@ let
     executable = true;
   };
 
+  memPy = writeTextFile {
+    name = "eww-script-mem";
+    text = ''
+      #!${python3}/bin/python3
+
+      import sys
+
+
+      def get_val_from_file(path, label):
+          try:
+              with open(path, "r") as f:
+                  for line in f:
+                      if line.startswith(label):
+                          value = int(line[len(label):].split()[0])
+                          return value * 1024  # kB -> bytes
+          except FileNotFoundError:
+              pass
+          return 0
+
+
+      def main():
+          total = get_val_from_file("/proc/meminfo", "MemTotal:")
+          free = get_val_from_file("/proc/meminfo", "MemFree:")
+          cached = get_val_from_file("/proc/meminfo", "Cached:")
+          available = get_val_from_file("/proc/meminfo", "MemAvailable:")
+
+          if available == 0:
+              available = free + cached
+
+          arc_size = 0
+          arc_min = 0
+
+          try:
+              with open("/proc/spl/kstat/zfs/arcstats", "r") as f:
+                  for line in f:
+                      if line.startswith("c_min"):
+                          arc_min = int(line.split()[2])
+                      elif line.startswith("size"):
+                          arc_size = int(line.split()[2])
+          except FileNotFoundError:
+              pass
+
+          if arc_size > arc_min:
+              available += arc_size - arc_min
+
+          if available <= total:
+              used = total - available
+          else:
+              used = total - free
+
+          gib_used = used / (1024 * 1024 * 1024)
+          percent = int((used * 100 / total) + 0.5)
+
+          if len(sys.argv) > 1:
+              if sys.argv[1] == "gib":
+                  print(f"{gib_used:.2f}G", end="")
+              elif sys.argv[1] == "perc":
+                  print(percent)
+          else:
+              print(f"{gib_used:.2f}G ({percent}%)")
+
+
+      if __name__ == "__main__":
+          main()
+    '';
+    destination = "/mem.py";
+    executable = true;
+  };
+
   scripts = symlinkJoin {
     name = "eww-scripts";
     paths = [
@@ -409,6 +478,7 @@ let
       calPy
       dockClientsJson
       dockPy
+      memPy
     ];
   };
 in

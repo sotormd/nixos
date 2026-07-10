@@ -32,7 +32,9 @@ let
         (defvar calendar-selected-year "")
         (defvar dotw-days "[\"M\", \"T\", \"W\", \"T\", \"F\", \"S\", \"S\"]")
         (defpoll uptime :interval "1s" "awk '{d=int(\$1/86400); h=int((\$1%86400)/3600); m=int((\$1%3600)/60); printf(\"%s%s%sm\\n\", (d>0?d\"d \":\"\"), (d>0||h>0?h\"h \":\"\"), m)}' /proc/uptime")
-        (defpoll cpu-ghz :interval "1s" "cat /proc/cpuinfo | grep \"cpu MHz\" | head -n 1 | awk '{printf \"%.1fGHz\\n\", \$4/1000}'")
+        (defpoll cpu-ghz :interval "1s" "awk '/cpu MHz/ {sum += $4; count++} END {printf \"%.1fGHz\", sum/count/1000}' /proc/cpuinfo")
+        (defpoll mem-perc :interval "1s" "${scripts}/mem.py perc")
+        (defpoll mem-gib :interval "1s" "${scripts}/mem.py gib")
         (defpoll zfs-perc :interval "1s" "zpool iostat | awk '/rpool/ {print 100 * \$2 / (\$2 + \$3)}'")
         (defpoll zfs-gib :interval "1s" "zpool iostat | awk '/rpool/ {print \$2}'")
         (defpoll fortune :interval "600s" "${fortune}/bin/fortune -n 35 -s")
@@ -205,8 +207,8 @@ let
                             (label :class "system-text" :valign "end" :halign "center" :text "CPU"))
                        (box :class "system-box-ram" :hexpand true :orientation "v" :valign "center" :halign "fill" :spacing 15 :space-evenly "false"
                             (box :class "system-circle" :orientation "v" :valign "center" :halign "center"
-                                 (circular-progress :class "system-circle-ram" :value {EWW_RAM.used_mem_perc} :thickness 5
-                                                    (label :class "system-circle-text" :text "''${round(EWW_RAM.used_mem / (1024 * 1024 * 1024), 2)}G")))
+                                 (circular-progress :class "system-circle-ram" :value mem-perc :thickness 5
+                                                    (label :class "system-circle-text" :text mem-gib)))
                             (label :class "system-text" :valign "end" :halign "center" :text "RAM"))
                        (box :class "system-box-zfs" :hexpand true :orientation "v" :valign "center" :halign "fill" :spacing 15 :space-evenly "false"
                             (box :class "system-circle" :orientation "v" :valign "center" :halign "center"
