@@ -339,8 +339,7 @@ The Brave browser can be launched from the console:
 brave
 ```
 
-It can also be launched from [rofi](#launcher-rofi) or from the
-[dock](#dock-widget)
+It can also be launched from [rofi](#launcher-rofi).
 
 Because of how the sandbox is set up, Brave can only be launched once (to
 prevent concurrent writes to the data directory). If Brave is launched again, a
@@ -398,8 +397,7 @@ The I2P Browser runs in a bubblewrap sandbox. See
 
 # Other Applications
 
-All apps can be launched using [rofi](#launcher-rofi) or from the
-[dock](#dock-widget).
+All apps can be launched using [rofi](#launcher-rofi).
 
 ## foot
 
