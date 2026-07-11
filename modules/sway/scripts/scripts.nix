@@ -12,7 +12,7 @@
 
 let
   volume = writeTextFile {
-    name = "dunst-scripts-volume";
+    name = "sway-scripts-volume";
     text = ''
       #!${runtimeShell}
 
@@ -33,7 +33,7 @@ let
   };
 
   brightness = writeTextFile {
-    name = "dunst-scripts-brightness";
+    name = "sway-scripts-brightness";
     text = ''
       #!${runtimeShell}
 
@@ -55,7 +55,7 @@ let
   };
 
   media = writeTextFile {
-    name = "dunst-scripts-media";
+    name = "sway-scripts-media";
     text = ''
       #!${python3}/bin/python3
 
