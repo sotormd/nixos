@@ -66,7 +66,7 @@ let
           },
           "clock": {
             "format": "<span size='12000' rise='-1000'>󰥔</span> <span rise='-1000'>{:%I:%M %p}</span>",
-            "format-alt": "<span size='12000' rise='-1000'>󰥔</span> <span rise='-1000'>{:%a %b %d}</span>",
+            "format-alt": "<span size='12000' rise='-1000'>󰥔</span> <span rise='-1000'>{:%a %d %b (%d/%m/%y)}</span>",
             "tooltip": false
           },
           "height": 32,
