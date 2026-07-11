@@ -1,10 +1,7 @@
 {
   imports = [
-    ./dconf.nix
-    ./disable-portals.nix
     ./enable.nix
-    ./opengl.nix
-    ./ozone.nix
+    ./settings.nix
     ./start.nix
   ];
 }
