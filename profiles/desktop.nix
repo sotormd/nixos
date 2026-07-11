@@ -7,7 +7,6 @@ in
   imports = [
     apps.brave
     apps.dev
-    apps.file-roller
     apps.foot
     apps.git
     apps.i2p-browser
@@ -23,10 +22,10 @@ in
     services.pipewire
     sway.cage
     sway.dunst
-    sway.eww
     sway.gtk
     sway.packages
     sway.rofi
+    sway.scripts
     sway.swaylock
     sway.swaywm
     sway.waybar

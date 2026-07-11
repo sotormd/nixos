@@ -169,8 +169,6 @@ Enter leave mode by using `$mod+Escape`
 | Poweroff | `u`     |
 | Reboot   | `r`     |
 
-Entering leave mode also opens the eww [leave](#leave-widget) widget.
-
 ### Screenshot
 
 Enter screenshot mode by using `$mod+PrintScreen`
@@ -206,20 +204,6 @@ Shows workspaces.
 | Go to workspace | Left click |
 
 Current workspace is highlighted in bold.
-
-### playerctl Module
-
-![waybar playerctl](../screenshots/waybar-playerctl.png)
-
-Shows currently playing track.
-
-| Action           | Bind         |
-| ---------------- | ------------ |
-| Play / pause     | Left click   |
-| Stop             | Middle click |
-| Next             | Scroll up    |
-| Previous         | Scroll down  |
-| Toggle animation | Right click  |
 
 ### mode Module
 
@@ -278,95 +262,11 @@ Shows current battery percentage / remaining time.
 
 ![waybar clock](../screenshots/waybar-clock.png)
 
-Shows current time.
+Shows current date and time.
 
-| Action                                   | Bind       |
-| ---------------------------------------- | ---------- |
-| Open [calendar](#calendar-widget) widget | Left click |
-
-## Widgets, eww
-
-This section covers the EWW widgets.
-
-### Dock widget
-
-Toggle dock visibility using `$mod+Tab`.
-
-![eww dock](../screenshots/eww-dock.png)
-
-The icons represent apps. Each icon can have three states:
-
-| State       | Icon Appearance     | Description              |
-| ----------- | ------------------- | ------------------------ |
-| `empty`     | Grey                | No window open           |
-| `unfocused` | Blue                | At least one window open |
-| `focused`   | Blue with underline | Currently focused window |
-
-The following actions can be done on an `empty` icon:
-
-| Action     | Bind       |
-| ---------- | ---------- |
-| Launch app | Left click |
-
-The following actions can be done on an `unfocused` icon:
-
-| Action                 | Bind       |
-| ---------------------- | ---------- |
-| Focus last used window | Left click |
-
-The following actions can be done on a `focused` icon:
-
-| Action                         | Bind         |
-| ------------------------------ | ------------ |
-| Toggle floating / tiled mode   | Left click   |
-| Send to scratchpad             | Right click  |
-| Close current window           | Middle click |
-| Focus through all open windows | Scroll       |
-
-Use the `eww-dock-init` command to reload the dock scripts.
-
-### Start widget
-
-Toggle start widget visibility using `$mod+grave`.
-
-![eww start](../screenshots/eww-start.png)
-
-Included modules:
-
-- username
-- hostname
-- uptime
-- cpu usage
-- memory usage
-- ZFS usage
-- playerctl controls
-- lyrics
-- fortune
-- leave commands
-
-### Calendar widget
-
-Open by left clicking on the waybar [clock](#clock-module) module.
-
-![eww calendar](../screenshots/eww-calendar.png)
-
-Use the arrows or scroll to change the month / year.
-
-Current day is highlighted in purple.
-
-Click on the purple calendar icon or use the `eww-cal-init` command to reload
-calendar scripts.
-
-### Leave widget
-
-The leave widget opens on entering [leave](#leave) mode.
-
-The leave widget closes on returning to normal mode.
-
-![eww leave](../screenshots/eww-leave.png)
-
-Instead of using the keybinds of leave mode, you can click on the buttons on
-this widget instead.
+| Action                       | Bind       |
+| ---------------------------- | ---------- |
+| Toggle between date and time | Left click |
 
 ## Launcher, rofi
 
@@ -530,10 +430,6 @@ PDF viewer with vim-like keybinds.
 ## Inkscape
 
 Scalable vector graphics editor.
-
-## file-roller
-
-Archive manager from the GNOME desktop environment.
 
 ## pavucontrol
 

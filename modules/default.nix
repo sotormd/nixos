@@ -16,9 +16,6 @@
     # development tools
     apps.dev = _: { imports = [ ./apps/dev ]; };
 
-    # file-roller archive manager
-    apps.file-roller = _: { imports = [ ./apps/file-roller ]; };
-
     # foot terminal emulator
     apps.foot = _: { imports = [ ./apps/foot ]; };
 
@@ -190,9 +187,6 @@
     # dunst notification daemon
     sway.dunst = _: { imports = [ ./sway/dunst ]; };
 
-    # eww wm-agnostic widgets
-    sway.eww = _: { imports = [ ./sway/eww ]; };
-
     # gtk theming
     sway.gtk = _: { imports = [ ./sway/gtk ]; };
 
@@ -201,6 +195,9 @@
 
     # rofi launcher
     sway.rofi = _: { imports = [ ./sway/rofi ]; };
+
+    # miscellaneous scripts for sway
+    sway.scripts = _: { imports = [ ./sway/scripts ]; };
 
     # swaylock session locker
     sway.swaylock = _: { imports = [ ./sway/swaylock ]; };

@@ -12,9 +12,9 @@
 
     home = "/home/${config.vars.user.name}";
     createHome = false;
+
+    uid = 1000;
   };
 
-  users.groups = {
-    "${config.vars.user.name}" = { };
-  };
+  users.groups."${config.vars.user.name}".gid = 1000;
 }

@@ -26,7 +26,7 @@
     };
 
     # secure boot for nixos
-    # used only on laptop
+    # experimental
     lanzaboote = {
       url = "github:nix-community/lanzaboote";
       inputs.nixpkgs.follows = "nixpkgs";

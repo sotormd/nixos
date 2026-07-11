@@ -8,68 +8,73 @@
     <a href="#related-flakes">Related Flakes</a>
 </p>
 
-![screenshots gif](./doc/screenshots/nord.gif)
+![screenshots](./doc/screenshots/nord.gif)
 
-~~slightly overengineered~~ NixOS configuration flake for multiple hosts with
-ZFS, Impermanence, MicroVMs, WireGuard, etc
+NixOS configuration flake for multiple hosts with ZFS, Impermanence, MicroVMs,
+WireGuard, etc
 
 # Features
 
 [Why do I not use some popular libraries?](./doc/why-not-x.md)
 
-[Security Features](./doc/security.md)
+1. Security features:
 
-Nix-specific features:
+   - [Security Features Summary](./doc/security.md)
 
-- Completely reproducible, pure evaluation
-- Role-based outputs with features as modules
-- Variables system for device-specific configuration
-- [Bespoke CLI](#bespoke-cli) for maintaining this flake
-- Flake-enabled [bootstrap images](#bootstrap-images)
-- Dotfiles managed using wrappers implemented from basic nixpkgs functions
-- [Impermanence](./doc/filesystems.md#impermanence) using ZFS snapshots and bind
-  mounts, without the library
-- Service isolation using
-  [microvm.nix](https://github.com/microvm-nix/microvm.nix)
-- Secrets managed using [sops-nix](https://github.com/Mic92/sops-nix)
-- Secure boot using [lanzaboote](https://github.com/nix-community/lanzaboote)
-- Package management using [Lix](https://lix.systems)
+2. Nix-specific features:
 
-Desktop features:
+   - Completely reproducible, pure evaluation
+   - Role-based outputs with features as modules
+   - Variables system for device-specific configuration
+   - [Bespoke CLI](#bespoke-cli) for maintaining this flake
+   - Flake-enabled [bootstrap images](#bootstrap-images)
+   - Dotfiles managed using wrappers implemented from basic nixpkgs functions
+   - [Impermanence](./doc/filesystems.md#impermanence) using ZFS snapshots and
+     bind mounts, without the library
+   - Service isolation using
+     [microvm.nix](https://github.com/microvm-nix/microvm.nix)
+   - Secrets managed using [sops-nix](https://github.com/Mic92/sops-nix)
+   - Secure boot using [lanzaboote](https://github.com/nix-community/lanzaboote)
+   - Package management using [Lix](https://lix.systems)
 
-- 100% wayland, no xorg or xwayland
-- [SwayFX](https://github.com/WillPower3309/swayfx) compositor
-- [Waybar](https://github.com/Alexays/Waybar) top panel with several useful
-  modules
-- [Eww](https://github.com/elkowar/eww) widgets for bottom dock, dashboard,
-  calendar, etc
-- [Rofi](https://github.com/davatorium/rofi) menu for launchers, clipboard
-  history, workspace switchers, etc
-- [Brave](https://github.com/brave/brave-browser/) browser with tight policies.
-- Sandboxing with [Bubblewrap](https://github.com/containers/bubblewrap) and
-  [xdg-dbus-proxy](https://github.com/flatpak/xdg-dbus-proxy).
-- NVF-powered [neovim](https://github.com/sotormd/neovim) configuration
-- Theming and colors with [colors](https://github.com/sotormd/colors)
-- Declarative browser homepage with
-  [homepage](https://github.com/sotormd/homepage)
-- Declarative wallpapers with
-  [wallpapers](https://github.com/sotormd/wallpapers)
-- XKCD lockscreen wallpapers with
-  [xkcd-wall](https://github.com/sotormd/xkcd-wall)
-- Automatic behavior changes when outside trusted & reliable networks with
-  [Roaming Mode](./doc/laptop/usage.md#roaming-mode)
+3. Desktop features:
 
-Services features:
+   - 100% wayland, no xorg or xwayland
+   - [SwayFX](https://github.com/WillPower3309/swayfx) compositor
+   - Alternate [cage](https://github.com/cage-kiosk/cage) session with the
+     [foot](https://codeberg.org/dnkl/foot) terminal emulator
+   - [Waybar](https://github.com/Alexays/Waybar) top panel with several useful
+     modules
+   - [Rofi](https://github.com/davatorium/rofi) menu for launchers, clipboard
+     history, workspace switchers, etc
+   - [Brave](https://github.com/brave/brave-browser/) browser with tight
+     policies.
+   - Sandboxing with [Bubblewrap](https://github.com/containers/bubblewrap) and
+     [xdg-dbus-proxy](https://github.com/flatpak/xdg-dbus-proxy).
+   - NVF-powered [neovim](https://github.com/sotormd/neovim) configuration
+   - Theming and colors with [colors](https://github.com/sotormd/colors)
+   - Declarative browser homepage with
+     [homepage](https://github.com/sotormd/homepage)
+   - Declarative wallpapers with
+     [wallpapers](https://github.com/sotormd/wallpapers)
+   - XKCD lockscreen wallpapers with
+     [xkcd-wall](https://github.com/sotormd/xkcd-wall)
+   - Automatic behavior changes when outside trusted & reliable networks with
+     [Roaming Mode](./doc/laptop/usage.md#roaming-mode)
+   - Full alternate desktop specialisation with
+     [GNOME Mode](./doc/laptop/usage.md#gnome-mode)
 
-- MicroVM services
-- WireGuard tunnelling
-- nftables firewall
-- [Unbound](https://github.com/NLnetLabs/unbound) dns server
-- [NGINX](https://github.com/nginx/nginx) web server & reverse proxy
-- ACME for [Let's Encrypt](https://letsencrypt.org/) certificates
-- [SearXNG](https://github.com/searxng/searxng) search engine
-- [Vaultwarden](https://github.com/dani-garcia/vaultwarden) password manager
-- [i2pd](https://github.com/PurpleI2P/i2pd) I2P router
+4. Services features:
+
+   - MicroVM services
+   - WireGuard tunnelling
+   - nftables firewall
+   - [Unbound](https://github.com/NLnetLabs/unbound) dns server
+   - [NGINX](https://github.com/nginx/nginx) web server & reverse proxy
+   - ACME for [Let's Encrypt](https://letsencrypt.org/) certificates
+   - [SearXNG](https://github.com/searxng/searxng) search engine
+   - [Vaultwarden](https://github.com/dani-garcia/vaultwarden) password manager
+   - [i2pd](https://github.com/PurpleI2P/i2pd) I2P router
 
 <details>
 
@@ -106,7 +111,6 @@ Services features:
 | display server                | `wayland`                                                                                                  |
 | compositor                    | `swayfx`, `cage`                                                                                           |
 | bar                           | `waybar`                                                                                                   |
-| widgets                       | `eww`                                                                                                      |
 | launcher                      | `rofi`                                                                                                     |
 | notifications                 | `dunst`                                                                                                    |
 | terminal emulator             | `foot`                                                                                                     |
@@ -227,6 +231,8 @@ Here are some of my other flakes that are related to my NixOS tooling:
 - [nate](https://github.com/sotormd/nate), MATE desktop for my NixOS needs
 - [coffee](https://github.com/sotormd/coffee), A very minimal openbox
   configuration
+- [sway-old](https://github.com/sotormd/sway-old), Old sway config previously
+  used here
 
 Some of these repos were previously part of this repo, but separated due to
 being out-of-scope (eg, [pattern](https://github.com/sotormd/pattern)).

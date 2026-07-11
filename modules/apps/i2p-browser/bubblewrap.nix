@@ -18,13 +18,14 @@ let
 
       set -euo pipefail
 
-      users=$(mktemp -d)
+      mkdir -p "$XDG_RUNTIME_DIR/bubblewrap-i2p-browser"
 
-      echo "${user}:x:1000:1000:${user}:/home/${user}:${coreutils}/bin/false" > "$users/passwd"
-      echo "${user}:x:1000:" > "$users/group"
+      users=$(mktemp -d -p "$XDG_RUNTIME_DIR/bubblewrap-i2p-browser" users.XXXXXX)
+      echo "i2p-browser:x:1000:1000:i2p-browser:/home/i2p-browser:${coreutils}/bin/false" > "$users/passwd"
+      echo "i2p-browser:x:1000:" > "$users/group"
 
       cleanup() { 
-        rm -rf "$users" 
+        rm -rf "$XDG_RUNTIME_DIR/bubblewrap-i2p-browser" 
       }
       trap cleanup INT TERM EXIT
 
@@ -36,16 +37,17 @@ let
         --ro-bind /etc/resolv.conf /etc/resolv.conf \
         --ro-bind /etc/fonts /etc/fonts \
         --tmpfs /tmp \
-        --tmpfs /home/${user} \
-        --ro-bind /home/${user}/.gtkrc-2.0 /home/${user}/.gtkrc-2.0 \
-        --ro-bind /home/${user}/.config/gtk-3.0 /home/${user}/.config/gtk-3.0 \
-        --ro-bind /home/${user}/.config/gtk-4.0 /home/${user}/.config/gtk-4.0 \
-        --ro-bind /home/${user}/.icons /home/${user}/.icons \
-        --ro-bind /home/${user}/.Xresources /home/${user}/.Xresources \
-        --ro-bind /home/${user}/.local/share/fonts /home/${user}/.local/share/fonts \
-        --ro-bind /home/${user}/.local/share/icons /home/${user}/.local/share/icons \
-        --ro-bind /home/${user}/.local/share/themes /home/${user}/.local/share/themes \
-        --ro-bind /home/${user}/.config/dconf /home/${user}/.config/dconf \
+        --setenv HOME /home/i2p-browser \
+        --tmpfs /home/i2p-browser \
+        --ro-bind /home/${user}/.gtkrc-2.0 /home/i2p-browser/.gtkrc-2.0 \
+        --ro-bind /home/${user}/.config/gtk-3.0 /home/i2p-browser/.config/gtk-3.0 \
+        --ro-bind /home/${user}/.config/gtk-4.0 /home/i2p-browser/.config/gtk-4.0 \
+        --ro-bind /home/${user}/.icons /home/i2p-browser/.icons \
+        --ro-bind /home/${user}/.Xresources /home/i2p-browser/.Xresources \
+        --ro-bind /home/${user}/.local/share/fonts /home/i2p-browser/.local/share/fonts \
+        --ro-bind /home/${user}/.local/share/icons /home/i2p-browser/.local/share/icons \
+        --ro-bind /home/${user}/.local/share/themes /home/i2p-browser/.local/share/themes \
+        --ro-bind /home/${user}/.config/dconf /home/i2p-browser/.config/dconf \
         --proc /proc \
         --dev /dev  \
         --unshare-all \

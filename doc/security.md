@@ -1031,9 +1031,9 @@ browsers.
      - Bind fake passwd and group files as readonly
 
        ```bash
-       users=$(mktemp -d)
-       echo "${user}:x:1000:1000:${user}:/home/${user}:${pkgs.coreutils}/bin/false" > "$users/passwd"
-       echo "${user}:x:1000:" > "$users/group"
+       users=$(mktemp -d -p "$XDG_RUNTIME_DIR/bubblewrap-brave" users.XXXXXX)
+       echo "brave:x:1000:1000:brave:/home/brave:${coreutils}/bin/false" > "$users/passwd"
+       echo "brave:x:1000:" > "$users/group"
        ```
 
        ```
@@ -1069,21 +1069,22 @@ browsers.
      - Mount $HOME as tmpfs
 
        ```
-       --tmpfs /home/${user}
+       --setenv HOME /home/brave
+       --tmpfs /home/brave
        ```
 
      - Bind GTK files as readonly
 
        ```
-       --ro-bind /home/${user}/.gtkrc-2.0 /home/${user}/.gtkrc-2.0
-       --ro-bind /home/${user}/.config/gtk-3.0 /home/${user}/.config/gtk-3.0
-       --ro-bind /home/${user}/.config/gtk-4.0 /home/${user}/.config/gtk-4.0
-       --ro-bind /home/${user}/.icons /home/${user}/.icons
-       --ro-bind /home/${user}/.Xresources /home/${user}/.Xresources
-       --ro-bind /home/${user}/.local/share/fonts /home/${user}/.local/share/fonts
-       --ro-bind /home/${user}/.local/share/icons /home/${user}/.local/share/icons
-       --ro-bind /home/${user}/.local/share/themes /home/${user}/.local/share/themes
-       --ro-bind /home/${user}/.config/dconf /home/${user}/.config/dconf
+       --ro-bind /home/${user}/.gtkrc-2.0 /home/brave/.gtkrc-2.0
+       --ro-bind /home/${user}/.config/gtk-3.0 /home/brave/.config/gtk-3.0
+       --ro-bind /home/${user}/.config/gtk-4.0 /home/brave/.config/gtk-4.0
+       --ro-bind /home/${user}/.icons /home/brave/.icons
+       --ro-bind /home/${user}/.Xresources /home/brave/.Xresources
+       --ro-bind /home/${user}/.local/share/fonts /home/brave/.local/share/fonts
+       --ro-bind /home/${user}/.local/share/icons /home/brave/.local/share/icons
+       --ro-bind /home/${user}/.local/share/themes /home/brave/.local/share/themes
+       --ro-bind /home/${user}/.config/dconf /home/brave/.config/dconf
        ```
 
      - Mount **new** procfs and dev
@@ -1140,18 +1141,6 @@ browsers.
        --ro-bind "$XDG_RUNTIME_DIR/pulse" "$XDG_RUNTIME_DIR/pulse"
        ```
 
-     - Bind /tmp to $XDG_RUNTIME_DIR/bubblewrap-brave-tmp so that MPRIS album
-       art can be used
-
-       ```bash
-       brave_tmp="$XDG_RUNTIME_DIR/bubblewrap-brave-tmp"
-       mkdir -p "$brave_tmp"
-       ```
-
-       ```
-       --bind $brave_tmp /tmp
-       ```
-
      - Bind Enterprise Policies as readonly
 
        ```
@@ -1161,19 +1150,19 @@ browsers.
      - Bind configuration directory
 
        ```
-       --bind /home/${user}/.config/BraveSoftware/Brave-Browser /home/${user}/.config/BraveSoftware/Brave-Browser
+       --bind /home/${user}/.config/BraveSoftware/Brave-Browser /home/brave/.config/BraveSoftware/Brave-Browser
        ```
 
      - Bind local state as readonly
 
        ```
-       --ro-bind "${state}/Local State" "/home/${user}/.config/BraveSoftware/Brave-Browser/Local State"
+       --ro-bind "${state}/Local State" "/home/brave/.config/BraveSoftware/Brave-Browser/Local State"
        ```
 
      - Bind downloads directory
 
        ```
-       --bind /home/${user}/Downloads /home/${user}/Downloads
+       --bind /home/${user}/Downloads /home/brave/Downloads
        ```
 
    - xdg-dbus-proxy:
@@ -1320,15 +1309,15 @@ browsers.
      - Allow using Wayland
 
        ```
-       --ro-bind "$XDG_RUNTIME_DIR/wayland-1" "$XDG_RUNTIME_DIR/wayland-1" \
+       --ro-bind "$XDG_RUNTIME_DIR/wayland-1" "$XDG_RUNTIME_DIR/wayland-1"
        ```
 
      - Bind fake passwd and group files as readonly
 
        ```bash
-       users=$(mktemp -d)
-       echo "${user}:x:1000:1000:${user}:/home/${user}:${pkgs.coreutils}/bin/false" > "$users/passwd"
-       echo "${user}:x:1000:" > "$users/group"
+       users=$(mktemp -d -p "$XDG_RUNTIME_DIR/bubblewrap-i2p-browser" users.XXXXXX)
+       echo "i2p-browser:x:1000:1000:i2p-browser:/home/i2p-browser:${coreutils}/bin/false" > "$users/passwd"
+       echo "i2p-browser:x:1000:" > "$users/group"
        ```
 
        ```
@@ -1357,21 +1346,22 @@ browsers.
      - Mount $HOME as tmpfs
 
        ```
-       --tmpfs /home/${user}
+       --setenv HOME /home/i2p-browser
+       --tmpfs /home/i2p-browser
        ```
 
      - Bind GTK files as readonly
 
        ```
-       --ro-bind /home/${user}/.gtkrc-2.0 /home/${user}/.gtkrc-2.0
-       --ro-bind /home/${user}/.config/gtk-3.0 /home/${user}/.config/gtk-3.0
-       --ro-bind /home/${user}/.config/gtk-4.0 /home/${user}/.config/gtk-4.0
-       --ro-bind /home/${user}/.icons /home/${user}/.icons
-       --ro-bind /home/${user}/.Xresources /home/${user}/.Xresources
-       --ro-bind /home/${user}/.local/share/fonts /home/${user}/.local/share/fonts
-       --ro-bind /home/${user}/.local/share/icons /home/${user}/.local/share/icons
-       --ro-bind /home/${user}/.local/share/themes /home/${user}/.local/share/themes
-       --ro-bind /home/${user}/.config/dconf /home/${user}/.config/dconf
+       --ro-bind /home/${user}/.gtkrc-2.0 /home/i2p-browser/.gtkrc-2.0
+       --ro-bind /home/${user}/.config/gtk-3.0 /home/i2p-browser/.config/gtk-3.0
+       --ro-bind /home/${user}/.config/gtk-4.0 /home/i2p-browser/.config/gtk-4.0
+       --ro-bind /home/${user}/.icons /home/i2p-browser/.icons
+       --ro-bind /home/${user}/.Xresources /home/i2p-browser/.Xresources
+       --ro-bind /home/${user}/.local/share/fonts /home/i2p-browser/.local/share/fonts
+       --ro-bind /home/${user}/.local/share/icons /home/i2p-browser/.local/share/icons
+       --ro-bind /home/${user}/.local/share/themes /home/i2p-browser/.local/share/themes
+       --ro-bind /home/${user}/.config/dconf /home/i2p-browser/.config/dconf
        ```
 
      - Mount **new** procfs and dev

@@ -1,10 +1,7 @@
 {
   lib,
-  eww0,
-  media0,
   volume0,
   writeTextFile,
-  scripts,
   vars,
   ...
 }:
@@ -69,19 +66,8 @@ let
           },
           "clock": {
             "format": "<span size='12000' rise='-1000'>󰥔</span> <span rise='-1000'>{:%I:%M %p}</span>",
-            "on-click": "${eww0}/bin/eww open --toggle calendar --screen $(swaymsg -t get_outputs | jq -r '.[] | select(.focused) | .name')",
+            "format-alt": "<span size='12000' rise='-1000'>󰥔</span> <span rise='-1000'>{:%a %b %d}</span>",
             "tooltip": false
-          },
-          "custom/playerctl": {
-            "exec": "${media0}/bin/media waybar",
-            "interval": 1,
-            "max-length": 70,
-            "on-click": "${media0}/bin/media play-pause",
-            "on-click-right": "${scripts}/animation.sh",
-            "on-click-middle": "${media0}/bin/media stop",
-            "on-scroll-down": "${media0}/bin/media previous",
-            "on-scroll-up": "${media0}/bin/media next",
-            "return-type": "json"
           },
           "height": 32,
           "idle_inhibitor": {
@@ -97,7 +83,6 @@ let
           ],
           "modules-left": [
             "sway/workspaces",
-            "custom/playerctl",
             "sway/mode"
           ],
           "modules-right": [

@@ -28,7 +28,6 @@ let
       }
 
       #workspaces,
-      .playerctl-paused, .playerctl-playing, .playerctl-playing-noanimation,
       #idle_inhibitor,
       #network,
       #pulseaudio,
@@ -39,7 +38,6 @@ let
         padding: 0px 9px;
       }
 
-      .playerctl-paused, .playerctl-playing, .playerctl-playing-noanimation,
       #mode,
       #window,
       #idle_inhibitor,
@@ -55,7 +53,6 @@ let
         margin-left: 5px;
       }
 
-      .playerctl-paused, .playerctl-playing, .playerctl-playing-noanimation,
       #mode,
       #clock {
         margin-right: 5px;
@@ -75,39 +72,6 @@ let
         font-weight: 900;
       }
 
-      @keyframes background-switch {
-        0% {
-          background: linear-gradient(45deg, #${colors.waybar.animation.a}, #${colors.waybar.animation.b}, #${colors.waybar.animation.c}, #${colors.waybar.animation.d}, #${colors.waybar.animation.e}, #${colors.waybar.animation.f}, #${colors.waybar.animation.g}, #${colors.waybar.animation.h});
-        }
-        25% {
-          background: linear-gradient(45deg, #${colors.waybar.animation.h}, #${colors.waybar.animation.a}, #${colors.waybar.animation.b}, #${colors.waybar.animation.c}, #${colors.waybar.animation.d}, #${colors.waybar.animation.e}, #${colors.waybar.animation.f}, #${colors.waybar.animation.g});
-        }
-        50% {
-          background: linear-gradient(45deg, #${colors.waybar.animation.g}, #${colors.waybar.animation.h}, #${colors.waybar.animation.a}, #${colors.waybar.animation.b}, #${colors.waybar.animation.c}, #${colors.waybar.animation.d}, #${colors.waybar.animation.e}, #${colors.waybar.animation.f});
-        }
-        75% {
-          background: linear-gradient(45deg, #${colors.waybar.animation.f}, #${colors.waybar.animation.g}, #${colors.waybar.animation.h}, #${colors.waybar.animation.a}, #${colors.waybar.animation.b}, #${colors.waybar.animation.c}, #${colors.waybar.animation.d}, #${colors.waybar.animation.e});
-        }
-        100% {
-          background: linear-gradient(45deg, #${colors.waybar.animation.e}, #${colors.waybar.animation.f}, #${colors.waybar.animation.g}, #${colors.waybar.animation.h}, #${colors.waybar.animation.a}, #${colors.waybar.animation.b}, #${colors.waybar.animation.c}, #${colors.waybar.animation.d});
-        }
-      }
-
-      .playerctl-playing {
-        animation: background-switch 6s linear infinite;
-      }
-
-      .playerctl-playing-noanimation {
-        animation: background-switch 6s linear infinite;
-        animation-play-state: paused;
-      }
-
-      .playerctl-paused {
-        animation: background-switch 6s linear infinite;
-        animation-play-state: paused;
-      }
-
-      .playerctl-paused, .playerctl-playing, .playerctl-playing-noanimation,
       #idle_inhibitor,
       #network,
       #pulseaudio,

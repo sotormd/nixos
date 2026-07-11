@@ -4,9 +4,9 @@
   cliphist,
   dconf,
   dunst0,
-  eww0,
   foot0,
   grim,
+  imagemagick,
   mate-polkit,
   media0,
   rofi0,
@@ -275,15 +275,15 @@ let
       #
       # LEAVE MODE
       #
-      bindsym Mod4+Escape mode leave; exec ${eww0}/bin/eww open leavewindow --screen $(swaymsg -t get_outputs | jq -r '.[] | select(.focused) | .name')
+      bindsym Mod4+Escape mode leave
       mode "leave" {
-        bindsym Escape mode default; exec ${eww0}/bin/eww close leavewindow
-        bindsym Return mode default; exec ${eww0}/bin/eww close leavewindow
-        bindsym l mode default; exec ${eww0}/bin/eww close leavewindow; exec ${swaylock0}/bin/swaylock
-        bindsym r mode default; exec ${eww0}/bin/eww close leavewindow; exec systemctl reboot
-        bindsym s mode default; exec ${eww0}/bin/eww close leavewindow; exec systemctl suspend
-        bindsym u mode default; exec ${eww0}/bin/eww close leavewindow; exec systemctl poweroff
-        bindsym x mode default; exec ${eww0}/bin/eww close leavewindow; exec swaymsg exit
+        bindsym Escape mode default
+        bindsym Return mode default
+        bindsym l mode default; exec ${swaylock0}/bin/swaylock
+        bindsym r mode default; exec systemctl reboot
+        bindsym s mode default; exec systemctl suspend
+        bindsym u mode default; exec systemctl poweroff
+        bindsym x mode default; exec swaymsg exit
       }
 
       #
@@ -317,7 +317,7 @@ let
         bindsym Escape mode default
         bindsym Return mode default
         bindsym c mode screenshot-copy
-        bindsym p mode default; exec ${slurp}/bin/slurp -p | ${grim}/bin/grim -g - - | magick - txt: | awk 'NR==2 { print tolower($3) }' | wl-copy
+        bindsym p mode default; exec ${slurp}/bin/slurp -p | ${grim}/bin/grim -g - - | ${imagemagick}/bin/magick - txt: | awk 'NR==2 { print tolower($3) }' | wl-copy
         bindsym s mode screenshot-save
       }
 
@@ -351,15 +351,6 @@ let
         position top
         swaybar_command ${waybar0}/bin/waybar
       }
-
-      #
-      # EWW
-      #
-      exec ${eww0}/bin/eww daemon
-      exec ${eww0}/bin/eww-cal-init
-      exec ${eww0}/bin/eww-dock-init
-      bindsym Mod4+Tab exec ${eww0}/bin/eww open dock --toggle --screen $(swaymsg -t get_outputs | jq -r '.[] | select(.focused) | .name')
-      bindsym Mod4+grave exec ${eww0}/bin/eww open start --toggle --screen $(swaymsg -t get_outputs | jq -r '.[] | select(.focused) | .name')
 
       #
       # DUNST
