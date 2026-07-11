@@ -3,9 +3,8 @@
 {
   imports = [
 
-    ./impermanence
-
     ./configuration.nix
+    ./impermanence.nix
 
     inputs.lanzaboote.nixosModules.lanzaboote
     inputs.microvm-nix.nixosModules.host

@@ -3,10 +3,9 @@
 {
   imports = [
 
-    ./impermanence
     ./specialisations
-
     ./configuration.nix
+    ./impermanence.nix
 
     inputs.colors.nixosModules.colors
     inputs.lanzaboote.nixosModules.lanzaboote

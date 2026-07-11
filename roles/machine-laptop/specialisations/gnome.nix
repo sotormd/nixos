@@ -12,8 +12,8 @@ lib.mkIf config.vars.modes.gnome.enable {
     inheritParentConfig = false;
     configuration = {
       imports = [
-        ../impermanence
         ../configuration.nix
+        ../impermanence.nix
         inputs.lanzaboote.nixosModules.lanzaboote
         inputs.sops-nix.nixosModules.sops
         self.nixosModules.modules.desktop.gnome

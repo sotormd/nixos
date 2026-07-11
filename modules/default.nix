@@ -52,6 +52,9 @@
     # binfmt emulated architectures
     boot.emulated = _: { imports = [ ./boot/emulated ]; };
 
+    # host kernel modules and microcode
+    boot.host = _: { imports = [ ./boot/host ]; };
+
     # kernel release, kernel parameters, sysctl options, module blacklists
     boot.kernel = _: { imports = [ ./boot/kernel ]; };
 
@@ -81,6 +84,9 @@
 
     # users and other nsswitch options
     boot.users = _: { imports = [ ./boot/users ]; };
+
+    # filesystems for zfs on root, including impermanence rollback
+    boot.zfsroot = _: { imports = [ ./boot/zfsroot ]; };
 
     # filesystems for bootstrap
     bootstrap.fs = _: { imports = [ ./bootstrap/fs ]; };

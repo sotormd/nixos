@@ -33,35 +33,27 @@ Three partitions are used:
    It is also possible to set up TPM unlocking, if required, with
    `systemd-cryptenroll`. For example, to bind to PCR 7 (Secure Boot):
 
-   ```console
-   # systemd-cryptenroll --tpm2-device=auto --tpm2-pcrs=7 /dev/nvme0n1p6
+   ```bash
+   sudo systemd-cryptenroll --tpm2-device=auto --tpm2-pcrs=7 /dev/nvme0n1p6
    ```
 
 ### ZFS Datasets
 
-The bootstrap script creates seven datasets:
+The bootstrap script creates these datasets:
 
 ```
 rpool/nixos/root       mounted at /
-rpool/nixos/home       mounted at /home
-rpool/nixos/var        mounted at /var
-rpool/nixos/etc        mounted at /etc
-rpool/nixos/srv        mounted at /srv
 rpool/nixos/nix        mounted at /nix
 rpool/nixos/persist    mounted at /persist
 ```
 
-Five blank snapshots are also created at this time:
+A blank snapshot is also created at this time:
 
 ```
 rpool/nixos/root@blank
-rpool/nixos/home@blank
-rpool/nixos/var@blank
-rpool/nixos/etc@blank
-rpool/nixos/srv@blank
 ```
 
-The blank snapshots are relevant for Impermanence.
+The blank snapshot is relevant for Impermanence.
 
 ## Pi
 
@@ -91,32 +83,31 @@ profiles, for example:
 Profiles are used for Impermanence as well as general hardening without
 Impermanence.
 
-On Laptop and Server roles, the following directories are hardened **without
-Impermanence**:
+On Laptop and Server roles, the following directories are hardened **if
+Impermanence is enabled**:
 
-| Path     | Profile |
-| -------- | ------- |
-| `/bin`   | Data    |
-| `/boot`  | Data    |
-| `/etc`   | Data    |
-| `/home`  | Data    |
-| `/lib`   | Data    |
-| `/lib64` | Data    |
-| `/root`  | Data    |
-| `/srv`   | Data    |
-| `/tmp`   | Data    |
-| `/var`   | Data    |
+| Path | Profile |
+| ---- | ------- |
+| `/`  | Data    |
 
-On the Pi role, the following directories are hardened **without Impermanence**:
+> The root can be mounted `nosuid,nodev,noexec` because, on NixOS, all
+> executables that are part of the system closure come from `/nix` and all
+> user-created executables are under `/persist`. Likewise, all suid binaries are
+> under `/run/wrappers` which is a tmpfs. This is why it is possible if
+> Impermanence is enabled.
 
-| Path       | Profile |
-| ---------- | ------- |
-| `/persist` | Harden  |
-| `/tmp`     | Data    |
+On Laptop and Server roles, the following directories are hardened even without
+Impermanence:
 
-Note that Impermanence is required to harden various other directories on Pi.
+| Path    | Profile |
+| ------- | ------- |
+| `/boot` | Data    |
 
-Additionally, directories persisted using Impermanence are also hardened.
+Additionally, directories persisted using Impermanence are also hardened
+(covered below).
+
+On Pi role, various directories are hardened if Impermanence is enabled (covered
+below).
 
 # Additional Disks and Mounts
 
@@ -358,28 +349,16 @@ Impermanence is implemented using ZFS snapshots and bind mounts.
 
 ### ZFS Snapshots
 
-As covered [above](#root-filesystems), the bootstrap script creates five blank
-snapshots:
-
-```
-rpool/nixos/root@blank
-rpool/nixos/home@blank
-rpool/nixos/var@blank
-rpool/nixos/etc@blank
-rpool/nixos/srv@blank
-```
-
 During the Impermanence setup (post-install), the bootstrap script populates
 `/persist/root` with the default directories to persist.
 
-During early boot, systemd services roll back the `rpool/nixos/root`,
-`rpool/nixos/home`, `rpool/nixos/var`, `rpool/nixos/etc` and `rpool/nixos/srv`
-datasets.
+During early boot, a systemd service rolls back the `rpool/nixos/root` dataset
+to `rpool/nixos/root@blank`.
 
-So, in early boot, the `/`, `/home`, `/var`, `/etc` and `/srv` directories are
-**completely empty**. Nix populates it with relevant files from `/nix` based on
-the system closure. All other directories are persisted using bind mounts from
-`/persist/root`. Only `/persist` and `/nix` survive across reboots.
+So, in early boot, the root filesystem is **completely empty**. Nix populates it
+with relevant files from `/nix` based on the system closure. All other
+directories are persisted using bind mounts from `/persist/root`. Only
+`/persist` and `/nix` survive across reboots.
 
 ### Persisted Directories
 
@@ -397,12 +376,8 @@ services.
 
 At any given point, to see the files that will be thrown out by Impermanence:
 
-```console
-# zfs diff rpool/nixos/root@blank
-# zfs diff rpool/nixos/home@blank
-# zfs diff rpool/nixos/var@blank
-# zfs diff rpool/nixos/etc@blank
-# zfs diff rpool/nixos/srv@blank
+```bash
+sudo zfs diff rpool/nixos/root@blank
 ```
 
 The following directories are persisted by default:

@@ -1936,16 +1936,9 @@ Several sysctl options are used to harden the kernel. They are covered below:
     vm.mmap_rnd_compat_bits=16
     ```
 
-    > Laptop, Server only
-
     ```
-    vm.mmap_rnd_bits=32
-    ```
-
-    > Pi only
-
-    ```
-    vm.mmap_rnd_bits=33
+    vm.mmap_rnd_bits=33 (for aarch64-linux)
+    vm.mmap_rnd_bits=32 (for other architectures)
     ```
 
 34. do not print unnecessary things during boot

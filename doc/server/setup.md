@@ -155,10 +155,6 @@ Before proceeding, see [Server Requirements](./requirements.md).
    ```bash
    sudo zfs create rpool/nixos
    sudo zfs create rpool/nixos/root -o mountpoint=legacy
-   sudo zfs create rpool/nixos/home -o mountpoint=legacy
-   sudo zfs create rpool/nixos/var -o mountpoint=legacy
-   sudo zfs create rpool/nixos/etc -o mountpoint=legacy
-   sudo zfs create rpool/nixos/srv -o mountpoint=legacy
    sudo zfs create rpool/nixos/nix -o mountpoint=legacy
    sudo zfs create rpool/nixos/persist -o mountpoint=legacy
    ```
@@ -168,20 +164,12 @@ Before proceeding, see [Server Requirements](./requirements.md).
 
    ```bash
    sudo zfs snapshot rpool/nixos/root@blank
-   sudo zfs snapshot rpool/nixos/home@blank
-   sudo zfs snapshot rpool/nixos/var@blank
-   sudo zfs snapshot rpool/nixos/etc@blank
-   sudo zfs snapshot rpool/nixos/srv@blank
    ```
 
 9. Mount ZFS datasets.
 
    ```bash
    sudo mkdir -p /mnt && sudo mount rpool/nixos/root /mnt -t zfs
-   sudo mkdir -p /mnt/home && sudo mount rpool/nixos/home /mnt/home -t zfs
-   sudo mkdir -p /mnt/var && sudo mount rpool/nixos/var /mnt/var -t zfs
-   sudo mkdir -p /mnt/etc && sudo mount rpool/nixos/etc /mnt/etc -t zfs
-   sudo mkdir -p /mnt/srv && sudo mount rpool/nixos/srv /mnt/srv -t zfs
    sudo mkdir -p /mnt/nix && sudo mount rpool/nixos/nix /mnt/nix -t zfs
    sudo mkdir -p /mnt/persist && sudo mount rpool/nixos/persist /mnt/persist -t zfs
    ```

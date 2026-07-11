@@ -15,6 +15,7 @@ in
     apps.bash
     apps.btop
     boot.disks
+    boot.host
     boot.kernel
     boot.localization
     boot.malloc

@@ -9,6 +9,7 @@ in
     boot.emulated
     boot.secureboot
     boot.systemd-boot
+    boot.zfsroot
     network.wpa3
   ];
 }

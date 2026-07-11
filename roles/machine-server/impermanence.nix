@@ -34,6 +34,18 @@ lib.mkIf config.vars.features.impermanence.enable {
       # logs
       "/var/log"
 
+      # needed by ZFS
+      "/etc/zfs"
+
+      # ssh host keys
+      "/etc/ssh"
+
+      # nginx static data
+      "/srv/static"
+
+      # qbt torrents
+      "/srv/torrents"
+
     ];
 
 }

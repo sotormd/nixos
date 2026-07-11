@@ -1,4 +1,4 @@
-{ config, ... }:
+{ config, pkgs, ... }:
 
 {
   # wpa_supplicant and wpa_cli
@@ -14,4 +14,10 @@
     };
   };
   networking.wireless.interfaces = [ config.vars.wireless.interface ];
+
+  # wait a bit before starting wpa_supplicant
+  systemd.services."wpa_supplicant-${config.vars.wireless.interface}" = {
+    after = [ "systemd-networkd.service" ];
+    serviceConfig.ExecStartPre = "${pkgs.writeShellScriptBin "wpa_supplicant-delay" "sleep 8"}/bin/wpa_supplicant-delay";
+  };
 }

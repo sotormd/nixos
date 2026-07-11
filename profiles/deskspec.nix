@@ -18,6 +18,7 @@ in
     apps.git
     apps.sandbox
     boot.disks
+    boot.host
     boot.kernel
     boot.localization
     boot.persist
@@ -25,6 +26,7 @@ in
     boot.stage-1
     boot.systemd-boot
     boot.users
+    boot.zfsroot
     core.cli
     core.nix
     core.packages

@@ -1,19 +1,11 @@
 {
   config,
   lib,
-  modulesPath,
   legacyVars,
   ...
 }:
 
 {
-  imports = [ (modulesPath + "/installer/scan/not-detected.nix") ];
-
-  boot.initrd.availableKernelModules = [
-    "xhci_pci"
-    "usbhid"
-  ];
-
   # filesystems
   fileSystems = {
 
@@ -23,33 +15,11 @@
       fsType = "ext4";
     };
 
-  }
-
-  # nosuid,nodev
-  // lib.mkSelfHarden [
-    "/persist"
-  ]
-
-  # nosuid,nodev,noexec
-  // lib.mkSelfData [
-    "/tmp"
-  ];
+  };
 
   # so that the raspberry pi doesn't explode
   nix.settings.max-jobs = 1;
   nix.settings.cores = 1;
-
-  # kernel sysctl options
-  boot.kernel.sysctl = {
-    # increase bits of entropy used for mmap ASLR
-    "vm.mmap_rnd_bits" = lib.mkForce "33";
-  };
-
-  # start ssh after wireless
-  systemd.services.sshd = lib.mkIf config.vars.services.ssh.enable {
-    after = [ "wpa_supplicant-${config.vars.wireless.interface}.service" ];
-    wants = [ "wpa_supplicant-${config.vars.wireless.interface}.service" ];
-  };
 
   # environment variables
   environment.sessionVariables = {

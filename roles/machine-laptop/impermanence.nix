@@ -37,6 +37,27 @@ lib.mkIf config.vars.features.impermanence.enable {
       # ssh keys
       "${home}/.ssh"
 
+      # needed by nixos
+      "/var/lib/nixos"
+
+      # needed by systemd
+      "/var/lib/systemd"
+
+      # secure boot
+      "/var/lib/sbctl"
+
+      # libvirt virtual machines
+      "/var/lib/libvirt"
+
+      # logs
+      "/var/log"
+
+      # needed by ZFS
+      "/etc/zfs"
+
+      # ssh host keys
+      "/etc/ssh"
+
     ];
 
   systemd.tmpfiles.rules = [
