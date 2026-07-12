@@ -13,17 +13,8 @@ in
       description = "qbittorrent-nox service";
       wantedBy = [ "multi-user.target" ];
 
-      # start after appropriate indicators
-      wants = [
-        "network-online.service"
-        "svcready-interface.service"
-        "svcready-i2p.service"
-      ];
-      after = [
-        "network-online.service"
-        "svcready-interface.service"
-        "svcready-i2p.service"
-      ];
+      wants = config.svcready.units;
+      after = config.svcready.units;
 
       serviceConfig = {
         Type = "simple";
@@ -161,29 +152,15 @@ in
       };
     };
 
-    # we dont need internet
-    svcready-resolve.enable = false;
+  };
 
-    # ensure i2p http proxy works
-    svcready-i2p = {
-      description = "Wait for i2p to be ready";
-      wantedBy = [ "multi-user.target" ];
-      wants = [
-        "network-online.target"
-        "svcready-interface.service"
-      ];
-      after = [
-        "network-online.target"
-        "svcready-interface.service"
-      ];
-      serviceConfig = {
-        Type = "oneshot";
-        ExecStart = "${pkgs.writeShellScriptBin "svcready-i2p" ''
-          until ${pkgs.curl}/bin/curl --silent --fail --proxy http://${qbt.i2p.address}:${toString qbt.i2p.http-proxy-port} http://stats.i2p >/dev/null 2>&1; do
-            sleep 2
-          done
-        ''}/bin/svcready-i2p";
-      };
+  # start after appropriate indicators
+  svcready = {
+    interface.enable = true;
+    i2p = {
+      enable = true;
+      address = config.svcfg.qbt.i2p.address;
+      port = config.svcfg.qbt.i2p.http-proxy-port;
     };
   };
 

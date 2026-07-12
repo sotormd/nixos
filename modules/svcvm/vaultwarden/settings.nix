@@ -26,23 +26,13 @@ in
     };
   };
 
-  systemd.services = {
-
-    # start after appropriate indicators
-    vaultwarden = {
-      wants = [
-        "network-online.target"
-        "svcready-interface.service"
-      ];
-      after = [
-        "network-online.target"
-        "svcready-interface.service"
-      ];
-    };
-
-    # we dont need internet
-    svcready-resolve.enable = false;
-
+  # start after appropriate indicators
+  systemd.services.vaultwarden = {
+    wants = config.svcready.units;
+    after = config.svcready.units;
+  };
+  svcready = {
+    interface.enable = true;
   };
 
   # ensure appropriate permissions on data directories

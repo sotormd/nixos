@@ -88,14 +88,12 @@ in
 
   # start after appropriate indicators
   systemd.services.unbound = {
-    wants = [
-      "network-online.target"
-      "svcready-interface.service"
-    ];
-    after = [
-      "network-online.target"
-      "svcready-interface.service"
-    ];
+    wants = config.svcready.units;
+    after = config.svcready.units;
+  };
+  svcready = {
+    interface.enable = true;
+    internet.enable = true;
   };
 
   # ensure appropriate permissions on data directories

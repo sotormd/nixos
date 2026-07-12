@@ -43,16 +43,13 @@ in
 
   # start after appropriate indicators
   systemd.services.i2pd = {
-    wants = [
-      "network-online.target"
-      "svcready-interface.service"
-      "svcready-resolve.service"
-    ];
-    after = [
-      "network-online.target"
-      "svcready-interface.service"
-      "svcready-resolve.service"
-    ];
+    wants = config.svcready.units;
+    after = config.svcready.units;
+  };
+  svcready = {
+    interface.enable = true;
+    internet.enable = true;
+    resolve.enable = true;
   };
 
   # ensure appropriate permissions on data directories

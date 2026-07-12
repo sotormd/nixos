@@ -114,7 +114,141 @@
           specialArgs = { inherit self inputs lib; };
 
           # individual modules can be added like this
-          extraModules = [ self.nixosModules.profiles.svcvm ] ++ vm.modules;
+          extraModules = vm.modules ++ [
+
+            self.nixosModules.profiles.svcvm
+
+            (
+              { config, lib, ... }:
+              let
+                o = lib.optional;
+                inherit (config) svcready;
+              in
+              {
+
+                # svcready - svcvm readiness indicators
+                options.svcready = {
+                  interface.enable = lib.mkOption {
+                    type = lib.types.bool;
+                    default = false;
+                  };
+                  internet.enable = lib.mkOption {
+                    type = lib.types.bool;
+                    default = false;
+                  };
+                  resolve.enable = lib.mkOption {
+                    type = lib.types.bool;
+                    default = false;
+                  };
+                  i2p = {
+                    enable = lib.mkOption {
+                      type = lib.types.bool;
+                      default = false;
+                    };
+                    address = lib.mkOption { type = lib.types.str; };
+                    port = lib.mkOption { type = lib.types.port; };
+                  };
+                  units = lib.mkOption { type = lib.types.listOf lib.types.str; };
+                };
+
+                # svcready-interface.service
+                # svcready-internet.service
+                # svcready-resolve.service
+                # svcready-i2p.service
+                #
+                # services can hook config.svcready.units
+                # in `wants` and `after` to start appropriately
+                config.systemd.services = {
+                  svcready-interface = lib.mkIf svcready.interface.enable {
+                    description = "Wait for interface to be ready";
+                    wantedBy = [ "multi-user.target" ];
+                    wants = [ "network-online.target" ];
+                    after = [ "network-online.target" ];
+                    serviceConfig = {
+                      Type = "oneshot";
+                      ExecStart = "${pkgs.writeShellScriptBin "svcready-interface" ''
+                        until ${pkgs.iproute2}/bin/ip -4 addr show scope global | grep -q ${network.address}; do
+                            sleep 2
+                        done
+                      ''}/bin/svcready-interface";
+                    };
+                  };
+                  svcready-internet = lib.mkIf svcready.internet.enable {
+                    description = "Wait for internet to be ready";
+                    wantedBy = [ "multi-user.target" ];
+                    wants = [
+                      "network-online.target"
+                    ]
+                    ++ (o svcready.interface.enable "svcready-interface.service");
+                    after = [
+                      "network-online.target"
+                    ]
+                    ++ (o svcready.interface.enable "svcready-interface.service");
+                    serviceConfig = {
+                      Type = "oneshot";
+                      ExecStart = "${pkgs.writeShellScriptBin "svcready-internet" ''
+                        until ${pkgs.iputils}/bin/ping -c1 1.1.1.1 >/dev/null 2>&1; do
+                          sleep 2
+                        done
+                      ''}/bin/svcready-internet";
+                    };
+                  };
+                  svcready-resolve = lib.mkIf svcready.resolve.enable {
+                    description = "Wait for resolver to be ready";
+                    wantedBy = [ "multi-user.target" ];
+                    wants = [
+                      "network-online.target"
+                    ]
+                    ++ (o svcready.interface.enable "svcready-interface.service")
+                    ++ (o svcready.internet.enable "svcready-internet.service");
+                    after = [
+                      "network-online.target"
+                    ]
+                    ++ (o svcready.interface.enable "svcready-interface.service")
+                    ++ (o svcready.internet.enable "svcready-internet.service");
+                    serviceConfig = {
+                      Type = "oneshot";
+                      ExecStart = "${pkgs.writeShellScriptBin "svcready-resolve" ''
+                        until ${pkgs.iputils}/bin/ping -c1 nixos.org >/dev/null 2>&1; do
+                          sleep 2
+                        done
+                      ''}/bin/svcready-resolve";
+                    };
+                  };
+                  svcready-i2p = lib.mkIf svcready.i2p.enable {
+                    description = "Wait for i2p to be ready";
+                    wantedBy = [ "multi-user.target" ];
+                    wants = [
+                      "network-online.target"
+                    ]
+                    ++ (o svcready.interface.enable "svcready-interface.service");
+                    after = [
+                      "network-online.target"
+                    ]
+                    ++ (o svcready.interface.enable "svcready-interface.service");
+                    serviceConfig = {
+                      Type = "oneshot";
+                      ExecStart = "${pkgs.writeShellScriptBin "svcready-i2p" ''
+                        until ${pkgs.curl}/bin/curl --silent --fail --proxy http://${svcready.i2p.address}:${toString svcready.i2p.port} http://stats.i2p >/dev/null 2>&1; do
+                          sleep 2
+                        done
+                      ''}/bin/svcready-i2p";
+                    };
+                  };
+                };
+
+                config.svcready.units = [
+                  "network-online.target"
+                ]
+                ++ (o svcready.interface.enable "svcready-interface.service")
+                ++ (o svcready.internet.enable "svcready-internet.service")
+                ++ (o svcready.resolve.enable "svcready-resolve.service")
+                ++ (o svcready.i2p.enable "svcready-i2p.service");
+
+              }
+            )
+
+          ];
 
           config = {
 
@@ -173,48 +307,6 @@
             networking.resolvconf.enable = false;
             environment.etc."resolv.conf".text = lib.mkForce "nameserver ${network.resolver}";
             environment.systemPackages = [ pkgs.dig ];
-
-            # svcready-interface.service
-            # svcready-resolve.service
-            #
-            # services can hook these in `wants` and `after`
-            # to start appropriately
-            systemd.services = {
-              svcready-interface = {
-                description = "Wait for interface to be ready";
-                wantedBy = [ "multi-user.target" ];
-                wants = [ "network-online.target" ];
-                after = [ "network-online.target" ];
-                serviceConfig = {
-                  Type = "oneshot";
-                  ExecStart = "${pkgs.writeShellScriptBin "svcready-interface" ''
-                    until ${pkgs.iproute2}/bin/ip -4 addr show scope global | grep -q ${network.address}; do
-                        sleep 2
-                    done
-                  ''}/bin/svcready-interface";
-                };
-              };
-              svcready-resolve = {
-                description = "Wait for resolver to be ready";
-                wantedBy = [ "multi-user.target" ];
-                wants = [
-                  "network-online.target"
-                  "svcready-interface.service"
-                ];
-                after = [
-                  "network-online.target"
-                  "svcready-interface.service"
-                ];
-                serviceConfig = {
-                  Type = "oneshot";
-                  ExecStart = "${pkgs.writeShellScriptBin "svcready-resolve" ''
-                    until ${pkgs.iputils}/bin/ping -c1 nixos.org >/dev/null 2>&1; do
-                      sleep 2
-                    done
-                  ''}/bin/svcready-resolve";
-                };
-              };
-            };
 
           };
 
