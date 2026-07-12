@@ -17,6 +17,9 @@ let
     || services.qbt.enable;
 in
 {
+  # server needs to forward packets
+  boot.kernel.sysctl."net.ipv4.ip_forward" = lib.mkForce "1";
+
   # do not suspend when lid is closed
   services.logind.settings.Login.HandleLidSwitch = "ignore";
 
