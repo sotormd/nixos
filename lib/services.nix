@@ -255,9 +255,6 @@
             # svcfg configuration for modules.svcvm.*
             inherit svcfg;
 
-            # hostname
-            networking.hostName = vm.name;
-
             # disable the firewall since host handles everything
             networking.firewall.enable = false;
 
@@ -267,6 +264,7 @@
               # to keep closure sizes small
               shares = [
                 {
+                  proto = "virtiofs";
                   tag = "ro-store";
                   source = "/nix/store";
                   mountPoint = "/nix/.ro-store";
