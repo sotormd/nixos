@@ -1584,7 +1584,7 @@ Several kernel parameters are used to harden the kernel. They are covered below:
     ~~confidentiality is the strictest mode protects both kernel integrity and
     prevents unauthorized access to kernel data~~
 
-    ~~establishes clear security boundary between userspace and kernel~
+    ~~establishes clear security boundary between userspace and kernel~~
 
     ~~this implies `module.sig_enforce=1`~~
 
@@ -1878,7 +1878,7 @@ Several sysctl options are used to harden the kernel. They are covered below:
 27. disable TCP SACK
 
     note that disabling SACK isn't really necessary on modern kernels, but this
-    is kept since its
+    is kept since it's
     [commonly exploited](https://github.com/Netflix/security-bulletins/blob/master/advisories/third-party/2019-001.md)
     and mostly unnecessary
 
