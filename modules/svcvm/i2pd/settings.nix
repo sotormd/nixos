@@ -37,7 +37,12 @@ in
     };
 
     # addressbook from reg.i2p
-    addressbook.defaulturl = "http://shx5vqsw7usdaunyzr2qmes2fq37oumybpudrd4jjj4e4vk4uusa.b32.i2p/hosts.txt";
+    addressbook = {
+      defaulturl = "http://shx5vqsw7usdaunyzr2qmes2fq37oumybpudrd4jjj4e4vk4uusa.b32.i2p/hosts.txt";
+      subscriptions = lib.mkForce [
+        "http://shx5vqsw7usdaunyzr2qmes2fq37oumybpudrd4jjj4e4vk4uusa.b32.i2p/hosts.txt"
+      ];
+    };
 
   };
 
