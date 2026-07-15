@@ -278,6 +278,7 @@
                   id = "${network.iface}";
                   type = "tap";
                   mac = "00:00:00:00:00:01";
+                  tap.vhost = true;
                 }
               ];
 
@@ -305,6 +306,9 @@
             networking.resolvconf.enable = false;
             environment.etc."resolv.conf".text = lib.mkForce "nameserver ${network.resolver}";
             environment.systemPackages = [ pkgs.dig ];
+
+            # disable nix
+            nix.enable = false;
 
           };
 
