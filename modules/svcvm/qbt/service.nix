@@ -102,9 +102,9 @@ in
               Session\Encryption=1
               Session\LSDEnabled=false
               Session\PeXEnabled=false
-              Session\MaxActiveDownloads=30
-              Session\MaxActiveTorrents=60
-              Session\MaxActiveUploads=30
+              Session\MaxActiveDownloads=50
+              Session\MaxActiveTorrents=100
+              Session\MaxActiveUploads=50
               Session\I2P\Enabled=true
               Session\I2P\MixedMode=false
               Session\I2P\Address=${qbt.i2p.address}
