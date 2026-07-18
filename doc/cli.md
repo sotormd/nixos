@@ -3,8 +3,8 @@
 `nixos(1)` is a bespoke unified **wrapper** and general command **dispatcher**
 for maintaining this NixOS flake.
 
-This document covers the `nixos(1)` command line interface for Laptop and Server
-roles.
+This document covers the `nixos(1)` command line interface for Laptop, Server
+and Pi roles.
 
 This document does not cover the usage of `nixos bootstrap` which is covered in
 role-specific setup documentation.
