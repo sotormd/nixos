@@ -215,6 +215,8 @@ entirely handled by variables.
 
 Here are some of my other flakes that are related to my NixOS tooling:
 
+- [svcvm](https://github.com/sotormd/svcvm), Service virtual machines for NixOS,
+  derived from [microvm.nix](https://github.com/microvm-nix/microvm.nix)
 - [neovim](https://github.com/sotormd/neovim), Neovim configuration flake (ft.
   nvf)
 - [neovim-nixvim](https://github.com/sotormd/neovim-nixvim), Neovim
