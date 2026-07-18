@@ -8,7 +8,7 @@
 
 let
   inherit (config.vars) services;
-  microvmsNeeded =
+  svcvmsNeeded =
     services.unbound.enable
     || services.nginx.enable
     || services.searxng.enable
@@ -23,14 +23,11 @@ in
   # do not suspend when lid is closed
   services.logind.settings.Login.HandleLidSwitch = "ignore";
 
-  # do not autostart microvms
-  microvm.autostart = lib.mkForce [ ];
-
-  # start microvms
-  systemd.services.start-microvms = {
-    enable = microvmsNeeded;
-    description = "Start MicroVMs";
-    wantedBy = [ "multi-user.target" ];
+  # start svcvms
+  systemd.services.start-svcvms = {
+    enable = svcvmsNeeded;
+    description = "Start svcvm Service Virtual Machines";
+    wantedBy = [ "svcvm.target" ];
     wants = [
       "network-online.target"
       "wpa_supplicant-${config.vars.wireless.interface}.service"
@@ -54,73 +51,73 @@ in
       {
         Type = "oneshot";
         RemainAfterExit = true;
-        ExecStartPre = "${pkgs.writeShellScriptBin "start-microvms-pre" ''
+        ExecStartPre = "${pkgs.writeShellScriptBin "start-svcvms-pre" ''
           until ${pkgs.iputils}/bin/ping -c1 1.1.1.1 >/dev/null 2>&1; do
             sleep 2
           done
-        ''}/bin/start-microvms-pre";
-        ExecStart = "${pkgs.writeShellScriptBin "start-microvms" ''
+        ''}/bin/start-svcvms-pre";
+        ExecStart = "${pkgs.writeShellScriptBin "start-svcvms" ''
           ${
             (lib.optionalString unbound.enable ''
               sleep ${step}
               echo "starting unbound"
-              systemctl start microvm@unbound
+              systemctl start svcvm@unbound
             '')
           }
           ${
             (lib.optionalString searxng.enable ''
               sleep ${step}
               echo "starting searxng"
-              systemctl start microvm@searxng
+              systemctl start svcvm@searxng
             '')
           }
           ${
             (lib.optionalString vaultwarden.enable ''
               sleep ${step}
               echo "starting vaultwarden"
-              systemctl start microvm@vaultwarden
+              systemctl start svcvm@vaultwarden
             '')
           }
           ${
             (lib.optionalString i2pd.enable ''
               sleep ${step}
               echo "starting i2pd"
-              systemctl start microvm@i2pd
+              systemctl start svcvm@i2pd
             '')
           }
           ${
             (lib.optionalString qbt.enable ''
               sleep ${step}
               echo "starting qbt"
-              systemctl start microvm@qbt
+              systemctl start svcvm@qbt
             '')
           }
           ${
             (lib.optionalString nginx.enable ''
               sleep ${step}
               echo "starting nginx"
-              systemctl start microvm@nginx
+              systemctl start svcvm@nginx
             '')
           }
-        ''}/bin/start-microvms";
+        ''}/bin/start-svcvms";
       };
   };
 
-  # stop microvms
+  # stop svcvms
   # dont stop unbound
-  systemd.services.stop-microvms = {
-    enable = microvmsNeeded;
-    description = "Stop MicroVMs";
+  systemd.services.stop-svcvms = {
+    enable = svcvmsNeeded;
+    description = "Stop svcvm Service Virtual Machines";
     serviceConfig = {
       Type = "oneshot";
-      ExecStart = "${pkgs.writeShellScriptBin "stop-microvms" ''
-        # systemctl stop microvm@unbound || true
-        systemctl stop microvm@searxng || true
-        systemctl stop microvm@vaultwarden || true
-        systemctl stop microvm@i2pd || true
-        systemctl stop microvm@qbt || true
-        systemctl stop microvm@nginx || true
-      ''}/bin/stop-microvms";
+      ExecStart = "${pkgs.writeShellScriptBin "stop-svcvms" ''
+        # systemctl stop svcvm@unbound || true
+        systemctl stop svcvm@searxng || true
+        systemctl stop svcvm@vaultwarden || true
+        systemctl stop svcvm@i2pd || true
+        systemctl stop svcvm@qbt || true
+        systemctl stop svcvm@nginx || true
+      ''}/bin/stop-svcvms";
     };
   };
 

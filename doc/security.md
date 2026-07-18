@@ -19,8 +19,8 @@ decent security against these attacks, backed by the guarantees of the
 The targets covered in this document are:
 
 - Laptop, my laptop configuration for generic personal portable computers
-- Server, my home-server configuration for hosts that serve MicroVM services on
-  WireGuard over LAN.
+- Server, my home-server configuration for hosts that serve Virtual Machine
+  services on WireGuard over LAN.
 - Pi, my Raspberry Pi 4bs.
 
 Unless explicitly mentioned, everything applies to both roles.
@@ -317,8 +317,8 @@ WPA3 (SAE / dragonfly) is used for wireless authentication on Laptop.
 
 # DNS
 
-The Unbound DNS resolver is hosted on Server. It runs in a MicroVM and is served
-over WireGuard.
+The Unbound DNS resolver is hosted on Server. It runs in a Virtual Machine and
+is served over WireGuard.
 
 Additionally, [StevenBlack's host list](http://github.com/StevenBlack/hosts) is
 used to sinkhole domains (like PiHole, AdGuard) in the Unbound DNS server hosted
@@ -788,14 +788,16 @@ official wiki page covers setting up Whonix in QEMU/KVM using libvirt.
 
 > Server only
 
-Several services run in MicroVMs as covered above. These are
-[microvm.nix](https://github.com/microvm-nix/microvm.nix) QEMU MicroVMs.
+Several services run in Virtual Machines as covered above. These are
+[svcvm](https://github.com/sotormd/svcvm) QEMU `microvm` Virtual Machines.
 Networking is covered above in [Firewall](#firewall). Rather than being bridged,
 the VMs use a
-[routed network model](https://microvm-nix.github.io/microvm.nix/routed-network.html).
+[routed network model](https://microvm-nix.github.io/microvm.nix/routed-network.html)
+with NAT rather than being bridged. They use `virtiofs` for shared filesystems
+and `io.systemd.credentials` for sharing secrets from the host.
 
-See [Server Usage Documentation](./server/usage.md#microvms) for more
-information.
+See [Server Usage Documentation](./server/usage.md#service-virtual-machines) for
+more information.
 
 # MAC Randomization
 
@@ -916,7 +918,7 @@ The SSH configuration is hardened using the following options:
 NGINX is used as a reverse proxy for several other services instead of directly
 opening ports. This is served over HTTPS with certificates from
 [Let's Encrypt](https://letsencrypt.org) managed with ACME. NGINX runs in a
-MicroVM and is served to the private CIDR as defined by
+Virtual Machine and is served to the private CIDR as defined by
 `vars.services.nginx.allow` over WireGuard.
 
 Furthermore, all the reverse proxy locations are restricted using NGINX `allow`
@@ -945,9 +947,9 @@ See [Server Usage Documenation](./server/usage.md#nginx) for more information.
 
 > Server only
 
-The I2PD router is hosted on Server. It runs in a MicroVM. The qBittorrent
-torrent client, which also runs in a MicroVM, uses the I2P network via this
-router and does not have access to the clearnet at all.
+The I2PD router is hosted on Server. It runs in a Virtual Machine. The
+qBittorrent torrent client, which also runs in a Virtual Machine, uses the I2P
+network via this router and does not have access to the clearnet at all.
 
 # Display Server
 
@@ -1473,16 +1475,16 @@ browsers.
 
 # Search Engine
 
-The SearXNG metasearch engine is hosted on Server. It runs in a MicroVM. See
-[Server Usage Documentation](./server/usage.md#searxng) for information about
-default search engines.
+The SearXNG metasearch engine is hosted on Server. It runs in a Virtual Machine.
+See [Server Usage Documentation](./server/usage.md#searxng) for information
+about default search engines.
 
 The Brave Browser uses SearXNG as the default search engine.
 
 # Password Manager
 
-The Vaultwarden password manager is hosted on Server. It runs in a MicroVM and
-does not have access to the internet.
+The Vaultwarden password manager is hosted on Server. It runs in a Virtual
+Machine and does not have access to the internet.
 
 # Kernel Parameters
 

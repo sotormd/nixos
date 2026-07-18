@@ -7,7 +7,7 @@ This document covers using the Server role.
 1. [System Maintenance](#system-maintenance)
 2. [Bind Mounts and External Disks](#bind-mounts-and-external-disks)
 3. [Services](#services)
-4. [MicroVMs](#microvms)
+4. [Service Virtual Machines](#service-virtual-machines)
 5. [WireGuard](#wireguard)
 6. [Further Reading](#further-reading)
 
@@ -120,7 +120,8 @@ For `vars.services.ssh`
 
 Unbound recursive validating DNS server with a hardened configuration.
 
-Unbound runs in a MicroVM. See [MicroVMs](#microvms) for more information.
+Unbound runs in a Virtual Machine. See
+[Service Virtual Machines](#service-virtual-machines) for more information.
 
 ### Enabling
 
@@ -160,7 +161,8 @@ Clients must satisfy ALL of:
 
 Web server and reverse proxy.
 
-NGINX runs in a MicroVM. See [MicroVMs](#microvms) for more information.
+NGINX runs in a Virtual Machine. See
+[Service Virtual Machines](#service-virtual-machines) for more information.
 
 ### Enabling
 
@@ -224,7 +226,8 @@ Fast, private metasearch engine.
 
 Enabled using `vars.services.searxng.enable`.
 
-SearXNG runs in a MicroVM. See [MicroVMs](#microvms) for more information.
+SearXNG runs in a Virtual Machine. See
+[Service Virtual Machines](#service-virtual-machines) for more information.
 
 ### Search Engines
 
@@ -263,7 +266,8 @@ Password manager.
 
 Enabled using `vars.services.vaultwarden.enable`.
 
-Vaultwarden runs in a MicroVM. See [MicroVMs](#microvms) for more information.
+Vaultwarden runs in a Virtual Machine. See
+[Service Virtual Machines](#service-virtual-machines) for more information.
 
 ### Vault
 
@@ -292,7 +296,8 @@ Router for the I2P network.
 
 Enabled using `vars.services.i2pd.enable`.
 
-I2PD runs in a MicroVM. See [MicroVMs](#microvms) for more information.
+I2PD runs in a Virtual Machine. See
+[Service Virtual Machines](#service-virtual-machines) for more information.
 
 ### Ports
 
@@ -336,7 +341,8 @@ Clients must satisfy ALL of:
 
 Web interface for the qBittorrent bittorrent client.
 
-qBittorrent runs in a MicroVM. See [MicroVMs](#microvms) for more information.
+qBittorrent runs in a Virtual Machine. See
+[Service Virtual Machines](#service-virtual-machines) for more information.
 
 ### Enabling
 
@@ -362,8 +368,8 @@ The entirety of `/srv/torrents` can be viewed at the NGINX location
 ### Initial Setup
 
 qBittorrent will initially start with username `admin` and a random password.
-Check the service status for the password. Since qBittorrent runs in a MicroVM,
-ssh into the MicroVM first.
+Check the service status for the password. Since qBittorrent runs in a Virtual
+Machine, ssh into the Virtual Machine first.
 
 ```bash
 microvm -s qbt
@@ -388,15 +394,18 @@ Clients must satisfy ALL of:
 - in the private WireGuard CIDR defined by `vars.services.qbt.allow`, for NGINX
   allow rules
 
-# MicroVMs
+# Service Virtual Machines
 
-Several services run in MicroVMs. Each MicroVM uses its own interface and runs
-behind a NAT. Rather than being bridged, the VMs use a
-[routed network model](https://microvm-nix.github.io/microvm.nix/routed-network.html).
+Several services run in [svcvm](https://github.com/sotormd/svcvm) QEMU `microvm`
+machines. Each svcvm guest uses its own interface and runs behind a NAT. Rather
+than being bridged, the VMs use a
+[routed network model](https://microvm-nix.github.io/microvm.nix/routed-network.html)
+with TAP interfaces and nftables for NAT.
+
 The nftables firewall is used to allow restricted access to required regions.
 See [Firewall](../security.md#firewall) for more information.
 
-| MicroVM       | (internal) IP Address | Interface | Gateway      |
+| svcvm Guest   | (internal) IP Address | Interface | Gateway      |
 | ------------- | --------------------- | --------- | ------------ |
 | `unbound`     | `10.204.3.2`          | `svcvm3`  | `10.204.3.1` |
 | `nginx`       | `10.204.4.2`          | `svcvm4`  | `10.204.4.1` |
@@ -405,21 +414,21 @@ See [Firewall](../security.md#firewall) for more information.
 | `i2pd`        | `10.204.7.2`          | `svcvm7`  | `10.204.7.1` |
 | `qbt`         | `10.204.8.2`          | `svcvm8`  | `10.204.8.1` |
 
-Each MicroVM can be manually started/stopped/restarted using `systemctl`. For
-example:
+Each svcvm guest can be manually started/stopped/restarted using the `svcvm`
+CLI. For example:
 
 ```bash
-systemctl start microvm@unbound
-systemctl stop microvm@qbt
-systemctl restart microvm@searxng
+svcvm start i2pd
+svcvm stop qbt
+svcvm restart searxng
 ```
 
-It is possible to SSH into the MicroVMs using VSOCK from the host with the root
-password `toor` if the corresponding `vars.services.<name>.debug` is set to
+It is possible to SSH into the svcvm guests using VSOCK from the host with the
+root password `toor` if the corresponding `vars.services.<name>.debug` is set to
 `true`. For example, if `vars.services.nginx.debug` is set to `true`:
 
 ```bash
-microvm -s nginx
+svcvm ssh nginx
 ```
 
 # WireGuard

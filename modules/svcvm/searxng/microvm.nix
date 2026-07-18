@@ -28,7 +28,7 @@ let
       tmpfiles = [ ];
       secrets = {
         searxng = {
-          owner = "microvm";
+          owner = "svcvm";
           group = "kvm";
         };
       };

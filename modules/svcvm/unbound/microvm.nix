@@ -39,7 +39,6 @@ let
         ];
         shares = [
           {
-            proto = "virtiofs";
             tag = "unbound-data";
             source = "/var/lib/unbound";
             mountPoint = "/var/lib/unbound";

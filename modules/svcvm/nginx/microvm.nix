@@ -32,7 +32,7 @@ let
       ];
       secrets = {
         duckdns = {
-          owner = "microvm";
+          owner = "svcvm";
           group = "kvm";
         };
       };
@@ -48,19 +48,16 @@ let
         ];
         shares = lib.flatten [
           {
-            proto = "virtiofs";
             tag = "acme-data";
             source = "/var/lib/acme";
             mountPoint = "/var/lib/acme";
           }
           {
-            proto = "virtiofs";
             tag = "static-data";
             source = "/srv/static";
             mountPoint = "/srv/static";
           }
           (lib.optional config.vars.services.qbt.enable {
-            proto = "virtiofs";
             tag = "qbt-data";
             source = "/srv/torrents";
             mountPoint = "/srv/torrents";

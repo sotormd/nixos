@@ -38,7 +38,6 @@ let
         ];
         shares = [
           {
-            proto = "virtiofs";
             tag = "i2pd-data";
             source = "/var/lib/i2pd";
             mountPoint = "/var/lib/i2pd";

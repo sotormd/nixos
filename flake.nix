@@ -1,5 +1,5 @@
 {
-  description = "nixos configuration flake";
+  description = "NixOS configuration flake for multiple hosts with bespoke Impermanence, MicroVMs, and CLI tooling, plus ZFS, WireGuard, bootstrap images, and more.";
 
   inputs = {
 
@@ -32,19 +32,18 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
-    # microvms for nixos
-    # because we dont want to
-    # run services on bare-metal
-    microvm-nix = {
-      url = "github:microvm-nix/microvm.nix";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
-
     # StevenBlack's host lists
     # because we dont want PiHole
     hosts = {
       url = "github:StevenBlack/hosts";
       inputs.nixpkgs.follows = "nixpkgs";
+    };
+
+    # service virtual machines for nixos
+    # because we dont want to end up
+    # running services on bare-metal
+    svcvm = {
+      url = "github:sotormd/svcvm";
     };
 
     # my Neovim configuration

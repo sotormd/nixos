@@ -3,15 +3,16 @@
     <a href="#features">Features</a> &bull;
     <a href="#configuration-roles">Configuration Roles</a> &bull;
     <a href="#bootstrap-images">Bootstrap Images</a> &bull;
-    <a href="#bespoke-cli">Bespoke CLI</a> &bull;
+    <a href="#cli">CLI</a> &bull;
     <a href="#architecture">Architecture</a> &bull;
     <a href="#related-flakes">Related Flakes</a>
 </p>
 
 ![screenshots](./doc/screenshots/nord.gif)
 
-NixOS configuration flake for multiple hosts with ZFS, Impermanence, MicroVMs,
-WireGuard, etc
+A modular NixOS configuration framework for multiple hosts, featuring bespoke
+Impermanence, CLI tooling and MicroVMs; plus ZFS, WireGuard, bootstrap images
+and more.
 
 # Features
 
@@ -26,18 +27,21 @@ WireGuard, etc
    - Completely reproducible, pure evaluation
    - Role-based outputs with features as modules
    - Variables system for device-specific configuration
-   - [Bespoke CLI](#bespoke-cli) for maintaining this flake
    - Flake-enabled [bootstrap images](#bootstrap-images)
    - Dotfiles managed using wrappers implemented from basic nixpkgs functions
-   - [Impermanence](./doc/filesystems.md#impermanence) using ZFS snapshots and
-     bind mounts, without the library
-   - Service isolation using
-     [microvm.nix](https://github.com/microvm-nix/microvm.nix)
    - Secrets managed using [sops-nix](https://github.com/Mic92/sops-nix)
    - Secure boot using [lanzaboote](https://github.com/nix-community/lanzaboote)
    - Package management using [Lix](https://lix.systems)
 
-3. Desktop features:
+3. Bespoke components:
+
+   - Bespoke [Impermanence](./doc/filesystems.md#impermanence) implementation
+     using ZFS snapshots and bind mounts
+   - Bespoke [CLI](#cli) for maintaining this flake
+   - Service virtual machines using bespoke
+     [svcvm](https://github.com/sotormd/svcvm) backend
+
+4. Desktop features:
 
    - 100% wayland, no xorg or xwayland
    - [SwayFX](https://github.com/WillPower3309/swayfx) compositor
@@ -64,11 +68,12 @@ WireGuard, etc
    - Full alternate desktop specialisation with
      [GNOME Mode](./doc/laptop/usage.md#gnome-mode)
 
-4. Services features:
+5. Services features:
 
-   - MicroVM services
-   - WireGuard tunnelling
-   - nftables firewall
+   - MicroVM services with [svcvm](https://github.com/sotormd/svcvm)
+   - Declarative svcvm management through `lib.mksvcvm`
+   - Service readiness and dependency handling
+   - WireGuard tunnelling, networkd networking and nftables firewall
    - [Unbound](https://github.com/NLnetLabs/unbound) dns server
    - [NGINX](https://github.com/nginx/nginx) web server & reverse proxy
    - ACME for [Let's Encrypt](https://letsencrypt.org/) certificates
@@ -132,7 +137,7 @@ WireGuard, etc
 | text editor                   | [`neovim`](https://github.com/sotormd/neovim), `mousepad`                                                  |
 | version control               | `git`                                                                                                      |
 | development                   | `rust`, `python`, `go`, `haskell`                                                                          |
-| virtualization                | `microvm.nix`, `qemu`, `virt-manager`, `distrobox`, `podman`                                               |
+| virtualization                | [`svcvm`](https://github.com/sotormd/svcvm), `qemu`, `virt-manager`, `distrobox`, `podman`                 |
 | cpu optimizations             | `auto-cpufreq`                                                                                             |
 | resource monitor              | `htop`, `btop`                                                                                             |
 | themes, icons, cursors, fonts | [`colors`](https://github.com/sotormd/colors)                                                              |
@@ -168,7 +173,7 @@ network are also provided.
 
 See [Images Documentation](./doc/images.md) for more details.
 
-# Bespoke CLI
+# CLI
 
 Routine tasks such as updating the flake, switching configurations,
 garbage-collecting, and editing variables & secrets are handled through the

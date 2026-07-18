@@ -7,8 +7,8 @@
     ./impermanence.nix
 
     inputs.lanzaboote.nixosModules.lanzaboote
-    inputs.microvm-nix.nixosModules.host
     inputs.sops-nix.nixosModules.sops
+    inputs.svcvm.nixosModules.host
 
     self.nixosModules.profiles.efitop
     self.nixosModules.profiles.machine

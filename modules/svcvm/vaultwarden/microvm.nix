@@ -38,7 +38,6 @@ let
         ];
         shares = [
           {
-            proto = "virtiofs";
             tag = "vaultwarden-data";
             source = "/var/lib/bitwarden_rs";
             mountPoint = "/var/lib/bitwarden_rs";

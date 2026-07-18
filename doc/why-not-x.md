@@ -16,6 +16,8 @@ decisions for MY personal setup.
 - [disko](#disko)
 - [agenix](#agenix)
 - [nh](#nh)
+- [microvm.nix](#microvm.nix)
+- [flake-parts](#flake-parts)
 
 ## home-manager
 
@@ -155,15 +157,16 @@ the `disko` package to evaluate it and apply changes.
 
 I have two problems here:
 
-- doesn't do anything that a script can't, other than maybe being able to
-  configure everything in the Nix language, which is just another abstraction
+- for my use case, the benefit of representing disk layouts declaratively does
+  not outweigh the flexibility of explicit installation scripts
 - doesn't support dual boot (at least at time of writing)
 
 Disk partitioning is inherently imperative and destructive, so I prefer explicit
 scripts over declarative descriptions.
 
 I would like to support dual boot and avoid any unnecessary abstractions, which
-I believe I can do best by maintaining my own init scripts.
+I believe I can do best by maintaining my own init scripts, such as
+`nixos bootstrap disks`.
 
 ## agenix
 
@@ -174,11 +177,14 @@ in favor of: sops-nix
 I use [sops-nix](https://github.com/Mic92/sops-nix), because it doesn't force
 age keys upon me.
 
-PSA: using GPG instead of age for encryption is worse in almost every case.
+PSA: using GPG instead of age for encryption may be worse depending on your
+setup, but I use them here.
 
 ## nh
 
 [link](https://github.com/nix-community/nh)
+
+in favor of: bespoke CLI
 
 I maintain my own bespoke CLI, specifically written for this flake. Switching to
 NH would be a downgrade since it is much more generic and would involve manual
@@ -187,3 +193,23 @@ wrap around it with my CLI. But that defeats one of the main advantages of NH -
 a unified CLI, since that is already present.
 
 See [CLI Documentation](./cli.md) for more information.
+
+## microvm.nix
+
+[link](https://github.com/microvm-nix/microvm.nix)
+
+in favor of: bespoke [svcvm](https://github.com/sotormd/svcvm) and `lib.mksvcvm`
+
+I do use the microvm.nix design and codebase! For all practical purposes, svcvm
+is stripped-down microvm.nix containing only the features required by my setup.
+The service-oriented abstractions are implemented downstream through
+`lib.mksvcvm`.
+
+## flake-parts
+
+[link](https://github.com/hercules-ci/flake-parts)
+
+flake-parts provides useful abstractions for composing larger flakes through a
+module system.
+
+I currently do not have a need for those abstractions c:

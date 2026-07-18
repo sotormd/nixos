@@ -1,64 +1,9 @@
 {
-  ports = {
-    unbound.dns = 53;
-    nginx.https = 443;
-    searxng.search-engine = 8888;
-    vaultwarden.web-vault = 8222;
-    i2pd = {
-      sam = 7656;
-      http-proxy = 4444;
-      web-console = 7070;
-    };
-    qbt.web-ui = 8080;
-  };
-
-  addresses = {
-    unbound = "10.204.3.2";
-    nginx = "10.204.4.2";
-    searxng = "10.204.5.2";
-    vaultwarden = "10.204.6.2";
-    i2pd = "10.204.7.2";
-    qbt = "10.204.8.2";
-  };
-
-  gateways = {
-    unbound = "10.204.3.1";
-    nginx = "10.204.4.1";
-    searxng = "10.204.5.1";
-    vaultwarden = "10.204.6.1";
-    i2pd = "10.204.7.1";
-    qbt = "10.204.8.1";
-  };
-
-  ifaces = {
-    wireguard = "wg0";
-    unbound = "svcvm3";
-    nginx = "svcvm4";
-    searxng = "svcvm5";
-    vaultwarden = "svcvm6";
-    i2pd = "svcvm7";
-    qbt = "svcvm8";
-  };
-
-  vsocks = {
-    unbound = 3;
-    nginx = 4;
-    searxng = 5;
-    vaultwarden = 6;
-    i2pd = 7;
-    qbt = 8;
-  };
-
-  ids = {
-    unbound = 50030;
-    acme = 50040;
-    vaultwarden = 50060;
-    i2pd = 50070;
-    qbt = 50080;
-  };
-
   # svcvm - service virtual machines
-  # using microvm-nix (qemu/kvm, by default)
+  # expands upon https://github.com/sotormd/svcvm
+  # to declaratively create service virtual machines
+  # - svcready readiness indicators
+  # - svcfg service configuration
   mksvcvm =
     {
       inputs,
@@ -97,29 +42,77 @@
 
         # host tmpfiles options
         # this can be used to create directories
-        # that are later shared with the vm using microvm.shares
+        # that are later shared with the vm using svcvm.shares
         systemd.tmpfiles.rules = tmpfiles;
 
         # host sops options
         # this can be used to provision secrets
-        # that are later shared with the vm using microvm.credentialFiles
+        # that are later shared with the vm using svcvm.creds
         sops.secrets = secrets;
       }
 
-      # microvm options
+      # svcvm options
       {
-        microvm.vms.${vm.name} = {
+        svcvm.vms.${vm.name} = {
 
           # required for other modules to work
           specialArgs = { inherit self inputs lib; };
 
-          # individual modules can be added like this
-          extraModules = vm.modules ++ [
+          # individual modules
+          modules = vm.modules ++ [
 
+            # generic things every svcvm should have
+            # eg, kernel params, graphene malloc, ...
             self.nixosModules.profiles.svcvm
 
+            # base configuration for all svcvm guests
+            {
+              # svcfg configuration for modules.svcvm.*
+              inherit svcfg;
+
+              # disable the firewall since host handles everything
+              networking.firewall.enable = false;
+
+              svcvm = {
+
+                # credentials - for sharing sops-nix stuff
+                # additional shares - eg, service data... ownership should be set using tmpfiles
+                inherit (vm) creds shares;
+
+                # main interface
+                interfaces = [
+                  {
+                    id = "${network.iface}";
+                    mac = "00:00:00:00:00:01";
+                  }
+                ];
+
+              };
+
+              # main interface
+              systemd.network.networks."10-eth" = {
+                matchConfig.MACAddress = "00:00:00:00:00:01";
+                address = [ "${network.address}/32" ];
+                routes = [
+                  {
+                    Destination = "0.0.0.0/0";
+                    Gateway = "${network.gateway}";
+                    GatewayOnLink = true;
+                  }
+                ];
+              };
+
+              # dns - no need for resolved
+              # we use resolv.conf with an explicit resolver instead
+              services.resolved.enable = lib.mkForce false;
+              networking.resolvconf.enable = false;
+              environment.etc."resolv.conf".text = lib.mkForce "nameserver ${network.resolver}";
+            }
+
+            # service readiness indicators
             (
               { config, lib, ... }:
+
               let
                 o = lib.optional;
                 inherit (config) svcready;
@@ -248,85 +241,81 @@
               }
             )
 
+            # debug options
+            (lib.mkIf debug {
+              svcvm.vsock-cid = network.vsock;
+              services.openssh = {
+                enable = true;
+                startWhenNeeded = true;
+                settings.PermitRootLogin = "yes";
+              };
+              users.users.root.password = "toor";
+            })
+
           ];
-
-          config = {
-
-            # svcfg configuration for modules.svcvm.*
-            inherit svcfg;
-
-            # disable the firewall since host handles everything
-            networking.firewall.enable = false;
-
-            microvm = {
-
-              # share the host's Nix store
-              # to keep closure sizes small
-              shares = [
-                {
-                  proto = "virtiofs";
-                  tag = "ro-store";
-                  source = "/nix/store";
-                  mountPoint = "/nix/.ro-store";
-                }
-              ]
-              ++ vm.shares; # additional shares - eg, service data... ownership should be set using tmpfiles
-
-              # main interface
-              interfaces = [
-                {
-                  id = "${network.iface}";
-                  type = "tap";
-                  mac = "00:00:00:00:00:01";
-                  tap.vhost = true;
-                }
-              ];
-
-              # credentials - for sharing sops-nix stuff
-              credentialFiles = vm.creds;
-
-            };
-
-            # main interface
-            systemd.network.networks."10-eth" = {
-              matchConfig.MACAddress = "00:00:00:00:00:01";
-              address = [ "${network.address}/32" ];
-              routes = [
-                {
-                  Destination = "0.0.0.0/0";
-                  Gateway = "${network.gateway}";
-                  GatewayOnLink = true;
-                }
-              ];
-            };
-
-            # dns - no need for resolved
-            # we use resolv.conf with an explicit resolver instead
-            services.resolved.enable = lib.mkForce false;
-            networking.resolvconf.enable = false;
-            environment.etc."resolv.conf".text = lib.mkForce "nameserver ${network.resolver}";
-            environment.systemPackages = [ pkgs.dig ];
-
-            # disable nix
-            nix.enable = false;
-
-          };
 
         };
       }
 
-      # debug mode
-      (lib.mkIf debug {
-        microvm.vms.${vm.name}.config = {
-          microvm.vsock.cid = network.vsock;
-          services.openssh = {
-            enable = true;
-            startWhenNeeded = true;
-            settings.PermitRootLogin = "yes";
-          };
-          users.users.root.password = "toor";
-        };
-      })
-
     ];
+
+  # misc. service constants
+
+  ports = {
+    unbound.dns = 53;
+    nginx.https = 443;
+    searxng.search-engine = 8888;
+    vaultwarden.web-vault = 8222;
+    i2pd = {
+      sam = 7656;
+      http-proxy = 4444;
+      web-console = 7070;
+    };
+    qbt.web-ui = 8080;
+  };
+
+  addresses = {
+    unbound = "10.204.3.2";
+    nginx = "10.204.4.2";
+    searxng = "10.204.5.2";
+    vaultwarden = "10.204.6.2";
+    i2pd = "10.204.7.2";
+    qbt = "10.204.8.2";
+  };
+
+  gateways = {
+    unbound = "10.204.3.1";
+    nginx = "10.204.4.1";
+    searxng = "10.204.5.1";
+    vaultwarden = "10.204.6.1";
+    i2pd = "10.204.7.1";
+    qbt = "10.204.8.1";
+  };
+
+  ifaces = {
+    wireguard = "wg0";
+    unbound = "svcvm3";
+    nginx = "svcvm4";
+    searxng = "svcvm5";
+    vaultwarden = "svcvm6";
+    i2pd = "svcvm7";
+    qbt = "svcvm8";
+  };
+
+  vsocks = {
+    unbound = 3;
+    nginx = 4;
+    searxng = 5;
+    vaultwarden = 6;
+    i2pd = 7;
+    qbt = 8;
+  };
+
+  ids = {
+    unbound = 50030;
+    acme = 50040;
+    vaultwarden = 50060;
+    i2pd = 50070;
+    qbt = 50080;
+  };
 }

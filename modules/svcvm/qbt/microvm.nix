@@ -39,13 +39,11 @@ let
         ];
         shares = [
           {
-            proto = "virtiofs";
             tag = "qbt-data";
             source = "/var/lib/qbt";
             mountPoint = "/var/lib/qbt";
           }
           {
-            proto = "virtiofs";
             tag = "qbt-torrents";
             source = "/srv/torrents";
             mountPoint = "/srv/torrents";
