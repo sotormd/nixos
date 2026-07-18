@@ -1,5 +1,5 @@
 {
-  description = "NixOS configuration flake for multiple hosts with bespoke Impermanence, MicroVMs, and CLI tooling, plus ZFS, WireGuard, bootstrap images, and more.";
+  description = "NixOS configuration for multiple hosts, with custom Impermanence, MicroVMs, and CLI tooling. Plus ZFS, WireGuard, bootstrap images, etc.";
 
   inputs = {
 

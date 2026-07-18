@@ -10,9 +10,8 @@
 
 ![screenshots](./doc/screenshots/nord.gif)
 
-A modular NixOS configuration framework for multiple hosts, featuring bespoke
-Impermanence, CLI tooling and MicroVMs; plus ZFS, WireGuard, bootstrap images
-and more.
+NixOS configuration for multiple hosts, with custom Impermanence, MicroVMs, and
+CLI tooling. Plus ZFS, WireGuard, bootstrap images, etc.
 
 # Features
 
