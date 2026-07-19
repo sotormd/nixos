@@ -7,12 +7,6 @@ lib.mkIf config.vars.features.impermanence.enable {
     # nosuid, nodev, noexec
     lib.mkPersistData "/persist/root" [
 
-      # needed by nixos
-      "/var/lib/nixos"
-
-      # needed by systemd
-      "/var/lib/systemd"
-
       # secure boot
       "/var/lib/sbctl"
 
@@ -31,6 +25,23 @@ lib.mkIf config.vars.features.impermanence.enable {
       # qbt data
       "/var/lib/qbt"
 
+      # nginx static data
+      "/srv/static"
+
+      # qbt torrents
+      "/srv/torrents"
+
+    ]
+
+    # nosuid, nodev, noexec before real root
+    // lib.mkPersistDataEarly "/persist/root" [
+
+      # needed by nixos
+      "/var/lib/nixos"
+
+      # needed by systemd
+      "/var/lib/systemd"
+
       # logs
       "/var/log"
 
@@ -39,12 +50,6 @@ lib.mkIf config.vars.features.impermanence.enable {
 
       # ssh host keys
       "/etc/ssh"
-
-      # nginx static data
-      "/srv/static"
-
-      # qbt torrents
-      "/srv/torrents"
 
     ];
 

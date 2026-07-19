@@ -43,6 +43,12 @@ let
     root: dirs:
     builtins.foldl' (acc: dir: acc // bind dir.options "${root}${dir.path}" dir.path { }) { } dirs;
 
+  persistDirsEarly =
+    root: dirs:
+    builtins.foldl' (
+      acc: dir: acc // bind dir.options "${root}${dir.path}" dir.path { neededForBoot = true; }
+    ) { } dirs;
+
   selfDirs =
     dirs:
     builtins.foldl' (
@@ -67,6 +73,23 @@ let
   mkPersistImmutable = root: dirs: mkPersistRaw mountImmutable root dirs;
 
   mkPersistStatic = root: dirs: mkPersistRaw mountStatic root dirs;
+
+  mkPersistRawEarly =
+    options: root: dirs:
+    persistDirsEarly root (
+      map (dir: {
+        path = dir;
+        inherit options;
+      }) dirs
+    );
+
+  mkPersistHardenEarly = root: dirs: mkPersistRawEarly mountHarden root dirs;
+
+  mkPersistDataEarly = root: dirs: mkPersistRawEarly mountData root dirs;
+
+  mkPersistImmutableEarly = root: dirs: mkPersistRawEarly mountImmutable root dirs;
+
+  mkPersistStaticEarly = root: dirs: mkPersistRawEarly mountStatic root dirs;
 
   mkSelfRaw =
     options: dirs:
@@ -117,6 +140,14 @@ in
     mkPersistData
     mkPersistImmutable
     mkPersistStatic
+    ;
+
+  inherit
+    mkPersistRawEarly
+    mkPersistHardenEarly
+    mkPersistDataEarly
+    mkPersistImmutableEarly
+    mkPersistStaticEarly
     ;
 
   inherit

@@ -4,8 +4,8 @@ lib.mkIf config.vars.features.impermanence.enable {
 
   fileSystems =
 
-    # nosuid,nodev,noexec
-    lib.mkPersistData "/persist/root" [
+    # nosuid, nodev, noexec before real root
+    lib.mkPersistDataEarly "/persist/root" [
 
       # needed by nixos
       "/var/lib/nixos"

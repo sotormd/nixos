@@ -37,17 +37,22 @@ lib.mkIf config.vars.features.impermanence.enable {
       # ssh keys
       "${home}/.ssh"
 
-      # needed by nixos
-      "/var/lib/nixos"
-
-      # needed by systemd
-      "/var/lib/systemd"
-
       # secure boot
       "/var/lib/sbctl"
 
       # libvirt virtual machines
       "/var/lib/libvirt"
+
+    ]
+
+    # nosuid, nodev, noexec before real root
+    // lib.mkPersistDataEarly "/persist/root" [
+
+      # needed by nixos
+      "/var/lib/nixos"
+
+      # needed by systemd
+      "/var/lib/systemd"
 
       # logs
       "/var/log"
