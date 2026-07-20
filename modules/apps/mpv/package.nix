@@ -1,19 +1,21 @@
 {
-  mpv,
   runtimeShell,
   symlinkJoin,
   writeTextFile,
   configuration,
+  scripts,
   ...
 }:
 
 let
+  mpvWithScripts = scripts;
+
   mpvWrapperScript = writeTextFile {
     name = "mpv-wrapper-script";
     text = ''
       #!${runtimeShell}
 
-      ${mpv}/bin/mpv --config-dir=${configuration} "$@"
+      ${mpvWithScripts}/bin/mpv --config-dir=${configuration} "$@"
     '';
     destination = "/bin/mpv";
     executable = true;
@@ -21,7 +23,7 @@ let
 
   mpvWrapped = symlinkJoin {
     name = "mpv-wrapped";
-    paths = [ mpv ];
+    paths = [ mpvWithScripts ];
 
     # replace the mpv binary with our wrapper
     postBuild = ''
