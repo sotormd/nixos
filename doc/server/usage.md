@@ -239,6 +239,12 @@ The following search engines are enabled by default on the general tab:
 4. Startpage
 5. Wikipedia
 
+The following search engines are enabled by default on the images tab:
+
+1. DuckDuckGo
+2. Google
+3. Startpage
+
 ### Key
 
 Requires a secret key which is stored using sops-nix.

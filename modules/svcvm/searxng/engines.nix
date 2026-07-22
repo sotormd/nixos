@@ -5,6 +5,10 @@
   # see https://docs.searxng.org/user/configured_engines.html
   services.searx.settings.engines = lib.mapAttrsToList (name: value: { inherit name; } // value) {
 
+    # general > blogs
+    "searchmysite".disabled = true;
+    "wiby".disabled = true;
+
     # general > books
     "openlibrary".disabled = true;
 
@@ -21,15 +25,12 @@
     "bing".disabled = false;
     "brave".disabled = true;
     "duckduckgo".disabled = false;
-    "google".disabled = false;
-    "karmasearch".disabled = true;
-    "karmasearch videos".disabled = true;
+    "google cse".disabled = false;
     "mojeek".disabled = true;
     "presearch".disabled = true;
     "presearch videos".disabled = true;
     "qwant".disabled = true;
     "startpage".disabled = false;
-    "wiby".disabled = true;
     "yahoo".disabled = true;
     "seznam".disabled = true;
     "naver".disabled = true;
@@ -43,26 +44,38 @@
     "wikivoyage".disabled = true;
 
     # general > without further subgrouping
-    "aol".disabled = true;
-    "ask".disabled = true;
+    "ayo".disabled = true;
     "boardreader".disabled = true;
     "crowdview".disabled = true;
     "ddg definitions".disabled = true;
+    "dogpile".disabled = true;
     "encyclosearch".disabled = true;
+    "fastbot".disabled = true;
+    "fireball".disabled = true;
     "fynd".disabled = true;
+    "gabanza".disabled = true;
     "gmx".disabled = true;
+    "infospace".disabled = true;
     "mwmbl".disabled = true;
-    "searchmysite".disabled = true;
+    "privacywall".disabled = true;
+    "resulthunter".disabled = true;
+    "searchtoday".disabled = true;
     "tineye".disabled = true;
+    "tusksearch".disabled = true;
+    "vuhuv".disabled = true;
     "wikidata".disabled = true;
     "wikipedia".disabled = false;
     "wolframalpha".disabled = true;
     "yacy".disabled = true;
     "yandex".disabled = true;
     "yep".disabled = true;
+    "zapmeta".disabled = true;
+    "searchch".disabled = true;
     "bdp".disabled = true;
+    "reloado".disabled = true;
     "tagesschau".disabled = true;
     "wikimini".disabled = true;
+    "abcnyheter".disabled = true;
     "360search".disabled = true;
     "baidu".disabled = true;
     "quark".disabled = true;
@@ -70,46 +83,57 @@
 
     # images > icons
     "devicons".disabled = true;
+    "flaticon".disabled = true;
     "lucide".disabled = true;
     "material icons".disabled = true;
     "selfhst icons".disabled = true;
-    "svgrepo".disabled = true;
     "uxwing".disabled = true;
 
     # images > web
     "bing images".disabled = true;
     "brave.images".disabled = true;
-    "google images".disabled = true;
-    "karmasearch images".disabled = true;
+    "google cse images".disabled = false;
     "mojeek images".disabled = true;
     "presearch images".disabled = true;
     "qwant images".disabled = true;
-    "startpage images".disabled = true;
+    "startpage images".disabled = false;
 
     # images > without further subgrouping
     "1x".disabled = true;
+    "500px".disabled = true;
     "adobe stock".disabled = true;
-    "aol images".disabled = true;
     "artic".disabled = true;
     "artstation".disabled = true;
+    "cara".disabled = true;
     "deviantart".disabled = true;
-    "duckduckgo images".disabled = true;
+    "dogpile images".disabled = true;
+    "duckduckgo images".disabled = false;
+    "findfiles images".disabled = true;
     "findthatmeme".disabled = true;
     "flickr".disabled = true;
     "frinkiac".disabled = true;
+    "giphy".disabled = true;
     "imgur".disabled = true;
     "ipernity".disabled = true;
     "library of congress".disabled = true;
+    "magnific".disabled = true;
     "openverse".disabled = true;
     "pexels".disabled = true;
+    "picjumbo".disabled = true;
     "pinterest".disabled = true;
     "pixabay images".disabled = true;
+    "privacywall images".disabled = true;
     "public domain image archive".disabled = true;
+    "resulthunter images".disabled = true;
+    "shopify stock".disabled = true;
     "sogou images".disabled = true;
+    "stockshop".disabled = true;
+    "tusksearch images".disabled = true;
     "unsplash".disabled = true;
+    "vuhuv images".disabled = true;
     "wikicommons.images".disabled = true;
     "yacy images".disabled = true;
-    "yep images".disabled = true;
+    "yandex images".disabled = true;
     "naver images".disabled = true;
     "baidu images".disabled = true;
     "quark images".disabled = true;
@@ -117,25 +141,29 @@
     # videos > web
     "bing videos".disabled = true;
     "brave.videos".disabled = true;
-    "google videos".disabled = true;
     "qwant videos".disabled = true;
 
     # videos > without further subgrouping
     "360search videos".disabled = true;
     "adobe stock video".disabled = true;
-    "aol videos".disabled = true;
     "bilibili".disabled = true;
     "bitchute".disabled = true;
     "dailymotion".disabled = true;
+    "dogpile videos".disabled = true;
     "duckduckgo videos".disabled = true;
+    "findfiles videos".disabled = true;
+    "fireball videos".disabled = true;
     "google play movies".disabled = true;
     "media.ccc.de".disabled = true;
     "odysee".disabled = true;
     "peertube".disabled = true;
     "pixabay videos".disabled = true;
+    "privacywall videos".disabled = true;
     "rumble".disabled = true;
     "sepiasearch".disabled = true;
+    "tusksearch videos".disabled = true;
     "vimeo".disabled = true;
+    "vuhuv videos".disabled = true;
     "wikicommons.videos".disabled = true;
     "youtube".disabled = true;
     "mediathekviewweb".disabled = true;
@@ -147,7 +175,6 @@
     "sogou videos".disabled = true;
 
     # news > web
-    "karmasearch news".disabled = true;
     "mojeek news".disabled = true;
     "presearch news".disabled = true;
     "startpage news".disabled = true;
@@ -158,12 +185,13 @@
     # news > misc
     "bing news".disabled = true;
     "brave.news".disabled = true;
+    "dogpile news".disabled = true;
     "duckduckgo news".disabled = true;
+    "fireball news".disabled = true;
     "google news".disabled = true;
     "qwant news".disabled = true;
     "reuters".disabled = true;
-    "yahoo news".disabled = true;
-    "yep news".disabled = true;
+    "tusksearch news".disabled = true;
     # repeat "tagesschau".disabled = true;
     "ansa".disabled = true;
     "il post".disabled = true;
@@ -185,6 +213,7 @@
     "adobe stock audio".disabled = true;
     "bandcamp".disabled = true;
     "deezer".disabled = true;
+    "findfiles music".disabled = true;
     "mixcloud".disabled = true;
     "soundcloud".disabled = true;
     "wikicommons.audio".disabled = true;
@@ -223,8 +252,8 @@
     "github".disabled = true;
     "gitlab".disabled = true;
     "huggingface".disabled = true;
-    "huggingface spaces".disabled = true;
     "huggingface datasets".disabled = true;
+    "huggingface spaces".disabled = true;
     "ollama".disabled = true;
     "sourcehut".disabled = true;
 
@@ -274,6 +303,7 @@
     "1337x".disabled = true;
     "bt4g".disabled = true;
     "btdigg".disabled = true;
+    "findfiles".disabled = true;
     "kickass".disabled = true;
     "library genesis".disabled = true;
     "nyaa".disabled = true;
@@ -294,32 +324,6 @@
     "mastodon users".disabled = true;
     "reddit".disabled = true;
     "tootfinder".disabled = true;
-
-    # other > dictionaries
-    "etymonline".disabled = true;
-    "wiktionary".disabled = true;
-    "wordnik".disabled = true;
-    "duden".disabled = true;
-    "woxikon.de synonyme".disabled = true;
-    "jisho".disabled = true;
-
-    # other > movies
-    "imdb".disabled = true;
-    "rottentomatoes".disabled = true;
-    "tmdb".disabled = true;
-    "moviepilot".disabled = true;
-    "senscritique".disabled = true;
-
-    # other > shopping
-    "geizhals".disabled = true;
-
-    # other > software wikis
-    "minecraft wiki".disabled = true;
-
-    # other > weather
-    "duckduckgo weather".disabled = true;
-    "openmeteo".disabled = true;
-    "wttr.in".disabled = true;
 
     # other > misc
     "emojipedia".disabled = true;
