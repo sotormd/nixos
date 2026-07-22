@@ -1,4 +1,5 @@
 {
+  mpv,
   runtimeShell,
   symlinkJoin,
   writeTextFile,
@@ -8,7 +9,7 @@
 }:
 
 let
-  mpvWithScripts = scripts;
+  mpvWithScripts = mpv.override { inherit scripts; };
 
   mpvWrapperScript = writeTextFile {
     name = "mpv-wrapper-script";
