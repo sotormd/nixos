@@ -1290,9 +1290,9 @@ browsers.
    - Disable Brave stats reporting
    - Disable user experience metrics reporting
 
-5. Extensions
+5. Extensions (no MV2)
 
-   - uBlock Origin (further configured using policies)
+   - uBlock Origin Lite
    - Dark Reader
    - Vimium
 

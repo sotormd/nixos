@@ -366,11 +366,9 @@ For a full comprehensive list, see [Security](../security.md#brave).
 
 The browser also comes with these extensions:
 
-- uBlock Origin
+- uBlock Origin Lite
 - Darkreader
 - Vimium
-
-uBlock Origin is also configured further via chromium policies.
 
 ### Sandbox
 
