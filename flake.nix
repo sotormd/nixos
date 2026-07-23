@@ -90,8 +90,9 @@
 
       # the old variables interface, now using options!
       legacyVars = import ./vars/vars.nix;
+      legacySops = ./vars/secrets.yaml;
 
-      # features as modules - DENDRITIC!
+      # features as modules
       modules = import ./modules;
 
       # profiles, collections of modules
@@ -116,7 +117,12 @@
         role: system:
         inputs.nixpkgs.lib.nixosSystem {
           specialArgs = {
-            inherit inputs lib legacyVars;
+            inherit
+              inputs
+              lib
+              legacyVars
+              legacySops
+              ;
             inherit (inputs) self;
           };
           inherit system;
