@@ -23,7 +23,7 @@ The targets covered in this document are:
   services on WireGuard over LAN.
 - Pi, my Raspberry Pi 4bs.
 
-Unless explicitly mentioned, everything applies to both roles.
+Unless explicitly mentioned, everything applies to all roles.
 
 # Resources
 
@@ -40,11 +40,9 @@ Warnings:
 
 - Several hardening options may hinder performance or break certain workflows.
   This configuration caters to my specific setup **only**.
-
 - Note that this document contains some options which aren't hardening or
   security related and are more of privacy / personal preference. Such options
   are noted.
-
 - Note that this document contains some options which, at the time of writing,
   may be no-ops on NixOS. Such options are noted.
 
@@ -313,7 +311,7 @@ using SOPS.
 
 > Laptop, Server only
 
-WPA3 (SAE / dragonfly) is used for wireless authentication on Laptop.
+WPA3 (SAE / dragonfly) is used for wireless authentication.
 
 # DNS
 
@@ -571,8 +569,7 @@ Ports are opened for the following services:
 
 > Pi only
 
-Ports are open based on the enabled services (only SSH). See
-[Pi Usage Documentation](./pi/usage.md#ssh-server) for more information.
+Ports are open based on the enabled services (only SSH).
 
 Ports are opened for the following services:
 
@@ -582,6 +579,8 @@ Ports are opened for the following services:
      `vars.services.ssh.allow`
 
 > Examples
+
+Rulesets are generated based on the enabled services.
 
 Example ruleset for Laptop with SSH disabled:
 
@@ -789,12 +788,23 @@ official wiki page covers setting up Whonix in QEMU/KVM using libvirt.
 > Server only
 
 Several services run in Virtual Machines as covered above. These are
-[svcvm](https://github.com/sotormd/svcvm) QEMU `microvm` Virtual Machines.
+[svcvm](https://github.com/sotormd/svcvm) QEMU/KVM `microvm` Virtual Machines.
 Networking is covered above in [Firewall](#firewall). Rather than being bridged,
 the VMs use a
 [routed network model](https://microvm-nix.github.io/microvm.nix/routed-network.html)
-with NAT rather than being bridged. They use `virtiofs` for shared filesystems
-and `io.systemd.credentials` for sharing secrets from the host.
+with NAT. They use `virtiofs` for shared filesystems and
+`io.systemd.credentials` for sharing secrets from the host.
+
+[svcvm](https://github.com/sotormd/svcvm) is a minimal stripped-down derivative
+of [microvm.nix](https://github.com/microvm-nix/microvm.nix), which includes
+only the features that I require. In this flake, it is used along with
+`lib.mksvcvm` which provides things like the `svcready` readiness indicators and
+`svcfg` service configuration.
+
+All service virtual machines have the host's Nix Store as a readonly `virtiofs`
+share along with a `tmpfs` root. Each VM gets its own interface that it binds to
+using `/32` addresses. Inter-VM communication (eg, from vaultwarden to nginx) is
+handled by nftables on the host.
 
 See [Server Usage Documentation](./server/usage.md#service-virtual-machines) for
 more information.
