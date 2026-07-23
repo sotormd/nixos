@@ -378,7 +378,7 @@ Check the service status for the password. Since qBittorrent runs in a Virtual
 Machine, ssh into the Virtual Machine first.
 
 ```bash
-microvm -s qbt
+svcvm ssh qbt
 systemctl status qbt
 ```
 
