@@ -32,6 +32,9 @@
     # enable automatic deduplication
     auto-optimise-store = true;
 
+    # no need for the global flake registry
+    flake-registry = null;
+
   };
 
   # do not automatically run gc
