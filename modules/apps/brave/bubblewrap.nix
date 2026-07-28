@@ -34,11 +34,11 @@ let
       mkdir -p "$XDG_RUNTIME_DIR/bubblewrap-brave"
       touch "$LOCKFILE"
 
-      users=$(mktemp -d -p "$XDG_RUNTIME_DIR/bubblewrap-brave" users.XXXXXX)
+      users=$(${coreutils}/bin/mktemp -d -p "$XDG_RUNTIME_DIR/bubblewrap-brave" users.XXXXXX)
       echo "brave:x:1000:1000:brave:/home/brave:${coreutils}/bin/false" > "$users/passwd"
       echo "brave:x:1000:" > "$users/group"
 
-      proxy_dir=$(mktemp -d -p "$XDG_RUNTIME_DIR/bubblewrap-brave" proxy.XXXXXX)
+      proxy_dir=$(${coreutils}/bin/mktemp -d -p "$XDG_RUNTIME_DIR/bubblewrap-brave" proxy.XXXXXX)
       proxy_socket="$proxy_dir/bus"
 
       ${xdg-dbus-proxy}/bin/xdg-dbus-proxy "$DBUS_SESSION_BUS_ADDRESS" "$proxy_socket" \

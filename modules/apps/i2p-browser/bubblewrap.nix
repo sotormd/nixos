@@ -20,7 +20,7 @@ let
 
       mkdir -p "$XDG_RUNTIME_DIR/bubblewrap-i2p-browser"
 
-      users=$(mktemp -d -p "$XDG_RUNTIME_DIR/bubblewrap-i2p-browser" users.XXXXXX)
+      users=$(${coreutils}/bin/mktemp -d -p "$XDG_RUNTIME_DIR/bubblewrap-i2p-browser" users.XXXXXX)
       echo "i2p-browser:x:1000:1000:i2p-browser:/home/i2p-browser:${coreutils}/bin/false" > "$users/passwd"
       echo "i2p-browser:x:1000:" > "$users/group"
 

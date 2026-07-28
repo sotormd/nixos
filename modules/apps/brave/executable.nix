@@ -6,11 +6,19 @@
 }:
 
 let
+  # 1. set initial_preferences
+  # 2. make .desktop not use absolute path
+  # 3. set command line args
   executable =
     (brave.overrideAttrs (oldAttrs: {
-      installPhase =
-        oldAttrs.installPhase
-        + "cp ${preferences}/initial_preferences $out/opt/brave.com/brave/initial_preferences";
+      postInstall = (oldAttrs.postInstall or "") + ''
+        cp ${preferences}/initial_preferences \
+          $out/opt/brave.com/brave/initial_preferences
+
+        sed -Ei \
+         's|/nix/store/[^ ]*/bin/brave|brave|g' \
+          $out/share/applications/brave-browser.desktop
+      '';
     })).override
       { commandLineArgs = args; };
 in
