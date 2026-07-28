@@ -27,7 +27,7 @@ let
       ;
     inherit (config) vars;
   };
-  package = pkgs.callPackage ./package.nix { inherit jail; };
+  package = pkgs.callPackage ./package.nix { inherit executable jail; };
 in
 {
   users.users.${config.vars.user.name}.packages = [ package ];

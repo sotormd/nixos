@@ -1,6 +1,6 @@
 {
-  brave,
   symlinkJoin,
+  executable,
   jail,
   ...
 }:
@@ -8,7 +8,7 @@
 let
   braveWrapped = symlinkJoin {
     name = "brave-wrapped";
-    paths = [ brave ];
+    paths = [ executable ];
 
     postBuild = ''
       rm -f $out/bin/brave
