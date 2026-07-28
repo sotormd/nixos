@@ -1,17 +1,19 @@
 {
+  brave,
   symlinkJoin,
   jail,
-  desktop,
   ...
 }:
 
 let
-  brave = symlinkJoin {
-    name = "brave";
-    paths = [
-      jail
-      desktop
-    ];
+  braveWrapped = symlinkJoin {
+    name = "brave-wrapped";
+    paths = [ brave ];
+
+    postBuild = ''
+      rm -f $out/bin/brave
+      ln -s ${jail}/bin/brave $out/bin/brave
+    '';
   };
 in
-brave
+braveWrapped
