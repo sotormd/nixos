@@ -1,4 +1,0 @@
-let
-  args = [ ];
-in
-args

@@ -6,9 +6,8 @@
 }:
 
 let
-  args = import ./args.nix;
   preferences = pkgs.callPackage ./preferences.nix { inherit (config) colors; };
-  executable = pkgs.callPackage ./executable.nix { inherit args preferences; };
+  executable = pkgs.callPackage ./executable.nix { inherit preferences; };
   homepage = pkgs.callPackage ./home.nix {
     inherit inputs;
     inherit (config) colors vars;
