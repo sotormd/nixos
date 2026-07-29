@@ -1313,7 +1313,8 @@ elif [ "$VERB" == "impermanence" ]; then
             "/Projects" \
             "/.config/BraveSoftware/Brave-Browser" \
             "/.ssh" \
-            "/.local/share/containers"
+            "/.local/share/containers" \
+            "/.local/state/nix"
 
     elif [[ "${ROLE:-}" =~ ^(server)$ ]]; then
         

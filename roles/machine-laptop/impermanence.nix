@@ -37,6 +37,9 @@ lib.mkIf config.vars.features.impermanence.enable {
       # ssh keys
       "${home}/.ssh"
 
+      # nix user data (eg. profiles)
+      "${home}/.local/state/nix"
+
       # secure boot
       "/var/lib/sbctl"
 
@@ -70,6 +73,7 @@ lib.mkIf config.vars.features.impermanence.enable {
     "d ${home}/.config/BraveSoftware 0700 ${user} ${user} -"
     "d ${home}/.local 0700 ${user} ${user} -"
     "d ${home}/.local/share 0700 ${user} ${user} -"
+    "d ${home}/.local/state 0700 ${user} ${user} -"
   ];
 
 }

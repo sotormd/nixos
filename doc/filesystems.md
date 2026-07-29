@@ -384,27 +384,32 @@ The following directories are persisted by default:
 
 #### Laptop
 
-| Path                                    | Description                 | Profile |
-| --------------------------------------- | --------------------------- | ------- |
-| `/var/lib/nixos`                        | needed by nixos             | Data    |
-| `/var/lib/systemd`                      | needed by systemd           | Data    |
-| `/var/lib/sbctl`                        | secure boot keys            | Data    |
-| `/var/lib/libvirt`                      | libvirt vms                 | Data    |
-| `/var/log`                              | logs                        | Data    |
-| `/etc/zfs`                              | needed by ZFS               | Data    |
-| `/etc/ssh`                              | ssh host keys               | Data    |
-| `~/Documents`                           | user documents              | Data    |
-| `~/Downloads`                           | user downloaders            | Data    |
-| `~/Pictures`                            | user pictures               | Data    |
-| `~/Projects`                            | user projects               | Harden  |
-| `~/.config/BraveSoftware/Brave-Browser` | Brave browser configuration | Harden  |
-| `~/.ssh`                                | user ssh data               | Data    |
-| `~/.local/share/containers`             | distrobox containers        | Raw     |
+| Path                                    | Description                   | Profile |
+| --------------------------------------- | ----------------------------- | ------- |
+| `/var/lib/nixos`                        | needed by nixos               | Data    |
+| `/var/lib/systemd`                      | needed by systemd             | Data    |
+| `/var/lib/sbctl`                        | secure boot keys              | Data    |
+| `/var/lib/libvirt`                      | libvirt vms                   | Data    |
+| `/var/log`                              | logs                          | Data    |
+| `/etc/zfs`                              | needed by ZFS                 | Data    |
+| `/etc/ssh`                              | ssh host keys                 | Data    |
+| `~/Documents`                           | user documents                | Data    |
+| `~/Downloads`                           | user downloaders              | Data    |
+| `~/Pictures`                            | user pictures                 | Data    |
+| `~/Projects`                            | user projects                 | Harden  |
+| `~/.config/BraveSoftware/Brave-Browser` | Brave browser configuration   | Harden  |
+| `~/.ssh`                                | user ssh data                 | Data    |
+| `~/.local/share/containers`             | distrobox containers          | Raw     |
+| `~/.local/state/nix`                    | nix user state (eg. profiles) | Data    |
 
 > Brave directory cannot be `noexec` since it stores Widevine executables.
 
 > Distrobox containers directory cannot be `nosuid` since `sudo` needs to be
 > usable within containers.
+
+> Profiles created using Nix (`nix profile`, `nix-env`) are now stored under
+> `XDG_STATE_HOME/nix` instead of `/nix/var/nix`. In order to keep up, we must
+> persist this directory.
 
 #### Server
 
