@@ -92,62 +92,40 @@
       legacyVars = import ./vars/vars.nix;
       legacySops = ./vars/secrets.yaml;
 
+      # this flake
+      inherit (inputs) self;
+
       # features as modules
       modules = import ./modules;
 
       # profiles, collections of modules
       profiles = import ./profiles;
 
-      # overlays
-      # the modules set their own overlays
-      # this is for anything that originates here
-      # eg, lib and alternate branches
-      overlays = [ (_: _: { inherit lib; }) ];
+      # create a module
+      mkModule = type: role: (_: { imports = [ ./roles/${type}-${role} ]; });
 
       # create a machine module
-      mkMachineModule =
-        role:
-        (_: {
-          imports = [ ./roles/machine-${role} ];
-          nixpkgs = { inherit overlays; };
-        });
-
-      # create a "machine"
-      mkMachine =
-        role: system:
-        inputs.nixpkgs.lib.nixosSystem {
-          specialArgs = {
-            inherit
-              inputs
-              lib
-              legacyVars
-              legacySops
-              ;
-            inherit (inputs) self;
-          };
-          inherit system;
-          modules = [ (mkMachineModule role) ];
-        };
+      mkMachineModule = role: mkModule "machine" role;
 
       # create an image module
-      mkImageModule =
-        role:
-        (_: {
-          imports = [ ./roles/image-${role} ];
-          nixpkgs = { inherit overlays; };
-        });
+      mkImageModule = role: mkModule "image" role;
 
-      # create an "image"
-      mkImage =
-        role: system:
+      # create a "config"
+      mkConfig =
+        module: args: system:
         inputs.nixpkgs.lib.nixosSystem {
-          specialArgs = {
-            inherit inputs lib;
-            inherit (inputs) self;
+          specialArgs = args // {
+            inherit inputs self lib;
           };
           inherit system;
-          modules = [ (mkImageModule role) ];
+          modules = [ module ] ++ [ { nixpkgs.overlays = [ (_: _: { inherit lib; }) ]; } ];
         };
+
+      # create a "machine" - partially applied
+      mkMachine = role: mkConfig (mkMachineModule role) { inherit legacyVars legacySops; };
+
+      # create an "image" - partially applied
+      mkImage = role: mkConfig (mkImageModule role) { };
 
       # targets
       targets = fromTOML (builtins.readFile ./targets.toml);
