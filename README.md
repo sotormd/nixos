@@ -217,18 +217,20 @@ involve zero code changes to this flake, and are entirely handled by variables.
 
 Here are some of my other flakes that are related to my NixOS tooling:
 
+Directly dependent:
+
 - [svcvm](https://github.com/sotormd/svcvm), Service virtual machines for NixOS,
   derived from [microvm.nix](https://github.com/microvm-nix/microvm.nix)
 - [neovim](https://github.com/sotormd/neovim), Neovim configuration flake (ft.
   nvf)
-- [neovim-nixvim](https://github.com/sotormd/neovim-nixvim), Neovim
-  configuration flake (ft. nixvim)
 - [colors](https://github.com/sotormd/colors), Colorscheme flake
 - [wallpapers](https://github.com/sotormd/wallpapers), Expose wallpapers as Nix
   expressions
 - [homepage](https://github.com/sotormd/homepage), A pure Nix static homepage
   generator
-- [droid](https://github.com/sotormd/droid), nix-on-droid configuration
+
+Adjacent:
+
 - [pattern](https://github.com/sotormd/pattern), Atomic, image-based systems
   with A/B updates, provisioned using Nix
 - [polevault](https://github.com/sotormd/polevault), A
@@ -239,6 +241,12 @@ Here are some of my other flakes that are related to my NixOS tooling:
 - [nate](https://github.com/sotormd/nate), MATE desktop for my NixOS needs
 - [coffee](https://github.com/sotormd/coffee), A very minimal openbox
   configuration
+- [droid](https://github.com/sotormd/droid), nix-on-droid configuration
+
+Historical:
+
+- [neovim-nixvim](https://github.com/sotormd/neovim-nixvim), Neovim
+  configuration flake (ft. nixvim)
 - [sway-old](https://github.com/sotormd/sway-old), Old sway config previously
   used here
 
