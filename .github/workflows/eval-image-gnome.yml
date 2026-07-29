@@ -16,5 +16,5 @@ jobs:
         uses: DeterminateSystems/nix-installer-action@main
 
       - name: GNOME image evaluation
-        run: nix eval .#nixosConfigurations.image-gnome-x86_64-linux.config.system.build.toplevel --json
+        run: nix eval .#nixosConfigurations.image-gnome-x86_64-linux.config.system.build.toplevel --json --option pure-eval true
 

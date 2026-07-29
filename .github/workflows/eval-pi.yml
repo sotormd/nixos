@@ -34,5 +34,5 @@ jobs:
         run: git add .
 
       - name: Pi evaluation
-        run: nix eval .#nixosConfigurations.machine-pi-aarch64-linux.config.system.build.toplevel --json
+        run: nix eval .#nixosConfigurations.machine-pi-aarch64-linux.config.system.build.toplevel --json --option pure-eval true
 
