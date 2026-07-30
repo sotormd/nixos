@@ -613,7 +613,7 @@ For `vars.services.ssh`
 
 # Using Selfhosted Features
 
-Note that services are exposed using on Server using WireGuard. WireGuard is
+Note that services are exposed by Server using WireGuard. WireGuard is
 configured in the variables file under `vars.wireguard`.
 
 Example configuration for Laptop (`10.20.0.2` on wireguard) with a single peer
@@ -701,7 +701,7 @@ Example usage:
 }
 ```
 
-The allowed-signers file should contents should be as git expects it. Example:
+The allowed-signers file contents should be as git expects it. Example:
 
 ```
 example ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIIoZXCKsWoH1R2MCeLXRDxeDrRdRGuOHG92sArhmlkT2 example@example
