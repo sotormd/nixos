@@ -1,13 +1,13 @@
 {
-  inputs,
   lib,
   writeTextFile,
-  colors,
   vars,
   ...
 }:
 
 let
+  inherit (lib) createHome colors;
+
   layout = [
 
     (lib.flatten [
@@ -87,7 +87,7 @@ let
     ]
   ];
 
-  homepageHtml = inputs.homepage.lib.makeHomepage {
+  homepageHtml = createHome {
     inherit layout;
     n = 4;
     colors = {

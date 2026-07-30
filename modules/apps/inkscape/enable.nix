@@ -1,7 +1,7 @@
 { config, pkgs, ... }:
 
 let
-  preferences = pkgs.callPackage ./config.nix { inherit (config) colors; };
+  preferences = pkgs.callPackage ./config.nix { };
   package = pkgs.callPackage ./package.nix { inherit preferences; };
 in
 {

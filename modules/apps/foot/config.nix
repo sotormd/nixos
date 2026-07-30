@@ -1,6 +1,8 @@
-{ writeTextFile, colors, ... }:
+{ lib, writeTextFile, ... }:
 
 let
+  inherit (lib) colors;
+
   configuration = writeTextFile {
     name = "foot.ini";
     text = ''

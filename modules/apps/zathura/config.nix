@@ -1,6 +1,8 @@
-{ writeTextFile, colors, ... }:
+{ lib, writeTextFile, ... }:
 
 let
+  inherit (lib) colors;
+
   zathurarc = writeTextFile {
     name = "zathura-zathurarc";
     text = ''

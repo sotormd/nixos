@@ -18,14 +18,13 @@
   waybar0,
   xkcd0,
   writeTextFile,
-  colors,
-  wallpapers,
   vars,
   ...
 }:
 
 let
-  backgrounds.wallpaper = wallpapers.nord.space;
+  inherit (lib) colors;
+  backgrounds.wallpaper = lib.wallpapers.nord.space;
 
   orderedOutputs = lib.sort (a: b: a.name < b.name) (
     lib.mapAttrsToList (name: value: { inherit name value; }) vars.displays.outputs

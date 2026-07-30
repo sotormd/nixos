@@ -6,12 +6,9 @@
 }:
 
 let
-  preferences = pkgs.callPackage ./preferences.nix { inherit (config) colors; };
+  preferences = pkgs.callPackage ./preferences.nix { };
   executable = pkgs.callPackage ./executable.nix { inherit preferences; };
-  homepage = pkgs.callPackage ./home.nix {
-    inherit inputs;
-    inherit (config) colors vars;
-  };
+  homepage = pkgs.callPackage ./home.nix { inherit (config) vars; };
   policies = pkgs.callPackage ./policies.nix {
     inherit homepage;
     inherit (config) vars;

@@ -2,13 +2,12 @@
   lib,
   writeTextFile,
   symlinkJoin,
-  colors,
   vars,
   ...
 }:
 
 let
-  inherit (lib) ports;
+  inherit (lib) colors ports;
 
   proxy = vars.selfhosted.i2pd.address;
 

@@ -10,13 +10,6 @@
       url = "github:nixos/nixpkgs/nixos-unstable";
     };
 
-    # alternate branches
-    # for specific stuff
-    # remember to vet these
-    # `nixos grep -r ALT-PKGS`
-    # -----------------------
-    # -----------------------
-
     # secrets for nixos
     # because we dont want them ending
     # up in the world-readable Nix store
@@ -46,32 +39,10 @@
       url = "github:sotormd/svcvm";
     };
 
-    # my Neovim configuration
-    neovim = {
-      url = "github:sotormd/neovim";
-      inputs.nixpkgs.follows = "nixpkgs";
-      inputs.colors.follows = "colors";
-    };
-
-    # my colors & theming
-    colors = {
-      url = "github:sotormd/colors";
-    };
-
-    # my wallpapers
-    wallpapers = {
-      url = "github:sotormd/wallpapers";
-    };
-
     # XKCD comics on my lockscreen
     xkcd = {
       url = "github:sotormd/xkcd-wall";
       inputs.nixpkgs.follows = "nixpkgs";
-    };
-
-    # my browser homepage
-    homepage = {
-      url = "github:sotormd/homepage";
     };
 
   };

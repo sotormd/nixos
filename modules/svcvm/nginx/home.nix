@@ -1,12 +1,13 @@
 {
   config,
-  inputs,
   pkgs,
   lib,
   ...
 }:
 
 let
+  inherit (lib) createHome colors;
+
   inherit (config.svcfg) nginx;
   inherit (config.svcfg.nginx.locations)
     searxng
@@ -15,7 +16,7 @@ let
     qbt
     ;
 
-  homepageText = inputs.homepage.lib.makeHomepage {
+  homepageText = createHome {
     layout = [
       (lib.flatten [
         (lib.optional searxng.enable {
@@ -41,6 +42,16 @@ let
       ])
     ];
     n = 1;
+    colors = {
+      inherit (colors.homepage)
+        bg
+        btnbg
+        fg
+        accent
+        hover
+        ;
+    };
+    font = colors.fonts.normal;
   };
 
   homepageFile = pkgs.writeTextFile {

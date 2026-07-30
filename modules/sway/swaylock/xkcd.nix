@@ -1,16 +1,17 @@
 {
   inputs,
+  lib,
   coreutils,
   runtimeShell,
   writeTextFile,
-  colors,
-  wallpapers,
   vars,
   ...
 }:
 
 let
-  fallback = wallpapers.nord.nixos;
+  inherit (lib) colors;
+
+  fallback = lib.wallpapers.nord.nixos;
   target = "/home/${vars.user.name}/.local/share/xkcd.png";
   backup = "/home/${vars.user.name}/.local/share/xkcd.last.png";
 

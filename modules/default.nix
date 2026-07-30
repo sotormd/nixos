@@ -34,9 +34,6 @@
     # mpv media player
     apps.mpv = _: { imports = [ ./apps/mpv ]; };
 
-    # neovim text editor
-    apps.neovim = _: { imports = [ ./apps/neovim ]; };
-
     # sandboxing with bubblewrap and xdg-dbus-proxy
     apps.sandbox = _: { imports = [ ./apps/sandbox ]; };
 

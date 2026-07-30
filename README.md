@@ -38,7 +38,7 @@ CLI tooling. Plus ZFS, WireGuard, bootstrap images, etc.
      using ZFS snapshots and bind mounts
    - Bespoke [CLI](#cli) for maintaining this flake
    - Service virtual machines using bespoke
-     [svcvm](https://github.com/sotormd/svcvm) backend
+     [svcvm](https://github.com/sotormd/svcvm) backend and `lib.mksvcvm`
 
 4. Desktop features:
 
@@ -54,12 +54,6 @@ CLI tooling. Plus ZFS, WireGuard, bootstrap images, etc.
      policies.
    - Sandboxing with [Bubblewrap](https://github.com/containers/bubblewrap) and
      [xdg-dbus-proxy](https://github.com/flatpak/xdg-dbus-proxy).
-   - NVF-powered [neovim](https://github.com/sotormd/neovim) configuration
-   - Theming and colors with [colors](https://github.com/sotormd/colors)
-   - Declarative browser homepage with
-     [homepage](https://github.com/sotormd/homepage)
-   - Declarative wallpapers with
-     [wallpapers](https://github.com/sotormd/wallpapers)
    - XKCD lockscreen wallpapers with
      [xkcd-wall](https://github.com/sotormd/xkcd-wall)
    - Automatic behavior changes when outside trusted & reliable networks with
@@ -84,63 +78,63 @@ CLI tooling. Plus ZFS, WireGuard, bootstrap images, etc.
 
 <summary>Click to expand: Comprehensive features list</summary>
 
-| Category                      | Stack                                                                                                      |
-| ----------------------------- | ---------------------------------------------------------------------------------------------------------- |
-| distro                        | `NixOS`                                                                                                    |
-| packages                      | `nixos-unstable`                                                                                           |
-| package manager               | `lix`                                                                                                      |
-| kernel                        | `linux`                                                                                                    |
-| shell                         | `bash`                                                                                                     |
-| malloc                        | `graphene-hardened`                                                                                        |
-| bootloader                    | `systemd-boot`, `uboot`                                                                                    |
-| secure boot                   | `lanzaboote`                                                                                               |
-| filesystem                    | `zfs`                                                                                                      |
-| impermanence                  | `zfs(8)` `mount(8)`                                                                                        |
-| drive health                  | `smartmontools`                                                                                            |
-| dotfiles                      | `nixpkgs` wrappers                                                                                         |
-| ~ symlinks                    | `systemd-tmpfiles`                                                                                         |
-| auditing                      | `auditd`                                                                                                   |
-| secrets                       | `sops`, `sops-nix`                                                                                         |
-| keys                          | `age`, `signify`, `gpg`                                                                                    |
-| usb policy                    | `usbguard`                                                                                                 |
-| sandboxing                    | `bubblewrap`, `xdg-dbus-proxy`                                                                             |
-| firewall                      | `nftables`                                                                                                 |
-| mac randomization             | `macchanger`                                                                                               |
-| anonymity                     | `i2pd`                                                                                                     |
-| networking                    | `systemd-networkd`                                                                                         |
-| tunnelling                    | `wireguard`                                                                                                |
-| wireless                      | `wpa_supplicant`                                                                                           |
-| dns                           | `unbound`                                                                                                  |
-| secure shell                  | `openssh`                                                                                                  |
-| display server                | `wayland`                                                                                                  |
-| compositor                    | `swayfx`, `cage`                                                                                           |
-| bar                           | `waybar`                                                                                                   |
-| launcher                      | `rofi`                                                                                                     |
-| notifications                 | `dunst`                                                                                                    |
-| terminal emulator             | `foot`                                                                                                     |
-| file manager                  | `thunar`                                                                                                   |
-| audio                         | `pipewire`, `pavucontrol`, `playerctl`                                                                     |
-| media player                  | `mpv`                                                                                                      |
-| pdf reader                    | `zathura`                                                                                                  |
-| images                        | `swayimg`                                                                                                  |
-| vector graphics editor        | `inkscape`                                                                                                 |
-| screenshots                   | `grimshot`, `grim`, `slurp`                                                                                |
-| clipboard                     | `cliphist`                                                                                                 |
-| browser                       | `brave`                                                                                                    |
-| web server                    | `nginx`                                                                                                    |
-| certificates                  | `acme`                                                                                                     |
-| homepage                      | [`homepage`](https://github.com/sotormd/homepage)                                                          |
-| search engine                 | `searxng`                                                                                                  |
-| bittorrent                    | `qbittorrent-nox`                                                                                          |
-| passwords                     | `vaultwarden`                                                                                              |
-| text editor                   | [`neovim`](https://github.com/sotormd/neovim), `mousepad`                                                  |
-| version control               | `git`                                                                                                      |
-| development                   | `rust`, `python`, `go`, `haskell`                                                                          |
-| virtualization                | [`svcvm`](https://github.com/sotormd/svcvm), `qemu`, `virt-manager`, `distrobox`, `podman`                 |
-| cpu optimizations             | `auto-cpufreq`                                                                                             |
-| resource monitor              | `htop`, `btop`                                                                                             |
-| themes, icons, cursors, fonts | [`colors`](https://github.com/sotormd/colors)                                                              |
-| wallpapers                    | [`wallpapers`](https://github.com/sotormd/wallpapers), [`xkcd-wall`](https://github.com/sotormd/xkcd-wall) |
+| Category                      | Stack                                                                                                    |
+| ----------------------------- | -------------------------------------------------------------------------------------------------------- |
+| distro                        | `NixOS`                                                                                                  |
+| packages                      | `nixos-unstable`                                                                                         |
+| package manager               | `lix`                                                                                                    |
+| kernel                        | `linux`                                                                                                  |
+| shell                         | `bash`                                                                                                   |
+| malloc                        | `graphene-hardened`                                                                                      |
+| bootloader                    | `systemd-boot`, `uboot`                                                                                  |
+| secure boot                   | `lanzaboote`                                                                                             |
+| filesystem                    | `zfs`                                                                                                    |
+| impermanence                  | `zfs(8)` `mount(8)`                                                                                      |
+| drive health                  | `smartmontools`                                                                                          |
+| dotfiles                      | `nixpkgs` wrappers                                                                                       |
+| ~ symlinks                    | `systemd-tmpfiles`                                                                                       |
+| auditing                      | `auditd`                                                                                                 |
+| secrets                       | `sops`, `sops-nix`                                                                                       |
+| keys                          | `age`, `signify`, `gpg`                                                                                  |
+| usb policy                    | `usbguard`                                                                                               |
+| sandboxing                    | `bubblewrap`, `xdg-dbus-proxy`                                                                           |
+| firewall                      | `nftables`                                                                                               |
+| mac randomization             | `macchanger`                                                                                             |
+| anonymity                     | `i2pd`                                                                                                   |
+| networking                    | `systemd-networkd`                                                                                       |
+| tunnelling                    | `wireguard`                                                                                              |
+| wireless                      | `wpa_supplicant`                                                                                         |
+| dns                           | `unbound`                                                                                                |
+| secure shell                  | `openssh`                                                                                                |
+| display server                | `wayland`                                                                                                |
+| compositor                    | `swayfx`, `cage`                                                                                         |
+| bar                           | `waybar`                                                                                                 |
+| launcher                      | `rofi`                                                                                                   |
+| notifications                 | `dunst`                                                                                                  |
+| terminal emulator             | `foot`                                                                                                   |
+| file manager                  | `thunar`                                                                                                 |
+| audio                         | `pipewire`, `pavucontrol`, `playerctl`                                                                   |
+| media player                  | `mpv`                                                                                                    |
+| pdf reader                    | `zathura`                                                                                                |
+| images                        | `swayimg`                                                                                                |
+| vector graphics editor        | `inkscape`                                                                                               |
+| screenshots                   | `grimshot`, `grim`, `slurp`                                                                              |
+| clipboard                     | `cliphist`                                                                                               |
+| browser                       | `brave`                                                                                                  |
+| web server                    | `nginx`                                                                                                  |
+| certificates                  | `acme`                                                                                                   |
+| search engine                 | `searxng`                                                                                                |
+| bittorrent                    | `qbittorrent-nox`                                                                                        |
+| passwords                     | `vaultwarden`                                                                                            |
+| text editor                   | `vim`, `mousepad`                                                                                        |
+| version control               | `git`                                                                                                    |
+| development                   | `rust`, `python`, `go`, `haskell`                                                                        |
+| virtualization                | [`svcvm`](https://github.com/sotormd/svcvm), `lib.mksvcvm` `qemu`, `virt-manager`, `distrobox`, `podman` |
+| cpu optimizations             | `auto-cpufreq`                                                                                           |
+| resource monitor              | `htop`, `btop`                                                                                           |
+| themes, icons, cursors, fonts | `lib.colors`                                                                                             |
+| wallpapers                    | `lib.wallpapers`                                                                                         |
+| homepage                      | `lib.createHome`                                                                                         |
 
 </details>
 
@@ -221,13 +215,6 @@ Directly dependent:
 
 - [svcvm](https://github.com/sotormd/svcvm), Service virtual machines for NixOS,
   derived from [microvm.nix](https://github.com/microvm-nix/microvm.nix)
-- [neovim](https://github.com/sotormd/neovim), Neovim configuration flake (ft.
-  nvf)
-- [colors](https://github.com/sotormd/colors), Colorscheme flake
-- [wallpapers](https://github.com/sotormd/wallpapers), Expose wallpapers as Nix
-  expressions
-- [homepage](https://github.com/sotormd/homepage), A pure Nix static homepage
-  generator
 
 Adjacent:
 
@@ -242,16 +229,20 @@ Adjacent:
 - [coffee](https://github.com/sotormd/coffee), A very minimal openbox
   configuration
 - [droid](https://github.com/sotormd/droid), nix-on-droid configuration
+- [neovim](https://github.com/sotormd/neovim), Neovim configuration flake (ft.
+  nvf)
 
 Historical:
 
-- [neovim-nixvim](https://github.com/sotormd/neovim-nixvim), Neovim
+- [neovim-nixvim](https://github.com/sotormd/neovim-nixvim), Old Neovim
   configuration flake (ft. nixvim)
-- [sway-old](https://github.com/sotormd/sway-old), Old sway config previously
-  used here
+- [sway](https://github.com/sotormd/sway), Old sway config
+- [colors](https://github.com/sotormd/colors), Old colorscheme flake
+- [wallpapers](https://github.com/sotormd/wallpapers), Old wallpapers flake
+- [homepage](https://github.com/sotormd/homepage), Old homepage generator
 
 Some of these repos were previously part of this repo, but separated due to
 being out-of-scope (eg, [pattern](https://github.com/sotormd/pattern)).
 
 Others are still in-scope, but are maintained separately for simplicity (eg,
-[wallpapers](https://github.com/sotormd/wallpapers)).
+[droid](https://github.com/sotormd/droid)).

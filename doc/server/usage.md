@@ -187,8 +187,7 @@ Certificates are renewed using ACME, which stores them in `/var/lib/acme`.
 
 ### Locations
 
-The root of the web server returns a
-[homepage](https://github.com/sotormd/homepage) with links to all the enabled
+The root of the web server returns a homepage with links to all the enabled
 services' reverse proxy pages. There are additional locations as well. All
 possible locations are listed below:
 

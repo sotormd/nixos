@@ -1,11 +1,13 @@
 {
+  lib,
   inkscape,
   writeTextFile,
-  colors,
   ...
 }:
 
 let
+  inherit (lib) colors;
+
   preferences = writeTextFile {
     name = "inkscape-preferences";
     text = ''

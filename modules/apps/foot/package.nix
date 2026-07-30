@@ -1,14 +1,16 @@
 {
+  lib,
   foot,
   runtimeShell,
   symlinkJoin,
   writeTextFile,
   configuration,
-  colors,
   ...
 }:
 
 let
+  inherit (lib) colors;
+
   footWrapperScript = writeTextFile {
     name = "foot-wrapper-script";
     text = ''

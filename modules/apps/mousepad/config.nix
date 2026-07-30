@@ -1,6 +1,13 @@
-{ config, pkgs, ... }:
+{
+  config,
+  pkgs,
+  lib,
+  ...
+}:
 
 let
+  inherit (lib) colors;
+
   user = config.vars.user.name;
   home = "/home/${user}";
 
@@ -10,7 +17,7 @@ let
 
     [org/xfce/mousepad/preferences/view]
     use-default-monospace-font=false
-    font-name='${config.colors.fonts.monospace} 10'
+    font-name='${colors.fonts.monospace} 10'
   '';
 in
 {

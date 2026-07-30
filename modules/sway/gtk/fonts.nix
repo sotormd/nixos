@@ -1,11 +1,13 @@
 {
   config,
-  lib,
   pkgs,
+  lib,
   ...
 }:
 
 let
+  inherit (lib) colors;
+
   user = config.vars.user.name;
   home = "/home/${user}";
 
@@ -20,8 +22,8 @@ let
   ];
 
   allFontRules = lib.flatten [
-    (map mkFontRules config.colors.fonts.packages)
-    (map mkNerdRules config.colors.fonts.nerdfonts)
+    (map mkFontRules colors.fonts.packages)
+    (map mkNerdRules colors.fonts.nerdfonts)
   ];
 in
 {
@@ -36,7 +38,7 @@ in
   fonts.enableDefaultPackages = true;
 
   fonts.packages = lib.concatLists [
-    (map (pkg: pkgs.${pkg}) config.colors.fonts.packages)
-    (map (pkg: pkgs.nerd-fonts.${pkg}) config.colors.fonts.nerdfonts)
+    (map (pkg: pkgs.${pkg}) colors.fonts.packages)
+    (map (pkg: pkgs.nerd-fonts.${pkg}) colors.fonts.nerdfonts)
   ];
 }

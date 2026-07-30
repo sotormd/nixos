@@ -13,7 +13,6 @@ in
     apps.inkscape
     apps.mousepad
     apps.mpv
-    apps.neovim
     apps.sandbox
     apps.thunar
     apps.zathura

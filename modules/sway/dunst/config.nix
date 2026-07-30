@@ -1,11 +1,13 @@
 {
+  lib,
   writeTextFile,
-  colors,
   vars,
   ...
 }:
 
 let
+  inherit (lib) colors;
+
   configuration = writeTextFile {
     name = "dunst-dunstrc";
     text = ''

@@ -1,6 +1,8 @@
-{ writeTextFile, colors, ... }:
+{ lib, writeTextFile, ... }:
 
 let
+  inherit (lib) colors;
+
   style = writeTextFile {
     name = "rofi-style";
     text = ''

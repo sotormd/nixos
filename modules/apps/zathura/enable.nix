@@ -1,7 +1,7 @@
 { config, pkgs, ... }:
 
 let
-  zathurarc = pkgs.callPackage ./config.nix { inherit (config) colors; };
+  zathurarc = pkgs.callPackage ./config.nix { };
   package = pkgs.callPackage ./package.nix { inherit zathurarc; };
 in
 {

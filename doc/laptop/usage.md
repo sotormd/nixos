@@ -299,8 +299,7 @@ things to / paste things from the clipboard.
 
 ## Wallpapers
 
-The `nord.space` wallpaper from
-[wallpapers](https://github.com/sotormd/wallpapers) is used for the desktop.
+The `nord.space` wallpaper from `lib.wallpapers` is used for the desktop.
 
 A random XKCD comic is used as the lockscreen wallpaper, with
 [xkcd-wall](https://github.com/sotormd/xkcd-wall). The comic is refreshed after
@@ -310,13 +309,11 @@ every unlock. To manually refresh:
 xkcd-refresh
 ```
 
-The fallback wallpaper for the lockscreen is `nord.nixos` from
-[wallpapers](https://github.com/sotormd/wallpapers).
+The fallback wallpaper for the lockscreen is `nord.nixos` from `lib.wallpapers`.
 
 ## Colors & Theming
 
-All colors and theming options are defined in
-[colors](https://github.com/sotormd/colors).
+All colors and theming options are defined in `lib.colors`.
 
 By default, the Nord palette is used.
 
@@ -676,22 +673,16 @@ using the `vars.selfhosted.*` variables.
 
 # Development
 
-## Neovim
+## Editors
 
-Neovim is installed using
-[this configuration](https://github.com/sotormd/neovim). It can be launched from
-the terminal using any of the aliases:
+Vim is installed by default and set to `$EDITOR`. It is recommended to use
+per-project editors using dev shells.
 
-```bash
-neovim
-```
+Alternatively, Neovim can be installed using
+[this configuration](https://github.com/sotormd/neovim) to the user Nix profile:
 
 ```bash
-vim
-```
-
-```bash
-vi
+nix profile install github:sotormd/neovim
 ```
 
 ## Git
