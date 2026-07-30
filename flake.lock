@@ -185,11 +185,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1784644137,
-        "narHash": "sha256-w0VIOqYXrlbEAMQFjgZlh3Be0RSQNFo0PfwxnhhtqEY=",
+        "lastModified": 1785437331,
+        "narHash": "sha256-tXI/zK/qEAAOTutB9K+yTKBDphGqaHcrNMaYrGY8PKQ=",
         "owner": "sotormd",
         "repo": "xkcd-wall",
-        "rev": "961b8e8531cc8415fa131d88082a47c5a7994020",
+        "rev": "8ff03f5f78355bb762f835f2ce80cd539915dee3",
         "type": "github"
       },
       "original": {
