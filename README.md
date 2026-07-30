@@ -31,6 +31,7 @@ CLI tooling. Plus ZFS, WireGuard, bootstrap images, etc.
    - Secrets managed using [sops-nix](https://github.com/Mic92/sops-nix)
    - Secure boot using [lanzaboote](https://github.com/nix-community/lanzaboote)
    - Package management using [Lix](https://lix.systems)
+   - Optional [non-flake workflow](./doc/nonflake.md)
 
 3. Bespoke components:
 
@@ -208,6 +209,9 @@ roles to cater to various setups and network topologies.
 Adding new hardware and/or distributing services across new hardware should
 involve zero code changes to this flake, and are entirely handled by variables.
 
+None of this really relies on flakes or flake-specific features, as exemplified
+by the optional [non-flake workflow](./doc/nonflake.md).
+
 # Related Flakes
 
 Here are some of my other flakes that are related to my NixOS tooling:
@@ -219,6 +223,8 @@ Directly dependent:
 
 Adjacent:
 
+- [neovim](https://github.com/sotormd/neovim), Neovim configuration flake (ft.
+  nvf)
 - [pattern](https://github.com/sotormd/pattern), Atomic, image-based systems
   with A/B updates, provisioned using Nix
 - [polevault](https://github.com/sotormd/polevault), A
@@ -230,17 +236,6 @@ Adjacent:
 - [coffee](https://github.com/sotormd/coffee), A very minimal openbox
   configuration
 - [droid](https://github.com/sotormd/droid), nix-on-droid configuration
-- [neovim](https://github.com/sotormd/neovim), Neovim configuration flake (ft.
-  nvf)
-
-Historical:
-
-- [neovim-nixvim](https://github.com/sotormd/neovim-nixvim), Old Neovim
-  configuration flake (ft. nixvim)
-- [sway](https://github.com/sotormd/sway), Old sway config
-- [colors](https://github.com/sotormd/colors), Old colorscheme flake
-- [wallpapers](https://github.com/sotormd/wallpapers), Old wallpapers flake
-- [homepage](https://github.com/sotormd/homepage), Old homepage generator
 
 Some of these repos were previously part of this repo, but separated due to
 being out-of-scope (eg, [pattern](https://github.com/sotormd/pattern)).

@@ -1,0 +1,37 @@
+name: (Non-Flake) Evaluate Machine - Laptop
+
+on:
+  push:
+    branches: [master]
+  pull_request:
+
+jobs:
+  eval:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+
+      - name: Install Nix
+        uses: DeterminateSystems/nix-installer-action@main
+
+      - name: Ensure variables and secrets are not present
+        run: |
+          if [ -f "./.sops.yaml" ]; then
+            exit 1
+          fi
+          if [ -d "./vars/" ]; then
+            exit 1
+          fi
+
+      - name: Generate stub vars for checks
+        run: |
+          mkdir -p vars
+          cp .github/stubvars.nix vars/vars.nix
+          touch vars/secrets.yaml
+
+      - name: Stage changes
+        run: git add .
+
+      - name: Laptop evaluation
+        run: nix eval -f default.nix nixosConfigurations.machine-laptop-x86_64-linux.config.system.build.toplevel --json

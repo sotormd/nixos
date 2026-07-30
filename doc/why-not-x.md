@@ -218,3 +218,6 @@ module system.
 
 I currently do not have a need for those abstractions, despite using first-class
 feature modules ("dendritic", if you will).
+
+None of this really relies on flakes or flake-specific features, as exemplified
+by the optional [non-flake workflow](./nonflake.md).

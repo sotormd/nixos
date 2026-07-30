@@ -4,7 +4,6 @@
     ./ld.nix
     ./lix.nix
     ./nixpkgs.nix
-    ./self.nix
     ./settings.nix
   ];
 }
