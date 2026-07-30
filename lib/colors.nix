@@ -24,31 +24,6 @@ let
     green = "a3be8c";
     purple = "b48ead";
 
-    # nix-on-droid
-    droid = {
-      bg = bg0;
-      fg = fg0;
-      cursor = fg0;
-
-      color0 = bg3;
-      color1 = red;
-      color2 = green;
-      color3 = yellow;
-      color4 = blue3;
-      color5 = purple;
-      color6 = blue1;
-      color7 = fg1;
-
-      color8 = bg2;
-      color9 = red;
-      color10 = green;
-      color11 = yellow;
-      color12 = blue2;
-      color13 = purple;
-      color14 = blue0;
-      color15 = fg2;
-    };
-
     # inkscape
     inkscape = {
       pagecolor = bg0;
