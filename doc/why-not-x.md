@@ -28,6 +28,8 @@ in favor of: wrappers, systemd-tmpfiles
 home-manager is a collection of modules which implement several features that
 make it easy to interact with a user's `$HOME`.
 
+Standalone home-manager is not discussed here.
+
 The three primary features are:
 
 - install packages to the user's environment `home.packages`
@@ -56,9 +58,6 @@ The three primary features are:
    Using an abstraction means that you need to first learn the original
    configuration and then learn the abstraction.
 
-   This is usually fine, _if_ the abstraction provides any advantages. But
-   home-manager doesn't do anything that Nix already can't.
-
 4. I believe wrappers are a better way to configure apps
 
    Libraries like home-manager put configuration in `$HOME`, which may be
@@ -69,6 +68,11 @@ The three primary features are:
    Wrap the package _along_ with its configuration - this way your package only
    relies on what's within its own store output and not on things in some
    out-of-store directory like `$HOME`.
+
+   Wrappers are _self-contained_, instead of relying on `$HOME`. For example,
+   instead of running `fastfetch` and hoping it reads your configuration in
+   `$HOME`, you instead create a package that runs
+   `fastfetch --config ${config-file}` where `config-file` is a Nix path.
 
    This also provides other benefits, like having multiple versions of the same
    package with different configurations, which wouldn't be trivial if all the
@@ -125,7 +129,7 @@ in favor of: zfs snapshots and bind mounts
 Impermanence provides the `environment.persistence` and `home.persistence`
 options that make it easy to set up ephemeral directories on NixOS.
 
-I have found that I can replicate everything that it does with simple systemd
+I have found that I can replicate everything that I require with simple systemd
 services and bind mounts - a single [lambda](../lib/filesystems.nix) to create
 the `fileSystems` blocks.
 
@@ -212,4 +216,5 @@ The service-oriented abstractions are implemented downstream through
 flake-parts provides useful abstractions for composing larger flakes through a
 module system.
 
-I currently do not have a need for those abstractions c:
+I currently do not have a need for those abstractions, despite using first-class
+feature modules ("dendritic", if you will).

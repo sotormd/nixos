@@ -36,7 +36,8 @@ CLI tooling. Plus ZFS, WireGuard, bootstrap images, etc.
 
    - Bespoke [Impermanence](./doc/filesystems.md#impermanence) implementation
      using ZFS snapshots and bind mounts
-   - Bespoke [CLI](#cli) for maintaining this flake
+   - Bespoke [CLI](#cli) for maintaining this flake, with support for signed
+     remote builds.
    - Service virtual machines using bespoke
      [svcvm](https://github.com/sotormd/svcvm) backend and `lib.mksvcvm`
 
