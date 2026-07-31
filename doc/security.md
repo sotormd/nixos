@@ -318,6 +318,9 @@ WPA3 (SAE / dragonfly) is used for wireless authentication.
 The Unbound DNS resolver is hosted on Server. It runs in a Virtual Machine and
 is served over WireGuard.
 
+It forwards queries to Cloudflare using DNS-over-TLS (DoT) to encrypt upstream
+DNS traffic.
+
 Additionally, [StevenBlack's host list](http://github.com/StevenBlack/hosts) is
 used to sinkhole domains (like PiHole, AdGuard) in the Unbound DNS server hosted
 on Server.

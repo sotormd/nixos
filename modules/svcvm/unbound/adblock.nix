@@ -14,7 +14,7 @@ let
   unboundLocalData = lib.map (d: ''"${d}. IN A 0.0.0.0"'') block_domains;
 in
 {
-  services.unbound.settings = {
+  services.unbound.settings.server = {
     local-zone = unboundLocalZone;
     local-data = unboundLocalData;
   };

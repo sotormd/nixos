@@ -178,7 +178,7 @@
     # searxng metasearch engine
     svcvm.searxng = _: { imports = [ ./svcvm/searxng ]; };
 
-    # unbound validating recursive dns server
+    # unbound caching forwarding validating dns server
     svcvm.unbound = _: { imports = [ ./svcvm/unbound ]; };
 
     # vaultwarden password manager

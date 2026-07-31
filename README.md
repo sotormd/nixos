@@ -69,7 +69,8 @@ CLI tooling. Plus ZFS, WireGuard, bootstrap images, etc.
    - Declarative svcvm management through `lib.mksvcvm`
    - Service readiness and dependency handling
    - WireGuard tunnelling, networkd networking and nftables firewall
-   - [Unbound](https://github.com/NLnetLabs/unbound) dns server
+   - [Unbound](https://github.com/NLnetLabs/unbound) caching forwarding
+     validating DNS server with DoT
    - [NGINX](https://github.com/nginx/nginx) web server & reverse proxy
    - ACME for [Let's Encrypt](https://letsencrypt.org/) certificates
    - [SearXNG](https://github.com/searxng/searxng) search engine

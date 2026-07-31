@@ -118,10 +118,12 @@ For `vars.services.ssh`
 
 ## Unbound
 
-Unbound recursive validating DNS server with a hardened configuration.
+Unbound caching forwarding validating DNS server with a hardened configuration.
 
 Unbound runs in a Virtual Machine. See
 [Service Virtual Machines](#service-virtual-machines) for more information.
+
+Queries are forwarded to Cloudflare with DoT.
 
 ### Enabling
 
