@@ -12,10 +12,14 @@ expressions in ways which mimic the flake outputs, and require no changes to the
 actual modules! Sources are fetched using `fetchTarball` with pins from the
 `flake.lock`.
 
-For example:
+For example for the Laptop role:
+
+> The usual `nixos apply <test|boot|switch>` and `nixos build` do a lot more,
+> mainly staging variables and secrets before the rebuild, this has to be done
+> manually.
 
 ```bash
-nixos-rebuild build --file /persist/nixos/default.nix --attr nixosConfigurations.machine-x86_64-linux
+nixos-rebuild build --file /persist/nixos/default.nix --attr nixosConfigurations.machine-laptop-x86_64-linux
 ```
 
 The [CLI](./cli.md) does not support this, and only uses flakes. All other
