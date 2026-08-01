@@ -163,9 +163,6 @@
     # usbguard daemon
     services.usbguard = _: { imports = [ ./services/usbguard ]; };
 
-    # waydroid android container
-    services.waydroid = _: { imports = [ ./services/waydroid ]; };
-
     # invisible internet protocol daemon
     svcvm.i2pd = _: { imports = [ ./svcvm/i2pd ]; };
 
