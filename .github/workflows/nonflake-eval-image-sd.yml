@@ -16,5 +16,5 @@ jobs:
         uses: DeterminateSystems/nix-installer-action@main
 
       - name: SD image evaluation
-        run: nix eval -f default.nix nixosConfigurations.image-sd-aarch64-linux.config.system.build.toplevel --json
+        run: nix eval -f nonflake.nix nixosConfigurations.image-sd-aarch64-linux.config.system.build.toplevel --json
 

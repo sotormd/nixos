@@ -16,4 +16,4 @@ jobs:
         uses: DeterminateSystems/nix-installer-action@main
 
       - name: Minimal image evaluation
-        run: nix eval -f default.nix nixosConfigurations.image-minimal-x86_64-linux.config.system.build.toplevel --json
+        run: nix eval -f nonflake.nix nixosConfigurations.image-minimal-x86_64-linux.config.system.build.toplevel --json
