@@ -35,6 +35,9 @@
     # no need for the global flake registry
     flake-registry = null;
 
+    # use xdg directories
+    use-xdg-base-directories = true;
+
   };
 
   # do not automatically run gc
