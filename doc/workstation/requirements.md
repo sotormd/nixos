@@ -1,6 +1,6 @@
-# Laptop Requirements
+# Workstation Requirements
 
-This document covers the requirements for the Laptop role.
+This document covers the requirements for the Workstation role.
 
 # Required
 

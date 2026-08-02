@@ -12,7 +12,7 @@ lib.mkIf config.vars.modes.roaming.enable {
     configuration = {
       imports = [ self.nixosModules.modules.network.networkmanager ];
       users.users.${config.vars.user.name}.extraGroups = [ "networkmanager" ];
-      environment.sessionVariables.NIXOS_ROLE = lib.mkForce "laptop-mode-roaming";
+      environment.sessionVariables.NIXOS_ROLE = lib.mkForce "workstation-mode-roaming";
       systemd.network.networks = lib.mkForce { };
       networking.wireless.networks = lib.mkForce { };
       vars = {

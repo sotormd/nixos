@@ -59,9 +59,9 @@ CLI tooling. Plus ZFS, WireGuard, bootstrap images, etc.
    - XKCD lockscreen wallpapers with
      [xkcd-wall](https://github.com/sotormd/xkcd-wall)
    - Automatic behavior changes when outside trusted & reliable networks with
-     [Roaming Mode](./doc/laptop/usage.md#roaming-mode)
+     [Roaming Mode](./doc/workstation/usage.md#roaming-mode)
    - Full alternate desktop specialisation with
-     [GNOME Mode](./doc/laptop/usage.md#gnome-mode)
+     [GNOME Mode](./doc/workstation/usage.md#gnome-mode)
 
 5. Services features:
 
@@ -145,11 +145,11 @@ CLI tooling. Plus ZFS, WireGuard, bootstrap images, etc.
 
 This flake uses role-based configuration.
 
-| Role   | Description                            | Documentation                                                                                                  |
-| ------ | -------------------------------------- | -------------------------------------------------------------------------------------------------------------- |
-| Laptop | Configuration for my laptops.          | [Requirements](./doc/laptop/requirements.md) - [Setup](./doc/laptop/setup.md) - [Usage](./doc/laptop/usage.md) |
-| Server | Configuration for my home-servers.     | [Requirements](./doc/server/requirements.md) - [Setup](./doc/server/setup.md) - [Usage](./doc/server/usage.md) |
-| Pi     | Configuration for my Raspberry Pi 4bs. | [Requirements](./doc/pi/requirements.md) - [Setup](./doc/pi/setup.md) - [Usage](./doc/pi/usage.md)             |
+| Role        | Description                            | Documentation                                                                                                                 |
+| ----------- | -------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------- |
+| Workstation | Configuration for my workstations.     | [Requirements](./doc/workstation/requirements.md) - [Setup](./doc/workstation/setup.md) - [Usage](./doc/workstation/usage.md) |
+| Server      | Configuration for my home-servers.     | [Requirements](./doc/server/requirements.md) - [Setup](./doc/server/setup.md) - [Usage](./doc/server/usage.md)                |
+| Pi          | Configuration for my Raspberry Pi 4bs. | [Requirements](./doc/pi/requirements.md) - [Setup](./doc/pi/setup.md) - [Usage](./doc/pi/usage.md)                            |
 
 Some previous roles have been moved to separate repos, see
 [Related Flakes](#related-flakes).

@@ -1,7 +1,7 @@
 # Filesystem and Impermanence
 
 This document covers the filesystem configuration and Impermanence on the
-Laptop, Server and Pi roles.
+Workstation, Server and Pi roles.
 
 # Contents
 
@@ -12,7 +12,7 @@ Laptop, Server and Pi roles.
 
 # Root Filesystems
 
-## Laptop and Server
+## Workstation and Server
 
 ### Partitions
 
@@ -83,7 +83,7 @@ profiles, for example:
 Profiles are used for Impermanence as well as general hardening without
 Impermanence.
 
-On Laptop and Server roles, the following directories are hardened **if
+On Workstation and Server roles, the following directories are hardened **if
 Impermanence is enabled**:
 
 | Path | Profile |
@@ -96,8 +96,8 @@ Impermanence is enabled**:
 > under `/run/wrappers` which is a tmpfs. This is why it is possible if
 > Impermanence is enabled.
 
-On Laptop and Server roles, the following directories are hardened even without
-Impermanence:
+On Workstation and Server roles, the following directories are hardened even
+without Impermanence:
 
 | Path    | Profile |
 | ------- | ------- |
@@ -343,7 +343,7 @@ This section covers the inner workings of Impermanence.
 
 Setting up Impermanence is covered in the role-specific setup documentation.
 
-## Laptop and Server
+## Workstation and Server
 
 Impermanence is implemented using ZFS snapshots and bind mounts.
 
@@ -382,7 +382,7 @@ sudo zfs diff rpool/nixos/root@blank
 
 The following directories are persisted by default:
 
-#### Laptop
+#### Workstation
 
 | Path                                    | Description                   | Profile |
 | --------------------------------------- | ----------------------------- | ------- |
@@ -436,7 +436,7 @@ creating bind mounts as covered [above](#additional-disks-and-mounts).
 
 Another option is to create ZFS datasets for persistent things, like `rpool/vms`
 for VM disks as covered in the
-[Laptop Usage Documentation](./laptop/usage.md#virtual-machines).
+[Workstation Usage Documentation](./workstation/usage.md#virtual-machines).
 
 ## Pi
 

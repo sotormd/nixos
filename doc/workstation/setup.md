@@ -1,8 +1,8 @@
-# Laptop Setup
+# Workstation Setup
 
-Bootstrap process for the Laptop role.
+Bootstrap process for the Workstation role.
 
-Before proceeding, see [Laptop Requirements](./requirements.md).
+Before proceeding, see [Workstation Requirements](./requirements.md).
 
 > Keep in mind that this is my personal configuration for my personal devices.
 > It is not meant to be used in other places and will most likely not work.
@@ -27,8 +27,9 @@ Before proceeding, see [Laptop Requirements](./requirements.md).
 2. Write the generated image to a removable medium (eg. a usb stick) using `dd`
    or any equivalent tool.
 
-3. This document is also available in `/etc/current-flake/doc/laptop/setup.md`
-   in the installation environment.
+3. This document is also available in
+   `/etc/current-flake/doc/workstation/setup.md` in the installation
+   environment.
 
 # Preparing the Device
 
@@ -51,7 +52,7 @@ Before proceeding, see [Laptop Requirements](./requirements.md).
 5. Set basic environment variables required by the installer.
 
    ```bash
-   export NIXOS_ROLE=laptop
+   export NIXOS_ROLE=workstation
    export NIXOS_MOUNT=/mnt
    ```
 
@@ -338,7 +339,7 @@ For more details, see
 
 # Further Reading
 
-- [Laptop Usage Documentation](./usage.md)
+- [Workstation Usage Documentation](./usage.md)
 - [Security Features](../security.md)
 - [Filesystem and Impermanence Documentation](../filesystems.md)
 - [CLI Documentation](../cli.md)

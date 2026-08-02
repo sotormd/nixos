@@ -1,7 +1,7 @@
 # Security Features Summary
 
-This document attempts to cover the various security features for Laptop, Server
-and Pi roles.
+This document attempts to cover the various security features for Workstation,
+Server and Pi roles.
 
 This is a larger document than other documents in this flake. It is possible
 that errors may be present in this document. In any case, the flake source
@@ -18,7 +18,8 @@ decent security against these attacks, backed by the guarantees of the
 
 The targets covered in this document are:
 
-- Laptop, my laptop configuration for generic personal portable computers
+- Workstation, my workstation configuration for generic personal portable
+  computers
 - Server, my home-server configuration for hosts that serve Virtual Machine
   services on WireGuard over LAN.
 - Pi, my Raspberry Pi 4bs.
@@ -92,7 +93,7 @@ Missing features:
 
 # Secure Boot
 
-> Laptop, Server only
+> Workstation, Server only
 
 Secure Boot is used to ensure that the bootloader is signed before loading.
 Secure Boot support for NixOS is provided by the
@@ -128,7 +129,7 @@ vulnerabilities.
    ZFS, which provides advanced self-healing capabilities and administration, is
    supported out-of-the-box.
 
-   It is the also root filesystem on Laptop and Server.
+   It is the also root filesystem on Workstation and Server.
 
 3. Encrypted Mounts
 
@@ -140,7 +141,7 @@ vulnerabilities.
 
    Several `fs.*` sysctls are set. See [sysctl Options](#sysctl-options).
 
-> Laptop, Server only
+> Workstation, Server only
 
 LUKS encryption with a passphrase is enabled for the root partition, containing
 the main ZFS rpool. It is also possible to use TPM unlocking.
@@ -153,9 +154,9 @@ Impermanence ensures a clean filesystem after every reboot. Only explicitly
 declared state survives across reboots, and anything else is purged. This
 greatly reduces the persistent attack surface.
 
-Impermanence is implemented differently on Laptop, Server and Pi, without using
-the [library](https://github.com/nix-community/impermanence), using either ZFS
-Snapshots or tmpfs for rollbacks and bind mounts for state persistence.
+Impermanence is implemented differently on Workstation, Server and Pi, without
+using the [library](https://github.com/nix-community/impermanence), using either
+ZFS Snapshots or tmpfs for rollbacks and bind mounts for state persistence.
 
 See [Impermanence](./filesystems.md#impermanence) for more information.
 
@@ -309,7 +310,7 @@ USBGuard can be controlled using the `usbguard` command line interface. Only the
 `wpa_supplicant` is used for wireless connections. Network secrets are stored
 using SOPS.
 
-> Laptop, Server only
+> Workstation, Server only
 
 WPA3 (SAE / dragonfly) is used for wireless authentication.
 
@@ -495,7 +496,7 @@ Note that all services involve some form of cryptographic authentication -
 either SSH public key authentication or WireGuard public key authentication -
 and simply being on a "allowed" private CIDR is not sufficient.
 
-> Laptop only
+> Workstation only
 
 Ports are open based on the enabled services (only SSH).
 
@@ -585,7 +586,7 @@ Ports are opened for the following services:
 
 Rulesets are generated based on the enabled services.
 
-Example ruleset for Laptop with SSH disabled:
+Example ruleset for Workstation with SSH disabled:
 
 Notes for example:
 
@@ -778,10 +779,10 @@ table ip nat {
 
 # Virtualisation
 
-> Laptop only
+> Workstation only
 
 See
-[Laptop Usage Documentation](./laptop/usage.md#virtualisation-and-containers)
+[Workstation Usage Documentation](./workstation/usage.md#virtualisation-and-containers)
 for information about virtualisation with QEMU/KVM and libvirt/virt-manager.
 
 It is recommended to set up [Whonix](https://www.whonix.org/) for accessing the
@@ -942,13 +943,13 @@ See [Server Usage Documenation](./server/usage.md#nginx) for more information.
 
 # I2P and Anonymity
 
-> Laptop only
+> Workstation only
 
 1. I2P
 
    The I2P network can be browsed using the
-   [i2p-browser](./laptop/usage.md#i2p-browser) which uses the I2P HTTP Proxy
-   hosted on Server.
+   [i2p-browser](./workstation/usage.md#i2p-browser) which uses the I2P HTTP
+   Proxy hosted on Server.
 
 2. Tor
 
@@ -966,13 +967,13 @@ network via this router and does not have access to the clearnet at all.
 
 # Display Server
 
-> Laptop only
+> Workstation only
 
 The desktop is 100% wayland, with no X or Xwayland.
 
 # Desktop
 
-> Laptop only
+> Workstation only
 
 The swayfx compositor is used with minimal bells and whistles, a simple bar and
 some widgets.
@@ -981,15 +982,15 @@ XDG desktop portals are disabled.
 
 # Session Locking
 
-> Laptop only
+> Workstation only
 
 The session is locked using `swaylock` after 60 seconds of inactivity, and
 suspended after further inactivity. This behaviour can be controlled using the
-waybar [idle_inhibitor Module](./laptop/usage.md#idle_inhibitor-module).
+waybar [idle_inhibitor Module](./workstation/usage.md#idle_inhibitor-module).
 
 # Bubblewrap
 
-> Laptop only
+> Workstation only
 
 [Bubblewrap](https://github.com/containers/bubblewrap) is a low-level
 unprivileged sandbox utility that is used by projects like
@@ -1007,23 +1008,23 @@ All the options used are covered in the browsers section.
 
 # xdg-dbus-proxy
 
-> Laptop only
+> Workstation only
 
 [xdg-dbus-proxy](https://github.com/flatpak/xdg-dbus-proxy) is a filtering proxy
 for D-Bus connections. It is used in conjunction with bubblewrap because it lets
 you selectively allow D-Bus connections. Without it, bubblewrap can only enable
 D-Bus completely or disable it completely.
 
-It is used on Laptop to let browsers use select D-Bus connections.
+It is used on Workstation to let browsers use select D-Bus connections.
 
 # Browsers
 
-> Laptop only
+> Workstation only
 
 Two hardened browsers are included. See
-[Laptop Usage Documentation](./laptop/usage.md#browsers) for more information
-about browser usage. This section covers the various hardening flags in the
-browsers.
+[Workstation Usage Documentation](./workstation/usage.md#browsers) for more
+information about browser usage. This section covers the various hardening flags
+in the browsers.
 
 ## Brave
 

@@ -8,7 +8,7 @@
 {
   # environment variables
   environment.sessionVariables = {
-    NIXOS_ROLE = "laptop";
+    NIXOS_ROLE = "workstation";
   };
 
   # populate variables and drop unnecessary variables

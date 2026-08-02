@@ -1,6 +1,6 @@
-# Laptop Usage
+# Workstation Usage
 
-This document covers using the Laptop role.
+This document covers using the Workstation role.
 
 # Contents
 
@@ -516,8 +516,8 @@ Podman is also used as the backend for Distrobox.
 
 # Specialisation Modes
 
-The following "modes" can be enabled on the Laptop role. Modes are implemented
-using specialisations.
+The following "modes" can be enabled on the Workstation role. Modes are
+implemented using specialisations.
 
 Modes are available only if Impermanence is enabled. This ensures that
 mode-specific files do not persist across reboots.
@@ -616,8 +616,8 @@ For `vars.services.ssh`
 Note that services are exposed by Server using WireGuard. WireGuard is
 configured in the variables file under `vars.wireguard`.
 
-Example configuration for Laptop (`10.20.0.2` on wireguard) with a single peer
-Laptop (`10.20.0.1` on wireguard, `10.0.0.3` on LAN):
+Example configuration for Workstation (`10.20.0.2` on wireguard) with a single
+peer Workstation (`10.20.0.1` on wireguard, `10.0.0.3` on LAN):
 
 ```nix
 {
@@ -644,11 +644,11 @@ Laptop (`10.20.0.1` on wireguard, `10.0.0.3` on LAN):
 }
 ```
 
-The Laptop has to be declared as a peer on the Server as well. See
+The Workstation has to be declared as a peer on the Server as well. See
 [Server Usage Documentation](../server/usage.md#wireguard).
 
-The Laptop can be configured to use several selfhosted features from a Server
-using the `vars.selfhosted.*` variables.
+The Workstation can be configured to use several selfhosted features from a
+Server using the `vars.selfhosted.*` variables.
 
 1. Unbound DNS resolver
 

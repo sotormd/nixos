@@ -24,8 +24,8 @@ Before proceeding, see [Pi Requirements](./requirements.md).
 
 2. Write the generated image to a sd-card using `dd` or any equivalent tool.
 
-3. This document is also available in `/etc/current-flake/doc/server/setup.md`
-   in the installation environment.
+3. This document is also available in `/etc/current-flake/doc/pi/setup.md` in
+   the installation environment.
 
 # Preparing the Device
 

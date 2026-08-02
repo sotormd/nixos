@@ -444,7 +444,7 @@ Services are exposed using WireGuard over LAN. WireGuard is configured in the
 variables file under `vars.wireguard`.
 
 Example configuration for Server (`10.20.0.1` on wireguard) with a single peer
-Laptop (`10.20.0.2` on wireguard, `10.0.0.2` on LAN):
+Workstation (`10.20.0.2` on wireguard, `10.0.0.2` on LAN):
 
 ```nix
 {
@@ -477,7 +477,7 @@ Laptop (`10.20.0.2` on wireguard, `10.0.0.2` on LAN):
 Multiple peers can be added like this. The individual
 `vars.services.<name>.allow` CIDRs can then be set to WireGuard peer CIDRs.
 
-The Server has to be declared as a peer on the Laptop as well.
+The Server has to be declared as a peer on the Workstation as well.
 
 # Further Reading
 

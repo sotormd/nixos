@@ -6,20 +6,20 @@ purely a ease-of-use feature
 
 ## deskspec
 
-for the machine-laptop desktop specialisations, so it contains EVERYTHING for a
-base system
+for the machine-workstation desktop specialisations, so it contains EVERYTHING
+for a base system
 
 ## desktop
 
-sway desktop for machine-laptop, includes all required apps and services
-
-## efitop
-
-for uefi laptops, things like systemd-boot, secure boot, auto-cpufreq and wpa3
+sway desktop for machine-workstation, includes all required apps and services
 
 ## image
 
 base configuration for image-* roles
+
+## laptop
+
+for uefi laptops, things like systemd-boot, secure boot, auto-cpufreq and wpa3
 
 ## machine
 

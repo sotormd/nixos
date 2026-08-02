@@ -27,7 +27,7 @@ Before proceeding, see [Server Requirements](./requirements.md).
 2. Write the generated image to a removable medium (eg. a usb stick) using `dd`
    or any equivalent tool.
 
-3. This document is also available in `/etc/current-flake/doc/laptop/setup.md`
+3. This document is also available in `/etc/current-flake/doc/server/setup.md`
    in the installation environment.
 
 # Preparing the Device

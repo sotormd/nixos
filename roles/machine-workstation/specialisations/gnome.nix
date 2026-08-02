@@ -25,7 +25,7 @@ lib.mkIf config.vars.modes.gnome.enable {
         "wpa_supplicant"
         "networkmanager"
       ];
-      environment.sessionVariables.NIXOS_ROLE = lib.mkForce "laptop-mode-gnome";
+      environment.sessionVariables.NIXOS_ROLE = lib.mkForce "workstation-mode-gnome";
       vars = {
         wireless.resolver = lib.mkForce "1.1.1.1";
         selfhosted = {

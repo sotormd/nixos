@@ -1,4 +1,4 @@
-name: Evaluate Machine - Laptop
+name: Evaluate Machine - Workstation
 
 on:
   push:
@@ -33,5 +33,5 @@ jobs:
       - name: Stage changes
         run: git add .
 
-      - name: Laptop evaluation
-        run: nix eval .#nixosConfigurations.machine-laptop-x86_64-linux.config.system.build.toplevel --json --option pure-eval true
+      - name: Workstation evaluation
+        run: nix eval .#nixosConfigurations.machine-workstation-x86_64-linux.config.system.build.toplevel --json --option pure-eval true

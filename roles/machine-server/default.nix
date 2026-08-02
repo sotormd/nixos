@@ -10,7 +10,7 @@
     inputs.sops-nix.nixosModules.sops
     inputs.svcvm.nixosModules.host
 
-    self.nixosModules.profiles.efitop
+    self.nixosModules.profiles.laptop
     self.nixosModules.profiles.machine
     self.nixosModules.profiles.selfhost
 

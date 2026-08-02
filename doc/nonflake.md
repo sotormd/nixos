@@ -26,11 +26,11 @@ variable. Setting this variable to `1` will cause the following scripts to use
 For example, what would've looked like:
 
 ```bash
-nixos-rebuild switch --flake /persist/nixos/flake.nix#machine-laptop-x86_64-linux
+nixos-rebuild switch --flake /persist/nixos/flake.nix#machine-workstation-x86_64-linux
 ```
 
 Now becomes:
 
 ```bash
-nixos-rebuild switch --file /persist/nixos/nonflake.nix --attr nixosConfigurations.machine-laptop-x86_64-linux
+nixos-rebuild switch --file /persist/nixos/nonflake.nix --attr nixosConfigurations.machine-workstation-x86_64-linux
 ```

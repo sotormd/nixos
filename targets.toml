@@ -1,5 +1,5 @@
 [[machines]]
-name = "laptop"
+name = "workstation"
 arch = "x86_64-linux"
 
 [[machines]]

@@ -51,12 +51,12 @@ PERSIST_DIR_HOME="$MOUNT$__NIXOS_GLOBALS_IMPERMANENCE/home/$USER"
 
 ########
 # DISKS
-######## laptop, server
+######## workstation, server
 
 if [ "$VERB" == "disks" ]; then
 
-    # allowed roles: laptop, server
-    if ! [[ "${ROLE:-}" =~ ^(laptop|server)$ ]]; then
+    # allowed roles: workstation, server
+    if ! [[ "${ROLE:-}" =~ ^(workstation|server)$ ]]; then
       echo "Error: unexpected role $ROLE" >&2
       exit 1
     fi
@@ -177,12 +177,12 @@ if [ "$VERB" == "disks" ]; then
 
 ########
 # CLONE
-######## laptop, server, pi
+######## workstation, server, pi
 
 elif [ "$VERB" == "clone" ]; then
 
-    # allowed roles: laptop, server, pi
-    if ! [[ "${ROLE:-}" =~ ^(laptop|server|pi)$ ]]; then
+    # allowed roles: workstation, server, pi
+    if ! [[ "${ROLE:-}" =~ ^(workstation|server|pi)$ ]]; then
       echo "Error: unexpected role $ROLE" >&2
       exit 1
     fi
@@ -193,12 +193,12 @@ elif [ "$VERB" == "clone" ]; then
 
 #######
 # VARS
-####### laptop, server, pi
+####### workstation, server, pi
 
 elif [ "$VERB" == "vars" ]; then
 
-    # allowed roles: laptop, server, pi
-    if ! [[ "${ROLE:-}" =~ ^(laptop|server|pi)$ ]]; then
+    # allowed roles: workstation, server, pi
+    if ! [[ "${ROLE:-}" =~ ^(workstation|server|pi)$ ]]; then
       echo "Error: unexpected role $ROLE" >&2
       exit 1
     fi
@@ -213,7 +213,7 @@ elif [ "$VERB" == "vars" ]; then
         exit 1
     fi
 
-    if [[ "${ROLE:-}" =~ ^(laptop)$ ]]; then
+    if [[ "${ROLE:-}" =~ ^(workstation)$ ]]; then
 
         BOOT=${BOOT:-}
         SWAP=${SWAP:-}
@@ -967,12 +967,12 @@ the following values have been populated from the installation environment
 
 #######
 # SOPS
-####### laptop, server, pi
+####### workstation, server, pi
 
 elif [ "$VERB" == "sops" ]; then
 
-    # allowed roles: laptop, server, pi
-    if ! [[ "${ROLE:-}" =~ ^(laptop|server|pi)$ ]]; then
+    # allowed roles: workstation, server, pi
+    if ! [[ "${ROLE:-}" =~ ^(workstation|server|pi)$ ]]; then
       echo "Error: unexpected role $ROLE" >&2
       exit 1
     fi
@@ -1109,7 +1109,7 @@ creation_rules:
 EOF
 
     #create the secrets file
-    if [[ "${ROLE:-}" =~ ^(laptop|pi)$ ]]; then
+    if [[ "${ROLE:-}" =~ ^(workstation|pi)$ ]]; then
 
         cat > "$TEMP_SECRETS" <<EOF
 hashedPassword: $SECRETS_HASHED_PASSWORD
@@ -1155,12 +1155,12 @@ EOF
 
 ##########
 # INSTALL
-########## laptop, server
+########## workstation, server
 
 elif [ "$VERB" == "install" ]; then
 
-    # allowed roles: laptop, server
-    if ! [[ "${ROLE:-}" =~ ^(laptop|server)$ ]]; then
+    # allowed roles: workstation, server
+    if ! [[ "${ROLE:-}" =~ ^(workstation|server)$ ]]; then
       echo "Error: unexpected role $ROLE" >&2
       exit 1
     fi
@@ -1186,12 +1186,12 @@ elif [ "$VERB" == "install" ]; then
 
 ##########
 # FINISH
-######### laptop, server
+######### workstation, server
 
 elif [ "$VERB" == "finish" ]; then
 
-    # allowed roles: laptop, server
-    if ! [[ "${ROLE:-}" =~ ^(laptop|server)$ ]]; then
+    # allowed roles: workstation, server
+    if ! [[ "${ROLE:-}" =~ ^(workstation|server)$ ]]; then
       echo "Error: unexpected role $ROLE" >&2
       exit 1
     fi
@@ -1212,12 +1212,12 @@ elif [ "$VERB" == "finish" ]; then
 
 ############# post-install
 # LANZABOOTE
-############# laptop, server
+############# workstation, server
 
 elif [ "$VERB" == "lanzaboote" ]; then
 
-    # allowed roles: laptop, server
-    if ! [[ "${ROLE:-}" =~ ^(laptop|server)$ ]]; then
+    # allowed roles: workstation, server
+    if ! [[ "${ROLE:-}" =~ ^(workstation|server)$ ]]; then
       echo "Error: unexpected role $ROLE" >&2
       exit 1
     fi
@@ -1237,12 +1237,12 @@ elif [ "$VERB" == "lanzaboote" ]; then
 
 ############### post-install
 # IMPERMANENCE
-############### laptop, server, pi
+############### workstation, server, pi
 
 elif [ "$VERB" == "impermanence" ]; then
 
-    # allowed roles: laptop, server, pi
-    if ! [[ "${ROLE:-}" =~ ^(laptop|server|pi)$ ]]; then
+    # allowed roles: workstation, server, pi
+    if ! [[ "${ROLE:-}" =~ ^(workstation|server|pi)$ ]]; then
       echo "Error: unexpected role $ROLE" >&2
       exit 1
     fi
@@ -1296,7 +1296,7 @@ elif [ "$VERB" == "impermanence" ]; then
     # HOME
     sudo mkdir -p "$PERSIST_DIR_HOME"
 
-    if [[ "${ROLE:-}" =~ ^(laptop)$ ]]; then
+    if [[ "${ROLE:-}" =~ ^(workstation)$ ]]; then
 
         # populate /persist/root/
         echo "Populating /persist/root/"
