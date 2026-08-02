@@ -37,8 +37,16 @@ fi
 
 SCRIPTS="$NIXOS_SCRIPTS"
 
+# NIXOS_NONFLAKE is whether to
+# use flakes or not
+if [ -z "${NIXOS_NONFLAKE:-}" ]; then
+    NIXOS_NONFLAKE="0"
+fi
+
+NONFLAKE="$NIXOS_NONFLAKE"
+
 # the rest of the script can use
-# $ROLE, $MOUNT, $SCRIPTS,
+# $ROLE, $MOUNT, $SCRIPTS, $NONFLAKE,
 # $FLAKE, $IMPERMANENCE and $SOPS
 
 # CASE 1: print directory tree when run with no arguments
@@ -65,6 +73,7 @@ fi
     export __NIXOS_ROLE=$ROLE
     export __NIXOS_MOUNT=$MOUNT
     export __NIXOS_SCRIPTS=$SCRIPTS
+    export __NIXOS_NONFLAKE=$NONFLAKE
 
     # define globals
     export __NIXOS_GLOBALS_FLAKE=$FLAKE

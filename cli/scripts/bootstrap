@@ -31,6 +31,7 @@ ROLE="$__NIXOS_ROLE"
 MOUNT="$__NIXOS_MOUNT"
 DIR="$MOUNT$__NIXOS_GLOBALS_FLAKE"
 ARCH="$(nix eval --impure --raw --expr builtins.currentSystem)"
+NONFLAKE="$__NIXOS_NONFLAKE"
 
 # for variables
 VARS_DIR="$DIR/vars"
@@ -1174,7 +1175,11 @@ elif [ "$VERB" == "install" ]; then
         cd "$DIR"
         git add .
 
-        sudo nixos-install --root "$MOUNT" --flake ".#machine-$ROLE-$ARCH" --no-root-passwd
+        if [ "$NONFLAKE" = 1 ]; then
+            sudo nixos-install --root "$MOUNT" --file "nonflake.nix" --attr "nixosConfigurations.machine-$ROLE-$ARCH" --no-root-passwd
+        else
+            sudo nixos-install --root "$MOUNT" --flake ".#machine-$ROLE-$ARCH" --no-root-passwd
+        fi
 
         git reset -- vars/vars.nix vars/secrets.yaml .sops.yaml
     )

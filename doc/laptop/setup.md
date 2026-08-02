@@ -217,6 +217,9 @@ Before proceeding, see [Laptop Requirements](./requirements.md).
    nixos bootstrap install
    ```
 
+   > Exporting `NIXOS_NONFLAKE=1` will install the configuration without using
+   > flakes, see [Non-Flake Usage](../nonflake.md) for more information.
+
 5. Finish installation and reboot.
 
    ```bash

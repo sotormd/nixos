@@ -14,6 +14,7 @@ else
 
     role=$(ssh "$HOST" 'printf "%s" "$NIXOS_ROLE"')
     arch=$(ssh "$HOST" 'nix eval --impure --raw --expr builtins.currentSystem')
+    nonflake=$(ssh "$HOST" 'printf "%s" "$NIXOS_NONFLAKE"')
     if [ -z "$role" ]; then
         echo "NIXOS_ROLE is not set on $HOST" >&2
         exit 1
@@ -28,12 +29,21 @@ else
     trap cleanup INT TERM EXIT
 
     rsync -avz --exclude=".git" "$HOST:/persist/nixos/" "$sourcedir"
-    flake="$sourcedir#machine-$role-$arch"
+
     (
+
         cd "$workdir"
-        nixos-rebuild build --flake "$flake" --fallback
+
+        if [ "$nonflake" = 1 ]; then
+            nixos-rebuild build --file "$sourcedir/nonflake.nix" --attr "nixosConfigurations.machine-$role-$arch" --fallback
+        else
+            target=""
+            nixos-rebuild build --flake "$sourcedir#machine-$role-$arch" --fallback
+        fi
+
         run0 nix store sign ./result -k "$KEY" --recursive
         nix copy --to "ssh://$HOST" ./result
+
     )
 
 fi

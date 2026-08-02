@@ -94,6 +94,7 @@
           ]
           ++ [
             { nixpkgs.overlays = [ (_: _: { inherit lib; }) ]; }
+            { environment.sessionVariables.NIXOS_NONFLAKE = 0; }
             (
               { self, ... }:
               {

@@ -11,8 +11,8 @@ fi
 
 DIR="$__NIXOS_MOUNT$__NIXOS_GLOBALS_FLAKE"
 ROLE="$__NIXOS_ROLE"
-
 ARCH="$(nix eval --impure --raw --expr builtins.currentSystem)"
+NONFLAKE="$__NIXOS_NONFLAKE"
 
 (
     cd "$DIR"
@@ -41,7 +41,11 @@ ARCH="$(nix eval --impure --raw --expr builtins.currentSystem)"
 
     if [[ $confirm =~ ^[Yy]$ ]]; then
 
-        run0 nixos-rebuild $VERB --flake ".#machine-$ROLE-$ARCH" --fallback
+        if [ "$NONFLAKE" = 1 ]; then
+            run0 nixos-rebuild $VERB --file "nonflake.nix" --attr "nixosConfigurations.machine-$ROLE-$ARCH" --fallback
+        else
+            run0 nixos-rebuild $VERB --flake ".#machine-$ROLE-$ARCH" --fallback
+        fi
 
     else
         echo "cancelled"

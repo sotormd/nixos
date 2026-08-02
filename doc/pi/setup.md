@@ -84,6 +84,9 @@ Before proceeding, see [Pi Requirements](./requirements.md).
    nixos apply boot
    ```
 
+   > Exporting `NIXOS_NONFLAKE=1` will apply the configuration without using
+   > flakes, see [Non-Flake Usage](../nonflake.md) for more information.
+
 5. Reboot.
 
    ```bash

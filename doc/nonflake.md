@@ -14,15 +14,23 @@ expressions are returned in ways which mimic the flake outputs.
 
 This requires no additional changes to the actual modules!
 
-For example for the Laptop role:
+The [CLI](./cli.md) fully supports this with the `NIXOS_NONFLAKE` environment
+variable. Setting this variable to `1` will cause the following scripts to use
+`nonflake.nix`:
 
-> The usual `nixos apply <test|boot|switch>` and `nixos build` do a lot more,
-> mainly staging variables and secrets before the rebuild, this has to be done
-> manually (eg, with `nixos git add .`)
+1. `nixos apply`, respects local value for `nixos-rebuild`
+2. `nixos build`, respects local value for `nixos-rebuild`
+3. `nixos seed`, respects remote value for `nixos-rebuild`
+4. `nixos bootstrap`, respects local value for `nixos-install`
+
+For example, what would've looked like:
 
 ```bash
-nixos-rebuild build --file /persist/nixos/nonflake.nix --attr nixosConfigurations.machine-laptop-x86_64-linux
+nixos-rebuild switch --flake /persist/nixos/flake.nix#machine-laptop-x86_64-linux
 ```
 
-The [CLI](./cli.md) does not support this, and only uses flakes. All other
-documentation also assumes flakes.
+Now becomes:
+
+```bash
+nixos-rebuild switch --file /persist/nixos/nonflake.nix --attr nixosConfigurations.machine-laptop-x86_64-linux
+```

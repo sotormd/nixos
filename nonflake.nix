@@ -88,7 +88,13 @@ let
         inherit inputs self lib;
       };
       inherit lib system;
-      modules = [ module ] ++ [ { nixpkgs.overlays = [ (_: _: { inherit lib; }) ]; } ];
+      modules = [
+        module
+      ]
+      ++ [
+        { nixpkgs.overlays = [ (_: _: { inherit lib; }) ]; }
+        { environment.sessionVariables.NIXOS_NONFLAKE = 1; }
+      ];
     };
 
   # create a "machine" - partially applied

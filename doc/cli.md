@@ -9,6 +9,9 @@ and Pi roles.
 This document does not cover the usage of `nixos bootstrap` which is covered in
 role-specific setup documentation.
 
+> The CLI allows non-flake workflows with the `NIXOS_NONFLAKE` environment
+> variable, see [Non-Flake Usage](./nonflake.md).
+
 # Contents
 
 1. [Overview](#overview)

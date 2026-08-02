@@ -4,8 +4,8 @@ set -euo pipefail
 
 DIR="$__NIXOS_MOUNT$__NIXOS_GLOBALS_FLAKE"
 ROLE="$__NIXOS_ROLE"
-
 ARCH="$(nix eval --impure --raw --expr builtins.currentSystem)"
+NONFLAKE="$__NIXOS_NONFLAKE"
 
 (
     cd "$DIR"
@@ -14,6 +14,11 @@ ARCH="$(nix eval --impure --raw --expr builtins.currentSystem)"
 
     git add .
 
-    nixos-rebuild build --flake ".#machine-$ROLE-$ARCH" --fallback
+    if [ "$NONFLAKE" = 1 ]; then
+        nixos-rebuild build --file "nonflake.nix" --attr "nixosConfigurations.machine-$ROLE-$ARCH" --fallback
+    else
+        nixos-rebuild build --flake ".#machine-$ROLE-$ARCH" --fallback
+    fi
+
 )
 
