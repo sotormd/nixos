@@ -191,7 +191,8 @@ workflow examples.
 - [`./modules/`](./modules) are low-level features, which are exposed under
   `nixosModules.modules.*`.
 - [`./profiles/`](./profiles) are high-level collections of modules, which are
-  exposed under `nixosModules.profiles.*`.
+  exposed under `nixosModules.profiles.*`. This are purely a ease-of-use
+  feature, and not another layer of abstraction.
 - [`./roles/`](./roles) are the final `nixosConfiguration` outputs provided by
   this flake, each role is a full system configuration composed of several
   profiles/modules.

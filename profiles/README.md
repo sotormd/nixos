@@ -2,6 +2,8 @@
 
 profiles are high-level collections of modules
 
+purely a ease-of-use feature
+
 ## deskspec
 
 for the machine-laptop desktop specialisations, so it contains EVERYTHING for a
