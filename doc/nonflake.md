@@ -31,13 +31,13 @@ overridden by exporting `NIXOS_NONFLAKE` manually.
 Internally, what would've looked like this with `NIXOS_NONFLAKE=0`:
 
 ```bash
-nixos-rebuild switch --flake /persist/nixos/flake.nix#machine-workstation-x86_64-linux
+nixos-rebuild switch --flake /persist/nixos/flake.nix#machine-server-x86_64-linux
 ```
 
 Now becomes this with `NIXOS_NONFLAKE=1`:
 
 ```bash
-nixos-rebuild switch --file /persist/nixos/nonflake.nix --attr nixosConfigurations.machine-workstation-x86_64-linux
+nixos-rebuild switch --file /persist/nixos/nonflake.nix --attr nixosConfigurations.machine-server-x86_64-linux
 ```
 
 Caveats:
