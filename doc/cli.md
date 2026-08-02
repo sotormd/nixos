@@ -319,14 +319,16 @@ Additionally, `nixos(1)` also evaluates that the values for the following
 variables make sense:
 
 - `$NIXOS_ROLE` (configuration role)
-- `$NIXOS_MOUNT` (used for bootstrap)
+- `$NIXOS_MOUNT` (root mount, used for bootstrap)
 - `$NIXOS_SCRIPTS` (commands path)
+- `$NIXOS_NONFLAKE` (whether to use the non-flake workflow instead of flakes)
 
 `nixos(1)` also passes on these variables to commands as:
 
 - `$__NIXOS_ROLE`
 - `$__NIXOS_MOUNT`
 - `$__NIXOS_SCRIPTS`
+- `$__NIXOS_NONFLAKE`
 
 `nixos(1)` also passes on some globals to commands:
 

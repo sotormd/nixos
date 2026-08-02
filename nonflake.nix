@@ -3,7 +3,7 @@ let
   lock = builtins.fromJSON (builtins.readFile ./flake.lock);
 
   # pins, we get it from the flake.lock
-  # we only source the toplevel pins, dependencies are not sourced
+  # we only source the direct deps, transitive deps are not sourced
   neededPins = builtins.listToAttrs (
     map
       (name: {

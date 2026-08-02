@@ -9,8 +9,8 @@ with a `--file` and `--attr` and provide our own `nixpkgs` without relying on
 As a consequence, all the `nixosConfigurations` in this flake can be built
 without flakes, using the `nonflake.nix` entrypoint.
 
-Sources are fetched using `fetchTarball` with pins from the `flake.lock` and
-expressions are returned in ways which mimic the flake outputs.
+Sources are fetched using `fetchTarball` with pins from the `flake.lock` and the
+resulting attributes mimic the structure of flake outputs.
 
 This requires no additional changes to the actual modules!
 
@@ -23,14 +23,28 @@ variable. Setting this variable to `1` will cause the following scripts to use
 3. `nixos seed`, respects remote value for `nixos-rebuild`
 4. `nixos bootstrap`, respects local value for `nixos-install`
 
-For example, what would've looked like:
+Systems activated with `flake.nix` will automatically have `NIXOS_NONFLAKE=0`,
+while systems activated with `nonflake.nix` will have `NIXOS_NONFLAKE=1`. This
+ensures subsequent rebuilds use the same entrypoint. The value can still be
+overridden by exporting `NIXOS_NONFLAKE` manually.
+
+Internally, what would've looked like this with `NIXOS_NONFLAKE=0`:
 
 ```bash
 nixos-rebuild switch --flake /persist/nixos/flake.nix#machine-workstation-x86_64-linux
 ```
 
-Now becomes:
+Now becomes this with `NIXOS_NONFLAKE=1`:
 
 ```bash
 nixos-rebuild switch --file /persist/nixos/nonflake.nix --attr nixosConfigurations.machine-workstation-x86_64-linux
 ```
+
+Caveats:
+
+1. `nonflake.nix` only pins direct dependencies (the flake "inputs"). Flakes
+   capture a full transitive dependency tree.
+2. `flake.nix` symlinks the flake that built the current generation to
+   `/etc/current-flake`, this is not available with `nonflake.nix`.
+3. `nixos-rebuild` uses `nix-build` (nix2 cli) when used with `--file` and
+   `--attr` instead of `nix build` (nix3 cli) used with `--flake`.
