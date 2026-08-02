@@ -1,7 +1,7 @@
 {
   config,
   lib,
-  legacyVars,
+  vars,
   ...
 }:
 
@@ -12,7 +12,7 @@
   };
 
   # populate variables and drop unnecessary variables
-  vars = lib.recursiveUpdate legacyVars {
+  vars = lib.recursiveUpdate vars {
     wireguard = {
       forwarding = lib.mkForce false;
     };

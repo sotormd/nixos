@@ -2,7 +2,7 @@
   config,
   pkgs,
   lib,
-  legacyVars,
+  vars,
   ...
 }:
 
@@ -127,7 +127,7 @@ in
   };
 
   # populate variables and drop unnecessary variables
-  vars = lib.recursiveUpdate legacyVars {
+  vars = lib.recursiveUpdate vars {
     user = {
       git = lib.mkForce { };
       sshAliases = lib.mkForce { };

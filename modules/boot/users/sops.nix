@@ -1,9 +1,9 @@
-{ legacySops, ... }:
+{ sops, ... }:
 
 {
   sops = {
     keepGenerations = 0;
-    defaultSopsFile = legacySops;
+    defaultSopsFile = sops;
     defaultSopsFormat = "yaml";
     gnupg.sshKeyPaths = [ ];
     gnupg.home = "/persist/sops-nix";

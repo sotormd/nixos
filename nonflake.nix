@@ -61,9 +61,9 @@ let
   # additional lib functions
   lib = pkgs.lib // (import ./lib);
 
-  # the old variables interface, now using options!
-  legacyVars = import ./vars/vars.nix;
-  legacySops = ./vars/secrets.yaml;
+  # variables interface, now using options!
+  vars = import ./vars/vars.nix;
+  sops = ./vars/secrets.yaml;
 
   # features as modules
   modules = import ./modules;
@@ -98,7 +98,7 @@ let
     };
 
   # create a "machine" - partially applied
-  mkMachine = role: mkConfig (mkMachineModule role) { inherit legacyVars legacySops; };
+  mkMachine = role: mkConfig (mkMachineModule role) { inherit vars sops; };
 
   # create an "image" - partially applied
   mkImage = role: mkConfig (mkImageModule role) { };
