@@ -1032,7 +1032,7 @@ elif [ "$VERB" == "sops" ]; then
 
     if [ -z "${SECRETS_WIREGUARD_KEY:-}" ]; then
         echo "SECRETS_WIREGUARD_KEY unset, left empty"
-        SECRETS_WIREGUARD_KEY=""
+        SECRETS_WIREGUARD_KEY="null"
     fi
 
     if [[ "${ROLE:-}" =~ ^(server)$ ]]; then
