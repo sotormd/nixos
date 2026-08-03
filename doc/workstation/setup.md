@@ -59,7 +59,7 @@ Before proceeding, see [Workstation Requirements](./requirements.md).
    export NIXOS_MOUNT=/mnt
    ```
 
-> The installer will refuse to install NixOS if NIXOS_MOUNT is not /mnt.
+> The installer will refuse to install NixOS if `NIXOS_MOUNT` is not /mnt.
 
 # Partitioning Disks
 
