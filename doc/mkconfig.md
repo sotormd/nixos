@@ -84,5 +84,33 @@ Since every `nixosConfiguration` in this repository is built using
 configurations based on the provided roles, override inputs, add modules, or
 supply variables and secrets.
 
+For example, to extend the `machine-workstation` role:
+
+```nix
+# flake.nix
+
+{
+  description = "example to extend machine-workstation";
+
+  # add this flake as an input
+  inputs.sotormd-nixos.url = "github:sotormd/nixos";
+
+  outputs = inputs: {
+    nixosConfigurations.example = inputs.sotormd-nixos.lib.mkConfig {
+      type = "machine";
+      role = "workstation";
+      system = "x86_64-linux";
+      vars = import ./vars.nix;
+      sops = ./secrets.yaml;
+      extraModules = [
+        ./extra-config.nix
+        ./some-more-config.nix
+        ({ pkgs, ... }: { environment.systemPackages = [ pkgs.fastfetch ]; })
+      ];
+    };
+  };
+}
+```
+
 An example of extending an image is provided in the
 [Images Documentation](./images.md#further-configuration).
