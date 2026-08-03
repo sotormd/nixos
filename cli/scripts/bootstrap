@@ -1072,7 +1072,7 @@ elif [ "$VERB" == "sops" ]; then
 
     # create new gpg key for sops-nix
     # save key fingerprint
-    FINGERPRINT=$(nix run github:Mic92/sops-nix#sops-init-gpg-key -- --gpghome "/tmp/sops-nix" --keytype Curve25519 2>&1 | grep -oP '(?<=fingerprint:\s)\S+')
+    FINGERPRINT=$(nix run github:Mic92/sops-nix#sops-init-gpg-key -- --gpghome "/tmp/sops-nix" --keytype Curve25519 2>&1 | grep -oP '(?<=fingerprint:\s)\S+' | tail -n1)
 
     # ensure non-empty key
     if [ -z "$FINGERPRINT" ]; then
