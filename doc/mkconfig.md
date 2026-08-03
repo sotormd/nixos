@@ -125,14 +125,14 @@ let
   commit = "f1a406cd6e0d8b7cbeda37d9c0027f0bf14ebc19";
   hash = "0iqn7drd2m1xrnl65193k09l73avlkik8ick335z7qlsg1jf0020";
 
-  sotormd-nixos = fetchTarball {
+  source = fetchTarball {
     url = "https://github.com/sotormd/nixos/archive/${commit}.tar.gz";
     sha256 = hash;
   };
 
-  inherit ((import "${sotormd-nixos}/nonflake.nix").lib) mkConfig;
+  sotormd-nixos = import "${source}/nonflake.nix";
 
-  config = mkConfig {
+  config = sotormd-nixos.lib.mkConfig {
     type = "image";
     role = "minimal";
     system = "x86_64-linux";
