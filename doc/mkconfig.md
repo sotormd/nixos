@@ -3,11 +3,9 @@
 This document covers `mkConfig`.
 
 `mkConfig` from [`./helpers.nix`](../helpers.nix) is the configuration builder
-used throughout this repository. It constructs NixOS configurations from the
-modules provided by this flake.
-
-It provides a single interface for constructing NixOS configurations, regardless
-of whether they are built through `flake.nix` or `nonflake.nix`.
+used throughout this repository. It provides a single interface for constructing
+NixOS configurations, regardless of whether they are built through `flake.nix`
+or `nonflake.nix`.
 
 `mkConfig` is curried:
 
@@ -84,7 +82,7 @@ Since every `nixosConfiguration` in this repository is built using
 configurations based on the provided roles, override inputs, add modules, or
 supply variables and secrets.
 
-For example, to extend the `machine-workstation` role:
+For example, to extend the `machine-workstation` role with flakes:
 
 ```nix
 # flake.nix
@@ -112,5 +110,33 @@ For example, to extend the `machine-workstation` role:
 }
 ```
 
-An example of extending an image is provided in the
-[Images Documentation](./images.md#further-configuration).
+Or, to extend the `image-minimal` role without flakes, and use existing modules
+from this flake:
+
+```nix
+# system.nix
+
+let
+  commit = "f1a406cd6e0d8b7cbeda37d9c0027f0bf14ebc19";
+  hash = "0iqn7drd2m1xrnl65193k09l73avlkik8ick335z7qlsg1jf0020";
+
+  sotormd-nixos = fetchTarball {
+    url = "https://github.com/sotormd/nixos/archive/${commit}.tar.gz";
+    sha256 = hash;
+  };
+
+  inherit ((import "${sotormd-nixos}/nonflake.nix").lib) mkConfig;
+
+  config = mkConfig {
+    type = "image";
+    role = "minimal";
+    system = "x86_64-linux";
+    extraModules = [
+      ./extra-config.nix
+      ./some-more-config.nix
+      ({ self, ... }: { imports = [ self.nixosModules.modules.boot.quiet ]; })
+    ];
+  };
+in
+config
+```
