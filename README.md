@@ -225,7 +225,7 @@ The configurations are created using [`mkConfig`](./doc/mkconfig.md). Each
 - Variables & Secrets (for machine roles only)
 - Optional additional modules with `extraModules`
 
-Since every `nixosConfiguration` in this repository is built using
+Since every `nixosConfigurations` attr in this repository is built using
 `lib.mkConfig`, the same interface can also be used externally to create new
 configurations based on the provided roles, override inputs, add modules, or
 supply variables and secrets.

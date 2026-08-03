@@ -6,21 +6,22 @@ This document covers `mkConfig`.
 provides a single interface for constructing NixOS configurations, regardless of
 whether they are built through `flake.nix` or `nonflake.nix`.
 
-`mkConfigBuilder` from [`./helpers.nix`](../helpers.nix) is curried:
+It is created by `mkConfigBuilder` from [`./helpers.nix`](../helpers.nix), a
+curried function that returns `mkConfig`:
 
 - The outer function provides an interface to pass flake-like values. This is
   used by `flake.nix` and `nonflake.nix`.
 - The returned inner function constructs individual configurations. This is also
   exposed as `lib.mkConfig`.
 
-Outer function `mkConfigBuilder` takes the following arguments in an attr set:
+`mkConfigBuilder` takes the following arguments in an attr set:
 
 | Attr          | Description                                                                               |
 | ------------- | ----------------------------------------------------------------------------------------- |
-| `nixos`       | Entrypoint equivalent of `eval-config.nix`                                                |
-| `flakeInputs` | `inputs` for the modules, passed to `specialArgs`                                         |
-| `flakeSelf`   | `self` for the modules, passed to `specialArgs`                                           |
-| `flakeLib`    | `lib` for the modules, passed to `specialArgs` and overlayed as `pkgs.lib`                |
+| `nixos`       | NixOS system evaluation function.                                                         |
+| `flakeInputs` | `inputs` for the modules, passed to `specialArgs`.                                        |
+| `flakeSelf`   | `self` for the modules, passed to `specialArgs`.                                          |
+| `flakeLib`    | `lib` for the modules, passed to `specialArgs` and overlayed as `pkgs.lib`.               |
 | `nonflake`    | Whether to enable/disable nonflake-specific things. See [Non-Flake Usage](./nonflake.md). |
 
 For example, here is what `flake.nix` and `nonflake.nix` provide for these
@@ -39,12 +40,12 @@ values:
 > things like the `NIXOS_NONFLAKE` environment variable, and the
 > `/etc/current-flake` symlink.
 
-The outer function returns the configuration builder exposed as `lib.mkConfig`.
+This partially applied function is exposed as `lib.mkConfig`.
 
 As a result, `lib.mkConfig` from `flake.nix` builds flake-based systems, while
 `lib.mkConfig` from `nonflake.nix` builds non-flake systems.
 
-This inner function `mkConfig` takes the following arguments in an attr set:
+`mkConfig` takes the following arguments in an attr set:
 
 | Attr           | Description          | Default       | Example                           |
 | -------------- | -------------------- | ------------- | --------------------------------- |
@@ -62,6 +63,11 @@ This inner function `mkConfig` takes the following arguments in an attr set:
 > example, `type = "machine"` and `role = "server"` selects
 > `./roles/machine-server`.
 
+> `inputs`, `self` and `lib` use the values from this repository by default,
+> which is what is expected. This should not be changed under most situations.
+> Changing it will require duplicating everything that is already provided here,
+> along with additional changes.
+
 For example, here is how `lib.mkConfig` is used for two `nixosConfigurations` in
 this flake:
 
@@ -76,7 +82,7 @@ this flake:
 | `self`         | default                            | default                  |
 | `lib`          | default                            | default                  |
 
-Since every `nixosConfiguration` in this repository is built using
+Since every `nixosConfigurations` attr in this repository is built using
 `lib.mkConfig`, the same interface can also be used externally to create new
 configurations based on the provided roles, override inputs, add modules, or
 supply variables and secrets.
