@@ -64,7 +64,7 @@ As a result, `lib.mkConfig` from `flake.nix` builds flake-based systems, while
 > `./roles/machine-server`.
 
 > `inputs`, `self` and `lib` use the values from this repository by default,
-> which is what is expected. This should not be changed under most situations.
+> which is what is expected. This should not be changed in most situations.
 > Changing it will require duplicating everything that is already provided here,
 > along with additional changes.
 
