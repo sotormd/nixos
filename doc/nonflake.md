@@ -1,10 +1,9 @@
 # Non-Flake Usage
 
-> Not recommended, but still works. This is more of a proof-of-concept :p
-
-Since NixOS 26.05 introduced `system.nix`, we can easily use `nixos-rebuild`
-with a `--file` and `--attr` and provide our own `nixpkgs` without relying on
-`NIX_PATH`.
+Since NixOS 26.05
+[introduced `system.nix`](https://nixos.org/manual/nixos/stable/release-notes#sec-release-26.05-highlights),
+we can easily use `nixos-rebuild` with a `--file` and `--attr` and provide our
+own `nixpkgs` without relying on `NIX_PATH`.
 
 As a consequence, all the `nixosConfigurations` in this flake can be built
 without flakes, using the `nonflake.nix` entrypoint.
@@ -12,9 +11,13 @@ without flakes, using the `nonflake.nix` entrypoint.
 Sources are fetched using `fetchTarball` with pins from `flake.lock`, and the
 resulting attributes mimic the structure of flake outputs. Using the URLs and
 hashes from `flake.lock` avoids having to maintain a separate set of pins, but
-any other source could be used instead (for example, `pins.toml`).
+any other source of pins could be used instead (for example, `pins.toml`).
 
 This requires no additional changes to the actual modules!
+
+[`mkConfig`](./mkconfig.md) provides a single interface for constructing NixOS
+configurations, regardless of whether they are built through `flake.nix` or
+`nonflake.nix`.
 
 The [CLI](./cli.md) fully supports this with the `NIXOS_NONFLAKE` environment
 variable. Setting this variable to `1` will cause the following scripts to use

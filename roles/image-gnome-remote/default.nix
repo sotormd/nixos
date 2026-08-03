@@ -2,7 +2,7 @@
 
 {
   imports = [
-    self.nixosModules.image-gnome
+    self.nixosModules.roles.image-gnome
     self.nixosModules.modules.bootstrap.remote
   ];
 }

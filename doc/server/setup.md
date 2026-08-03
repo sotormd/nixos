@@ -1,5 +1,8 @@
 # Server Setup
 
+> This document covers setting up the provided `nixosConfiguration`. See
+> [`mkConfig` Usage](../mkconfig.md) for customizing roles.
+
 Bootstrap process for the Server role.
 
 Before proceeding, see [Server Requirements](./requirements.md).

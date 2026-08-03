@@ -1,5 +1,8 @@
 # Workstation Setup
 
+> This document covers setting up the provided `nixosConfiguration`. See
+> [`mkConfig` Usage](../mkconfig.md) for customizing roles.
+
 Bootstrap process for the Workstation role.
 
 Before proceeding, see [Workstation Requirements](./requirements.md).

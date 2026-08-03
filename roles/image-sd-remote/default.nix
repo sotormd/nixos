@@ -2,7 +2,7 @@
 
 {
   imports = [
-    self.nixosModules.image-sd
+    self.nixosModules.roles.image-sd
     self.nixosModules.modules.bootstrap.remote
   ];
 }

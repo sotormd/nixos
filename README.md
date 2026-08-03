@@ -10,8 +10,7 @@
 
 ![screenshots](./doc/screenshots/nord.gif)
 
-NixOS configuration for multiple hosts, with custom Impermanence, MicroVMs, and
-CLI tooling. Plus ZFS, WireGuard, bootstrap images, etc.
+NixOS configuration for multiple hosts.
 
 # Features
 
@@ -26,7 +25,8 @@ CLI tooling. Plus ZFS, WireGuard, bootstrap images, etc.
    - Completely reproducible, pure evaluation
    - Role-based outputs with features as modules
    - Variables system for device-specific configuration
-   - Flake-enabled [bootstrap images](#bootstrap-images)
+   - Arbitrary role extensions with [`mkConfig`](./doc/mkconfig.md)
+   - Customizable and preconfigured [bootstrap images](#bootstrap-images)
    - Dotfiles managed using wrappers implemented from basic nixpkgs functions
    - Secrets managed using [sops-nix](https://github.com/Mic92/sops-nix)
    - Secure boot using [lanzaboote](https://github.com/nix-community/lanzaboote)
@@ -38,7 +38,7 @@ CLI tooling. Plus ZFS, WireGuard, bootstrap images, etc.
    - Bespoke [Impermanence](./doc/filesystems.md#impermanence) implementation
      using ZFS snapshots and bind mounts
    - Bespoke [CLI](#cli) for maintaining this flake, with support for signed
-     remote builds.
+     remote builds
    - Service virtual machines using bespoke
      [svcvm](https://github.com/sotormd/svcvm) backend and `lib.mksvcvm`
 
@@ -53,9 +53,9 @@ CLI tooling. Plus ZFS, WireGuard, bootstrap images, etc.
    - [Rofi](https://github.com/davatorium/rofi) menu for launchers, clipboard
      history, workspace switchers, etc
    - [Brave](https://github.com/brave/brave-browser/) browser with tight
-     policies.
+     policies
    - Sandboxing with [Bubblewrap](https://github.com/containers/bubblewrap) and
-     [xdg-dbus-proxy](https://github.com/flatpak/xdg-dbus-proxy).
+     [xdg-dbus-proxy](https://github.com/flatpak/xdg-dbus-proxy)
    - XKCD lockscreen wallpapers with
      [xkcd-wall](https://github.com/sotormd/xkcd-wall)
    - Automatic behavior changes when outside trusted & reliable networks with
@@ -154,18 +154,21 @@ This flake uses role-based configuration.
 Some previous roles have been moved to separate repos, see
 [Related Flakes](#related-flakes).
 
+Any role can be arbitrarily extended using `lib.mkConfig`. This allows defining
+your own nixosConfigurations using the roles from this repository, while
+supplying your own variables, secrets, inputs, or additional modules.
+
+See [`mkConfig` Usage](./doc/mkconfig.md) for more information.
+
 # Bootstrap Images
 
-Three images: GNOME, Minimal and SD are included (for installation, recovery,
-etc.)
+Three bootstrap images are provided for installation, recovery, and initial
+deployment, each providing a preconfigured environment for deploying this
+configuration.
 
-These images provide a preconfigured environment for setting up this flake, and
-include useful tools for installation, recovery, etc.
-
-This flake also provides image `nixosModules` which can be consumed by
-downstream flakes, to further configure these images for specific installation
-setups. Modules for remote installation over a wireless network are also
-provided.
+Using `lib.mkConfig`, it is also possible to further configure images with
+additional options, or configure images for remote installs over wireless
+networks with provided modules.
 
 See [Images Documentation](./doc/images.md) for more details.
 
@@ -191,28 +194,47 @@ workflow examples.
 - [`./modules/`](./modules) are low-level features, which are exposed under
   `nixosModules.modules.*`.
 - [`./profiles/`](./profiles) are high-level collections of modules, which are
-  exposed under `nixosModules.profiles.*`. This are purely a ease-of-use
+  exposed under `nixosModules.profiles.*`. These are purely an ease-of-use
   feature, and not another layer of abstraction.
-- [`./roles/`](./roles) are the final `nixosConfiguration` outputs provided by
-  this flake, each role is a full system configuration composed of several
-  profiles/modules.
+- [`./roles/`](./roles) are the `nixosModules.roles.*` outputs provided by this
+  flake, each role is a full system configuration composed of several profiles
+  and modules.
 - Variables capture the differences between multiple instances of the same role.
   Variables are not provided in this flake and are defined on a per-deployment
   basis.
 
-The roles include both `image-*` roles and `machine-*` roles. Images are full
-systems and can be used directly to build images as covered above. The machine
-roles do NOT correspond to real hosts.
+The roles include both image roles and machine roles. Images are full systems
+and can be used directly to build images as covered above. The machine roles in
+this repository do not correspond to real hosts - a real host is described by
+the combination of a role module along with variables and secrets which are
+defined during bootstrap.
 
-A real host is described by the combination of a role `nixosConfiguration` along
-with variables and secrets which are defined during bootstrap. This allows the
-roles to cater to various setups and network topologies.
-
-Adding new hardware and/or distributing services across new hardware should
-involve zero code changes to this flake, and are entirely handled by variables.
+This allows the roles to cater to various setups and network topologies. Adding
+new hardware and/or distributing services across new hardware should involve
+zero code changes to this flake, and are entirely handled by variables.
 
 None of this really relies on flakes or flake-specific features, as exemplified
 by the optional [non-flake workflow](./doc/nonflake.md).
+
+The configurations are created using `mkConfig` from
+[`./helpers.nix`](./helpers.nix). Each `nixosConfiguration` consists of:
+
+- A `nixosModules.roles.*` module, which includes various `modules` and
+  `profiles`
+- Flake-specific/Non-Flake glue for things like `inputs`, `self` and `lib`
+- Variables & Secrets (for machine roles only)
+- Optional additional modules with `extraModules`
+
+A usable interface is available as `lib.mkConfig`. `lib.mkConfig` from
+`flake.nix` builds flake-based systems, while `lib.mkConfig` from `nonflake.nix`
+builds non-flake systems.
+
+Since every `nixosConfiguration` in this repository is built using
+`lib.mkConfig`, the same interface can also be used externally to create new
+configurations based on the provided roles, override inputs, add modules, or
+supply variables and secrets.
+
+See [`mkConfig` Usage](./doc/mkconfig.md) for more information.
 
 # Related Flakes
 
@@ -223,7 +245,7 @@ Directly dependent:
 - [svcvm](https://github.com/sotormd/svcvm), Service virtual machines for NixOS,
   derived from [microvm.nix](https://github.com/microvm-nix/microvm.nix)
 
-Adjacent:
+Others:
 
 - [neovim](https://github.com/sotormd/neovim), Neovim configuration flake (ft.
   nvf)

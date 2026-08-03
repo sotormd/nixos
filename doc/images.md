@@ -1,15 +1,14 @@
 # Bootstrap Images
 
-Three images are offered for the `x86_64-linux` architecture:
+Three images are provided for the `x86_64-linux` architecture:
 
-1. **GNOME**: NixOS with the GNOME desktop environment.
+1. **GNOME**: (Installer) NixOS with the GNOME desktop environment.
 
-1. **Minimal**: A minimal NixOS environment.
+1. **Minimal**: (Installer) A minimal NixOS environment.
 
-One image is offered for the `aarch64-linux` architecture (intended for
-Raspberry-Pi 4b):
+One image is provided for the `aarch64-linux` architecture:
 
-1. **SD**: NixOS for sdcard targets.
+1. **SD**: (Base system) NixOS for the Raspberry Pi 4b.
 
 These images provide a preconfigured environment for setting up this flake, and
 include useful tools for installation, recovery, etc.
@@ -52,37 +51,36 @@ include useful tools for installation, recovery, etc.
 
 # Further Configuration
 
-It is possible to use the various `nixosModules.image-*` flake outputs to
-further configure images.
-
-The available modules are:
-
-- `image-gnome`
-- `image-minimal`
-- `image-sd`
+`lib.mkConfig` can also be used to extend the provided images with additional
+modules. See example below.
 
 <details>
 
 <summary>Click to expand: Example Usage</summary>
 
-For example, to build a GNOME image with NH enabled.
+For example, to build a GNOME image with fastfetch installed.
 
 ```nix
-{
-  description = "example usage of the image modules";
+# flake.nix
 
-  inputs = {
-    nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
-    nixos-config.url = "github:sotormd/nixos";
-  };
+{
+  description = "example to further configure images";
+
+  # add this flake as an input
+  inputs.sotormd-nixos.url = "github:sotormd/nixos";
 
   outputs = inputs: {
-    nixosConfigurations.my-gnome-image = inputs.nixpkgs.lib.nixosSystem {
-      specialArgs.self = inputs.nixos-config;
+    nixosConfigurations.my-gnome-image = inputs.sotormd-nixos.lib.mkConfig {
+      type = "image";
+      role = "gnome";
       system = "x86_64-linux";
-      modules = [
-        inputs.nixos-config.nixosModules.image-gnome
-        { programs.nh.enable = true; }
+      extraModules = [
+        (
+          { pkgs, ... }:
+          {
+            environment.systemPackages = [ pkgs.fastfetch ];
+          }
+        )
       ];
     };
   };
@@ -99,18 +97,8 @@ nix build .#nixosConfigurations.my-gnome-image.config.system.build.isoImage
 
 # Remote Installs
 
-The `nixosModules-image-*-remote` flake outputs can be used for configuration
-images for remote installations over wireless networks.
-
-The only difference between the normal modules is that the remote modules
-provide some high-level options to make configuration for remote installations
-over wireless networks significantly easier.
-
-The available modules are:
-
-- `image-gnome-remote`
-- `image-minimal-remote`
-- `image-sd-remote`
+It is possible to use `lib.mkConfig` along with the `*-remote` roles to produce
+images for remote installs over wireless networks. See example below.
 
 <details>
 
@@ -120,20 +108,20 @@ For example, to build a SD image for a Raspberry-Pi for remote installs over a
 wireless network:
 
 ```nix
-{
-  description = "example usage of the remote image modules";
+# flake.nix
 
-  inputs = {
-    nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
-    nixos-config.url = "github:sotormd/nixos";
-  };
+{
+  description = "example usage of the image modules";
+
+  # add this flake as an input
+  inputs.sotormd-nixos.url = "path:/persist/nixos";
 
   outputs = inputs: {
-    nixosConfigurations.my-remote-sd-image = inputs.nixpkgs.lib.nixosSystem {
-      specialArgs.self = inputs.nixos-config;
+    nixosConfigurations.my-remote-sd-image = inputs.sotormd-nixos.lib.mkConfig {
+      type = "image";
+      role = "sd-remote";
       system = "aarch64-linux";
-      modules = [
-        inputs.nixos-config.nixosModules.image-sd-remote
+      extraModules = [
         {
           remote = {
             sshKey = "ssh-ed25519 AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA test@test";

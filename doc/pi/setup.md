@@ -1,5 +1,8 @@
 # Pi Setup
 
+> This document covers setting up the provided `nixosConfiguration`. See
+> [`mkConfig` Usage](../mkconfig.md) for customizing roles.
+
 Bootstrap process for the Pi role.
 
 Before proceeding, see [Pi Requirements](./requirements.md).
