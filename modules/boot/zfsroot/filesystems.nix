@@ -38,8 +38,8 @@
     "/" = {
       device = "rpool/nixos/root";
       fsType = "zfs";
-      options = lib.optionals config.vars.features.impermanence.enable lib.mountData;
-    };
+    }
+    // (if config.vars.features.impermanence.enable then { options = lib.mountData; } else { });
 
     # rpool/nixos/nix -> /nix
     "/nix" = {
