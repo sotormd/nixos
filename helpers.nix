@@ -1,6 +1,6 @@
 let
 
-  # create a "config"
+  # curried function to create mkConfig
   mkConfigBuilder =
     {
       nixos,
@@ -10,6 +10,7 @@ let
       nonflake,
     }:
 
+    # create a "config"
     {
 
       # required
