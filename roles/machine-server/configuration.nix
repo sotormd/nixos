@@ -169,6 +169,14 @@ in
         config.vars.modes.roaming.enable
         config.vars.modes.gnome.enable
       ];
+      gitUndefined = [
+        config.vars.user.git.name
+        config.vars.user.git.email
+        config.vars.user.git.signing-key
+        config.vars.user.git.allowed-signers
+      ];
+
+      undefined = x: !(builtins.tryEval x).success;
     in
     [
       {
@@ -201,7 +209,7 @@ in
         message = "variables: unsupported vars.modes.* are enabled";
       }
       {
-        assertion = config.vars.user.git == { };
+        assertion = builtins.all undefined gitUndefined;
         message = "variables: vars.user.git is not supported";
       }
       {
