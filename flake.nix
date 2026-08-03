@@ -1,5 +1,5 @@
 {
-  description = "NixOS configuration for multiple hosts, with custom Impermanence, MicroVMs, and CLI tooling. Plus ZFS, WireGuard, bootstrap images, etc.";
+  description = "NixOS configuration for multiple hosts.";
 
   inputs = {
 
