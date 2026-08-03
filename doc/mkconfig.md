@@ -28,7 +28,7 @@ values:
 
 | Attr          | `flake.nix`                                       | `nonflake.nix`                                               |
 | ------------- | ------------------------------------------------- | ------------------------------------------------------------ |
-| `nixos`       | `lib.nixosSystem` from `inputs.nixpkgs`           | `"${pkgs.path}/nixos/lib/eval-config.nix"` from `sources`    |
+| `nixos`       | `inputs.nixpkgs.lib.nixosSystem`                  | `"${pkgs.path}/nixos/lib/eval-config.nix"` from `sources`    |
 | `flakeInputs` | `inputs`                                          | A crafted `inputs` which mimics flake inputs, from `sources` |
 | `flakeSelf`   | `inputs.self`                                     | A crafted `self` which mimics the flake `inputs.self`        |
 | `flakeLib`    | `inputs.nixpkgs.lib` along with [`./lib`](../lib) | `pkgs.lib` along with [`./lib`](../lib)                      |

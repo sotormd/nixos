@@ -60,14 +60,16 @@
       helpers = import ./helpers.nix;
 
       # additional lib functions
-      lib = inputs.nixpkgs.lib // (import ./lib) // { inherit mkConfig; };
+      lib = (import ./lib) // {
+        inherit mkConfig;
+      };
 
       # flake-based mkConfig
       mkConfig = helpers.mkConfigBuilder {
-        nixos = lib.nixosSystem;
+        nixos = inputs.nixpkgs.lib.nixosSystem;
         flakeInputs = inputs;
         flakeSelf = inputs.self;
-        flakeLib = lib;
+        flakeLib = inputs.nixpkgs.lib // lib;
         nonflake = false;
       };
 

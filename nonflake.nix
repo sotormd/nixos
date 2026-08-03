@@ -62,14 +62,16 @@ let
   helpers = import ./helpers.nix;
 
   # additional lib functions
-  lib = pkgs.lib // (import ./lib) // { inherit mkConfig; };
+  lib = (import ./lib) // {
+    inherit mkConfig;
+  };
 
   # non-flake mkConfig
   mkConfig = helpers.mkConfigBuilder {
     nixos = import "${pkgs.path}/nixos/lib/eval-config.nix";
     flakeInputs = inputs;
     flakeSelf = self;
-    flakeLib = lib;
+    flakeLib = pkgs.lib // lib;
     nonflake = true;
   };
 
