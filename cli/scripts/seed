@@ -12,6 +12,7 @@ if [ "$HOST" == "" ]; then
 
 else
 
+    mount=$(ssh "$HOST" 'printf "%s" "$NIXOS_MOUNT"')
     role=$(ssh "$HOST" 'printf "%s" "$NIXOS_ROLE"')
     arch=$(ssh "$HOST" 'nix eval --impure --raw --expr builtins.currentSystem')
     nonflake=$(ssh "$HOST" 'printf "%s" "$NIXOS_NONFLAKE"')
@@ -28,7 +29,7 @@ else
     }
     trap cleanup INT TERM EXIT
 
-    rsync -avz --exclude=".git" "$HOST:/persist/nixos/" "$sourcedir"
+    rsync -avz --exclude=".git" "$HOST:$mount$__NIXOS_GLOBALS_FLAKE" "$sourcedir"
 
     (
 
