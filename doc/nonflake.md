@@ -9,8 +9,10 @@ with a `--file` and `--attr` and provide our own `nixpkgs` without relying on
 As a consequence, all the `nixosConfigurations` in this flake can be built
 without flakes, using the `nonflake.nix` entrypoint.
 
-Sources are fetched using `fetchTarball` with pins from the `flake.lock` and the
-resulting attributes mimic the structure of flake outputs.
+Sources are fetched using `fetchTarball` with pins from `flake.lock`, and the
+resulting attributes mimic the structure of flake outputs. Using the URLs and
+hashes from `flake.lock` avoids having to maintain a separate set of pins, but
+any other source could be used instead (for example, `pins.toml`).
 
 This requires no additional changes to the actual modules!
 
