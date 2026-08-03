@@ -2,19 +2,18 @@
 
 This document covers `mkConfig`.
 
-`mkConfig` from [`./helpers.nix`](../helpers.nix) is the configuration builder
-used throughout this repository. It provides a single interface for constructing
-NixOS configurations, regardless of whether they are built through `flake.nix`
-or `nonflake.nix`.
+`mkConfig` is a configuration builder used throughout this repository. It
+provides a single interface for constructing NixOS configurations, regardless of
+whether they are built through `flake.nix` or `nonflake.nix`.
 
-`mkConfig` is curried:
+`mkConfigBuilder` from [`./helpers.nix`](../helpers.nix) is curried:
 
 - The outer function provides an interface to pass flake-like values. This is
   used by `flake.nix` and `nonflake.nix`.
 - The returned inner function constructs individual configurations. This is also
   exposed as `lib.mkConfig`.
 
-Outer function takes the following arguments in an attr set:
+Outer function `mkConfigBuilder` takes the following arguments in an attr set:
 
 | Attr          | Description                                                                               |
 | ------------- | ----------------------------------------------------------------------------------------- |
@@ -45,7 +44,7 @@ The outer function returns the configuration builder exposed as `lib.mkConfig`.
 As a result, `lib.mkConfig` from `flake.nix` builds flake-based systems, while
 `lib.mkConfig` from `nonflake.nix` builds non-flake systems.
 
-This inner function takes the following arguments in an attr set:
+This inner function `mkConfig` takes the following arguments in an attr set:
 
 | Attr           | Description          | Default       | Example                           |
 | -------------- | -------------------- | ------------- | --------------------------------- |

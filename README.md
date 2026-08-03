@@ -216,18 +216,14 @@ zero code changes to this flake, and are entirely handled by variables.
 None of this really relies on flakes or flake-specific features, as exemplified
 by the optional [non-flake workflow](./doc/nonflake.md).
 
-The configurations are created using `mkConfig` from
-[`./helpers.nix`](./helpers.nix). Each `nixosConfiguration` consists of:
+The configurations are created using [`mkConfig`](./doc/mkconfig.md). Each
+`nixosConfiguration` consists of:
 
 - A `nixosModules.roles.*` module, which includes various `modules` and
   `profiles`
 - Flake-specific/Non-Flake glue for things like `inputs`, `self` and `lib`
 - Variables & Secrets (for machine roles only)
 - Optional additional modules with `extraModules`
-
-A usable interface is available as `lib.mkConfig`. `lib.mkConfig` from
-`flake.nix` builds flake-based systems, while `lib.mkConfig` from `nonflake.nix`
-builds non-flake systems.
 
 Since every `nixosConfiguration` in this repository is built using
 `lib.mkConfig`, the same interface can also be used externally to create new

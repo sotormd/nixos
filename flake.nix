@@ -63,7 +63,7 @@
       lib = inputs.nixpkgs.lib // (import ./lib) // { inherit mkConfig; };
 
       # flake-based mkConfig
-      mkConfig = helpers.mkConfig {
+      mkConfig = helpers.mkConfigBuilder {
         nixos = lib.nixosSystem;
         flakeInputs = inputs;
         flakeSelf = inputs.self;

@@ -1,7 +1,7 @@
 let
 
   # create a "config"
-  mkConfig =
+  mkConfigBuilder =
     {
       nixos,
       flakeInputs,
@@ -131,7 +131,7 @@ let
 in
 {
   inherit
-    mkConfig
+    mkConfigBuilder
     nixosConfigurations
     nixosModules
     ;
