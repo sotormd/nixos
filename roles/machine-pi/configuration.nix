@@ -101,7 +101,7 @@
         message = "variables: unsupported vars.modes.* are enabled";
       }
       {
-        assertion = config.vars.user.sshAliases == { };
+        assertion = config.vars.user.git == { };
         message = "variables: vars.user.git is not supported";
       }
       {
