@@ -56,4 +56,9 @@
 
   };
 
+  boot.initrd.systemd.services.zfs-import-rpool = {
+    requires = [ "dev-mapper-root.device" ];
+    after = [ "dev-mapper-root.device" ];
+  };
+
 }
