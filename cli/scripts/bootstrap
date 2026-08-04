@@ -1005,8 +1005,8 @@ elif [ "$VERB" == "sops" ]; then
         done
     fi
 
-    if [ -z "${SECRETS_PSK:-}" ]; then
-        echo "SECRETS_PSK unset, using user input"
+    if [ -z "${SECRETS_WIRELESS_PSK:-}" ]; then
+        echo "SECRETS_WIRELESS_PSK unset, using user input"
 
         while true; do
             echo "Set wireless network password"
@@ -1017,7 +1017,7 @@ elif [ "$VERB" == "sops" ]; then
             echo
 
             if [ "$PASSWORD1" == "$PASSWORD2" ]; then
-                SECRETS_PSK="$PASSWORD1"
+                SECRETS_WIRELESS_PSK="$PASSWORD1"
                 break
             else
                 echo "Passwords do not match, try again"
@@ -1117,7 +1117,7 @@ hashedPassword: $SECRETS_HASHED_PASSWORD
 wireguard: $SECRETS_WIREGUARD_KEY
 
 wireless: |
-  psk=$SECRETS_PSK
+  psk=$SECRETS_WIRELESS_PSK
 
 seed: $SECRETS_SEED_KEY
 EOF
@@ -1130,7 +1130,7 @@ hashedPassword: $SECRETS_HASHED_PASSWORD
 wireguard: $SECRETS_WIREGUARD_KEY
 
 wireless: |
-  psk=$SECRETS_PSK
+  psk=$SECRETS_WIRELESS_PSK
 
 seed: $SECRETS_SEED_KEY
 
@@ -1205,8 +1205,6 @@ elif [ "$VERB" == "finish" ]; then
     sudo umount -l /mnt/boot || true
     sudo umount -l /mnt/persist || true
     sudo umount -l /mnt/nix || true
-    sudo umount -l /mnt/var || true
-    sudo umount -l /mnt/home || true
     sudo umount -l /mnt || true
     sudo zpool export rpool -f
 
