@@ -156,14 +156,20 @@ This flake uses role-based configuration. These are the available machine roles:
 <summary>Click to expand: All roles</summary>
 
 ```
+Machines
 - machine-workstation
 - machine-server
 - machine-pi
 
+Bootstrap Images
 - image-gnome
 - image-minimal
 - image-sd
+- image-gnome-remote
+- image-minimal-remote
+- image-sd-remote
 
+Blank Role
 - blank
 ```
 
