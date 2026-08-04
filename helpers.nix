@@ -24,10 +24,18 @@ let
       # can be used to add extra modules
       extraModules ? [ ],
 
+      # can be used to add extra inputs, self and lib
+      extraInputs ? { },
+      extraSelf ? { },
+      extraLib ? { },
+
+      # can be used to add extra special args
+      extraSpecialArgs ? { },
+
       # probably should not override these
-      inputs ? flakeInputs,
-      self ? flakeSelf,
-      lib ? flakeLib,
+      inputs ? flakeInputs // extraInputs,
+      self ? flakeSelf // extraSelf,
+      lib ? flakeLib // extraLib,
 
     }:
 
@@ -37,7 +45,8 @@ let
         inherit inputs self lib;
       }
       // (if (vars != null) then { inherit vars; } else { })
-      // (if (sops != null) then { inherit sops; } else { });
+      // (if (sops != null) then { inherit sops; } else { })
+      // extraSpecialArgs;
 
       inherit system;
 

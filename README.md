@@ -143,7 +143,7 @@ NixOS configuration for multiple hosts.
 
 # Configuration Roles
 
-This flake uses role-based configuration.
+This flake uses role-based configuration. These are the available machine roles:
 
 | Role        | Description                            | Documentation                                                                                                                 |
 | ----------- | -------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------- |
@@ -151,12 +151,30 @@ This flake uses role-based configuration.
 | Server      | Configuration for my home-servers.     | [Requirements](./doc/server/requirements.md) - [Setup](./doc/server/setup.md) - [Usage](./doc/server/usage.md)                |
 | Pi          | Configuration for my Raspberry Pi 4bs. | [Requirements](./doc/pi/requirements.md) - [Setup](./doc/pi/setup.md) - [Usage](./doc/pi/usage.md)                            |
 
+<detailts>
+
+<summary>Click to expand: All roles</summary>
+
+```
+- machine-workstation
+- machine-server
+- machine-pi
+
+- image-gnome
+- image-minimal
+- image-sd
+
+- blank
+```
+
+</details>
+
 Some previous roles have been moved to separate repos, see
 [Related Flakes](#related-flakes).
 
 Any role can be arbitrarily extended using `lib.mkConfig`. This allows defining
-your own nixosConfigurations using the roles from this repository, while
-supplying your own variables, secrets, inputs, or additional modules.
+your own `nixosConfigurations` using the roles from this repository, while
+supplying your own variables, secrets, or additional inputs and modules.
 
 See [`mkConfig` Usage](./doc/mkconfig.md) for more information.
 
@@ -223,12 +241,12 @@ The configurations are created using [`mkConfig`](./doc/mkconfig.md). Each
   `profiles`
 - Flake-specific/Non-Flake glue for things like `inputs`, `self` and `lib`
 - Variables & Secrets (for machine roles only)
-- Optional additional modules with `extraModules`
+- Optional additional modules, and attrs for `inputs`, `self` and `lib`
 
 Since every `nixosConfigurations` attr in this repository is built using
 `lib.mkConfig`, the same interface can also be used externally to create new
-configurations based on the provided roles, override inputs, add modules, or
-supply variables and secrets.
+configurations based on the provided roles, add inputs, add modules, or supply
+variables and secrets.
 
 See [`mkConfig` Usage](./doc/mkconfig.md) for more information.
 

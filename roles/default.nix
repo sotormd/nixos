@@ -1,5 +1,6 @@
 {
   roles = {
+    blank = _: { };
     image-gnome = _: { imports = [ ./image-gnome ]; };
     image-gnome-remote = _: { imports = [ ./image-gnome-remote ]; };
     image-minimal = _: { imports = [ ./image-minimal ]; };
