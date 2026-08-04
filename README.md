@@ -241,7 +241,7 @@ The configurations are created using [`mkConfig`](./doc/mkconfig.md). Each
   `profiles`
 - Flake-specific/Non-Flake glue for things like `inputs`, `self` and `lib`
 - Variables & Secrets (for machine roles only)
-- Optional additional modules, and attrs for `inputs`, `self` and `lib`
+- Optional additional values with `extra{Inputs,Self,Lib,SpecialArgs}`
 
 Since every `nixosConfigurations` attr in this repository is built using
 `lib.mkConfig`, the same interface can also be used externally to create new
