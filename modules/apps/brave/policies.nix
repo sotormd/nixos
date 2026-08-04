@@ -7,6 +7,13 @@
 }:
 
 let
+  choose-search =
+    (
+      cond: a: b:
+      if cond then [ a ] else [ b ]
+    )
+      vars.selfhosted.searxng.enable;
+
   basePolicies = {
     # permission settings
     DefaultClipboardSetting = 2;
@@ -61,23 +68,15 @@ let
     DefaultSearchProviderEnabled = true;
 
     DefaultSearchProviderImageURL = lib.concatStrings (
-      lib.choose vars.selfhosted.searxng.enable
-        "https://${vars.selfhosted.searxng.domain}/searxng/static/themes/simple/img/favicon.svg"
-        "https://duckduckgo.com/assets/logo_header_mobile.alt.v109.svg"
+      choose-search "https://${vars.selfhosted.searxng.domain}/searxng/static/themes/simple/img/favicon.svg" "https://duckduckgo.com/assets/logo_header_mobile.alt.v109.svg"
     );
 
-    DefaultSearchProviderKeyword = lib.concatStrings (
-      lib.choose vars.selfhosted.searxng.enable ":sx" ":ddg"
-    );
+    DefaultSearchProviderKeyword = lib.concatStrings (choose-search ":sx" ":ddg");
 
-    DefaultSearchProviderName = lib.concatStrings (
-      lib.choose vars.selfhosted.searxng.enable "SearXNG" "DuckDuckGo"
-    );
+    DefaultSearchProviderName = lib.concatStrings (choose-search "SearXNG" "DuckDuckGo");
 
     DefaultSearchProviderSearchURL = lib.concatStrings (
-      lib.choose vars.selfhosted.searxng.enable
-        "https://${vars.selfhosted.searxng.domain}/searxng/search?q={searchTerms}"
-        "https://duckduckgo.com/?q={searchTerms}"
+      choose-search "https://${vars.selfhosted.searxng.domain}/searxng/search?q={searchTerms}" "https://duckduckgo.com/?q={searchTerms}"
     );
 
     # disable the password manager

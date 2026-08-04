@@ -131,7 +131,7 @@
 
     # increase bits of entropy used for mmap ASLR
     "vm.mmap_rnd_bits" = lib.mkForce (
-      lib.concatStrings (lib.choose (pkgs.stdenv.hostPlatform.system == "aarch64-linux") "33" "32")
+      if (pkgs.stdenv.hostPlatform.system == "aarch64-linux") then "33" else "32"
     );
     "vm.mmap_rnd_compat_bits" = lib.mkForce "16";
   };
