@@ -151,7 +151,7 @@ This flake uses role-based configuration. These are the available machine roles:
 | Server      | Configuration for my home-servers.     | [Requirements](./doc/server/requirements.md) - [Setup](./doc/server/setup.md) - [Usage](./doc/server/usage.md)                |
 | Pi          | Configuration for my Raspberry Pi 4bs. | [Requirements](./doc/pi/requirements.md) - [Setup](./doc/pi/setup.md) - [Usage](./doc/pi/usage.md)                            |
 
-<detailts>
+<details>
 
 <summary>Click to expand: All roles</summary>
 
