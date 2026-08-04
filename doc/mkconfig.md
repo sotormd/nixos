@@ -51,22 +51,25 @@ As a result, `lib.mkConfig` from `flake.nix` builds flake-based systems, while
 
 `mkConfig` takes the following arguments in an attr set:
 
-| Attr           | Description            | Default                      | Example                              |
-| -------------- | ---------------------- | ---------------------------- | ------------------------------------ |
-| `role`         | Role                   | -                            | `image-gnome`, `machine-server`, ... |
-| `system`       | Platform               | -                            | `x86_64-linux` or `aarch64-linux`    |
-| `vars`         | Variables              | `null`                       | `import ./your/variables.nix`        |
-| `sops`         | sops-nix Secrets       | `null`                       | `./your/secrets.yaml`                |
-| `extraModules` | Extra modules to add   | `[ ]`                        | `[ ./your/module ]`                  |
-| `extraInputs`  | Extra attrs for inputs | `{ }`                        | `inputs` from your flake             |
-| `extraSelf`    | Extra attrs for self   | `{ }`                        | `self` from your flake               |
-| `extraLib`     | Extra attrs for lib    | `{ }`                        | `lib` from your flake                |
-| `inputs`       | Inputs (flake-like)    | `flakeInputs // extraInputs` | `your-inputs`                        |
-| `self`         | Self (flake-like)      | `flakeSelf // extraSelf`     | `your-inputs.self`                   |
-| `lib`          | Library functions      | `flakeLib // extraLib`       | `your-lib`                           |
+| Attr               | Description                 | Default                      | Example                              |
+| ------------------ | --------------------------- | ---------------------------- | ------------------------------------ |
+| `role`             | Role                        | -                            | `image-gnome`, `machine-server`, ... |
+| `system`           | Platform                    | -                            | `x86_64-linux` or `aarch64-linux`    |
+| `vars`             | Variables                   | `null`                       | `import ./your/variables.nix`        |
+| `sops`             | sops-nix Secrets            | `null`                       | `./your/secrets.yaml`                |
+| `extraModules`     | Extra modules to add        | `[ ]`                        | `[ ./your/module ]`                  |
+| `extraInputs`      | Extra attrs for inputs      | `{ }`                        | `inputs` from your flake             |
+| `extraSelf`        | Extra attrs for self        | `{ }`                        | `self` from your flake               |
+| `extraLib`         | Extra attrs for lib         | `{ }`                        | `lib` from your flake                |
+| `extraSpecialArgs` | Extra attrs for specialArgs | `{ }`                        | `lib` from your flake                |
+| `inputs`           | Inputs (flake-like)         | `flakeInputs // extraInputs` | `your-inputs`                        |
+| `self`             | Self (flake-like)           | `flakeSelf // extraSelf`     | `your-inputs.self`                   |
+| `lib`              | Library functions           | `flakeLib // extraLib`       | `your-lib`                           |
 
 > `role` corresponds to the various `self.nixosModules.roles.*` available in
-> this repository. There is also a `blank` role which imports nothing.
+> this repository. Each `role` imports various
+> `self.nixosModules.{modules,profiles}`. There is also a `blank` role which
+> imports nothing.
 
 > `inputs`, `self` and `lib` default to the repository's own values and should
 > rarely be replaced. Replacing them means taking responsibility for providing
@@ -74,21 +77,27 @@ As a result, `lib.mkConfig` from `flake.nix` builds flake-based systems, while
 > additional values should instead be supplied through `extraInputs`,
 > `extraSelf`, or `extraLib`.
 
+> `extraSpecialArgs` is merged into `specialArgs` with the `//` operator, this
+> means that it overrides anything with the same attribute names. Therefore,
+> `inputs`, `self`, `lib`, `vars` and `sops` should not be passed like this.
+
 For example, here is how `lib.mkConfig` is used for two `nixosConfigurations` in
 this flake:
 
-| Attr           | `machine-workstation-x86_64-linux` | `image-sd-aarch64-linux` |
-| -------------- | ---------------------------------- | ------------------------ |
-| `role`         | `"machine-workstation"`            | `"image-sd"`             |
-| `system`       | `"x86_64-linux"`                   | `"aarch64-linux"`        |
-| `vars`         | `import ./vars/vars.nix`           | default                  |
-| `sops`         | `./vars/secrets.yaml`              | default                  |
-| `extraModules` | default                            | default                  |
-| `extraInputs`  | default                            | default                  |
-| `extraSelf`    | default                            | default                  |
-| `extraLib`     | default                            | default                  |
-| `self`         | default                            | default                  |
-| `lib`          | default                            | default                  |
+| Attr               | `machine-workstation-x86_64-linux` | `image-sd-aarch64-linux` |
+| ------------------ | ---------------------------------- | ------------------------ |
+| `role`             | `"machine-workstation"`            | `"image-sd"`             |
+| `system`           | `"x86_64-linux"`                   | `"aarch64-linux"`        |
+| `vars`             | `import ./vars/vars.nix`           | default                  |
+| `sops`             | `./vars/secrets.yaml`              | default                  |
+| `extraModules`     | default                            | default                  |
+| `extraInputs`      | default                            | default                  |
+| `extraSelf`        | default                            | default                  |
+| `extraLib`         | default                            | default                  |
+| `extraSpecialArgs` | default                            | default                  |
+| `inputs`           | default                            | default                  |
+| `self`             | default                            | default                  |
+| `lib`              | default                            | default                  |
 
 Since every `nixosConfigurations` attr in this repository is built using
 `lib.mkConfig`, the same interface can also be used externally to create new

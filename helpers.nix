@@ -30,6 +30,7 @@ let
       extraLib ? { },
 
       # can be used to add extra special args
+      # overrides existing args with //
       extraSpecialArgs ? { },
 
       # probably should not override these
