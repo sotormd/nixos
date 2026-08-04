@@ -47,21 +47,16 @@ As a result, `lib.mkConfig` from `flake.nix` builds flake-based systems, while
 
 `mkConfig` takes the following arguments in an attr set:
 
-| Attr           | Description          | Default       | Example                           |
-| -------------- | -------------------- | ------------- | --------------------------------- |
-| `type`         | Type of role         | -             | `image` or `machine`              |
-| `role`         | Name of role         | -             | `gnome`, `server`, `sd`, ...      |
-| `system`       | Platform             | -             | `x86_64-linux` or `aarch64-linux` |
-| `vars`         | Variables            | `null`        | `import ./your/variables.nix`     |
-| `sops`         | sops-nix Secrets     | `null`        | `./your/secrets.yaml`             |
-| `extraModules` | Extra modules to add | `[ ]`         | `[ ./your/module ]`               |
-| `inputs`       | Inputs (flake-like)  | `flakeInputs` | `your-inputs`                     |
-| `self`         | Self (flake-like)    | `flakeSelf`   | `your-inputs.self`                |
-| `lib`          | Library functions    | `flakeLib`    | `your-lib`                        |
-
-> `type` and `role` correspond to directories under [`./roles`](../roles). For
-> example, `type = "machine"` and `role = "server"` selects
-> `./roles/machine-server`.
+| Attr           | Description          | Default       | Example                              |
+| -------------- | -------------------- | ------------- | ------------------------------------ |
+| `role`         | Role                 | -             | `image-gnome`, `machine-server`, ... |
+| `system`       | Platform             | -             | `x86_64-linux` or `aarch64-linux`    |
+| `vars`         | Variables            | `null`        | `import ./your/variables.nix`        |
+| `sops`         | sops-nix Secrets     | `null`        | `./your/secrets.yaml`                |
+| `extraModules` | Extra modules to add | `[ ]`         | `[ ./your/module ]`                  |
+| `inputs`       | Inputs (flake-like)  | `flakeInputs` | `your-inputs`                        |
+| `self`         | Self (flake-like)    | `flakeSelf`   | `your-inputs.self`                   |
+| `lib`          | Library functions    | `flakeLib`    | `your-lib`                           |
 
 > `inputs`, `self` and `lib` use the values from this repository by default,
 > which is what is expected. This should not be changed in most situations.
@@ -73,8 +68,7 @@ this flake:
 
 | Attr           | `machine-workstation-x86_64-linux` | `image-sd-aarch64-linux` |
 | -------------- | ---------------------------------- | ------------------------ |
-| `type`         | `"machine"`                        | `"image"`                |
-| `role`         | `"workstation"`                    | `"sd"`                   |
+| `role`         | `"machine-workstation"`            | `"image-sd"`             |
 | `system`       | `"x86_64-linux"`                   | `"aarch64-linux"`        |
 | `vars`         | `import ./vars/vars.nix`           | default                  |
 | `sops`         | `./vars/secrets.yaml`              | default                  |
@@ -100,8 +94,7 @@ For example, to extend the `machine-workstation` role with flakes:
 
   outputs = inputs: {
     nixosConfigurations.example = inputs.sotormd-nixos.lib.mkConfig {
-      type = "machine";
-      role = "workstation";
+      role = "machine-workstation";
       system = "x86_64-linux";
       vars = import ./vars.nix;
       sops = ./secrets.yaml;
@@ -133,8 +126,7 @@ let
   sotormd-nixos = import "${source}/nonflake.nix";
 
   config = sotormd-nixos.lib.mkConfig {
-    type = "image";
-    role = "minimal";
+    role = "image-minimal";
     system = "x86_64-linux";
     extraModules = [
       ./extra-config.nix

@@ -71,8 +71,7 @@ For example, to build a GNOME image with fastfetch installed.
 
   outputs = inputs: {
     nixosConfigurations.my-gnome-image = inputs.sotormd-nixos.lib.mkConfig {
-      type = "image";
-      role = "gnome";
+      role = "image-gnome";
       system = "x86_64-linux";
       extraModules = [
         (
@@ -97,8 +96,8 @@ nix build .#nixosConfigurations.my-gnome-image.config.system.build.isoImage
 
 # Remote Installs
 
-It is possible to use `lib.mkConfig` along with the `*-remote` roles to produce
-images for remote installs over wireless networks. See example below.
+It is possible to use `lib.mkConfig` along with the `image-*-remote` roles to
+produce images for remote installs over wireless networks. See example below.
 
 <details>
 
@@ -118,8 +117,7 @@ wireless network:
 
   outputs = inputs: {
     nixosConfigurations.my-remote-sd-image = inputs.sotormd-nixos.lib.mkConfig {
-      type = "image";
-      role = "sd-remote";
+      role = "image-sd-remote";
       system = "aarch64-linux";
       extraModules = [
         {

@@ -14,7 +14,6 @@ let
     {
 
       # required
-      type,
       role,
       system,
 
@@ -49,7 +48,7 @@ let
           { self, ... }:
 
           {
-            imports = [ self.nixosModules.roles."${type}-${role}" ];
+            imports = [ self.nixosModules.roles.${role} ];
           }
         )
 
@@ -105,8 +104,7 @@ let
         map (m: {
           name = "machine-${m.name}-${m.arch}";
           value = mkConfig {
-            type = "machine";
-            role = m.name;
+            role = "machine-${m.name}";
             system = m.arch;
             inherit vars sops;
           };
@@ -117,8 +115,7 @@ let
         map (i: {
           name = "image-${i.name}-${i.arch}";
           value = mkConfig {
-            type = "image";
-            role = i.name;
+            role = "image-${i.name}";
             system = i.arch;
           };
         }) targets.images
