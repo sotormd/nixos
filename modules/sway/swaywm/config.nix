@@ -390,15 +390,6 @@ let
       # DISABLE XWAYLAND
       #
       xwayland disable
-
-      #
-      # SWAYFX SETTINGS
-      #
-      corner_radius 5
-      blur enable
-      blur_radius 2
-      blur_passes 2
-      blur_brightness 1.1
     '';
     destination = "/config";
     executable = false;

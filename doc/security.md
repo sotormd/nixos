@@ -975,7 +975,7 @@ The desktop is 100% wayland, with no X or Xwayland.
 
 > Workstation only
 
-The swayfx compositor is used with minimal bells and whistles, a simple bar and
+The sway compositor is used with minimal bells and whistles, a simple bar and
 some widgets.
 
 XDG desktop portals are disabled.

@@ -45,7 +45,7 @@ NixOS configuration for multiple hosts.
 4. Desktop features:
 
    - 100% wayland, no xorg or xwayland
-   - [SwayFX](https://github.com/WillPower3309/swayfx) compositor
+   - [Sway](https://github.com/swaywm/sway) compositor
    - Alternate [cage](https://github.com/cage-kiosk/cage) session with the
      [foot](https://codeberg.org/dnkl/foot) terminal emulator
    - [Waybar](https://github.com/Alexays/Waybar) top panel with several useful
@@ -110,7 +110,7 @@ NixOS configuration for multiple hosts.
 | dns                           | `unbound`                                                                                                |
 | secure shell                  | `openssh`                                                                                                |
 | display server                | `wayland`                                                                                                |
-| compositor                    | `swayfx`, `cage`                                                                                         |
+| compositor                    | `sway`, `cage`                                                                                           |
 | bar                           | `waybar`                                                                                                 |
 | launcher                      | `rofi`                                                                                                   |
 | notifications                 | `dunst`                                                                                                  |

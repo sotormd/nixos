@@ -1,5 +1,5 @@
 {
-  swayfx,
+  sway,
   runtimeShell,
   symlinkJoin,
   writeTextFile,
@@ -13,7 +13,7 @@ let
     text = ''
       #!${runtimeShell}
 
-      ${swayfx}/bin/sway --config ${configuration}/config "$@"
+      ${sway}/bin/sway --config ${configuration}/config "$@"
     '';
     destination = "/bin/sway";
     executable = true;
@@ -21,7 +21,7 @@ let
 
   swayWrapped = symlinkJoin {
     name = "sway-wrapped";
-    paths = [ swayfx ];
+    paths = [ sway ];
 
     # replace the sway binary with our wrapper
     postBuild = ''
