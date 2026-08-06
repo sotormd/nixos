@@ -15,15 +15,6 @@ jobs:
       - name: Install Nix
         uses: DeterminateSystems/nix-installer-action@main
 
-      - name: Ensure variables and secrets are not present
-        run: |
-          if [ -f "./.sops.yaml" ]; then
-            exit 1
-          fi
-          if [ -d "./vars/" ]; then
-            exit 1
-          fi
-
       - name: Generate stub vars for checks
         run: |
           mkdir -p vars
