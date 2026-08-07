@@ -123,6 +123,9 @@
     # set of system utilities for linux
     pkgs.util-linux
 
+    # toosl for loading and managing kernel modules
+    pkgs.kmod
+
     # show full path of shell commands
     pkgs.which
 
