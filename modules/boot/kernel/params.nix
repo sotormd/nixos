@@ -85,6 +85,10 @@
     # can increase memory usage, especially with KVM-based hypervisors
     "kvm.nx_huge_pages=force"
 
+    # disable nested kvm
+    "kvm_intel.nested=0"
+    "kvm_amd.nested=0"
+
     # disable ipv6
     # i dont need this
     "ipv6.disable=1"

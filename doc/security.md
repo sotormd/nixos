@@ -1682,6 +1682,15 @@ Several kernel parameters are used to harden the kernel. They are covered below:
     ipv6.disable=1
     ```
 
+19. disable nested KVM
+
+    steady source of guest-to-host escapes recently (see Januscape, Zapscape)
+
+    ```
+    kvm_intel.nested=0
+    kvm_amd.nested=0
+    ```
+
 unused parameters due to high performance costs:
 
 ```
