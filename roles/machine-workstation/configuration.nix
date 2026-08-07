@@ -1,11 +1,15 @@
 {
   config,
+  pkgs,
   lib,
   vars,
   ...
 }:
 
 {
+  # overlays
+  nixpkgs.overlays = [ (_: _: { nordic = pkgs.callPackage ../../vendor/nordic { }; }) ];
+
   # environment variables
   environment.sessionVariables = {
     NIXOS_ROLE = "workstation";
