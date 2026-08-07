@@ -116,6 +116,7 @@
 
     # authentication related tools
     pkgs.su
+    pkgs.shadow
 
     # run programs and summarize system resources used
     pkgs.time
