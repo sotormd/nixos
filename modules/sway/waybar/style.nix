@@ -35,7 +35,6 @@ let
       #pulseaudio,
       #battery,
       #clock {
-        border-radius: 7px;
         margin: 5px 0px 0px 5px;
         padding: 0px 9px;
       }

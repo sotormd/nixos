@@ -69,7 +69,6 @@ let
           margin:                      0px;
           padding:                     0px;
           border:                      0px solid;
-          border-radius:               7px;
           border-color:                @border-colour;
           cursor:                      "default";
           /* Backgroud Colors */
@@ -91,7 +90,6 @@ let
           margin:                      0px;
           padding:                     20px;
           border:                      0px solid;
-          border-radius:               0px 0px 0px 0px;
           border-color:                @border-colour;
           background-color:            transparent;
           children:                    [ "inputbar", "message", "listview"];
@@ -104,7 +102,6 @@ let
           margin:                      0px;
           padding:                     8px;
           border:                      0px solid;
-          border-radius:               4px;
           border-color:                @border-colour;
           background-color:            @alternate-background;
           text-color:                  @foreground-colour;
@@ -173,7 +170,6 @@ let
           margin:                      0px;
           padding:                     0px;
           border:                      0px solid;
-          border-radius:               0px;
           border-color:                @border-colour;
           background-color:            transparent;
           text-color:                  @foreground-colour;
@@ -182,7 +178,6 @@ let
       scrollbar {
           handle-width:                5px ;
           handle-color:                @handle-colour;
-          border-radius:               8px;
           background-color:            @alternate-background;
       }
 
@@ -193,7 +188,6 @@ let
           margin:                      0px;
           padding:                     8px;
           border:                      0px solid;
-          border-radius:               4px;
           border-color:                @border-colour;
           background-color:            transparent;
           text-color:                  @foreground-colour;
@@ -256,7 +250,6 @@ let
           margin:                      0px;
           padding:                     0px;
           border:                      0px solid;
-          border-radius:               0px 0px 0px 0px;
           border-color:                @border-colour;
           background-color:            transparent;
           text-color:                  @foreground-colour;
@@ -264,7 +257,6 @@ let
       textbox {
           padding:                     8px;
           border:                      0px solid;
-          border-radius:               4px;
           border-color:                @border-colour;
           background-color:            @alternate-background;
           text-color:                  @foreground-colour;
@@ -278,7 +270,6 @@ let
       error-message {
           padding:                     10px;
           border:                      0px solid;
-          border-radius:               0px;
           border-color:                @border-colour;
           background-color:            @background-colour;
           text-color:                  @foreground-colour;

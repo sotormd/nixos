@@ -13,7 +13,6 @@ let
     text = ''
       [global]
       background="#${colors.dunst.bg}"
-      corner_radius=7
       font="${colors.fonts.normal} 9"
       frame_color="#${colors.dunst.normal}"
       gap_size=5
