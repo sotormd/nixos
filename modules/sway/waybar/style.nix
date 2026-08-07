@@ -51,12 +51,12 @@ let
       }
 
       #workspaces {
-        margin-left: 5px;
+        margin-left: 6px;
       }
 
       #mode,
       #clock {
-        margin-right: 5px;
+        margin-right: 6px;
       }
 
       #workspaces button {

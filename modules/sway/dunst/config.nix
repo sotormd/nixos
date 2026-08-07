@@ -17,7 +17,7 @@ let
       frame_color="#${colors.dunst.normal}"
       gap_size=5
       monitor=${vars.displays.outputs.${vars.displays.primary}.identifier}
-      offset="5x5"
+      offset="6x6"
       origin="top-right"
       highlight="#${colors.dunst.normal}"
 
