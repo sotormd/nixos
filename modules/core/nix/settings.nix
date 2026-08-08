@@ -1,19 +1,21 @@
+{ lib, ... }:
+
 {
   # settings for the nix package manager
   nix.settings = {
 
     # enable experimental features
-    experimental-features = [
+    experimental-features = lib.mkForce [
       "nix-command"
       "flakes"
     ];
 
     # only allow members of the wheel group
     # to use the nix package manager
-    allowed-users = [ "@wheel" ];
+    allowed-users = lib.mkForce [ "@wheel" ];
 
     # only trust the root user
-    trusted-users = [ "root" ];
+    trusted-users = lib.mkForce [ "root" ];
 
     # download only cryptographically signed binaries
     # preventing MITM attacks
