@@ -276,6 +276,7 @@ Others:
   vaults when away from main server
 - [flag](https://github.com/sotormd/flag), A
   [pattern](https://github.com/sotormd/pattern) for my VMs
+- [foo](https://github.com/sotormd/foo), A simple Nix-based operating system
 - [nate](https://github.com/sotormd/nate), MATE desktop for my NixOS needs
 - [coffee](https://github.com/sotormd/coffee), A very minimal openbox
   configuration
