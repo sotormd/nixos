@@ -13,7 +13,7 @@
         PROMPT_SYMBOL='%'
       fi
 
-      PS1="\n\[\033[$PROMPT_COLOR\][\h:\w] $PROMPT_SYMBOL\[\033[0m\] "
+      PS1="\n\[\033[$PROMPT_COLOR\]\h \w $PROMPT_SYMBOL\[\033[0m\] "
     fi
   '';
 }
