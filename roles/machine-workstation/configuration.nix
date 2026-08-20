@@ -1,16 +1,11 @@
 {
   config,
-  pkgs,
   lib,
   vars,
   ...
 }:
 
 {
-  # overlays
-  # FIXME: remove after https://github.com/NixOS/nixpkgs/pull/548486
-  nixpkgs.overlays = [ (_: _: { nordic = pkgs.callPackage ../../vendor/nordic { }; }) ];
-
   # environment variables
   environment.sessionVariables = {
     NIXOS_ROLE = "workstation";

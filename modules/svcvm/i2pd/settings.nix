@@ -14,7 +14,7 @@ in
     # enable the i2pd i2p router
     enable = true;
 
-    proto = {
+    settings = {
 
       # enable SAM
       sam = {
@@ -23,7 +23,7 @@ in
       };
 
       # enable HTTP proxy
-      httpProxy = {
+      httpproxy = {
         enable = true;
         inherit (i2pd.http-proxy) address port;
       };
@@ -34,14 +34,15 @@ in
         inherit (i2pd.web-console) address port hostname;
       };
 
-    };
+      # addressbook from reg.i2p
+      addressbook = {
+        enable = true;
+        defaulturl = "http://shx5vqsw7usdaunyzr2qmes2fq37oumybpudrd4jjj4e4vk4uusa.b32.i2p/hosts.txt";
+        subscriptions = lib.mkForce [
+          "http://shx5vqsw7usdaunyzr2qmes2fq37oumybpudrd4jjj4e4vk4uusa.b32.i2p/hosts.txt"
+        ];
+      };
 
-    # addressbook from reg.i2p
-    addressbook = {
-      defaulturl = "http://shx5vqsw7usdaunyzr2qmes2fq37oumybpudrd4jjj4e4vk4uusa.b32.i2p/hosts.txt";
-      subscriptions = lib.mkForce [
-        "http://shx5vqsw7usdaunyzr2qmes2fq37oumybpudrd4jjj4e4vk4uusa.b32.i2p/hosts.txt"
-      ];
     };
 
   };
