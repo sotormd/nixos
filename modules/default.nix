@@ -127,6 +127,9 @@
     # build, sign and copy remote closures
     network.seed = _: { imports = [ ./network/seed ]; };
 
+    # wired networking
+    network.wired = _: { imports = [ ./network/wired ]; };
+
     # wireguard vpn
     network.wireguard = _: { imports = [ ./network/wireguard ]; };
 

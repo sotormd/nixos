@@ -11,6 +11,7 @@ lib.mkIf config.vars.modes.gnome.enable {
   specialisation.gnome = {
     inheritParentConfig = false;
     configuration = {
+
       imports = [
         ../configuration.nix
         ../impermanence.nix
@@ -19,15 +20,18 @@ lib.mkIf config.vars.modes.gnome.enable {
         self.nixosModules.modules.desktop.gnome
         self.nixosModules.profiles.deskspec
       ];
+
       networking.wireless.enable = true;
       networking.wireless.userControlled = true;
       users.users.${config.vars.user.name}.extraGroups = [
         "wpa_supplicant"
         "networkmanager"
       ];
+
       environment.sessionVariables.NIXOS_ROLE = lib.mkForce "workstation-mode-gnome";
+
       vars = {
-        wireless.resolver = lib.mkForce "1.1.1.1";
+        network.resolver = lib.mkForce "1.1.1.1";
         selfhosted = {
           searxng.enable = lib.mkForce false;
           vaultwarden.enable = lib.mkForce false;
@@ -35,6 +39,7 @@ lib.mkIf config.vars.modes.gnome.enable {
           qbt.enable = lib.mkForce false;
         };
       };
+
     };
   };
 

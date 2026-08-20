@@ -32,9 +32,7 @@
       git = lib.mkForce { };
       sshAliases = lib.mkForce { };
     };
-    wireguard = {
-      forwarding = lib.mkForce false;
-    };
+    network.wireguard.forwarding = lib.mkForce false;
     features = {
       secureboot.enable = lib.mkForce false;
     };
@@ -93,8 +91,8 @@
     in
     [
       {
-        assertion = !config.vars.wireguard.forwarding;
-        message = "variables: vars.wireguard.forwarding cannot be true";
+        assertion = !config.vars.network.wireguard.forwarding;
+        message = "variables: vars.network.wireguard.forwarding cannot be true";
       }
       {
         assertion = builtins.all (x: !x) featuresDisabled;

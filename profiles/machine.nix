@@ -30,6 +30,7 @@ in
     network.host
     network.macchanger
     network.seed
+    network.wired
     network.wireguard
     network.wireless
     services.auditd

@@ -30,11 +30,11 @@ in
     wantedBy = [ "svcvm.target" ];
     wants = [
       "network-online.target"
-      "wpa_supplicant-${config.vars.wireless.interface}.service"
+      "wpa_supplicant-${config.vars.network.wireless.interface}.service"
     ];
     after = [
       "network-online.target"
-      "wpa_supplicant-${config.vars.wireless.interface}.service"
+      "wpa_supplicant-${config.vars.network.wireless.interface}.service"
     ];
     serviceConfig =
       let
@@ -132,8 +132,17 @@ in
       git = lib.mkForce { };
       sshAliases = lib.mkForce { };
     };
-    wireguard = {
-      forwarding = lib.mkForce true;
+    network = {
+      wireless = {
+        enable = lib.mkForce true;
+      };
+      wireguard = {
+        enable = lib.mkForce true;
+        forwarding = lib.mkForce true;
+      };
+      wired = {
+        enable = lib.mkForce false;
+      };
     };
     modes = {
       roaming.enable = lib.mkForce false;
@@ -197,8 +206,20 @@ in
         '';
       }
       {
-        assertion = config.vars.wireguard.forwarding;
-        message = "variables: vars.wireguard.forwarding needs to be true";
+        assertion = config.vars.network.wireless.enable;
+        message = "variables: vars.network.wireless.enable needs to be true";
+      }
+      {
+        assertion = config.vars.network.wireguard.enable;
+        message = "variables: vars.network.wireguard.enable needs to be true";
+      }
+      {
+        assertion = config.vars.network.wireguard.forwarding;
+        message = "variables: vars.network.wireguard.forwarding needs to be true";
+      }
+      {
+        assertion = !config.vars.network.wired.enable;
+        message = "variables: vars.network.wired is not supported";
       }
       {
         assertion = builtins.all (x: !x) selfhostedDisabled;

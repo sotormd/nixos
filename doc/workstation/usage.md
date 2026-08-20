@@ -652,7 +652,7 @@ Server using the `vars.selfhosted.*` variables.
 
 1. Unbound DNS resolver
 
-   Set the `vars.wireless.resolver` to the Server WireGuard peer address.
+   Set the `vars.network.resolver` to the Server WireGuard peer address.
 
 1. SearXNG metasearch engine `vars.selfhosted.searxng`
 

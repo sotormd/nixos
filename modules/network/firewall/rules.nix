@@ -1,11 +1,11 @@
 { config, lib, ... }:
 
 let
-  inherit (config.vars.wireless) interface address;
-
   inherit (lib) ports addresses ifaces;
 
-  inherit (config.vars) wireguard;
+  inherit (config.vars.network) wireless wireguard wired;
+
+  inherit (config.vars.network.wireless) interface address;
 
   inherit (config.vars.services)
     ssh
@@ -20,6 +20,43 @@ let
   o = lib.optionalString;
 
   mkRules = rules: lib.concatStringsSep "\n" (lib.filter (s: s != "") rules);
+
+  ####################################################################################################################################################################
+  #
+  # BASIC INTERFACES
+  #
+
+  ifaces-input = mkRules [
+
+    (o wireless.enable ''
+      iifname "${interface}" ct state established,related accept
+    '')
+
+    (o wireguard.enable ''
+      iifname "${ifaces.wireguard}" ct state established,related accept
+    '')
+
+    (o wired.enable ''
+      iifname "${wired.interface}" ct state established,related accept
+    '')
+
+  ];
+
+  ifaces-output = mkRules [
+
+    (o wireless.enable ''
+      oifname "${interface}" accept
+    '')
+
+    (o wireguard.enable ''
+      oifname "${ifaces.wireguard}" accept
+    '')
+
+    (o wired.enable ''
+      oifname "${wired.interface}" accept
+    '')
+
+  ];
 
   ####################################################################################################################################################################
   #
@@ -113,16 +150,16 @@ let
   # required for wireguard to access VM-forwarded ports
   svcvm-forwards-ingress = mkRules [
 
-    (o (unbound.enable && wireguard.forwarding) ''
+    (o unbound.enable ''
       ip saddr ${unbound.allow} iifname "${ifaces.wireguard}" oifname "${ifaces.unbound}" ip daddr ${addresses.unbound} tcp dport ${toString ports.unbound.dns} ct state new accept
       ip saddr ${unbound.allow} iifname "${ifaces.wireguard}" oifname "${ifaces.unbound}" ip daddr ${addresses.unbound} udp dport ${toString ports.unbound.dns} ct state new accept
     '')
 
-    (o (nginx.enable && wireguard.forwarding) ''
+    (o nginx.enable ''
       ip saddr ${nginx.allow} iifname "${ifaces.wireguard}" oifname "${ifaces.nginx}" ip daddr ${addresses.nginx} tcp dport ${toString ports.nginx.https} ct state new accept
     '')
 
-    (o (i2pd.enable && wireguard.forwarding) ''
+    (o i2pd.enable ''
       ip saddr ${i2pd.allow} iifname "${ifaces.wireguard}" oifname "${ifaces.i2pd}" ip daddr ${addresses.i2pd} tcp dport ${toString ports.i2pd.http-proxy} ct state new accept
     '')
 
@@ -219,16 +256,16 @@ let
   # required for wireguard to access VM-forwarded ports
   svcvm-nat-prerouting = mkRules [
 
-    (o (unbound.enable && wireguard.forwarding) ''
+    (o unbound.enable ''
       ip saddr ${unbound.allow} iifname "${ifaces.wireguard}" tcp dport ${toString ports.unbound.dns} dnat to ${addresses.unbound}
       ip saddr ${unbound.allow} iifname "${ifaces.wireguard}" udp dport ${toString ports.unbound.dns} dnat to ${addresses.unbound}
     '')
 
-    (o (nginx.enable && wireguard.forwarding) ''
+    (o nginx.enable ''
       ip saddr ${nginx.allow} iifname "${ifaces.wireguard}" tcp dport ${toString ports.nginx.https} dnat to ${addresses.nginx}
     '')
 
-    (o (i2pd.enable && wireguard.forwarding) ''
+    (o i2pd.enable ''
       ip saddr ${i2pd.allow} iifname "${ifaces.wireguard}" tcp dport ${toString ports.i2pd.http-proxy} dnat to ${addresses.i2pd}
     '')
 
@@ -266,8 +303,7 @@ in
             ct state invalid drop
             tcp flags & (fin|syn|rst|ack) != syn ct state new drop
             iifname "lo" ct state established,related accept
-            iifname "${interface}" ct state established,related accept
-            iifname "${ifaces.wireguard}" ct state established,related accept
+            ${ifaces-input}
             ${libvirt-input}
             ${svcvm-input}
             ${lo-services}
@@ -289,8 +325,7 @@ in
             ct state invalid drop
         		ct state established,related accept
             oifname "lo" accept
-            oifname "${interface}" accept
-            oifname "${ifaces.wireguard}" accept
+            ${ifaces-output}
             ${libvirt-output}
             ${svcvm-output}
         }

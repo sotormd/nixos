@@ -3,7 +3,7 @@
 {
   # use WPA3 on the default connection
   networking.wireless.networks = {
-    "${config.vars.wireless.ssid}" = {
+    "${config.vars.network.wireless.ssid}" = {
       authProtocols = [ "SAE" ];
     };
   };

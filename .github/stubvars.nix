@@ -66,18 +66,26 @@
     locale = "en_US.UTF-8";
   };
 
-  wireless = {
-    interface = "wlp1s0";
-    ssid = "net";
-    gateway = "10.0.0.1";
-    address = "10.0.0.2";
+  network = {
     resolver = "10.0.0.3";
-  };
-  wireguard = {
-    address = "10.20.0.1";
-    port = 51820;
-    peers = [ ];
-    allow = "10.0.0.2/32";
+    wireless = {
+      enable = true;
+      interface = "wlp1s0";
+      ssid = "net";
+      gateway = "10.0.0.1";
+      address = "10.0.0.2";
+    };
+    wireguard = {
+      enable = true;
+      address = "10.20.0.1";
+      port = 51820;
+      peers = [ ];
+      allow = "10.0.0.2/32";
+    };
+    wired = {
+      enable = true;
+      interface = "eth0";
+    };
   };
 
   displays = {

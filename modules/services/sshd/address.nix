@@ -8,7 +8,7 @@ lib.mkIf ssh.enable {
   services.openssh = {
 
     # ssh address
-    settings.ListenAddress = config.vars.wireless.address;
+    settings.ListenAddress = config.vars.network.wireless.address;
 
     # ssh port
     ports = lib.mkForce [ ssh.port ];

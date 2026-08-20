@@ -351,37 +351,60 @@ elif [ "$VERB" == "vars" ]; then
 
   };
 
-  # wpa_supplicant wireless networking
-  wireless = {
-
-    # wireless NIC identifier
-    interface = "wlp1s0";
-
-    # wireless network ssid
-    ssid = "example";
-
-    # wireless network gateway
-    gateway = "10.0.0.1";
-
-    # static IP address
-    address = "10.0.0.2";
+  # networking options
+  network = {
 
     # primary DNS resolver
     resolver = "10.0.0.3";
 
-  };
+    # wpa_supplicant wireless networking
+    wireless = {
 
-  # wireguard vpn
-  wireguard = {
+      # enable wireless networking
+      enable = false;
 
-    # wireguard address
-    address = "10.20.0.2";
+      # wireless NIC identifier
+      interface = "wlp1s0";
 
-    # wireguard port
-    port = 51820;
+      # wireless network ssid
+      ssid = "example";
 
-    # wireguard peers
-    peers = [ ];
+      # wireless network gateway
+      gateway = "10.0.0.1";
+
+      # static IP address
+      address = "10.0.0.2";
+
+    };
+
+    # wireguard vpn
+    wireguard = {
+
+      # enable wireguard
+      enable = false;
+
+      # wireguard address
+      address = "10.20.0.2";
+
+      # wireguard port
+      port = 51820;
+
+      # wireguard peers
+      peers = [ ];
+
+    };
+
+    # optional wired networking
+    # with DHCP
+    wired = {
+
+      # enable wired networking
+      enable = false;
+
+      # wired NIC identifier
+      interface = "eth0";
+
+    };
 
   };
 
@@ -628,41 +651,42 @@ the following values have been populated from the installation environment
 
   };
 
-  # wpa_supplicant wireless networking
-  wireless = {
-
-    # wireless NIC identifier
-    interface = "wlp1s0";
-
-    # wireless network ssid
-    ssid = "example";
-
-    # wireless network gateway
-    gateway = "10.0.0.1";
-
-    # static IP address
-    address = "10.0.0.2";
+  # networking options
+  network = {
 
     # primary DNS resolver
     resolver = "10.0.0.3";
 
-  };
+    # wpa_supplicant wireless networking
+    wireless = {
 
-  # wireguard vpn
-  wireguard = {
+      # wireless NIC identifier
+      interface = "wlp1s0";
 
-    # wireguard address
-    address = "10.20.0.2";
+      # wireless network ssid
+      ssid = "example";
 
-    # wireguard port
-    port = 51820;
+      # wireless network gateway
+      gateway = "10.0.0.1";
 
-    # wireguard peers
-    peers = [ ];
+      # static IP address
+      address = "10.0.0.2";
 
-    # private CIDR (LAN) to allow
-    # used by nftables only
-    allow = "10.0.0.2/32";
+    };
+
+    # wireguard vpn
+    wireguard = {
+
+      # wireguard address
+      address = "10.20.0.2";
+
+      # wireguard port
+      port = 51820;
+
+      # wireguard peers
+      peers = [ ];
+
+    };
 
   };
 
@@ -884,37 +908,60 @@ the following values have been populated from the installation environment
 
   };
 
-  # wpa_supplicant wireless networking
-  wireless = {
-
-    # wireless NIC identifier
-    interface = "wlan0";
-
-    # wireless network ssid
-    ssid = "example";
-
-    # wireless network gateway
-    gateway = "10.0.0.1";
-
-    # static IP address
-    address = "10.0.0.3";
+  # networking options
+  network = {
 
     # primary DNS resolver
-    resolver = "127.0.0.1";
+    resolver = "10.0.0.3";
 
-  };
+    # wpa_supplicant wireless networking
+    wireless = {
 
-  # wireguard vpn
-  wireguard = {
+      # enable wireless networking
+      enable = false;
 
-    # wireguard address
-    address = "10.20.0.1";
+      # wireless NIC identifier
+      interface = "wlan0";
 
-    # wireguard port
-    port = 51820;
+      # wireless network ssid
+      ssid = "example";
 
-    # wireguard peers
-    peers = [ ];
+      # wireless network gateway
+      gateway = "10.0.0.1";
+
+      # static IP address
+      address = "10.0.0.2";
+
+    };
+
+    # wireguard vpn
+    wireguard = {
+
+      # enable wireguard
+      enable = false;
+
+      # wireguard address
+      address = "10.20.0.2";
+
+      # wireguard port
+      port = 51820;
+
+      # wireguard peers
+      peers = [ ];
+
+    };
+
+    # optional wired networking
+    # with DHCP
+    wired = {
+
+      # enable wired networking
+      enable = false;
+
+      # wired NIC identifier
+      interface = "eth0";
+
+    };
 
   };
 

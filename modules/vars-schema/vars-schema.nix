@@ -149,50 +149,74 @@ in
 
     };
 
-    wireless = {
-
-      interface = mkOption {
-        type = types.str;
-      };
-
-      ssid = mkOption {
-        type = types.str;
-      };
-
-      gateway = mkOption {
-        type = privateAddr;
-      };
-
-      address = mkOption {
-        type = privateAddr;
-      };
+    network = {
 
       resolver = mkOption {
         type = types.str;
       };
 
-    };
+      wireless = {
 
-    wireguard = {
+        enable = mkOption {
+          type = types.bool;
+        };
 
-      address = mkOption {
-        type = privateAddr;
+        interface = mkOption {
+          type = types.str;
+        };
+
+        ssid = mkOption {
+          type = types.str;
+        };
+
+        gateway = mkOption {
+          type = privateAddr;
+        };
+
+        address = mkOption {
+          type = privateAddr;
+        };
+
       };
 
-      port = mkOption {
-        type = types.port;
+      wireguard = {
+
+        enable = mkOption {
+          type = types.bool;
+        };
+
+        address = mkOption {
+          type = privateAddr;
+        };
+
+        port = mkOption {
+          type = types.port;
+        };
+
+        peers = mkOption {
+          type = types.listOf types.attrs;
+        };
+
+        forwarding = mkOption {
+          type = types.bool;
+        };
+
+        allow = mkOption {
+          type = privateCidr;
+        };
+
       };
 
-      peers = mkOption {
-        type = types.listOf types.attrs;
-      };
+      wired = {
 
-      forwarding = mkOption {
-        type = types.bool;
-      };
+        enable = mkOption {
+          type = types.bool;
+        };
 
-      allow = mkOption {
-        type = privateCidr;
+        interface = mkOption {
+          type = types.str;
+        };
+
       };
 
     };

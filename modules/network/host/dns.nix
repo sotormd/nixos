@@ -2,7 +2,7 @@
 
 let
   text = ''
-    nameserver ${config.vars.wireless.resolver}
+    nameserver ${config.vars.network.resolver}
     nameserver 1.1.1.1
     nameserver 1.0.0.1
   '';

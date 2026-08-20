@@ -1,10 +1,10 @@
 { config, lib, ... }:
 
 let
-  inherit (config.vars) wireguard;
+  inherit (config.vars.network) wireguard;
   inherit (lib) ifaces;
 in
-{
+lib.mkIf wireguard.enable {
   systemd.network.networks."50-wireguard" = {
     matchConfig.Name = ifaces.wireguard;
     address = [ "${wireguard.address}/32" ];
