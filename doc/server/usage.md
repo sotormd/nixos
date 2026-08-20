@@ -8,7 +8,7 @@ This document covers using the Server role.
 2. [Bind Mounts and External Disks](#bind-mounts-and-external-disks)
 3. [Services](#services)
 4. [Service Virtual Machines](#service-virtual-machines)
-5. [WireGuard](#wireguard)
+5. [Networking](#networking)
 6. [Further Reading](#further-reading)
 
 # System Maintenance
@@ -150,10 +150,10 @@ Access control is enforced in the following places:
 
 Clients must satisfy ALL of:
 
-- in the private LAN CIDR defined by `vars.wireguard.allow`, for nftables
-  filtering on LAN
-- declared as a peer with public key in `vars.wireguard.peers`, for WireGuard
-  tunnelling
+- in the private LAN CIDR defined by `vars.network.wireguard.allow`, for
+  nftables filtering on LAN
+- declared as a peer with public key in `vars.network.wireguard.peers`, for
+  WireGuard tunnelling
 - in the private WireGuard CIDR defined by `vars.services.unbound.allow`, for
   nftables filtering on WireGuard
 - in the private WireGuard CIDR defined by `vars.services.unbound.allow`, for
@@ -210,10 +210,10 @@ Access control is enforced in the following places:
 
 Clients must satisfy ALL of:
 
-- in the private LAN CIDR defined by `vars.wireguard.allow`, for nftables
-  filtering on LAN
-- declared as a peer with public key in `vars.wireguard.peers`, for WireGuard
-  tunnelling
+- in the private LAN CIDR defined by `vars.network.wireguard.allow`, for
+  nftables filtering on LAN
+- declared as a peer with public key in `vars.network.wireguard.peers`, for
+  WireGuard tunnelling
 - in the private WireGuard CIDR defined by `vars.services.nginx.allow`, for
   nftables filtering on WireGuard
 - in the private WireGuard CIDR defined by `vars.services.<name>.allow` for
@@ -256,10 +256,10 @@ Access control is enforced in the following places:
 
 Clients must satisfy ALL of:
 
-- in the private LAN CIDR defined by `vars.wireguard.allow`, for nftables
-  filtering on LAN
-- declared as a peer with public key in `vars.wireguard.peers`, for WireGuard
-  tunnelling
+- in the private LAN CIDR defined by `vars.network.wireguard.allow`, for
+  nftables filtering on LAN
+- declared as a peer with public key in `vars.network.wireguard.peers`, for
+  WireGuard tunnelling
 - in the private WireGuard CIDR defined by `vars.services.nginx.allow`, for
   nftables filtering on WireGuard
 - in the private WireGuard CIDR defined by `vars.services.searxng.allow`, for
@@ -286,10 +286,10 @@ Access control is enforced in the following places:
 
 Clients must satisfy ALL of:
 
-- in the private LAN CIDR defined by `vars.wireguard.allow`, for nftables
-  filtering on LAN
-- declared as a peer with public key in `vars.wireguard.peers`, for WireGuard
-  tunnelling
+- in the private LAN CIDR defined by `vars.network.wireguard.allow`, for
+  nftables filtering on LAN
+- declared as a peer with public key in `vars.network.wireguard.peers`, for
+  WireGuard tunnelling
 - in the private WireGuard CIDR defined by `vars.services.nginx.allow`, for
   nftables filtering on WireGuard
 - in the private WireGuard CIDR defined by `vars.services.vaultwarden.allow`,
@@ -324,10 +324,10 @@ For webconsole:
 
 Clients must satisfy ALL of:
 
-- in the private LAN CIDR defined by `vars.wireguard.allow`, for nftables
-  filtering on LAN
-- declared as a peer with public key in `vars.wireguard.peers`, for WireGuard
-  tunnelling
+- in the private LAN CIDR defined by `vars.network.wireguard.allow`, for
+  nftables filtering on LAN
+- declared as a peer with public key in `vars.network.wireguard.peers`, for
+  WireGuard tunnelling
 - in the private WireGuard CIDR defined by `vars.services.nginx.allow`, for
   nftables filtering on WireGuard
 - in the private WireGuard CIDR defined by `vars.services.i2pd.allow`, for NGINX
@@ -337,10 +337,10 @@ For HTTP proxy:
 
 Clients must satisfy ALL of:
 
-- in the private LAN CIDR defined by `vars.wireguard.allow`, for nftables
-  filtering on LAN
-- declared as a peer with public key in `vars.wireguard.peers`, for WireGuard
-  tunnelling
+- in the private LAN CIDR defined by `vars.network.wireguard.allow`, for
+  nftables filtering on LAN
+- declared as a peer with public key in `vars.network.wireguard.peers`, for
+  WireGuard tunnelling
 - in the private WireGuard CIDR defined by `vars.services.i2pd.allow`, for
   nftables filtering on WireGuard
 
@@ -392,10 +392,10 @@ Access control is enforced in the following places:
 
 Clients must satisfy ALL of:
 
-- in the private LAN CIDR defined by `vars.wireguard.allow`, for nftables
-  filtering on LAN
-- declared as a peer with public key in `vars.wireguard.peers`, for WireGuard
-  tunnelling
+- in the private LAN CIDR defined by `vars.network.wireguard.allow`, for
+  nftables filtering on LAN
+- declared as a peer with public key in `vars.network.wireguard.peers`, for
+  WireGuard tunnelling
 - in the private WireGuard CIDR defined by `vars.services.nginx.allow`, for
   nftables filtering on WireGuard
 - in the private WireGuard CIDR defined by `vars.services.qbt.allow`, for NGINX
@@ -438,10 +438,53 @@ root password `toor` if the corresponding `vars.services.<name>.debug` is set to
 svcvm ssh nginx
 ```
 
-# WireGuard
+# Networking
+
+Networking is configured using `vars.network`.
+
+1. [Wireless](#wireless)
+2. [WireGuard](#wireguard)
+
+## Wireless
+
+Wireless networking is configured using `vars.network.wireless`, this is always
+enabled and is the default interface used for all purposes, including serving
+services.
+
+Static addresses are used instead of DHCP. This is configured using
+`vars.network.wireless.{gateway,address}`.
+
+The SSID is configured using `vars.network.wireless.ssid` and the PSK is stored
+using `sops`.
+
+```nix
+{
+  # wpa_supplicant wireless networking
+  wireless = {
+
+    # wireless NIC identifier
+    interface = "wlp1s0";
+
+    # wireless network ssid
+    ssid = "example";
+
+    # wireless network gateway
+    gateway = "10.0.0.1";
+
+    # static IP address
+    address = "10.0.0.2";
+
+  };
+}
+```
+
+This `interface` and `address` is also used by nftables to control access to
+services.
+
+## WireGuard
 
 Services are exposed using WireGuard over LAN. WireGuard is configured in the
-variables file under `vars.wireguard`.
+variables file under `vars.network.wireguard`.
 
 Example configuration for Server (`10.20.0.1` on wireguard) with a single peer
 Workstation (`10.20.0.2` on wireguard, `10.0.0.2` on LAN):

@@ -7,7 +7,9 @@ This document covers using the Pi role.
 1. [System Maintenance](#system-maintenance)
 2. [Bind Mounts and External Disks](#bind-mounts-and-external-disks)
 3. [Services](#services)
-4. [Further Reading](#further-reading)
+4. [Networking](#networking)
+5. [Using Selfhosted Features](#using-selfhosted-features)
+6. [Further Reading](#further-reading)
 
 # System Maintenance
 
@@ -103,6 +105,129 @@ For `vars.services.ssh`
   ];
 }
 ```
+
+# Networking
+
+Networking is configured using `vars.network`.
+
+1. [Wireless](#wireless)
+2. [WireGuard](#wireguard)
+3. [Wired](#wired)
+
+## Wireless
+
+Wireless networking is configured using `vars.network.wireless` and is enabled
+using `vars.network.wireless.enable`.
+
+Static addresses are used instead of DHCP. This is configured using
+`vars.network.wireless.{gateway,address}`.
+
+The SSID is configured using `vars.network.wireless.ssid` and the PSK is stored
+using `sops`.
+
+```nix
+{
+  # wpa_supplicant wireless networking
+  wireless = {
+
+    # enable wireless networking
+    enable = true;
+
+    # wireless NIC identifier
+    interface = "wlp1s0";
+
+    # wireless network ssid
+    ssid = "example";
+
+    # wireless network gateway
+    gateway = "10.0.0.1";
+
+    # static IP address
+    address = "10.0.0.2";
+
+  };
+}
+```
+
+## WireGuard
+
+See [Using Selfhosted Features](#using-selfhosted-features) for information
+about using WireGuard.
+
+## Wired
+
+Wired networking can be used using `vars.network.wired`, this uses DHCP.
+
+```nix
+{
+  # optional wired networking
+  # with DHCP
+  wired = {
+
+    # enable wired networking
+    enable = true;
+
+    # wired NIC identifier
+    interface = "eth0";
+
+  };
+}
+```
+
+# Using Selfhosted Features
+
+Services are exposed by Server using WireGuard. WireGuard is configured in the
+variables file under `vars.network.wireguard`.
+
+Pi can use selfhosted services from Server using WireGuard (configured using
+`vars.network.wireguard`).
+
+Example configuration for Pi (`10.20.0.2` on wireguard) with a single peer
+Server (`10.20.0.1` on wireguard, `10.0.0.3` on LAN):
+
+```nix
+{
+  # wireguard vpn
+  wireguard = {
+
+    # enable wireguard
+    enable = true;
+
+    # wireguard address
+    address = "10.20.0.2";
+
+    # wireguard port
+    port = 51820;
+
+    # wireguard peers
+    peers = [
+      {
+        PublicKey = "dfk4SUxCbQQcR18XAkh3bGyrvOBd+nscYCZWiFUrkGA=";
+        Endpoint = "10.0.0.3:51820";
+        AllowedIPs = [ "10.20.0.1/32" ];
+        PersistentKeepalive = 25;
+      }
+    ];
+
+  };
+}
+```
+
+The Workstation has to be declared as a peer on the Server as well. See
+[Server Usage Documentation](../server/usage.md#wireguard).
+
+1. Unbound DNS resolver
+
+   Set the `vars.network.resolver` to the Server WireGuard peer address.
+
+2. NGINX reverse proxy endpoints
+
+   All the locations can be accessed, see
+   [Server Usage Documentation](../server/usage.md#locations) for a full list.
+
+3. I2PD i2p router
+
+   The HTTP proxy can be independently used with no further configuration.
 
 # Further Reading
 
