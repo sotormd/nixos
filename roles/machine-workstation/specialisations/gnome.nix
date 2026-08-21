@@ -1,5 +1,4 @@
 {
-  inputs,
   self,
   config,
   lib,
@@ -11,35 +10,11 @@ lib.mkIf config.vars.modes.gnome.enable {
   specialisation.gnome = {
     inheritParentConfig = false;
     configuration = {
-
       imports = [
-        ../configuration.nix
-        ../impermanence.nix
-        inputs.lanzaboote.nixosModules.lanzaboote
-        inputs.sops-nix.nixosModules.sops
+        ./deskspec.nix
         self.nixosModules.modules.desktop.gnome
-        self.nixosModules.profiles.deskspec
       ];
-
-      networking.wireless.enable = true;
-      networking.wireless.userControlled = true;
-      users.users.${config.vars.user.name}.extraGroups = [
-        "wpa_supplicant"
-        "networkmanager"
-      ];
-
       environment.sessionVariables.NIXOS_ROLE = lib.mkForce "workstation-mode-gnome";
-
-      vars = {
-        network.resolver = lib.mkForce "1.1.1.1";
-        selfhosted = {
-          searxng.enable = lib.mkForce false;
-          vaultwarden.enable = lib.mkForce false;
-          i2pd.enable = lib.mkForce false;
-          qbt.enable = lib.mkForce false;
-        };
-      };
-
     };
   };
 

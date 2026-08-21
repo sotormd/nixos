@@ -532,8 +532,12 @@ ideal for usage away from home, in unreliable conditions.
 
 Notable changes from the default configuration:
 
+- wireless is available even if `vars.network.wireless.enable` is set to `false`
 - wpa_supplicant replaced by NetworkManager
 - all selfhosted features are disabled
+- wireguard is disabled
+- configured wired network is disabled
+- firewall is relaxed, loopback communication is allowed
 
 Roaming Mode can be used by booting into the `roaming` specialisation from the
 boot menu.
@@ -548,8 +552,12 @@ Notable changes from the default configuration:
 - sway desktop replaced with GNOME
 - librewolf browser is installed
 - graphene-hardened malloc is not used
+- wireless is available even if `vars.network.wireless.enable` is set to `false`
 - wpa_supplicant replaced by NetworkManager
 - all selfhosted features are disabled
+- wireguard is disabled
+- configured wired network is disabled
+- firewall is relaxed, loopback communication is allowed
 
 GNOME Mode can be enabled using `vars.modes.gnome.enable` and used by booting
 into the `gnome` specialisation from the boot menu.
