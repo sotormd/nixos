@@ -204,5 +204,11 @@
     # tcpdump
     pkgs.tcpdump
 
+    # tools for dealing with a TPM 2.0 device
+    pkgs.tpm2-tools
+
+    # tool for using nl80211
+    pkgs.iw
+
   ];
 }
