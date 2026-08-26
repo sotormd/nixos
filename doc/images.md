@@ -113,7 +113,7 @@ wireless network:
   description = "example usage of the image modules";
 
   # add this flake as an input
-  inputs.sotormd-nixos.url = "path:/persist/nixos";
+  inputs.sotormd-nixos.url = "github:sotormd/nixos";
 
   outputs = inputs: {
     nixosConfigurations.my-remote-sd-image = inputs.sotormd-nixos.lib.mkConfig {
