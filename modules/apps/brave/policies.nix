@@ -197,7 +197,7 @@ let
     PromotionsEnabled = false;
 
     # disable dns over https
-    # use the wireguard-backed unbound instead
+    # use system resolver instead
     DnsOverHttpsMode = "off";
   };
 

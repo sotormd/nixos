@@ -118,6 +118,9 @@
     # networking, hostnames, dns, ssh aliases, ...
     network.host = _: { imports = [ ./network/host ]; };
 
+    # hostapd
+    network.hostapd = _: { imports = [ ./network/hostapd ]; };
+
     # gnu macchanger
     network.macchanger = _: { imports = [ ./network/macchanger ]; };
 
@@ -144,6 +147,9 @@
 
     # distrobox containers
     services.distrobox = _: { imports = [ ./services/distrobox ]; };
+
+    # dnscrypt-proxy for DoH
+    services.dnscrypt = _: { imports = [ ./services/dnscrypt ]; };
 
     # systemd-journald
     services.journald = _: { imports = [ ./services/journald ]; };
@@ -177,9 +183,6 @@
 
     # searxng metasearch engine
     svcvm.searxng = _: { imports = [ ./svcvm/searxng ]; };
-
-    # unbound caching forwarding validating dns server
-    svcvm.unbound = _: { imports = [ ./svcvm/unbound ]; };
 
     # vaultwarden password manager
     svcvm.vaultwarden = _: { imports = [ ./svcvm/vaultwarden ]; };

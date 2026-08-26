@@ -207,6 +207,34 @@ in
 
       };
 
+      hostapd = {
+
+        enable = mkOption {
+          type = types.bool;
+        };
+
+        interface = mkOption {
+          type = types.str;
+        };
+
+        uplink = mkOption {
+          type = types.str;
+        };
+
+        domain = mkOption {
+          type = types.str;
+        };
+
+        ssid = mkOption {
+          type = types.str;
+        };
+
+        address = mkOption {
+          type = privateAddr;
+        };
+
+      };
+
       wired = {
 
         enable = mkOption {
@@ -314,6 +342,12 @@ in
 
     services = {
 
+      dnscrypt = {
+        enable = mkOption {
+          type = types.bool;
+        };
+      };
+
       ssh = {
         enable = mkOption {
           type = types.bool;
@@ -326,21 +360,6 @@ in
         };
         trusted-keys = mkOption {
           type = types.listOf (types.strMatching "^ssh-ed25519 [A-Za-z0-9+/=]+( .*)?$");
-        };
-      };
-
-      unbound = {
-        enable = mkOption {
-          type = types.bool;
-        };
-        allow = mkOption {
-          type = privateCidr;
-        };
-        local-data = mkOption {
-          type = types.listOf types.str;
-        };
-        debug = mkOption {
-          type = types.bool;
         };
       };
 

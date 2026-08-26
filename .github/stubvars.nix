@@ -82,6 +82,14 @@
       peers = [ ];
       allow = "10.0.0.2/32";
     };
+    hostapd = {
+      enable = true;
+      interface = "wlp1s1";
+      uplink = "eth0";
+      domain = "US";
+      ssid = "stub-hostapd";
+      address = "192.168.20.1";
+    };
     wired = {
       enable = true;
       interface = "eth0";
@@ -137,6 +145,9 @@
   };
 
   services = {
+    dnscrypt = {
+      enable = true;
+    };
     ssh = {
       enable = true;
       allow = "10.0.0.2/32";
@@ -144,14 +155,6 @@
       trusted-keys = [
         "ssh-ed25519 AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA stub@stub"
       ];
-    };
-    unbound = {
-      enable = true;
-      allow = "10.0.0.2/32";
-      local-data = [
-        ''"test.unbound. IN A 127.0.0.1"''
-      ];
-      debug = true;
     };
     nginx = {
       enable = true;

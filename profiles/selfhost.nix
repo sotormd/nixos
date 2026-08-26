@@ -9,7 +9,6 @@ in
     svcvm.nginx
     svcvm.qbt
     svcvm.searxng
-    svcvm.unbound
     svcvm.vaultwarden
   ];
 }

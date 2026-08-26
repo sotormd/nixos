@@ -10,9 +10,6 @@ lib.mkIf config.vars.features.impermanence.enable {
       # secure boot
       "/var/lib/sbctl"
 
-      # unbound data
-      "/var/lib/unbound"
-
       # nginx acme certificates
       "/var/lib/acme"
 

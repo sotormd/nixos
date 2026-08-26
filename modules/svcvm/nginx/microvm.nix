@@ -24,7 +24,7 @@ let
         gateway = gateways.nginx;
         address = addresses.nginx;
         vsock = vsocks.nginx;
-        resolver = if config.vars.services.unbound.enable then addresses.unbound else "1.1.1.1";
+        resolver = gateways.nginx;
       };
       tmpfiles = [
         "d /var/lib/acme 750 ${toString ids.acme} ${toString ids.acme} -"

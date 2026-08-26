@@ -60,13 +60,33 @@ for more information.
 
 The following services are available:
 
+- [dnscrypt-proxy](#dnscrypt-proxy)
 - [SSH Server](#ssh-server)
-- [Unbound](#unbound)
 - [NGINX](#nginx)
 - [SearXNG](#searxng)
 - [Vaultwarden](#vaultwarden)
 - [I2PD](#i2pd)
 - [qBittorrent](#qbittorrent)
+
+## dnscrypt-proxy
+
+DNS server for DoH (with Cloudflare 1.0.0.2, malware blocking) and an additional
+[StevenBlack](https://github.com/stevenblack/hosts) blocklist.
+
+### Enabling
+
+Enabled using `vars.services.dnscrypt.enable`.
+
+### Ports
+
+Open on loopback `127.0.0.1`:
+
+1. `53/tcp` dns
+2. `53/udp` dns
+
+These ports are also opened on:
+
+1. svcvm gateways for nginx, searxng and i2pd, if enabled.
 
 ## SSH Server
 
@@ -115,49 +135,6 @@ For `vars.services.ssh`
   ];
 }
 ```
-
-## Unbound
-
-Unbound caching forwarding validating DNS server with a hardened configuration.
-
-Unbound runs in a Virtual Machine. See
-[Service Virtual Machines](#service-virtual-machines) for more information.
-
-Queries are forwarded to Cloudflare with DoT.
-
-### Enabling
-
-Enabled using `vars.services.unbound.enable`
-
-### Ports
-
-Open on WireGuard to the private CIDR defined by `vars.services.unbound.allow`:
-
-1. `53/tcp` dns
-2. `53/udp` dns
-
-### Extra Entries
-
-Additional entries can be added using `vars.services.unbound.local-data`.
-
-### Data
-
-Data is stored under `/var/lib/unbound`.
-
-### Access Control
-
-Access control is enforced in the following places:
-
-Clients must satisfy ALL of:
-
-- in the private LAN CIDR defined by `vars.network.wireguard.allow`, for
-  nftables filtering on LAN
-- declared as a peer with public key in `vars.network.wireguard.peers`, for
-  WireGuard tunnelling
-- in the private WireGuard CIDR defined by `vars.services.unbound.allow`, for
-  nftables filtering on WireGuard
-- in the private WireGuard CIDR defined by `vars.services.unbound.allow`, for
-  Unbound's access control
 
 ## NGINX
 
@@ -414,7 +391,6 @@ See [Firewall](../security.md#firewall) for more information.
 
 | svcvm Guest   | (internal) IP Address | Interface | Gateway      |
 | ------------- | --------------------- | --------- | ------------ |
-| `unbound`     | `10.204.3.2`          | `svcvm3`  | `10.204.3.1` |
 | `nginx`       | `10.204.4.2`          | `svcvm4`  | `10.204.4.1` |
 | `searxng`     | `10.204.5.2`          | `svcvm5`  | `10.204.5.1` |
 | `vaultwarden` | `10.204.6.2`          | `svcvm6`  | `10.204.6.1` |
@@ -466,6 +442,7 @@ using `sops`.
     interface = "wlp1s0";
 
     # wireless network ssid
+    # WPA3-SAE password is stored using sops-nix
     ssid = "example";
 
     # wireless network gateway

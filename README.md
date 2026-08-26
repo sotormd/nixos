@@ -8,7 +8,7 @@
     <a href="#related-flakes">Related Flakes</a>
 </p>
 
-![screenshots](./doc/screenshots/nord.gif)
+![screenshot](./doc/screenshots/workstation.png)
 
 NixOS configuration for multiple hosts.
 
@@ -69,8 +69,9 @@ NixOS configuration for multiple hosts.
    - Declarative svcvm management through `lib.mksvcvm`
    - Service readiness and dependency handling
    - WireGuard tunnelling, networkd networking and nftables firewall
-   - [Unbound](https://github.com/NLnetLabs/unbound) caching forwarding
-     validating DNS server with DoT
+   - wpa_supplicant, hostapd and systemd-networkd networking
+   - [dnscrypt-proxy](https://github.com/DNSCrypt/dnscrypt-proxy) for
+     DNS-over-HTTPS
    - [NGINX](https://github.com/nginx/nginx) web server & reverse proxy
    - ACME for [Let's Encrypt](https://letsencrypt.org/) certificates
    - [SearXNG](https://github.com/searxng/searxng) search engine
@@ -107,7 +108,8 @@ NixOS configuration for multiple hosts.
 | networking                    | `systemd-networkd`                                                                                       |
 | tunnelling                    | `wireguard`                                                                                              |
 | wireless                      | `wpa_supplicant`                                                                                         |
-| dns                           | `unbound`                                                                                                |
+| access points                 | `hostapd`                                                                                                |
+| dns                           | `dnscrypt-proxy`                                                                                         |
 | secure shell                  | `openssh`                                                                                                |
 | display server                | `wayland`                                                                                                |
 | compositor                    | `sway`, `cage`                                                                                           |

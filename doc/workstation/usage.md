@@ -572,7 +572,28 @@ for more information.
 
 # Services
 
-Only the SSH server is available.
+1. [dnscrypt-proxy](#dnscrypt-proxy)
+2. [SSH Server](#ssh-server)
+
+## dnscrypt-proxy
+
+DNS server for DoH (with Cloudflare 1.0.0.2, malware blocking) and an additional
+[StevenBlack](https://github.com/stevenblack/hosts) blocklist.
+
+### Enabling
+
+Enabled using `vars.services.dnscrypt.enable`.
+
+### Ports
+
+Open on loopback `127.0.0.1`:
+
+1. `53/tcp` dns
+2. `53/udp` dns
+
+These ports are also opened on:
+
+1. Hostapd gateway `vars.network.hostapd.address`, if hostapd is enabled.
 
 ## SSH Server
 
@@ -626,7 +647,8 @@ Networking is configured using `vars.network`.
 
 1. [Wireless](#wireless)
 2. [WireGuard](#wireguard)
-3. [Wired](#wired)
+3. [Hostapd](#hostapd)
+4. [Wired](#wired)
 
 ## Wireless
 
@@ -636,8 +658,8 @@ using `vars.network.wireless.enable`.
 Static addresses are used instead of DHCP. This is configured using
 `vars.network.wireless.{gateway,address}`.
 
-The SSID is configured using `vars.network.wireless.ssid` and the PSK is stored
-using `sops`.
+The SSID is configured using `vars.network.wireless.ssid` and the password is
+stored using SOPS.
 
 ```nix
 {
@@ -651,6 +673,7 @@ using `sops`.
     interface = "wlp1s0";
 
     # wireless network ssid
+    # WPA3-SAE password is stored using sops-nix
     ssid = "example";
 
     # wireless network gateway
@@ -667,6 +690,45 @@ using `sops`.
 
 See [Using Selfhosted Features](#using-selfhosted-features) for information
 about using WireGuard.
+
+## Hostapd
+
+Hostapd can be used to create a wireless access point (AP) that other devices
+can connect to. Hostapd is configured using `vars.network.hostapd`.
+
+This uses WPA3-SAE for authentication, the password is stored using SOPS.
+
+```nix
+{
+  # hostapd AP and authentication server
+  hostapd = {
+
+    # enable hostapd
+    enable = true;
+
+    # hostapd wireless NIC identifier
+    # hostapd and wireless can't use the same interface
+    interface = "wlan0";
+
+    # uplink interface
+    # provides connectivity
+    uplink = "eth0";
+
+    # regulatory domain
+    # as a country code
+    domain = "IN";
+
+    # ssid name
+    # WPA3-SAE password is stored using sops-nix
+    ssid = "example-lan";
+
+    # address for gateway
+    # prefix 24 will be used
+    address = "192.168.0.1";
+
+  };
+}
+```
 
 ## Wired
 
@@ -730,29 +792,25 @@ The Workstation has to be declared as a peer on the Server as well. See
 The Workstation can be configured to use several selfhosted features from a
 Server using the `vars.selfhosted.*` variables.
 
-1. Unbound DNS resolver
-
-   Set the `vars.network.resolver` to the Server WireGuard peer address.
-
-2. NGINX reverse proxy endpoints
+1. NGINX reverse proxy endpoints
 
    All the locations can be accessed, see
    [Server Usage Documentation](../server/usage.md#locations) for a full list.
 
-3. SearXNG metasearch engine `vars.selfhosted.searxng`
+2. SearXNG metasearch engine `vars.selfhosted.searxng`
 
    SearXNG instance to use for web search.
 
-4. Vaultwarden password manager `vars.selfhosted.vaultwarden`
+3. Vaultwarden password manager `vars.selfhosted.vaultwarden`
 
    Vaultwarden instance to use for the web vault.
 
-5. I2PD i2p router `vars.selfhosted.i2pd`
+4. I2PD i2p router `vars.selfhosted.i2pd`
 
    I2PD router to use for the webconsole and HTTP proxy (for i2p-browser). The
    HTTP proxy can be independently used with no further configuration.
 
-6. qBittorrent bittorrent client `vars.selfhosted.qbt`
+5. qBittorrent bittorrent client `vars.selfhosted.qbt`
 
    qBittorrent instance to use for the webui.
 

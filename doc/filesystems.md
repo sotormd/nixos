@@ -196,11 +196,6 @@ The `filesystem` section is used for adding disks and mounts.
              device = "tank/server";
              fsType = "zfs";
            };
-           "/var/lib/unbound" = {
-             device = "/mnt/server/var/lib/unbound";
-             fsType = "none";
-             options = [ "bind" ];
-           };
            "/var/lib/acme" = {
              device = "/mnt/server/var/lib/acme";
              fsType = "none";
@@ -282,11 +277,6 @@ The `filesystem` section is used for adding disks and mounts.
            "/mnt/server" = {
              device = "tank/server";
              fsType = "zfs";
-           };
-           "/persist/root/var/lib/unbound" = {
-             device = "/mnt/server/var/lib/unbound";
-             fsType = "none";
-             options = [ "bind" ];
            };
            "/persist/root/var/lib/acme" = {
              device = "/mnt/server/var/lib/acme";
@@ -418,7 +408,6 @@ The following directories are persisted by default:
 | `/var/lib/nixos`        | needed by nixos         | Data    |
 | `/var/lib/systemd`      | needed by systemd       | Data    |
 | `/var/lib/sbctl`        | secure boot keys        | Data    |
-| `/var/lib/unbound`      | unbound data            | Data    |
 | `/var/lib/acme`         | nginx acme certificates | Data    |
 | `/var/lib/bitwarden_rs` | vaultwarden vault       | Data    |
 | `/var/lib/i2pd`         | i2pd router data        | Data    |

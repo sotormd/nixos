@@ -9,8 +9,7 @@
 let
   inherit (config.vars) services;
   svcvmsNeeded =
-    services.unbound.enable
-    || services.nginx.enable
+    services.nginx.enable
     || services.searxng.enable
     || services.vaultwarden.enable
     || services.i2pd.enable
@@ -39,7 +38,6 @@ in
     serviceConfig =
       let
         inherit (services)
-          unbound
           nginx
           searxng
           vaultwarden
@@ -57,13 +55,6 @@ in
           done
         ''}/bin/start-svcvms-pre";
         ExecStart = "${pkgs.writeShellScriptBin "start-svcvms" ''
-          ${
-            (lib.optionalString unbound.enable ''
-              sleep ${step}
-              echo "starting unbound"
-              systemctl start svcvm@unbound
-            '')
-          }
           ${
             (lib.optionalString searxng.enable ''
               sleep ${step}
@@ -104,14 +95,12 @@ in
   };
 
   # stop svcvms
-  # dont stop unbound
   systemd.services.stop-svcvms = {
     enable = svcvmsNeeded;
     description = "Stop svcvm Service Virtual Machines";
     serviceConfig = {
       Type = "oneshot";
       ExecStart = "${pkgs.writeShellScriptBin "stop-svcvms" ''
-        # systemctl stop svcvm@unbound || true
         systemctl stop svcvm@searxng || true
         systemctl stop svcvm@vaultwarden || true
         systemctl stop svcvm@i2pd || true
@@ -139,6 +128,9 @@ in
       wireguard = {
         enable = lib.mkForce true;
         forwarding = lib.mkForce true;
+      };
+      hostapd = {
+        enable = lib.mkForce false;
       };
       wired = {
         enable = lib.mkForce false;
@@ -207,35 +199,57 @@ in
       }
       {
         assertion = config.vars.network.wireless.enable;
-        message = "variables: vars.network.wireless.enable needs to be true";
+        message = ''
+          variables: vars.network.wireless.enable needs to be true
+        '';
       }
       {
         assertion = config.vars.network.wireguard.enable;
-        message = "variables: vars.network.wireguard.enable needs to be true";
+        message = ''
+          variables: vars.network.wireguard.enable needs to be true
+        '';
       }
       {
         assertion = config.vars.network.wireguard.forwarding;
-        message = "variables: vars.network.wireguard.forwarding needs to be true";
+        message = ''
+          variables: vars.network.wireguard.forwarding needs to be true
+        '';
+      }
+      {
+        assertion = !config.vars.network.hostapd.enable;
+        message = ''
+          variables: vars.network.hostapd is not supported
+        '';
       }
       {
         assertion = !config.vars.network.wired.enable;
-        message = "variables: vars.network.wired is not supported";
+        message = ''
+          variables: vars.network.wired is not supported
+        '';
       }
       {
         assertion = builtins.all (x: !x) selfhostedDisabled;
-        message = "variables: unsupported vars.selfhosted.* are enabled";
+        message = ''
+          variables: unsupported vars.selfhosted.* are enabled
+        '';
       }
       {
         assertion = builtins.all (x: !x) modesDisabled;
-        message = "variables: unsupported vars.modes.* are enabled";
+        message = ''
+          variables: unsupported vars.modes.* are enabled
+        '';
       }
       {
         assertion = builtins.all undefined gitUndefined;
-        message = "variables: vars.user.git is not supported";
+        message = ''
+          variables: vars.user.git is not supported
+        '';
       }
       {
         assertion = config.vars.user.sshAliases == { };
-        message = "variables: vars.user.sshAliases is not supported";
+        message = ''
+          variables: vars.user.sshAliases is not supported
+        '';
       }
     ];
 }

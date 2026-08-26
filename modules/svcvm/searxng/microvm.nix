@@ -23,7 +23,7 @@ let
         gateway = gateways.searxng;
         address = addresses.searxng;
         vsock = vsocks.searxng;
-        resolver = if config.vars.services.unbound.enable then addresses.unbound else "1.1.1.1";
+        resolver = gateways.searxng;
       };
       tmpfiles = [ ];
       secrets = {

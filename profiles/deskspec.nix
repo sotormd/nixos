@@ -36,6 +36,7 @@ in
     network.macchanger
     network.networkmanager
     services.auditd
+    services.dnscrypt
     services.distrobox
     services.journald
     services.libvirtd

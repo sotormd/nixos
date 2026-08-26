@@ -261,9 +261,13 @@
 
   # misc. service constants
 
-  ports = {
-    unbound.dns = 53;
-    nginx.https = 443;
+  ports = rec {
+    generic = {
+      dns = 53;
+      https = 443;
+    };
+    dnscrypt.dns = generic.dns;
+    nginx.https = generic.https;
     searxng.search-engine = 8888;
     vaultwarden.web-vault = 8222;
     i2pd = {
@@ -275,7 +279,6 @@
   };
 
   addresses = {
-    unbound = "10.204.3.2";
     nginx = "10.204.4.2";
     searxng = "10.204.5.2";
     vaultwarden = "10.204.6.2";
@@ -284,7 +287,6 @@
   };
 
   gateways = {
-    unbound = "10.204.3.1";
     nginx = "10.204.4.1";
     searxng = "10.204.5.1";
     vaultwarden = "10.204.6.1";
@@ -294,7 +296,6 @@
 
   ifaces = {
     wireguard = "wg0";
-    unbound = "svcvm3";
     nginx = "svcvm4";
     searxng = "svcvm5";
     vaultwarden = "svcvm6";
@@ -303,7 +304,6 @@
   };
 
   vsocks = {
-    unbound = 3;
     nginx = 4;
     searxng = 5;
     vaultwarden = 6;
@@ -312,7 +312,6 @@
   };
 
   ids = {
-    unbound = 50030;
     acme = 50040;
     vaultwarden = 50060;
     i2pd = 50070;

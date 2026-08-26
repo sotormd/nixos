@@ -28,12 +28,14 @@ in
     core.state
     network.firewall
     network.host
+    network.hostapd
     network.macchanger
     network.seed
     network.wired
     network.wireguard
     network.wireless
     services.auditd
+    services.dnscrypt
     services.journald
     services.run0
     services.sshd

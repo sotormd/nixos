@@ -1,15 +1,28 @@
 { config, lib, ... }:
 
 let
-  inherit (lib) ports addresses ifaces;
+  inherit (lib)
+    ports
+    gateways
+    addresses
+    ifaces
+    ;
 
-  inherit (config.vars.network) wireless wireguard wired;
+  inherit (config.vars.network)
+    resolver
+    wireless
+    wireguard
+    hostapd
+    wired
+    ;
 
+  # default interface and address is wireless
+  # eg, for the server svcvms
   inherit (config.vars.network.wireless) interface address;
 
   inherit (config.vars.services)
+    dnscrypt
     ssh
-    unbound
     nginx
     searxng
     vaultwarden
@@ -28,12 +41,20 @@ let
 
   ifaces-input = mkRules [
 
+    ''
+      iifname "lo" ct state established,related accept
+    ''
+
     (o wireless.enable ''
       iifname "${interface}" ct state established,related accept
     '')
 
     (o wireguard.enable ''
       iifname "${ifaces.wireguard}" ct state established,related accept
+    '')
+
+    (o hostapd.enable ''
+      iifname "${hostapd.interface}" ct state established,related accept
     '')
 
     (o wired.enable ''
@@ -44,6 +65,10 @@ let
 
   ifaces-output = mkRules [
 
+    ''
+      oifname "lo" accept
+    ''
+
     (o wireless.enable ''
       oifname "${interface}" accept
     '')
@@ -52,8 +77,52 @@ let
       oifname "${ifaces.wireguard}" accept
     '')
 
+    (o hostapd.enable ''
+      oifname "${hostapd.interface}" accept
+    '')
+
     (o wired.enable ''
       oifname "${wired.interface}" accept
+    '')
+
+  ];
+
+  # for hostapd clients to use local dns
+  hostapd-input = mkRules [
+
+    # dnscrypt resolver
+    (o (hostapd.enable && dnscrypt.enable) ''
+      iifname "${hostapd.interface}" ip daddr ${hostapd.address} udp dport 53 ct state new accept
+      iifname "${hostapd.interface}" ip daddr ${hostapd.address} tcp dport 53 ct state new accept
+    '')
+
+  ];
+
+  # for hostapd clients to use the internet
+  hostapd-forward = mkRules [
+
+    (o hostapd.enable ''
+      iifname "${hostapd.interface}" oifname "${hostapd.uplink}" ct state new accept
+    '')
+
+  ];
+
+  # for hostapd clients to use generic dns
+  hostapd-nat-prerouting = mkRules [
+
+    # generic resolver
+    (o (hostapd.enable && !dnscrypt.enable) ''
+      iifname "${hostapd.interface}" ip daddr ${hostapd.address} udp dport ${toString ports.generic.dns} dnat to ${resolver}:${toString ports.generic.dns}
+      iifname "${hostapd.interface}" ip daddr ${hostapd.address} tcp dport ${toString ports.generic.dns} dnat to ${resolver}:${toString ports.generic.dns}
+    '')
+
+  ];
+
+  # for hostapd clients to use the internet
+  hostapd-nat-postrouting = mkRules [
+
+    (o hostapd.enable ''
+      iifname "${hostapd.interface}" oifname "${hostapd.uplink}" masquerade
     '')
 
   ];
@@ -63,7 +132,14 @@ let
   # LOOPBACK SERVICES
   #
 
-  lo-services = mkRules [ ];
+  lo-services = mkRules [
+
+    (o dnscrypt.enable ''
+      ip daddr 127.0.0.1 iifname "lo" udp dport ${toString ports.dnscrypt.dns} ct state new accept
+      ip daddr 127.0.0.1 iifname "lo" tcp dport ${toString ports.dnscrypt.dns} ct state new accept
+    '')
+
+  ];
 
   ####################################################################################################################################################################
   #
@@ -121,10 +197,6 @@ let
 
   svcvm-input = mkRules [
 
-    (o unbound.enable ''
-      iifname "${ifaces.unbound}" ct state established,related accept
-    '')
-
     (o nginx.enable ''
       iifname "${ifaces.nginx}" ct state established,related accept
     '')
@@ -145,15 +217,27 @@ let
       iifname "${ifaces.qbt}" ct state established,related accept
     '')
 
+    # for dnscrypt resolver
+
+    (o (nginx.enable && dnscrypt.enable) ''
+      iifname "${ifaces.nginx}" ip daddr ${gateways.nginx} udp dport 53 ct state new accept
+      iifname "${ifaces.nginx}" ip daddr ${gateways.nginx} tcp dport 53 ct state new accept
+    '')
+
+    (o (searxng.enable && dnscrypt.enable) ''
+      iifname "${ifaces.searxng}" ip daddr ${gateways.searxng} udp dport 53 ct state new accept
+      iifname "${ifaces.searxng}" ip daddr ${gateways.searxng} tcp dport 53 ct state new accept
+    '')
+
+    (o (i2pd.enable && dnscrypt.enable) ''
+      iifname "${ifaces.i2pd}" ip daddr ${gateways.i2pd} udp dport 53 ct state new accept
+      iifname "${ifaces.i2pd}" ip daddr ${gateways.i2pd} tcp dport 53 ct state new accept
+    '')
+
   ];
 
   # required for wireguard to access VM-forwarded ports
   svcvm-forwards-ingress = mkRules [
-
-    (o unbound.enable ''
-      ip saddr ${unbound.allow} iifname "${ifaces.wireguard}" oifname "${ifaces.unbound}" ip daddr ${addresses.unbound} tcp dport ${toString ports.unbound.dns} ct state new accept
-      ip saddr ${unbound.allow} iifname "${ifaces.wireguard}" oifname "${ifaces.unbound}" ip daddr ${addresses.unbound} udp dport ${toString ports.unbound.dns} ct state new accept
-    '')
 
     (o nginx.enable ''
       ip saddr ${nginx.allow} iifname "${ifaces.wireguard}" oifname "${ifaces.nginx}" ip daddr ${addresses.nginx} tcp dport ${toString ports.nginx.https} ct state new accept
@@ -167,10 +251,6 @@ let
 
   # required for VM to access internet
   svcvm-forwards-internet = mkRules [
-
-    (o unbound.enable ''
-      ip saddr ${addresses.unbound} iifname "${ifaces.unbound}" oifname "${interface}" ct state new accept
-    '')
 
     (o nginx.enable ''
       ip saddr ${addresses.nginx} iifname "${ifaces.nginx}" oifname "${interface}" ct state new accept
@@ -188,14 +268,6 @@ let
 
   # required for VMs to access other VMs
   svcvm-forwards-intervm = mkRules [
-
-    # nginx vm -> unbound vm, for dns
-    (o (nginx.enable && unbound.enable) ''
-      ip saddr ${addresses.nginx} iifname "${ifaces.nginx}" ip daddr ${addresses.unbound} oifname "${ifaces.unbound}" tcp dport ${toString ports.unbound.dns} ct state new accept
-    '')
-    (o (nginx.enable && unbound.enable) ''
-      ip saddr ${addresses.nginx} iifname "${ifaces.nginx}" ip daddr ${addresses.unbound} oifname "${ifaces.unbound}" udp dport ${toString ports.unbound.dns} ct state new accept
-    '')
 
     # nginx vm -> searxng vm, for search engine
     (o (nginx.enable && searxng.enable) ''
@@ -217,22 +289,6 @@ let
       ip saddr ${addresses.nginx} iifname "${ifaces.nginx}" ip daddr ${addresses.qbt} oifname "${ifaces.qbt}" tcp dport ${toString ports.qbt.web-ui} ct state new accept
     '')
 
-    # searxng vm -> unbound vm, for dns
-    (o (searxng.enable && unbound.enable) ''
-      ip saddr ${addresses.searxng} iifname "${ifaces.searxng}" ip daddr ${addresses.unbound} oifname "${ifaces.unbound}" tcp dport ${toString ports.unbound.dns} ct state new accept
-    '')
-    (o (searxng.enable && unbound.enable) ''
-      ip saddr ${addresses.searxng} iifname "${ifaces.searxng}" ip daddr ${addresses.unbound} oifname "${ifaces.unbound}" udp dport ${toString ports.unbound.dns} ct state new accept
-    '')
-
-    # i2pd vm -> unbound vm, for dns
-    (o (i2pd.enable && unbound.enable) ''
-      ip saddr ${addresses.i2pd} iifname "${ifaces.i2pd}" ip daddr ${addresses.unbound} oifname "${ifaces.unbound}" tcp dport ${toString ports.unbound.dns} ct state new accept
-    '')
-    (o (i2pd.enable && unbound.enable) ''
-      ip saddr ${addresses.i2pd} iifname "${ifaces.i2pd}" ip daddr ${addresses.unbound} oifname "${ifaces.unbound}" udp dport ${toString ports.unbound.dns} ct state new accept
-    '')
-
     # qbt vm -> i2pd vm, for sam and http-proxy
     (o (qbt.enable && i2pd.enable) ''
       ip saddr ${addresses.qbt} iifname "${ifaces.qbt}" ip daddr ${addresses.i2pd} oifname "${ifaces.i2pd}" tcp dport ${toString ports.i2pd.sam} ct state new accept
@@ -246,37 +302,49 @@ let
   # required for host to access VM
   svcvm-output = mkRules [
 
-    (o unbound.enable ''
-      ip daddr ${addresses.unbound} tcp dport ${toString ports.unbound.dns} ct state new accept
-      ip daddr ${addresses.unbound} udp dport ${toString ports.unbound.dns} ct state new accept
-    '')
+    # (o unbound.enable ''
+    #   ip daddr ${addresses.unbound} tcp dport ${toString ports.unbound.dns} ct state new accept
+    #   ip daddr ${addresses.unbound} udp dport ${toString ports.unbound.dns} ct state new accept
+    # '')
 
   ];
 
   # required for wireguard to access VM-forwarded ports
+  # required for VM to use dns
   svcvm-nat-prerouting = mkRules [
 
-    (o unbound.enable ''
-      ip saddr ${unbound.allow} iifname "${ifaces.wireguard}" tcp dport ${toString ports.unbound.dns} dnat to ${addresses.unbound}
-      ip saddr ${unbound.allow} iifname "${ifaces.wireguard}" udp dport ${toString ports.unbound.dns} dnat to ${addresses.unbound}
-    '')
-
+    # nginx -> wireguard
     (o nginx.enable ''
       ip saddr ${nginx.allow} iifname "${ifaces.wireguard}" tcp dport ${toString ports.nginx.https} dnat to ${addresses.nginx}
     '')
 
+    # i2pd -> wireguard
     (o i2pd.enable ''
       ip saddr ${i2pd.allow} iifname "${ifaces.wireguard}" tcp dport ${toString ports.i2pd.http-proxy} dnat to ${addresses.i2pd}
+    '')
+
+    # nginx -> generic resolver
+    (o (nginx.enable && !dnscrypt.enable) ''
+      iifname "${ifaces.nginx}" ip daddr ${gateways.nginx} udp dport ${toString ports.generic.dns} dnat to ${resolver}:${toString ports.generic.dns}
+      iifname "${ifaces.nginx}" ip daddr ${gateways.nginx} tcp dport ${toString ports.generic.dns} dnat to ${resolver}:${toString ports.generic.dns}
+    '')
+
+    # searxng -> generic resolver
+    (o (searxng.enable && !dnscrypt.enable) ''
+      iifname "${ifaces.searxng}" ip daddr ${gateways.searxng} udp dport ${toString ports.generic.dns} dnat to ${resolver}:${toString ports.generic.dns}
+      iifname "${ifaces.searxng}" ip daddr ${gateways.searxng} tcp dport ${toString ports.generic.dns} dnat to ${resolver}:${toString ports.generic.dns}
+    '')
+
+    # i2pd -> generic resolver
+    (o (i2pd.enable && !dnscrypt.enable) ''
+      iifname "${ifaces.i2pd}" ip daddr ${gateways.i2pd} udp dport ${toString ports.generic.dns} dnat to ${resolver}:${toString ports.generic.dns}
+      iifname "${ifaces.i2pd}" ip daddr ${gateways.i2pd} tcp dport ${toString ports.generic.dns} dnat to ${resolver}:${toString ports.generic.dns}
     '')
 
   ];
 
   # required for VM to access internet
   svcvm-nat-postrouting = mkRules [
-
-    (o unbound.enable ''
-      ip saddr ${addresses.unbound} iifname "${ifaces.unbound}" oifname "${interface}" masquerade
-    '')
 
     (o nginx.enable ''
       ip saddr ${addresses.nginx} iifname "${ifaces.nginx}" oifname "${interface}" masquerade
@@ -302,8 +370,8 @@ in
             type filter hook input priority filter; policy drop;
             ct state invalid drop
             tcp flags & (fin|syn|rst|ack) != syn ct state new drop
-            iifname "lo" ct state established,related accept
             ${ifaces-input}
+            ${hostapd-input}
             ${libvirt-input}
             ${svcvm-input}
             ${lo-services}
@@ -314,6 +382,7 @@ in
           	type filter hook forward priority filter; policy drop;
             ct state invalid drop
         		ct state established,related accept
+            ${hostapd-forward}
             ${libvirt-forward}
             ${svcvm-forwards-internet}
             ${svcvm-forwards-ingress}
@@ -324,7 +393,6 @@ in
          		type filter hook output priority filter; policy drop;
             ct state invalid drop
         		ct state established,related accept
-            oifname "lo" accept
             ${ifaces-output}
             ${libvirt-output}
             ${svcvm-output}
@@ -336,11 +404,13 @@ in
 
         chain prerouting {
         		type nat hook prerouting priority dstnat; policy accept;
+            ${hostapd-nat-prerouting}
             ${svcvm-nat-prerouting}
       	}
 
       	chain postrouting {
         		type nat hook postrouting priority srcnat; policy accept;
+            ${hostapd-nat-postrouting}
             ${svcvm-nat-postrouting}
       	}
 

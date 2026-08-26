@@ -41,9 +41,10 @@
 
   vars = {
     network = {
-      resolver = lib.mkForce "1.1.1.1";
-      wireless.enable = lib.mkForce true;
+      resolver = lib.mkForce "127.0.0.1";
+      wireless.enable = lib.mkForce false;
       wireguard.enable = lib.mkForce false;
+      hostapd.enable = lib.mkForce false;
       wired.enable = lib.mkForce false;
     };
     selfhosted = {
@@ -51,6 +52,10 @@
       vaultwarden.enable = lib.mkForce false;
       i2pd.enable = lib.mkForce false;
       qbt.enable = lib.mkForce false;
+    };
+    services = {
+      dnscrypt.enable = lib.mkForce true;
+      ssh.enable = lib.mkForce false;
     };
   };
 }

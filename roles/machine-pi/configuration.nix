@@ -47,7 +47,6 @@
       qbt.enable = lib.mkForce false;
     };
     services = {
-      unbound.enable = lib.mkForce false;
       nginx.enable = lib.mkForce false;
       searxng.enable = lib.mkForce false;
       vaultwarden.enable = lib.mkForce false;
@@ -73,7 +72,6 @@
         config.vars.modes.gnome.enable
       ];
       servicesDisabled = [
-        config.vars.services.unbound.enable
         config.vars.services.nginx.enable
         config.vars.services.searxng.enable
         config.vars.services.vaultwarden.enable
@@ -92,31 +90,61 @@
     [
       {
         assertion = !config.vars.network.wireguard.forwarding;
-        message = "variables: vars.network.wireguard.forwarding cannot be true";
+        message = ''
+          variables: vars.network.wireguard.forwarding cannot be true
+        '';
+      }
+      {
+        assertion =
+          (!(config.vars.network.wireless.enable && config.vars.network.hostapd.enable))
+          || (config.vars.network.wireless.interface != config.vars.network.hostapd.interface);
+        message = ''
+          variables: wireless and hostapd cannot be used on the same interface
+        '';
+      }
+      {
+        assertion =
+          (!(config.vars.network.wired.enable && config.vars.network.hostapd.enable))
+          || (config.vars.network.wired.interface != config.vars.network.hostapd.interface);
+        message = ''
+          variables: wired and hostapd cannot be used on the same interface
+        '';
       }
       {
         assertion = builtins.all (x: !x) featuresDisabled;
-        message = "variables: unsupported vars.features.* are enabled";
+        message = ''
+          variables: unsupported vars.features.* are enabled
+        '';
       }
       {
         assertion = builtins.all (x: !x) selfhostedDisabled;
-        message = "variables: unsupported vars.selfhosted.* are enabled";
+        message = ''
+          variables: unsupported vars.selfhosted.* are enabled
+        '';
       }
       {
         assertion = builtins.all (x: !x) modesDisabled;
-        message = "variables: unsupported vars.modes.* are enabled";
+        message = ''
+          variables: unsupported vars.modes.* are enabled
+        '';
       }
       {
         assertion = builtins.all undefined gitUndefined;
-        message = "variables: vars.user.git is not supported";
+        message = ''
+          variables: vars.user.git is not supported
+        '';
       }
       {
         assertion = config.vars.user.sshAliases == { };
-        message = "variables: vars.user.sshAliases is not supported";
+        message = ''
+          variables: vars.user.sshAliases is not supported
+        '';
       }
       {
         assertion = builtins.all (x: !x) servicesDisabled;
-        message = "variables: unsupported vars.services.* are enabled";
+        message = ''
+          variables: unsupported vars.services.* are enabled
+        '';
       }
     ];
 }

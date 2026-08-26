@@ -367,6 +367,7 @@ elif [ "$VERB" == "vars" ]; then
       interface = "wlp1s0";
 
       # wireless network ssid
+      # WPA3-SAE password is stored using sops-nix
       ssid = "example";
 
       # wireless network gateway
@@ -391,6 +392,34 @@ elif [ "$VERB" == "vars" ]; then
 
       # wireguard peers
       peers = [ ];
+
+    };
+
+    # hostapd AP and authentication server
+    hostapd = {
+
+      # enable hostapd
+      enable = false;
+
+      # hostapd wireless NIC identifier
+      # hostapd and wireless can't use the same interface
+      interface = "wlp1s1";
+
+      # uplink interface
+      # provides connectivity
+      uplink = "eth0";
+
+      # regulatory domain
+      # as a country codeDNScrypt
+      domain = "US";
+
+      # ssid name
+      # WPA3-SAE password is stored using sops-nix
+      ssid = "example-lan";
+
+      # address for gateway
+      # prefix 24 will be used
+      address = "192.168.0.1";
 
     };
 
@@ -500,7 +529,15 @@ elif [ "$VERB" == "vars" ]; then
   # service toggles
   services = {
 
+    # dnscrypt-proxy DoH
+    # loopback service
+    dnscrypt = {
+      enable = true;
+    };
+
     # ssh server
+    # lan service
+    #
     # port is a port
     # trusted-keys is a list of ed25519 ssh public keys
     # allow is a private CIDR (LAN)
@@ -655,7 +692,7 @@ the following values have been populated from the installation environment
   network = {
 
     # primary DNS resolver
-    resolver = "10.0.0.3";
+    resolver = "127.0.0.1";
 
     # wpa_supplicant wireless networking
     wireless = {
@@ -704,7 +741,15 @@ the following values have been populated from the installation environment
   # service toggles
   services = {
 
+    # dnscrypt-proxy DoH
+    # loopback service
+    dnscrypt = {
+      enable = true;
+    };
+
     # ssh server
+    # lan service
+    #
     # port is a port
     # trusted-keys is a list of ed25519 ssh public keys
     # allow is a private CIDR (LAN)
@@ -715,20 +760,9 @@ the following values have been populated from the installation environment
       allow = "10.0.0.4/32";
     };
 
-    # unbound dns resolver
-    # local-data is extra entries
-    # allow is a private CIDR (wireguard)
-    # debug is whether to allow debugging
-    unbound = {
-      enable = false;
-      local-data = [
-        ''"example.duckdns.org. IN A 10.20.0.1"''
-      ];
-      allow = "10.20.0.2/32";
-      debug = true;
-    };
-
     # nginx web server
+    # svcvm service
+    #
     # staging is to use Let's Encrypt staging
     # email is address used for acme
     # domain is a duckdns domain
@@ -744,6 +778,8 @@ the following values have been populated from the installation environment
     };
 
     # searxng metasearch engine
+    # svcvm service
+    #
     # allow is a private CIDR (wireguard)
     # debug is whether to allow debugging
     searxng = {
@@ -753,6 +789,8 @@ the following values have been populated from the installation environment
     };
 
     # vaultwarden password manager
+    # svcvm service
+    #
     # signups is whether to allow new signups
     # allow is a private CIDR (wireguard)
     # debug is whether to allow debugging
@@ -764,6 +802,8 @@ the following values have been populated from the installation environment
     };
 
     # i2pd router
+    # svcvm service
+    #
     # allow is a private CIDR (wireguard)
     # debug is whether to allow debugging
     i2pd = {
@@ -773,6 +813,8 @@ the following values have been populated from the installation environment
     };
 
     # qbittorrent bittorrent client
+    # svcvm service
+    #
     # allow is a private CIDR (wireguard)
     # debug is whether to allow debugging
     qbt = {
@@ -921,9 +963,10 @@ the following values have been populated from the installation environment
       enable = false;
 
       # wireless NIC identifier
-      interface = "wlan0";
+      interface = "wlp1s0";
 
       # wireless network ssid
+      # WPA3-SAE password is stored using sops-nix
       ssid = "example";
 
       # wireless network gateway
@@ -951,6 +994,34 @@ the following values have been populated from the installation environment
 
     };
 
+    # hostapd AP and authentication server
+    hostapd = {
+
+      # enable hostapd
+      enable = false;
+
+      # hostapd wireless NIC identifier
+      # hostapd and wireless can't use the same interface
+      interface = "wlp1s1";
+
+      # uplink interface
+      # provides connectivity
+      uplink = "eth0";
+
+      # regulatory domain
+      # as a country codeDNScrypt
+      domain = "US";
+
+      # ssid name
+      # WPA3-SAE password is stored using sops-nix
+      ssid = "example-lan";
+
+      # address for gateway
+      # prefix 24 will be used
+      address = "192.168.0.1";
+
+    };
+
     # optional wired networking
     # with DHCP
     wired = {
@@ -968,7 +1039,15 @@ the following values have been populated from the installation environment
   # service toggles
   services = {
 
+    # dnscrypt-proxy DoH
+    # loopback service
+    dnscrypt = {
+      enable = true;
+    };
+
     # ssh server
+    # lan service
+    #
     # port is a port
     # trusted-keys is a list of ed25519 ssh public keys
     # allow is a private CIDR (LAN)
@@ -1374,7 +1453,6 @@ elif [ "$VERB" == "impermanence" ]; then
             "/var/lib/nixos" \
             "/var/lib/systemd" \
             "/var/lib/sbctl" \
-            "/var/lib/unbound" \
             "/var/lib/acme" \
             "/var/lib/bitwarden_rs" \
             "/var/lib/i2pd" \

@@ -18,8 +18,7 @@ decent security against these attacks, backed by the guarantees of the
 
 The targets covered in this document are:
 
-- Workstation, my workstation configuration for generic personal portable
-  computers
+- Workstation, my workstation configuration for generic personal computers
 - Server, my home-server configuration for hosts that serve Virtual Machine
   services on WireGuard over LAN.
 - Pi, my Raspberry Pi 4bs.
@@ -310,123 +309,24 @@ USBGuard can be controlled using the `usbguard` command line interface. Only the
 `wpa_supplicant` is used for wireless connections. Network secrets are stored
 using SOPS.
 
+Additionally, `hostapd` can be used to create wireless APs, which use WPA3 (SAE
+/ dragonfly) by default.
+
 > Workstation, Server only
 
-WPA3 (SAE / dragonfly) is used for wireless authentication.
+WPA3 (SAE / dragonfly) is used for wireless authentication with
+`wpa_supplicant`.
 
 # DNS
 
-The Unbound DNS resolver is hosted on Server. It runs in a Virtual Machine and
-is served over WireGuard.
-
-It forwards queries to Cloudflare using DNS-over-TLS (DoT) to encrypt upstream
-DNS traffic.
+`dnscrypt-proxy` is used for DNS-over-HTTPS with Cloudflare's `1.0.0.2` (malware
+blocking).
 
 Additionally, [StevenBlack's host list](http://github.com/StevenBlack/hosts) is
-used to sinkhole domains (like PiHole, AdGuard) in the Unbound DNS server hosted
-on Server.
+used to blacklist domains (like PiHole, AdGuard).
 
-> Server only
-
-The Unbound DNS server hosted on Server is hardened. The following options are
-used:
-
-1. disable ipv6
-
-   ```
-   prefer-ip6=no
-   prefer-ip4=yes
-   do-ip6=no
-   do-ip4=yes
-   ```
-
-2. hide information
-
-   ```
-   hide-identity=yes
-   hide-version=yes
-   hide-trustanchor=yes
-   hide-http-user-agent=yes
-   ```
-
-3. send minimum information to upstream servers
-
-   ```
-   qname-minimisation=yes
-   qname-minimisation-strict=yes
-   ```
-
-4. harden against very small EDNS buffer sizes
-
-   ```
-   harden-short-bufsize=yes
-   ```
-
-5. harden against large queries
-
-   ```
-   harden-large-queries=yes
-   ```
-
-6. harden against out of zone rrsets, to avoid spoofing attempts
-
-   ```
-   harden-glue=yes
-   ```
-
-7. harden against unverified glue rrsets
-
-   ```
-   harden-unverified-glue=yes
-   ```
-
-8. harden against receiving dnssec-stripped data
-
-   ```
-   harden-dnssec-stripped=yes
-   ```
-
-9. harden against queries that fall under dnssec-signed nxdomain names
-
-   ```
-   harden-below-nxdomain=yes
-   ```
-
-10. harden the referral path by performing additional queries, intensive and
-    experimental
-
-    ```
-    harden-referral-path=yes
-    ```
-
-11. harden against downgrades when multiple algorithms are advertised
-
-    ```
-    harden-algo-downgrade=yes
-    ```
-
-12. harden against unknown records in the authority and additional sections
-
-    ```
-    harden-unknown-additional=yes
-    ```
-
-13. use the dnssec nsec chain
-
-    ```
-    aggressive-nsec=yes
-    ```
-
-14. use random bits in the query to foil spoof attempts
-
-    ```
-    use-caps-for-id=yes
-    ```
-
-15. Unbound is also set to allow only specific clients using `access-control`.
-    Importantly, the private CIDR `vars.services.unbound.allow` is allowed to
-    use the resolver. Additionally, the VM interfaces are explicitly allowed to
-    use the resolver if the respective services are enabled.
+If enabled, `dnscrypt-proxy` is also used as the DNS server for `hostapd`
+clients and `svcvm` guests.
 
 # WireGuard
 
@@ -449,8 +349,11 @@ open on **ANY** interface, not even loopback or internal VM interfaces.
 Ports are opened on loopback / LAN / VM interfaces to specific addresses and
 interfaces only based on enabled services.
 
-Currently, no services are bound to loopback so no ports are allowed. In case
-any apps require loopback, it can be satisfied using `bwrap --unshare-net`.
+Only dnscrypt-proxy is served over loopback. In case any apps require loopback,
+it can be satisfied using `bwrap --unshare-net`.
+
+dnscrypt-proxy is additionally served on hostapd/svcvm gateways based on enabled
+services (see example).
 
 Only SSH is served over LAN and [uses public key authentication](#secure-shell).
 Therefore, even though nftables filters by CIDR using `vars.services.ssh.allow`
@@ -459,7 +362,6 @@ this is not used as a real source of identification.
 All other services are served over [WireGuard](#wireguard), which uses public
 key authentication. Currently this includes
 
-- Unbound dns
 - NGINX https
 - I2PD http proxy
 
@@ -490,7 +392,7 @@ are allowed.
 Additionally, the services reverse-proxied via the NGINX are also restricted
 using `vars.service.<name>.allow`. See [NGINX](#nginx) for more information.
 
-Egress (`output`) through the LAN interface is unrestricted.
+Egress (`output`) through the LAN interface(s) is unrestricted.
 
 Note that all services involve some form of cryptographic authentication -
 either SSH public key authentication or WireGuard public key authentication -
@@ -502,13 +404,20 @@ Ports are open based on the enabled services (only SSH).
 
 Ports are opened for the following services:
 
+1. dnscrypt-proxy, if enabled using `vars.services.dnscrypt.enable`:
+
+   - TCP & UDP `53` is open on loopback
+
+   - (hostapd) TCP & UDP `53` is open on the hostapd gateway
+     `vars.network.hostapd.address`, if hostapd is enabled
+
 1. SSH, if enabled using `vars.services.ssh.enable`:
 
    - TCP `vars.services.ssh.port` is open on LAN to the private CIDR defined by
      `vars.services.ssh.allow`
 
-2. Libvirt interfaces (`virbr*`) are allowed in `input` (dns, dhcp), `forward`
-   and `output` (see example below).
+1. Libvirt interfaces (`virbr*`) are opened for DNS and DHCP (see example
+   below).
 
 > Server only
 
@@ -516,45 +425,40 @@ Ports are open based on the enabled services.
 
 Ports are opened for the following services:
 
+1. dnscrypt-proxy, if enabled using `vars.services.dnscrypt.enable`:
+
+   - TCP & UDP `53` is open on loopback
+
+   - (nginx) TCP & UDP `53` is open on the svcvm interface gateway, if nginx is
+     enabled
+
+   - (searxng) TCP & UDP `53` is open on the svcvm interface gateway, if searxng
+     is enabled
+
+   - (i2pd) TCP & UDP `53` is open on the svcvm interface gateway, if i2pd is
+     enabled
+
 1. SSH, if enabled using `vars.services.ssh.enable`:
 
    - TCP `vars.services.ssh.port` is open on LAN to the private CIDR defined by
      `vars.services.ssh.allow`
 
-2. Unbound, if enabled using `vars.services.unbound.enable`:
-
-   - (dns) TCP `53` is forwarded and open on WireGuard to the private CIDR
-     defined by `vars.services.unbound.allow`
-
-   - (dns) UDP `53` is forwarded and open on WireGuard to the private CIDR
-     defined by `vars.services.unbound.allow`
-
-   - (dns) TCP `53` is open internally on VM interface to host
-
-   - (dns) UDP `53` is open internally on VM interface to host
-
-   - (dns) TCP `53` is open internally on VM interface to `nginx`, `searxng` and
-     `i2pd` VMs
-
-   - (dns) UDP `53` is open internally on VM interface to `nginx`, `searxng` and
-     `i2pd` VMs
-
-3. NGINX, if enabled using `vars.services.nginx.enable`:
+1. NGINX, if enabled using `vars.services.nginx.enable`:
 
    - (https) TCP `443` is forwarded and open on WireGuard to the private CIDR
      defined by `vars.services.nginx.allow`
 
-4. SearXNG, if enabled using `vars.services.searxng.enable`:
+1. SearXNG, if enabled using `vars.services.searxng.enable`:
 
    - (search-engine) TCP `8888` is open internally on VM interface to `nginx` VM
 
-5. Vaultwarden, if enabled using `vars.services.vaultwarden.enable`:
+1. Vaultwarden, if enabled using `vars.services.vaultwarden.enable`:
 
    - Cannot access the internet.
 
    - (web-vault) TCP `8222` is open internally on VM interface to `nginx` VM
 
-6. I2PD, if enabled using `vars.services.i2pd.enable`:
+1. I2PD, if enabled using `vars.services.i2pd.enable`:
 
    - (http-proxy) TCP `4444` is forwarded and open on WireGuard to the private
      CIDR defined by `vars.services.i2pd.allow`
@@ -565,7 +469,7 @@ Ports are opened for the following services:
 
    - (web-console) TCP `7070` is open internally on VM interface to `nginx` VM
 
-7. qBittorrent, if enabled using `vars.services.qbt.enable`:
+1. qBittorrent, if enabled using `vars.services.qbt.enable`:
 
    - Cannot access the internet, exclusively uses I2P.
 
@@ -573,9 +477,16 @@ Ports are opened for the following services:
 
 > Pi only
 
-Ports are open based on the enabled services (only SSH).
+Ports are open based on the enabled services.
 
 Ports are opened for the following services:
+
+1. dnscrypt-proxy, if enabled using `vars.services.dnscrypt.enable`:
+
+   - TCP & UDP `53` is open on loopback
+
+   - (hostapd) TCP & UDP `53` is open on the hostapd gateway
+     `vars.network.hostapd.address`, if hostapd is enabled
 
 1. SSH, if enabled using `vars.services.ssh.enable`:
 
@@ -586,7 +497,14 @@ Ports are opened for the following services:
 
 Rulesets are generated based on the enabled services.
 
-Example ruleset for Workstation with SSH disabled:
+Example ruleset for Workstation with
+
+- Wireless enabled
+- WireGuard enabled
+- Hostapd disabled
+- Wired disabled
+- dnscrypt-proxy disabled
+- SSH disabled
 
 Notes for example:
 
@@ -601,7 +519,7 @@ table inet filter {
 		ct state invalid drop
 		tcp flags & (fin | syn | rst | ack) != syn ct state new drop
 		iifname "lo" ct state established,related accept
-		iifname "wlp1s0" ct state established,related accept
+		iifname "wlan0" ct state established,related accept
 		iifname "wg0" ct state established,related accept
 		iifname "virbr*" ct state established,related accept
 		iifname "virbr*" tcp dport 53 ct state new accept
@@ -621,7 +539,7 @@ table inet filter {
 		ct state invalid drop
 		ct state established,related accept
 		oifname "lo" accept
-		oifname "wlp1s0" accept
+		oifname "wlan0" accept
 		oifname "wg0" accept
 		oifname "virbr*" accept
 	}
@@ -637,15 +555,21 @@ table ip nat {
 }
 ```
 
-Example ruleset for Server with NO services enabled, except SSH:
+Example ruleset for Workstation with
+
+- Wireless disabled
+- WireGuard disabled
+- Hostapd enabled
+- Wired enabled
+- dnscrypt-proxy enabled
+- SSH disabled
 
 Notes for example:
 
-- `wlan0` is the LAN interface.
-- `wg0` is the WireGuard interface.
-- `192.168.0.101` is the host.
-- `192.168.0.100` is a trusted client.
-- `2233` is the SSH port.
+- `eth0` is the wired LAN interface
+- `wlan0` is the wireless LAN interface, used for hostapd
+- `192.168.0.1` is the hostapd gateway
+- `virbr*` are libvirt interfaces
 
 ```
 table inet filter {
@@ -655,14 +579,23 @@ table inet filter {
 		tcp flags & (fin | syn | rst | ack) != syn ct state new drop
 		iifname "lo" ct state established,related accept
 		iifname "wlan0" ct state established,related accept
-		iifname "wg0" ct state established,related accept
-        ip saddr 192.168.0.100 ip daddr 192.168.0.101 iifname "wlan0" tcp dport 2233 ct state new accept
+		iifname "eth0" ct state established,related accept
+		iifname "wlan0" ip daddr 192.168.0.1 udp dport 53 ct state new accept
+		iifname "wlan0" ip daddr 192.168.0.1 tcp dport 53 ct state new accept
+		iifname "virbr*" ct state established,related accept
+		iifname "virbr*" tcp dport 53 ct state new accept
+		iifname "virbr*" udp dport 53 ct state new accept
+		iifname "virbr*" udp dport 67 ct state new accept
+		ip daddr 127.0.0.1 iifname "lo" udp dport 53 ct state new accept
+		ip daddr 127.0.0.1 iifname "lo" tcp dport 53 ct state new accept
 	}
 
 	chain forward {
 		type filter hook forward priority filter; policy drop;
 		ct state invalid drop
 		ct state established,related accept
+		iifname "wlan0" oifname "eth0" ct state new accept
+		iifname "virbr*" ct state new accept
 	}
 
 	chain output {
@@ -671,7 +604,8 @@ table inet filter {
 		ct state established,related accept
 		oifname "lo" accept
 		oifname "wlan0" accept
-		oifname "wg0" accept
+		oifname "eth0" accept
+		oifname "virbr*" accept
 	}
 }
 table ip nat {
@@ -681,98 +615,7 @@ table ip nat {
 
 	chain postrouting {
 		type nat hook postrouting priority srcnat; policy accept;
-	}
-}
-```
-
-Example ruleset for Server with ALL services enabled:
-
-Notes for example:
-
-- `wlan0` is the LAN interface.
-- `wg0` is the WireGuard interface.
-- `192.168.0.101` is the host.
-- `192.168.0.100` is a trusted client.
-- `2233` is the SSH port.
-- `51820` is the WireGuard port.
-- `unbound` is `10.204.3.2` on `svcvm3`
-- `nginx` is `10.204.4.2` on `svcvm4`
-- `searxng` is `10.204.5.2` on `svcvm5`
-- `vaultwarden` is `10.204.6.2` on `svcvm6`
-- `i2pd` is `10.204.7.2` on `svcvm7`
-- `qbt` is `10.204.8.2` on `svcvm8`
-
-```
-table inet filter {
-	chain input {
-		type filter hook input priority filter; policy drop;
-		ct state invalid drop
-		tcp flags & (fin | syn | rst | ack) != syn ct state new drop
-		iifname "lo" ct state established,related accept
-		iifname "wlan0" ct state established,related accept
-		iifname "wg0" ct state established,related accept
-		iifname "svcvm3" ct state established,related accept
-		iifname "svcvm4" ct state established,related accept
-		iifname "svcvm5" ct state established,related accept
-		iifname "svcvm6" ct state established,related accept
-		iifname "svcvm7" ct state established,related accept
-		iifname "svcvm8" ct state established,related accept
-		ip saddr 192.168.0.100 ip daddr 192.168.0.101 iifname "wlan0" udp dport 51820 ct state new accept
-		ip saddr 192.168.0.100 ip daddr 192.168.0.101 iifname "wlan0" tcp dport 2233 ct state new accept
-	}
-
-	chain forward {
-		type filter hook forward priority filter; policy drop;
-		ct state invalid drop
-		ct state established,related accept
-		ip saddr 10.204.3.2 iifname "svcvm3" oifname "wlan0" ct state new accept
-		ip saddr 10.204.4.2 iifname "svcvm4" oifname "wlan0" ct state new accept
-		ip saddr 10.204.5.2 iifname "svcvm5" oifname "wlan0" ct state new accept
-		ip saddr 10.204.7.2 iifname "svcvm7" oifname "wlan0" ct state new accept
-		ip saddr 10.104.0.2 iifname "wg0" oifname "svcvm3" ip daddr 10.204.3.2 tcp dport 53 ct state new accept
-		ip saddr 10.104.0.2 iifname "wg0" oifname "svcvm3" ip daddr 10.204.3.2 udp dport 53 ct state new accept
-		ip saddr 10.104.0.2 iifname "wg0" oifname "svcvm4" ip daddr 10.204.4.2 tcp dport 443 ct state new accept
-		ip saddr 10.104.0.2 iifname "wg0" oifname "svcvm7" ip daddr 10.204.7.2 tcp dport 4444 ct state new accept
-		ip saddr 10.204.4.2 iifname "svcvm4" ip daddr 10.204.3.2 oifname "svcvm3" tcp dport 53 ct state new accept
-		ip saddr 10.204.4.2 iifname "svcvm4" ip daddr 10.204.3.2 oifname "svcvm3" udp dport 53 ct state new accept
-		ip saddr 10.204.4.2 iifname "svcvm4" ip daddr 10.204.5.2 oifname "svcvm5" tcp dport 8888 ct state new accept
-		ip saddr 10.204.4.2 iifname "svcvm4" ip daddr 10.204.6.2 oifname "svcvm6" tcp dport 8222 ct state new accept
-		ip saddr 10.204.4.2 iifname "svcvm4" ip daddr 10.204.7.2 oifname "svcvm7" tcp dport 7070 ct state new accept
-		ip saddr 10.204.4.2 iifname "svcvm4" ip daddr 10.204.8.2 oifname "svcvm8" tcp dport 8080 ct state new accept
-		ip saddr 10.204.5.2 iifname "svcvm5" ip daddr 10.204.3.2 oifname "svcvm3" tcp dport 53 ct state new accept
-		ip saddr 10.204.5.2 iifname "svcvm5" ip daddr 10.204.3.2 oifname "svcvm3" udp dport 53 ct state new accept
-		ip saddr 10.204.7.2 iifname "svcvm7" ip daddr 10.204.3.2 oifname "svcvm3" tcp dport 53 ct state new accept
-		ip saddr 10.204.7.2 iifname "svcvm7" ip daddr 10.204.3.2 oifname "svcvm3" udp dport 53 ct state new accept
-		ip saddr 10.204.8.2 iifname "svcvm8" ip daddr 10.204.7.2 oifname "svcvm7" tcp dport 7656 ct state new accept
-		ip saddr 10.204.8.2 iifname "svcvm8" ip daddr 10.204.7.2 oifname "svcvm7" tcp dport 4444 ct state new accept
-	}
-
-	chain output {
-		type filter hook output priority filter; policy drop;
-		ct state invalid drop
-		ct state established,related accept
-		oifname "lo" accept
-		oifname "wlan0" accept
-		oifname "wg0" accept
-		ip daddr 10.204.3.2 tcp dport 53 ct state new accept
-		ip daddr 10.204.3.2 udp dport 53 ct state new accept
-	}
-}
-table ip nat {
-	chain prerouting {
-		type nat hook prerouting priority dstnat; policy accept;
-		ip saddr 10.104.0.2 iifname "wg0" tcp dport 53 dnat to 10.204.3.2
-		ip saddr 10.104.0.2 iifname "wg0" udp dport 53 dnat to 10.204.3.2
-		ip saddr 10.104.0.2 iifname "wg0" tcp dport 443 dnat to 10.204.4.2
-		ip saddr 10.104.0.2 iifname "wg0" tcp dport 4444 dnat to 10.204.7.2
-	}
-
-	chain postrouting {
-		type nat hook postrouting priority srcnat; policy accept;
-		ip saddr 10.204.3.2 iifname "svcvm3" oifname "wlan0" masquerade
-		ip saddr 10.204.4.2 iifname "svcvm4" oifname "wlan0" masquerade
-		ip saddr 10.204.5.2 iifname "svcvm5" oifname "wlan0" masquerade
-		ip saddr 10.204.7.2 iifname "svcvm7" oifname "wlan0" masquerade
+		iifname "wlan0" oifname "eth0" masquerade
 	}
 }
 ```
@@ -1274,7 +1117,7 @@ in the browsers.
      - Background Apps
      - Autoplay
      - Payment Method Query
-     - DNS over HTTPS (in favor of WireGuard-backed Unbound)
+     - DNS over HTTPS (in favor of system resolver)
 
    - Use Site Per Process
    - Use Strict HTTPS-Only Mode

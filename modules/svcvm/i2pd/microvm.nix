@@ -24,7 +24,7 @@ let
         gateway = gateways.i2pd;
         address = addresses.i2pd;
         vsock = vsocks.i2pd;
-        resolver = if config.vars.services.unbound.enable then addresses.unbound else "1.1.1.1";
+        resolver = gateways.i2pd;
       };
       tmpfiles = [
         "d /var/lib/i2pd 700 ${toString ids.i2pd} ${toString ids.i2pd} -"
