@@ -5,6 +5,9 @@
   ...
 }:
 
+let
+  inherit (config.vars) network;
+in
 {
   # filesystems
   fileSystems = {
@@ -89,23 +92,23 @@
     in
     [
       {
-        assertion = !config.vars.network.wireguard.forwarding;
+        assertion = !network.wireguard.forwarding;
         message = ''
           variables: vars.network.wireguard.forwarding cannot be true
         '';
       }
       {
         assertion =
-          (!(config.vars.network.wireless.enable && config.vars.network.hostapd.enable))
-          || (config.vars.network.wireless.interface != config.vars.network.hostapd.interface);
+          (!(network.wireless.enable && network.hostapd.enable))
+          || (network.wireless.interface != network.hostapd.interface);
         message = ''
           variables: wireless and hostapd cannot be used on the same interface
         '';
       }
       {
         assertion =
-          (!(config.vars.network.wired.enable && config.vars.network.hostapd.enable))
-          || (config.vars.network.wired.interface != config.vars.network.hostapd.interface);
+          (!(network.wired.enable && network.hostapd.enable))
+          || (network.wired.interface != network.hostapd.interface);
         message = ''
           variables: wired and hostapd cannot be used on the same interface
         '';

@@ -7,7 +7,7 @@
 }:
 
 let
-  inherit (config.vars) services;
+  inherit (config.vars) network services;
   svcvmsNeeded =
     services.nginx.enable
     || services.searxng.enable
@@ -29,11 +29,11 @@ in
     wantedBy = [ "svcvm.target" ];
     wants = [
       "network-online.target"
-      "wpa_supplicant-${config.vars.network.wireless.interface}.service"
+      "wpa_supplicant-${network.wireless.interface}.service"
     ];
     after = [
       "network-online.target"
-      "wpa_supplicant-${config.vars.network.wireless.interface}.service"
+      "wpa_supplicant-${network.wireless.interface}.service"
     ];
     serviceConfig =
       let
@@ -198,31 +198,31 @@ in
         '';
       }
       {
-        assertion = config.vars.network.wireless.enable;
+        assertion = network.wireless.enable;
         message = ''
           variables: vars.network.wireless.enable needs to be true
         '';
       }
       {
-        assertion = config.vars.network.wireguard.enable;
+        assertion = network.wireguard.enable;
         message = ''
           variables: vars.network.wireguard.enable needs to be true
         '';
       }
       {
-        assertion = config.vars.network.wireguard.forwarding;
+        assertion = network.wireguard.forwarding;
         message = ''
           variables: vars.network.wireguard.forwarding needs to be true
         '';
       }
       {
-        assertion = !config.vars.network.hostapd.enable;
+        assertion = !network.hostapd.enable;
         message = ''
           variables: vars.network.hostapd is not supported
         '';
       }
       {
-        assertion = !config.vars.network.wired.enable;
+        assertion = !network.wired.enable;
         message = ''
           variables: vars.network.wired is not supported
         '';
