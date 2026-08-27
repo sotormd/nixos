@@ -1131,8 +1131,8 @@ elif [ "$VERB" == "sops" ]; then
         done
     fi
 
-    if [ -z "${SECRETS_WIRELESS_PSK:-}" ]; then
-        echo "SECRETS_WIRELESS_PSK unset, using user input"
+    if [ -z "${SECRETS_WIRELESS_PASSWORD:-}" ]; then
+        echo "SECRETS_WIRELESS_PASSWORD unset, using user input"
 
         while true; do
             echo "Set wireless network password"
@@ -1143,7 +1143,27 @@ elif [ "$VERB" == "sops" ]; then
             echo
 
             if [ "$PASSWORD1" == "$PASSWORD2" ]; then
-                SECRETS_WIRELESS_PSK="$PASSWORD1"
+                SECRETS_WIRELESS_PASSWORD="$PASSWORD1"
+                break
+            else
+                echo "Passwords do not match, try again"
+            fi
+        done
+    fi
+
+    if [ -z "${SECRETS_HOSTAPD_PASSWORD:-}" ]; then
+        echo "SECRETS_HOSTAPD_PASSWORD unset, using user input"
+
+        while true; do
+            echo "Set hostapd network password"
+            read -sp "Enter password  : " PASSWORD1
+            echo
+            read -sp "Confirm password: " PASSWORD2
+            echo
+            echo
+
+            if [ "$PASSWORD1" == "$PASSWORD2" ]; then
+                SECRETS_HOSTAPD_PASSWORD="$PASSWORD1"
                 break
             else
                 echo "Passwords do not match, try again"
@@ -1243,7 +1263,9 @@ hashedPassword: $SECRETS_HASHED_PASSWORD
 wireguard: $SECRETS_WIREGUARD_KEY
 
 wireless: |
-  psk=$SECRETS_WIRELESS_PSK
+  psk=$SECRETS_WIRELESS_PASSWORD
+
+hostapd: $SECRETS_HOSTAPD_PASSWORD
 
 seed: $SECRETS_SEED_KEY
 EOF
@@ -1256,7 +1278,9 @@ hashedPassword: $SECRETS_HASHED_PASSWORD
 wireguard: $SECRETS_WIREGUARD_KEY
 
 wireless: |
-  psk=$SECRETS_WIRELESS_PSK
+  psk=$SECRETS_WIRELESS_PASSWORD
+
+hostapd: $SECRETS_HOSTAPD_PASSWORD
 
 seed: $SECRETS_SEED_KEY
 
