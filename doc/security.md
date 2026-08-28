@@ -20,7 +20,7 @@ The targets covered in this document are:
 
 - Workstation, my workstation configuration for generic personal computers
 - Server, my home-server configuration for hosts that serve Virtual Machine
-  services on WireGuard over LAN.
+  services on WireGuard over wireless LAN.
 - Pi, my Raspberry Pi 4bs.
 
 Unless explicitly mentioned, everything applies to all roles.
@@ -330,13 +330,13 @@ clients and `svcvm` guests.
 
 # WireGuard
 
-Server serves services on [WireGuard](https://www.wireguard.com/) over LAN
-instead of directly serving over LAN. WireGuard peers are configured using the
-variables file and private keys are stored using SOPS.
+Server serves services on [WireGuard](https://www.wireguard.com/) over wireless
+LAN instead of directly serving over wireless LAN. WireGuard peers are
+configured using the variables file and private keys are stored using SOPS.
 
 Note that no services are exposed to the internet, directly or otherwise. Server
-serves only its LAN (over WireGuard). Therefore, this is not a concern and out
-of scope for this flake.
+serves only its wireless LAN (over WireGuard). Therefore, this is not a concern
+and out of scope for this flake.
 
 # Firewall
 
@@ -346,10 +346,10 @@ The userspace `nft` tool can be used for ad-hoc changes.
 By default (ie, when no services are enabled in variables), **NO** ports are
 open on **ANY** interface, not even loopback or internal VM interfaces.
 
-Ports are opened on loopback / LAN / VM interfaces to specific addresses and
-interfaces only based on enabled services.
+Ports are opened on loopback / wireless LAN / VM interfaces to specific
+addresses and interfaces only based on enabled services.
 
-Note that "LAN" here refers to the wireless LAN as configured by
+Note that "wireless LAN" here refers to the wireless LAN as configured by
 `vars.network.wireless`. This is the primary LAN. The hostapd network
 (`vars.network.hostapd`) and WireGuard (`vars.network.wireguard`) are referred
 to separately. Nothing is served over wired LAN (`vars.network.wired`).
@@ -360,9 +360,10 @@ it can be satisfied using `bwrap --unshare-net`.
 dnscrypt-proxy is additionally served on hostapd/svcvm gateways based on enabled
 services (see example).
 
-Only SSH is served over LAN and [uses public key authentication](#secure-shell).
-Therefore, even though nftables filters by CIDR using `vars.services.ssh.allow`
-this is not used as a real source of identification.
+Only SSH is served over wireless LAN and
+[uses public key authentication](#secure-shell). Therefore, even though nftables
+filters by CIDR using `vars.services.ssh.allow` this is not used as a real
+source of identification.
 
 All other services are served over [WireGuard](#wireguard), which uses public
 key authentication. Currently this includes
@@ -387,12 +388,12 @@ All such access control requirements are documented in the
 [Server Usage Documentation](./server/usage.md).
 
 All other ports are opened only to VM interfaces internally since services are
-reverse-proxied via NGINX. For the few ports that are opened to LAN over
-WireGuard, the ports are opened only to a select private WireGuard CIDR defined
-by the `vars.service.<name>.allow` variables in the variables file. Since this
-value is a CIDR, it can be used to allow only specific private ranges. For
-example, by setting it to `10.20.0.100/31`, only `10.20.0.100` and `10.20.0.101`
-are allowed.
+reverse-proxied via NGINX. For the few ports that are opened to wireless LAN
+over WireGuard, the ports are opened only to a select private WireGuard CIDR
+defined by the `vars.service.<name>.allow` variables in the variables file.
+Since this value is a CIDR, it can be used to allow only specific private
+ranges. For example, by setting it to `10.20.0.100/31`, only `10.20.0.100` and
+`10.20.0.101` are allowed.
 
 Additionally, the services reverse-proxied via the NGINX are also restricted
 using `vars.service.<name>.allow`. See [NGINX](#nginx) for more information.
@@ -418,8 +419,8 @@ Ports are opened for the following services:
 
 1. SSH, if enabled using `vars.services.ssh.enable`:
 
-   - TCP `vars.services.ssh.port` is open on LAN to the private CIDR defined by
-     `vars.services.ssh.allow`
+   - TCP `vars.services.ssh.port` is open on wireless LAN to the private CIDR
+     defined by `vars.services.ssh.allow`
 
    This port is also open on the hostapd gateway, if hostapd is enabled. If both
    wireless and hostapd are disabled, then it is opened on all interfaces
@@ -449,8 +450,8 @@ Ports are opened for the following services:
 
 1. SSH, if enabled using `vars.services.ssh.enable`:
 
-   - TCP `vars.services.ssh.port` is open on LAN to the private CIDR defined by
-     `vars.services.ssh.allow`
+   - TCP `vars.services.ssh.port` is open on wireless LAN to the private CIDR
+     defined by `vars.services.ssh.allow`
 
 1. NGINX, if enabled using `vars.services.nginx.enable`:
 
@@ -499,8 +500,8 @@ Ports are opened for the following services:
 
 1. SSH, if enabled using `vars.services.ssh.enable`:
 
-   - TCP `vars.services.ssh.port` is open on LAN to the private CIDR defined by
-     `vars.services.ssh.allow`
+   - TCP `vars.services.ssh.port` is open on wireless LAN to the private CIDR
+     defined by `vars.services.ssh.allow`
 
    This port is also open on the hostapd gateway, if hostapd is enabled. If both
    wireless and hostapd are disabled, then it is opened on all interfaces
@@ -521,7 +522,7 @@ Example ruleset for Workstation with
 
 Notes for example:
 
-- `wlan0` is the LAN interface.
+- `wlan0` is the wireless LAN interface.
 - `wg0` is the WireGuard interface.
 - `virbr*` are libvirt interfaces.
 
