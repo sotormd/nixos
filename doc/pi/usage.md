@@ -92,9 +92,13 @@ Enabled using `vars.services.ssh.enable`.
 
 ### Ports
 
-Open on LAN to the private CIDR defined by `vars.services.ssh.allow`:
+Open on wireless or hostapd LAN to the private CIDR defined by
+`vars.services.ssh.allow`:
 
 1. `vars.services.ssh.port`
+
+If both wireless and hostapd are disabled, then it is opened on all interfaces
+(`0.0.0.0`).
 
 ### Keys
 

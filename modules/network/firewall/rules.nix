@@ -153,7 +153,7 @@ let
     '')
 
     (o ssh.enable ''
-      ip saddr ${ssh.allow} ip daddr ${address} iifname "${interface}" tcp dport ${toString ssh.port} ct state new accept
+      ip saddr ${ssh.allow} ip daddr ${config.services.openssh.settings.ListenAddress} tcp dport ${toString ssh.port} ct state new accept
     '')
 
   ];

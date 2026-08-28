@@ -537,6 +537,7 @@ Notable changes from the default configuration:
 - all selfhosted features are disabled
 - wireguard is disabled
 - configured wired network is disabled
+- ssh always disabled, dnscrypt-proxy always enabled
 - firewall is relaxed, loopback communication is allowed
 
 Roaming Mode can be used by booting into the `roaming` specialisation from the
@@ -557,6 +558,7 @@ Notable changes from the default configuration:
 - all selfhosted features are disabled
 - wireguard is disabled
 - configured wired network is disabled
+- ssh always disabled, dnscrypt-proxy always enabled
 - firewall is relaxed, loopback communication is allowed
 
 GNOME Mode can be enabled using `vars.modes.gnome.enable` and used by booting
@@ -606,9 +608,13 @@ Enabled using `vars.services.ssh.enable`.
 
 ### Ports
 
-Open on LAN to the private CIDR defined by `vars.services.ssh.allow`:
+Open on wireless or hostapd LAN to the private CIDR defined by
+`vars.services.ssh.allow`:
 
 1. `vars.services.ssh.port`
+
+If both wireless and hostapd are disabled, then it is opened on all interfaces
+(`0.0.0.0`).
 
 ### Keys
 
