@@ -18,8 +18,9 @@ lib.mkIf hostapd.enable {
         inherit (hostapd) ssid;
 
         authentication = {
-          mode = "wpa3-sae";
+          mode = "wpa3-sae-transition";
           saePasswords = [ { passwordFile = config.sops.secrets.hostapd.path; } ];
+          wpaPasswordFile = config.sops.secrets.hostapd.path;
         };
 
         apIsolate = false;
