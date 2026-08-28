@@ -7,5 +7,6 @@ lib.mkIf enable {
   systemd.network.networks."00-wired" = {
     matchConfig.Name = interface;
     networkConfig.DHCP = "yes";
+    dhcpV4Config.RouteMetric = 512; # more priority than usual
   };
 }
