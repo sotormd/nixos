@@ -367,7 +367,7 @@ elif [ "$VERB" == "vars" ]; then
       interface = "wlp1s0";
 
       # wireless network ssid
-      # WPA3-SAE password is stored using sops-nix
+      # password is stored using sops-nix
       ssid = "example";
 
       # wireless network gateway
@@ -414,7 +414,7 @@ elif [ "$VERB" == "vars" ]; then
       domain = "US";
 
       # ssid name
-      # WPA3-SAE password is stored using sops-nix
+      # password is stored using sops-nix
       ssid = "example-lan";
 
       # address for gateway
@@ -966,7 +966,7 @@ the following values have been populated from the installation environment
       interface = "wlp1s0";
 
       # wireless network ssid
-      # WPA3-SAE password is stored using sops-nix
+      # password is stored using sops-nix
       ssid = "example";
 
       # wireless network gateway
@@ -1013,7 +1013,7 @@ the following values have been populated from the installation environment
       domain = "US";
 
       # ssid name
-      # WPA3-SAE password is stored using sops-nix
+      # password is stored using sops-nix
       ssid = "example-lan";
 
       # address for gateway

@@ -163,7 +163,7 @@ stored using SOPS.
     interface = "wlp1s0";
 
     # wireless network ssid
-    # WPA3-SAE password is stored using sops-nix
+    # password is stored using sops-nix
     ssid = "example";
 
     # wireless network gateway
@@ -184,9 +184,8 @@ about using WireGuard.
 ## Hostapd
 
 Hostapd can be used to create a wireless access point (AP) that other devices
-can connect to. Hostapd is configured using `vars.network.hostapd`.
-
-This uses WPA3-SAE for authentication, the password is stored using SOPS.
+can connect to. Hostapd is configured using `vars.network.hostapd`. The password
+is stored using SOPS.
 
 ```nix
 {
@@ -209,7 +208,7 @@ This uses WPA3-SAE for authentication, the password is stored using SOPS.
     domain = "IN";
 
     # ssid name
-    # WPA3-SAE password is stored using sops-nix
+    # password is stored using sops-nix
     ssid = "example-lan";
 
     # address for gateway

@@ -11,14 +11,14 @@ lib.mkIf hostapd.enable {
       countryCode = hostapd.domain;
 
       wifi4.enable = true;
-      wifi5.enable = true;
-      wifi6.enable = true;
+      wifi5.enable = false;
+      wifi6.enable = false;
 
       networks.${hostapd.interface} = {
         inherit (hostapd) ssid;
 
         authentication = {
-          mode = "wpa3-sae-transition";
+          mode = "wpa2-sha256";
           saePasswords = [ { passwordFile = config.sops.secrets.hostapd.path; } ];
           wpaPasswordFile = config.sops.secrets.hostapd.path;
         };
