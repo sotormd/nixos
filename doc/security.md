@@ -349,6 +349,11 @@ open on **ANY** interface, not even loopback or internal VM interfaces.
 Ports are opened on loopback / LAN / VM interfaces to specific addresses and
 interfaces only based on enabled services.
 
+Note that "LAN" here refers to the wireless LAN as configured by
+`vars.network.wireless`. This is the primary LAN. The hostapd network
+(`vars.network.hostapd`) and WireGuard (`vars.network.wireguard`) are referred
+to separately. Nothing is served over wired LAN (`vars.network.wired`).
+
 Only dnscrypt-proxy is served over loopback. In case any apps require loopback,
 it can be satisfied using `bwrap --unshare-net`.
 
@@ -415,6 +420,10 @@ Ports are opened for the following services:
 
    - TCP `vars.services.ssh.port` is open on LAN to the private CIDR defined by
      `vars.services.ssh.allow`
+
+   This port is also open on the hostapd gateway, if hostapd is enabled. If both
+   wireless and hostapd are disabled, then it is opened on all interfaces
+   (`0.0.0.0`).
 
 1. Libvirt interfaces (`virbr*`) are opened for DNS and DHCP (see example
    below).
@@ -492,6 +501,10 @@ Ports are opened for the following services:
 
    - TCP `vars.services.ssh.port` is open on LAN to the private CIDR defined by
      `vars.services.ssh.allow`
+
+   This port is also open on the hostapd gateway, if hostapd is enabled. If both
+   wireless and hostapd are disabled, then it is opened on all interfaces
+   (`0.0.0.0`).
 
 > Examples
 
