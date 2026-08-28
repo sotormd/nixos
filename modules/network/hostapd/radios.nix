@@ -10,8 +10,8 @@ lib.mkIf hostapd.enable {
       channel = 6;
       countryCode = hostapd.domain;
 
-      wifi4.enable = true;
-      wifi5.enable = true;
+      wifi4.enable = false;
+      wifi5.enable = false;
       wifi6.enable = true;
 
       networks.${hostapd.interface} = {
