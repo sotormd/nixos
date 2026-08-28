@@ -21,7 +21,6 @@ lib.mkIf hostapd.enable {
           mode = hostapd.authentication;
           saePasswords = [ { passwordFile = config.sops.secrets.hostapd.path; } ];
           wpaPasswordFile = config.sops.secrets.hostapd.path;
-          wpaPskFile = config.sops.secrets.hostapd.path;
         };
 
         apIsolate = false;
