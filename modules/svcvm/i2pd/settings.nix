@@ -7,51 +7,93 @@
 
 let
   inherit (config.svcfg) i2pd;
+
+  i2pdConf = pkgs.writeText "i2pd.conf" ''
+    [http]
+    enabled = true
+    address = ${i2pd.web-console.address}
+    port = ${toString i2pd.web-console.port}
+    hostname = ${i2pd.web-console.hostname}
+
+    [httpproxy]
+    enabled = true
+    address = ${i2pd.http-proxy.address}
+    port = ${toString i2pd.http-proxy.port}
+
+    [sam]
+    enabled = true
+    address = ${i2pd.sam.address}
+    port = ${toString i2pd.sam.port}
+
+    [addressbook]
+    enabled = true
+    defaulturl = http://shx5vqsw7usdaunyzr2qmes2fq37oumybpudrd4jjj4e4vk4uusa.b32.i2p/hosts.txt
+    subscriptions = http://shx5vqsw7usdaunyzr2qmes2fq37oumybpudrd4jjj4e4vk4uusa.b32.i2p/hosts.txt
+  '';
+
+  i2pdTunConf = pkgs.writeText "i2pd-tunnels.conf" "";
 in
 {
-  services.i2pd = {
+  systemd.services.i2pd = {
+    description = "Minimal I2P router";
 
-    # enable the i2pd i2p router
-    enable = true;
+    wants = config.svcready.units;
+    after = config.svcready.units;
 
-    settings = {
+    wantedBy = [ "multi-user.target" ];
 
-      # enable SAM
-      sam = {
-        enable = true;
-        inherit (i2pd.sam) address port;
-      };
+    unitConfig.RequiresMountsFor = [ "/var/lib/i2pd" ];
 
-      # enable HTTP proxy
-      httpproxy = {
-        enable = true;
-        inherit (i2pd.http-proxy) address port;
-      };
+    serviceConfig = {
+      User = "i2pd";
+      Group = "i2pd";
 
-      # enable webconsole
-      http = {
-        enable = true;
-        inherit (i2pd.web-console) address port hostname;
-      };
+      StateDirectory = "i2pd";
 
-      # addressbook from reg.i2p
-      addressbook = {
-        enable = true;
-        defaulturl = "http://shx5vqsw7usdaunyzr2qmes2fq37oumybpudrd4jjj4e4vk4uusa.b32.i2p/hosts.txt";
-        subscriptions = lib.mkForce [
-          "http://shx5vqsw7usdaunyzr2qmes2fq37oumybpudrd4jjj4e4vk4uusa.b32.i2p/hosts.txt"
-        ];
-      };
+      ExecStart = lib.escapeShellArgs [
+        "${pkgs.i2pd}/bin/i2pd"
+        "--datadir=/var/lib/i2pd"
+        "--conf=${i2pdConf}"
+        "--tunconf=${i2pdTunConf}"
+      ];
 
+      Restart = "on-failure";
+      KillSignal = "SIGTERM";
+      TimeoutStopSec = "30s";
+      SendSIGKILL = true;
+
+      # hardening
+      PrivateTmp = true;
+      ProtectSystem = "strict";
+      ProtectHome = true;
+      PrivateDevices = true;
+      ProtectKernelTunables = true;
+      ProtectControlGroups = true;
+      NoNewPrivileges = true;
+      MemoryDenyWriteExecute = true;
+      LockPersonality = true;
+      SystemCallFilter = "@system-service";
+      RestrictAddressFamilies = [
+        "AF_UNIX"
+        "AF_INET"
+        "AF_NETLINK"
+      ];
+      ProtectHostname = true;
+      ProtectClock = true;
+      ProtectKernelLogs = true;
+      ProtectKernelModules = true;
+      ProtectProc = "invisible";
+      ProcSubset = "pid";
+      PrivateMounts = true;
+      PrivateUsers = true;
+      RemoveIPC = true;
+      RestrictRealtime = true;
+      RestrictSUIDSGID = true;
+      SystemCallArchitectures = "native";
     };
-
   };
 
   # start after appropriate indicators
-  systemd.services.i2pd = {
-    wants = config.svcready.units;
-    after = config.svcready.units;
-  };
   svcready = {
     interface.enable = true;
     internet.enable = true;
