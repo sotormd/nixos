@@ -13,7 +13,12 @@ lib.mkIf enable {
   systemd.network.networks."10-primary" = {
     matchConfig.Name = interface;
     address = [ "${address}/24" ];
-    routes = [ { Gateway = gateway; } ];
+    routes = [
+      {
+        Gateway = gateway;
+        Metric = 1024; # lower priority than wired
+      }
+    ];
     networkConfig.DHCP = "no";
   };
 }
