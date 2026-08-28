@@ -307,12 +307,10 @@ USBGuard can be controlled using the `usbguard` command line interface. Only the
 # Wireless Networking
 
 `wpa_supplicant` is used for wireless connections. Network secrets are stored
-using SOPS.
+using SOPS. WPA3-SAE can be used for these networks.
 
-> Workstation, Server only
-
-WPA3 (SAE / dragonfly) is used for wireless authentication with
-`wpa_supplicant`.
+`hostapd` is used to create wireless access points. Network secrets are stored
+using SOPS. WPA3-SAE can be used for these networks.
 
 # DNS
 

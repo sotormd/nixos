@@ -442,8 +442,11 @@ using `sops`.
     interface = "wlp1s0";
 
     # wireless network ssid
-    # WPA3-SAE password is stored using sops-nix
+    # password is stored using sops-nix
     ssid = "example";
+
+    # wireless network authentication protocols
+    authentication = [ "SAE" ];
 
     # wireless network gateway
     gateway = "10.0.0.1";

@@ -19,7 +19,7 @@ base configuration for image-* roles
 
 ## laptop
 
-for uefi laptops, things like systemd-boot, secure boot, auto-cpufreq and wpa3
+for uefi laptops, things like systemd-boot, secure boot, auto-cpufreq
 
 ## machine
 

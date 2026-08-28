@@ -370,6 +370,9 @@ elif [ "$VERB" == "vars" ]; then
       # password is stored using sops-nix
       ssid = "example";
 
+      # wireless network authentication protocols
+      authentication = [ "SAE" ];
+
       # wireless network gateway
       gateway = "10.0.0.1";
 
@@ -416,6 +419,9 @@ elif [ "$VERB" == "vars" ]; then
       # ssid name
       # password is stored using sops-nix
       ssid = "example-lan";
+
+      # authentication protocol
+      authentication = "wpa3-sae";
 
       # address for gateway
       # prefix 24 will be used
@@ -703,6 +709,9 @@ the following values have been populated from the installation environment
       # wireless network ssid
       ssid = "example";
 
+      # wireless network authentication protocols
+      authentication = [ "SAE" ];
+
       # wireless network gateway
       gateway = "10.0.0.1";
 
@@ -969,6 +978,9 @@ the following values have been populated from the installation environment
       # password is stored using sops-nix
       ssid = "example";
 
+      # wireless network authentication protocols
+      authentication = [ "SAE" ];
+
       # wireless network gateway
       gateway = "10.0.0.1";
 
@@ -1015,6 +1027,9 @@ the following values have been populated from the installation environment
       # ssid name
       # password is stored using sops-nix
       ssid = "example-lan";
+
+      # authentication protocol
+      authentication = "wpa3-sae";
 
       # address for gateway
       # prefix 24 will be used

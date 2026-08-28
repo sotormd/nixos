@@ -682,6 +682,9 @@ stored using SOPS.
     # password is stored using sops-nix
     ssid = "example";
 
+    # wireless network authentication protocols
+    authentication = [ "SAE" ];
+
     # wireless network gateway
     gateway = "10.0.0.1";
 
@@ -726,6 +729,9 @@ is stored using SOPS.
     # ssid name
     # password is stored using sops-nix
     ssid = "example-lan";
+
+    # authentication protocol
+    authentication = "wpa3-sae";
 
     # address for gateway
     # prefix 24 will be used

@@ -139,9 +139,6 @@
     # wpa_supplicant wireless networking
     network.wireless = _: { imports = [ ./network/wireless ]; };
 
-    # wpa3 dragonfly authentication
-    network.wpa3 = _: { imports = [ ./network/wpa3 ]; };
-
     # linux audit subsystem
     services.auditd = _: { imports = [ ./services/auditd ]; };
 

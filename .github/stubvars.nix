@@ -72,6 +72,7 @@
       enable = true;
       interface = "wlp1s0";
       ssid = "net";
+      authentication = [ "SAE" ];
       gateway = "10.0.0.1";
       address = "10.0.0.2";
     };
@@ -88,6 +89,7 @@
       uplink = "eth0";
       domain = "US";
       ssid = "stub-hostapd";
+      authentication = "wpa3-sae";
       address = "192.168.20.1";
     };
     wired = {

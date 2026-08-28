@@ -1,7 +1,7 @@
 { self, ... }:
 
 let
-  inherit (self.nixosModules.modules) apps boot network;
+  inherit (self.nixosModules.modules) apps boot;
 in
 {
   imports = [
@@ -10,6 +10,5 @@ in
     boot.secureboot
     boot.systemd-boot
     boot.zfsroot
-    network.wpa3
   ];
 }

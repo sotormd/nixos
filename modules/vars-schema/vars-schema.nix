@@ -169,6 +169,10 @@ in
           type = types.str;
         };
 
+        authentication = mkOption {
+          type = types.listOf types.str;
+        };
+
         gateway = mkOption {
           type = privateAddr;
         };
@@ -226,6 +230,10 @@ in
         };
 
         ssid = mkOption {
+          type = types.str;
+        };
+
+        authentication = mkOption {
           type = types.str;
         };
 
