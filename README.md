@@ -68,8 +68,12 @@ NixOS configuration for multiple hosts.
    - MicroVM services with [svcvm](https://github.com/sotormd/svcvm)
    - Declarative svcvm management through `lib.mksvcvm`
    - Service readiness and dependency handling
-   - WireGuard tunnelling, networkd networking and nftables firewall
-   - wpa_supplicant, hostapd and systemd-networkd networking
+   - [WireGuard](https://www.wireguard.com/) tunnelling,
+     [networkd](https://www.freedesktop.org/software/systemd/man/latest/systemd.network.html)
+     networking and [nftables](https://netfilter.org/projects/nftables/)
+     firewall
+   - [wpa_supplicant](https://w1.fi/wpa_supplicant/) and
+     [hostapd](https://w1.fi/hostapd/) wireless networking
    - [dnscrypt-proxy](https://github.com/DNSCrypt/dnscrypt-proxy) for
      DNS-over-HTTPS
    - [NGINX](https://github.com/nginx/nginx) web server & reverse proxy
