@@ -629,6 +629,220 @@ table ip nat {
 }
 ```
 
+Example ruleset for Workstation with:
+
+- Wireless enabled
+- WireGuard enabled
+- Hostapd disabled
+- Wired enabled
+- dnscrypt-proxy enabled
+- SSH disabled
+
+Notes for example:
+
+- `eth0` is the wired LAN interface
+- `wlan0` is the wireless LAN interface
+- `virbr*` are libvirt interfaces
+
+```
+table inet filter {
+	chain input {
+		type filter hook input priority filter; policy drop;
+		ct state invalid drop
+		tcp flags & (fin | syn | rst | ack) != syn ct state new drop
+		iifname "lo" ct state established,related accept
+		iifname "wlan0" ct state established,related accept
+		iifname "wg0" ct state established,related accept
+		iifname "eth0" ct state established,related accept
+		iifname "virbr*" ct state established,related accept
+		iifname "virbr*" tcp dport 53 ct state new accept
+		iifname "virbr*" udp dport 53 ct state new accept
+		iifname "virbr*" udp dport 67 ct state new accept
+		ip daddr 127.0.0.1 iifname "lo" udp dport 53 ct state new accept
+		ip daddr 127.0.0.1 iifname "lo" tcp dport 53 ct state new accept
+	}
+
+	chain forward {
+		type filter hook forward priority filter; policy drop;
+		ct state invalid drop
+		ct state established,related accept
+		iifname "virbr*" ct state new accept
+	}
+
+	chain output {
+		type filter hook output priority filter; policy drop;
+		ct state invalid drop
+		ct state established,related accept
+		oifname "lo" accept
+		oifname "wlan0" accept
+		oifname "wg0" accept
+		oifname "eth0" accept
+		oifname "virbr*" accept
+	}
+}
+table ip nat {
+	chain prerouting {
+		type nat hook prerouting priority dstnat; policy accept;
+	}
+
+	chain postrouting {
+		type nat hook postrouting priority srcnat; policy accept;
+	}
+}
+```
+
+Example ruleset for Server with:
+
+- dnscrypt-proxy enabled
+- SSH enabled
+- NGINX enabled
+- SearXNG enabled
+- Vaultwarden enabled
+- I2PD enabled
+- qBittorrent enabled
+
+Notes for example:
+
+- `wlan0` is the wireless LAN interface
+- Server is `10.10.0.200` on wireless LAN
+- Workstation is `10.10.0.100` on wireless LAN
+- `wg0` is the WireGuard interface
+- Workstation is `10.30.0.100` on WireGuard
+- `2222` is SSH port
+- NGINX is `10.204.4.2` on `svcvm4` via gateway `10.204.4.1`
+- SearXNG is `10.204.5.2` on `svcvm5` via gateway `10.204.5.1`
+- Vaultwarden is `10.204.6.2` on `svcvm6` via gateway `10.204.6.1`
+- I2PD is `10.204.7.2` on `svcvm7` via gateway `10.204.7.1`
+- qBittorrent is `10.204.8.2` on `svcvm8` via gateway `10.204.8.1`
+
+```
+table inet filter {
+	chain input {
+		type filter hook input priority filter; policy drop;
+		ct state invalid drop
+		tcp flags & (fin | syn | rst | ack) != syn ct state new drop
+		iifname "lo" ct state established,related accept
+		iifname "wlan0" ct state established,related accept
+		iifname "wg0" ct state established,related accept
+		iifname "svcvm4" ct state established,related accept
+		iifname "svcvm5" ct state established,related accept
+		iifname "svcvm6" ct state established,related accept
+		iifname "svcvm7" ct state established,related accept
+		iifname "svcvm8" ct state established,related accept
+		iifname "svcvm4" ip daddr 10.204.4.1 udp dport 53 ct state new accept
+		iifname "svcvm4" ip daddr 10.204.4.1 tcp dport 53 ct state new accept
+		iifname "svcvm5" ip daddr 10.204.5.1 udp dport 53 ct state new accept
+		iifname "svcvm5" ip daddr 10.204.5.1 tcp dport 53 ct state new accept
+		iifname "svcvm7" ip daddr 10.204.7.1 udp dport 53 ct state new accept
+		iifname "svcvm7" ip daddr 10.204.7.1 tcp dport 53 ct state new accept
+		ip daddr 127.0.0.1 iifname "lo" udp dport 53 ct state new accept
+		ip daddr 127.0.0.1 iifname "lo" tcp dport 53 ct state new accept
+		ip saddr 10.10.0.100 ip daddr 10.10.0.200 iifname "wlan0" udp dport 51820 ct state new accept
+		ip saddr 10.10.0.100 ip daddr 10.10.0.200 tcp dport 2222 ct state new accept
+	}
+
+	chain forward {
+		type filter hook forward priority filter; policy drop;
+		ct state invalid drop
+		ct state established,related accept
+		ip saddr 10.204.4.2 iifname "svcvm4" oifname "wlan0" ct state new accept
+		ip saddr 10.204.5.2 iifname "svcvm5" oifname "wlan0" ct state new accept
+		ip saddr 10.204.7.2 iifname "svcvm7" oifname "wlan0" ct state new accept
+		ip saddr 10.30.0.100 iifname "wg0" oifname "svcvm4" ip daddr 10.204.4.2 tcp dport 443 ct state new accept
+		ip saddr 10.30.0.100 iifname "wg0" oifname "svcvm7" ip daddr 10.204.7.2 tcp dport 4444 ct state new accept
+		ip saddr 10.204.4.2 iifname "svcvm4" ip daddr 10.204.5.2 oifname "svcvm5" tcp dport 8888 ct state new accept
+		ip saddr 10.204.4.2 iifname "svcvm4" ip daddr 10.204.6.2 oifname "svcvm6" tcp dport 8222 ct state new accept
+		ip saddr 10.204.4.2 iifname "svcvm4" ip daddr 10.204.7.2 oifname "svcvm7" tcp dport 7070 ct state new accept
+		ip saddr 10.204.4.2 iifname "svcvm4" ip daddr 10.204.8.2 oifname "svcvm8" tcp dport 8080 ct state new accept
+		ip saddr 10.204.8.2 iifname "svcvm8" ip daddr 10.204.7.2 oifname "svcvm7" tcp dport 7656 ct state new accept
+		ip saddr 10.204.8.2 iifname "svcvm8" ip daddr 10.204.7.2 oifname "svcvm7" tcp dport 4444 ct state new accept
+	}
+
+	chain output {
+		type filter hook output priority filter; policy drop;
+		ct state invalid drop
+		ct state established,related accept
+		oifname "lo" accept
+		oifname "wlan0" accept
+		oifname "wg0" accept
+	}
+}
+table ip nat {
+	chain prerouting {
+		type nat hook prerouting priority dstnat; policy accept;
+		ip saddr 10.30.0.100 iifname "wg0" tcp dport 443 dnat to 10.204.4.2
+		ip saddr 10.30.0.100 iifname "wg0" tcp dport 4444 dnat to 10.204.7.2
+	}
+
+	chain postrouting {
+		type nat hook postrouting priority srcnat; policy accept;
+		ip saddr 10.204.4.2 iifname "svcvm4" oifname "wlan0" masquerade
+		ip saddr 10.204.5.2 iifname "svcvm5" oifname "wlan0" masquerade
+		ip saddr 10.204.7.2 iifname "svcvm7" oifname "wlan0" masquerade
+	}
+}
+```
+
+Example ruleset for Pi with:
+
+- Wireless enabled
+- WireGuard disabled
+- Hostapd enabled
+- Wired enabled
+- dnscrypt-proxy enabled
+- SSH enabled
+
+Notes for example:
+
+- `end0` is the wired LAN interface
+- `wlan0` is the wireless LAN interface, used for hostapd
+- Pi is `10.10.0.10` on hostapd network
+- `2222` is SSH port
+
+```
+table inet filter {
+	chain input {
+		type filter hook input priority filter; policy drop;
+		ct state invalid drop
+		tcp flags & (fin | syn | rst | ack) != syn ct state new drop
+		iifname "lo" ct state established,related accept
+		iifname "wlan0" ct state established,related accept
+		iifname "end0" ct state established,related accept
+		iifname "wlan0" ip daddr 10.10.0.10 udp dport 53 ct state new accept
+		iifname "wlan0" ip daddr 10.10.0.10 tcp dport 53 ct state new accept
+		ip daddr 127.0.0.1 iifname "lo" udp dport 53 ct state new accept
+		ip daddr 127.0.0.1 iifname "lo" tcp dport 53 ct state new accept
+		ip saddr 10.10.0.0/24 ip daddr 10.10.0.10 tcp dport 2222 ct state new accept
+	}
+
+	chain forward {
+		type filter hook forward priority filter; policy drop;
+		ct state invalid drop
+		ct state established,related accept
+		iifname "wlan0" oifname "end0" ct state new accept
+	}
+
+	chain output {
+		type filter hook output priority filter; policy drop;
+		ct state invalid drop
+		ct state established,related accept
+		oifname "lo" accept
+		oifname "wlan0" accept
+		oifname "end0" accept
+	}
+}
+table ip nat {
+	chain prerouting {
+		type nat hook prerouting priority dstnat; policy accept;
+	}
+
+	chain postrouting {
+		type nat hook postrouting priority srcnat; policy accept;
+		iifname "wlan0" oifname "end0" masquerade
+	}
+}
+```
+
 # Virtualisation
 
 > Workstation only
