@@ -24,7 +24,7 @@ lib.mkIf hostapd.enable {
         };
 
         apIsolate = false;
-        ignoreBroadcastSsid = "disabled";
+        ignoreBroadcastSsid = "empty";
       };
     };
   };
