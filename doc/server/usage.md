@@ -211,11 +211,10 @@ SearXNG runs in a Virtual Machine. See
 
 The following search engines are enabled by default on the general tab:
 
-1. Bing
-2. DuckDuckGo
-3. Google
-4. Startpage
-5. Wikipedia
+1. DuckDuckGo
+2. Google
+3. Startpage
+4. Wikipedia
 
 The following search engines are enabled by default on the images tab:
 
