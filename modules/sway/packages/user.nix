@@ -10,5 +10,8 @@
     # wayland clipboard
     pkgs.wl-clipboard
 
+    # screen recorder
+    pkgs.wf-recorder
+
   ];
 }
