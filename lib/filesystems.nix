@@ -125,6 +125,39 @@ let
 
   mkTmpStatic = dirs: mkTmpRaw mountStatic dirs;
 
+  recursiveImport =
+    let
+      hasSuffix =
+        suffix: str:
+        let
+          n = builtins.stringLength suffix;
+          m = builtins.stringLength str;
+        in
+        m >= n && builtins.substring (m - n) n str == suffix;
+
+      listFilesRecursive =
+        dir:
+        builtins.concatMap (
+          entry:
+          let
+            path = dir + "/${entry}";
+          in
+          if builtins.readFileType path == "directory" then listFilesRecursive path else [ path ]
+        ) (builtins.attrNames (builtins.readDir dir));
+
+      expandIfFolder =
+        elem:
+        if !builtins.isPath elem || builtins.readFileType elem != "directory" then
+          [ elem ]
+        else
+          listFilesRecursive elem;
+
+    in
+    list:
+    builtins.filter (elem: !builtins.isPath elem || hasSuffix ".nix" (toString elem)) (
+      builtins.concatMap expandIfFolder list
+    );
+
 in
 {
   inherit
@@ -165,4 +198,6 @@ in
     mkTmpImmutable
     mkTmpStatic
     ;
+
+  inherit recursiveImport;
 }
