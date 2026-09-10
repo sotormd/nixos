@@ -20,6 +20,9 @@ let
     address = ${i2pd.http-proxy.address}
     port = ${toString i2pd.http-proxy.port}
 
+    [socksproxy]
+    enabled = false
+
     [sam]
     enabled = true
     address = ${i2pd.sam.address}
