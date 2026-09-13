@@ -44,8 +44,14 @@ let
   nixosWithScripts = writeTextFile {
     name = "cli-nixos-with-scripts";
     text = ''
-        #!${runtimeShell}
-      export NIXOS_SCRIPTS=${scriptsDir}
+      #!${runtimeShell}
+
+      # set NIXOS_SCRIPTS to use provided scripts
+      # if NIXOS_SCRIPTS is set externally, use that instead
+      if [ -z "$NIXOS_SCRIPTS" ]; then
+          export NIXOS_SCRIPTS=${scriptsDir}
+      fi
+
       ${nixosRaw}/bin/nixos "$@"
     '';
     destination = "/bin/nixos";
