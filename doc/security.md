@@ -1114,7 +1114,7 @@ in the browsers.
 
        ```bash
        users=$(mktemp -d -p "$XDG_RUNTIME_DIR/bubblewrap-brave" users.XXXXXX)
-       echo "brave:x:1000:1000:brave:/home/brave:${coreutils}/bin/false" > "$users/passwd"
+       echo "brave:x:1000:1000:brave:/home/brave:false" > "$users/passwd"
        echo "brave:x:1000:" > "$users/group"
        ```
 
@@ -1158,15 +1158,15 @@ in the browsers.
      - Bind GTK files as readonly
 
        ```
-       --ro-bind /home/${user}/.gtkrc-2.0 /home/brave/.gtkrc-2.0
-       --ro-bind /home/${user}/.config/gtk-3.0 /home/brave/.config/gtk-3.0
-       --ro-bind /home/${user}/.config/gtk-4.0 /home/brave/.config/gtk-4.0
-       --ro-bind /home/${user}/.icons /home/brave/.icons
-       --ro-bind /home/${user}/.Xresources /home/brave/.Xresources
-       --ro-bind /home/${user}/.local/share/fonts /home/brave/.local/share/fonts
-       --ro-bind /home/${user}/.local/share/icons /home/brave/.local/share/icons
-       --ro-bind /home/${user}/.local/share/themes /home/brave/.local/share/themes
-       --ro-bind /home/${user}/.config/dconf /home/brave/.config/dconf
+       --ro-bind ${home}/.gtkrc-2.0 /home/brave/.gtkrc-2.0
+       --ro-bind ${home}/.config/gtk-3.0 /home/brave/.config/gtk-3.0
+       --ro-bind ${home}/.config/gtk-4.0 /home/brave/.config/gtk-4.0
+       --ro-bind ${home}/.icons /home/brave/.icons
+       --ro-bind ${home}/.Xresources /home/brave/.Xresources
+       --ro-bind ${home}/.local/share/fonts /home/brave/.local/share/fonts
+       --ro-bind ${home}/.local/share/icons /home/brave/.local/share/icons
+       --ro-bind ${home}/.local/share/themes /home/brave/.local/share/themes
+       --ro-bind ${home}/.config/dconf /home/brave/.config/dconf
        ```
 
      - Mount **new** procfs and dev
@@ -1226,25 +1226,25 @@ in the browsers.
      - Bind Enterprise Policies as readonly
 
        ```
-       --ro-bind ${policies}/extra.json /etc/brave/policies/managed/extra.json
+       --ro-bind ${policies} /etc/brave/policies/managed/extra.json
        ```
 
      - Bind configuration directory
 
        ```
-       --bind /home/${user}/.config/BraveSoftware/Brave-Browser /home/brave/.config/BraveSoftware/Brave-Browser
+       --bind ${home}/.config/BraveSoftware/Brave-Browser /home/brave/.config/BraveSoftware/Brave-Browser
        ```
 
      - Bind local state as readonly
 
        ```
-       --ro-bind "${state}/Local State" "/home/brave/.config/BraveSoftware/Brave-Browser/Local State"
+       --ro-bind ${state} "/home/brave/.config/BraveSoftware/Brave-Browser/Local State"
        ```
 
      - Bind downloads directory
 
        ```
-       --bind /home/${user}/Downloads /home/brave/Downloads
+       --bind ${home}/Downloads /home/brave/Downloads
        ```
 
    - xdg-dbus-proxy:
@@ -1398,7 +1398,7 @@ in the browsers.
 
        ```bash
        users=$(mktemp -d -p "$XDG_RUNTIME_DIR/bubblewrap-i2p-browser" users.XXXXXX)
-       echo "i2p-browser:x:1000:1000:i2p-browser:/home/i2p-browser:${coreutils}/bin/false" > "$users/passwd"
+       echo "i2p-browser:x:1000:1000:i2p-browser:/home/i2p-browser:false" > "$users/passwd"
        echo "i2p-browser:x:1000:" > "$users/group"
        ```
 
@@ -1435,15 +1435,15 @@ in the browsers.
      - Bind GTK files as readonly
 
        ```
-       --ro-bind /home/${user}/.gtkrc-2.0 /home/i2p-browser/.gtkrc-2.0
-       --ro-bind /home/${user}/.config/gtk-3.0 /home/i2p-browser/.config/gtk-3.0
-       --ro-bind /home/${user}/.config/gtk-4.0 /home/i2p-browser/.config/gtk-4.0
-       --ro-bind /home/${user}/.icons /home/i2p-browser/.icons
-       --ro-bind /home/${user}/.Xresources /home/i2p-browser/.Xresources
-       --ro-bind /home/${user}/.local/share/fonts /home/i2p-browser/.local/share/fonts
-       --ro-bind /home/${user}/.local/share/icons /home/i2p-browser/.local/share/icons
-       --ro-bind /home/${user}/.local/share/themes /home/i2p-browser/.local/share/themes
-       --ro-bind /home/${user}/.config/dconf /home/i2p-browser/.config/dconf
+       --ro-bind ${home}/.gtkrc-2.0 /home/i2p-browser/.gtkrc-2.0
+       --ro-bind ${home}/.config/gtk-3.0 /home/i2p-browser/.config/gtk-3.0
+       --ro-bind ${home}/.config/gtk-4.0 /home/i2p-browser/.config/gtk-4.0
+       --ro-bind ${home}/.icons /home/i2p-browser/.icons
+       --ro-bind ${home}/.Xresources /home/i2p-browser/.Xresources
+       --ro-bind ${home}/.local/share/fonts /home/i2p-browser/.local/share/fonts
+       --ro-bind ${home}/.local/share/icons /home/i2p-browser/.local/share/icons
+       --ro-bind ${home}/.local/share/themes /home/i2p-browser/.local/share/themes
+       --ro-bind ${home}/.config/dconf /home/i2p-browser/.config/dconf
        ```
 
      - Mount **new** procfs and dev
