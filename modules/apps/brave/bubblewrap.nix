@@ -1,9 +1,11 @@
 {
   inputs,
+  lib,
   bubblewrap,
   coreutils,
+  libnotify,
+  util-linux,
   xdg-dbus-proxy,
-  lib,
   executable,
   policies,
   state,
@@ -20,14 +22,14 @@ let
     LOCKFILE="$XDG_RUNTIME_DIR/bubblewrap-brave/bubblewrap-brave.lock"
 
     if [ -e "$LOCKFILE" ]; then
-        notify-send "Brave is already running" "Try opening a new tab/window instead"
+        ${lib.getExe libnotify} "Brave is already running" "Try opening a new tab/window instead"
         echo "Brave is already running"
         echo "Try opening a new tab/window instead"
         exit 1
     fi
 
-    mkdir -p "$XDG_RUNTIME_DIR/bubblewrap-brave"
-    touch "$LOCKFILE"
+    ${lib.getExe' coreutils "mkdir"} -p "$XDG_RUNTIME_DIR/bubblewrap-brave"
+    ${lib.getExe' coreutils "touch"} "$LOCKFILE"
 
     users=$(${lib.getExe' coreutils "mktemp"} -d -p "$XDG_RUNTIME_DIR/bubblewrap-brave" users.XXXXXX)
     echo "brave:x:1000:1000:brave:/home/brave:${lib.getExe' coreutils "false"}" > "$users/passwd"
@@ -42,8 +44,8 @@ let
       --talk="org.mpris.MediaPlayer2.*" & proxy_pid=$!
 
     cleanup() {
-        kill "$proxy_pid" 2>/dev/null || true
-        rm -rf "$XDG_RUNTIME_DIR/bubblewrap-brave"
+        ${lib.getExe' util-linux "kill"} "$proxy_pid" 2>/dev/null || true
+        ${lib.getExe' coreutils "rm"} -rf "$XDG_RUNTIME_DIR/bubblewrap-brave"
     }
     trap cleanup INT TERM EXIT
 

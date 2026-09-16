@@ -111,8 +111,8 @@ let
 
     # homepage
     HomepageIsNewTabPage = false;
-    HomepageLocation = "file://${homepage}/share/home.html";
-    NewTabPageLocation = "file://${homepage}/share/home.html";
+    HomepageLocation = "file://${homepage}";
+    NewTabPageLocation = "file://${homepage}";
     ShowHomeButton = false;
 
     # new tab on startup

@@ -101,6 +101,6 @@ let
     font = colors.fonts.normal;
   };
 
-  homepage = writeText "brave-homepage" homepageHtml;
+  homepage = writeText "brave-homepage.html" homepageHtml;
 in
 homepage
