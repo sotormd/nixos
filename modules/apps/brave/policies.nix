@@ -1,9 +1,8 @@
 {
   lib,
-  writeTextFile,
+  writeText,
   homepage,
   vars,
-  ...
 }:
 
 let
@@ -210,11 +209,6 @@ let
     ];
   };
 
-  policies = writeTextFile {
-    name = "brave-policies";
-    text = builtins.toJSON (basePolicies // extensionPolicies);
-    destination = "/extra.json";
-    executable = false;
-  };
+  policies = writeText "brave-policies" (builtins.toJSON (basePolicies // extensionPolicies));
 in
 policies

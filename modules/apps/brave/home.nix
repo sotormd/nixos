@@ -1,8 +1,7 @@
 {
   lib,
-  writeTextFile,
+  writeText,
   vars,
-  ...
 }:
 
 let
@@ -102,11 +101,6 @@ let
     font = colors.fonts.normal;
   };
 
-  homepage = writeTextFile {
-    name = "homepage";
-    text = homepageHtml;
-    destination = "/share/home.html";
-    executable = false;
-  };
+  homepage = writeText "brave-homepage" homepageHtml;
 in
 homepage

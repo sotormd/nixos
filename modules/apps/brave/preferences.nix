@@ -1,4 +1,4 @@
-{ lib, writeTextFile, ... }:
+{ lib, writeText }:
 
 let
   inherit (lib) colors;
@@ -132,11 +132,6 @@ let
     };
   };
 
-  preferences = writeTextFile {
-    name = "brave-preferences";
-    text = builtins.toJSON initialPreferences;
-    destination = "/initial_preferences";
-    executable = false;
-  };
+  preferences = writeText "brave-initial-preferences" (builtins.toJSON initialPreferences);
 in
 preferences

@@ -1,20 +1,15 @@
 {
-  symlinkJoin,
+  lib,
+  callPackage,
   executable,
   jail,
-  ...
 }:
 
 let
-  braveWrapped = symlinkJoin {
-    name = "brave-wrapped";
-    paths = [ executable ];
+  name = "brave";
+  base = executable;
+  command = jail;
 
-    # replace the brave executable with our wrapper
-    postBuild = ''
-      rm -f $out/bin/brave
-      ln -s ${jail}/bin/brave $out/bin/brave
-    '';
-  };
+  braveWrapped = callPackage lib.mkWrapperPackage { inherit name base command; };
 in
 braveWrapped
