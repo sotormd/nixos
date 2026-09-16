@@ -1,33 +1,17 @@
 {
+  lib,
   dunst,
-  runtimeShell,
-  symlinkJoin,
-  writeTextFile,
+  callPackage,
   configuration,
-  ...
 }:
 
 let
-  dunstWrapperScript = writeTextFile {
-    name = "dunst-wrapper-script";
-    text = ''
-      #!${runtimeShell}
+  name = "dunst";
+  base = dunst;
+  command = ''
+    ${lib.getExe base} -config ${configuration} "$@"
+  '';
 
-      ${dunst}/bin/dunst -config ${configuration}/dunstrc "$@"
-    '';
-    destination = "/bin/dunst";
-    executable = true;
-  };
-
-  dunstWrapped = symlinkJoin {
-    name = "dunst-wrapped";
-    paths = [ dunst ];
-
-    # replace the dunst binary with our wrapper
-    postBuild = ''
-      rm -f $out/bin/dunst
-      ln -s ${dunstWrapperScript}/bin/dunst $out/bin/dunst
-    '';
-  };
+  dunstWrapped = callPackage lib.mkWrapperPackage { inherit name base command; };
 in
 dunstWrapped
