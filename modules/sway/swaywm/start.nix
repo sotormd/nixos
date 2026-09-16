@@ -1,4 +1,9 @@
-{ config, pkgs, ... }:
+{
+  config,
+  pkgs,
+  lib,
+  ...
+}:
 
 {
   programs.bash = {
@@ -8,7 +13,7 @@
          && [ -n "$XDG_VTNR" ] \
          && [ "$XDG_VTNR" -eq 1 ] \
          && [ "$USER" = "${config.vars.user.name}" ]; then
-        exec ${pkgs.sway0}/bin/sway
+        exec ${lib.getExe pkgs.sway0}
       fi
     '';
   };

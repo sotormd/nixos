@@ -1,33 +1,17 @@
 {
+  lib,
   sway,
-  runtimeShell,
-  symlinkJoin,
-  writeTextFile,
+  callPackage,
   configuration,
-  ...
 }:
 
 let
-  swayWrapperScript = writeTextFile {
-    name = "sway-wrapper-script";
-    text = ''
-      #!${runtimeShell}
+  name = "sway";
+  base = sway;
+  command = ''
+    ${lib.getExe base} --config ${configuration} "$@"
+  '';
 
-      ${sway}/bin/sway --config ${configuration}/config "$@"
-    '';
-    destination = "/bin/sway";
-    executable = true;
-  };
-
-  swayWrapped = symlinkJoin {
-    name = "sway-wrapped";
-    paths = [ sway ];
-
-    # replace the sway binary with our wrapper
-    postBuild = ''
-      rm -f $out/bin/sway
-      ln -s ${swayWrapperScript}/bin/sway $out/bin/sway
-    '';
-  };
+  swayWrapped = callPackage lib.mkWrapperPackage { inherit name base command; };
 in
 swayWrapped
