@@ -162,7 +162,7 @@ in
   boot.blacklistedKernelModules = list;
 
   boot.extraModprobeConfig = lib.concatStringsSep "\n" (
-    map (m: "install ${m} ${pkgs.coreutils}/bin/false") list
+    map (m: "install ${m} ${lib.getExe' pkgs.coreutils "false"}") list
   );
 
   # disable bluetooth
