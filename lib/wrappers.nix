@@ -11,8 +11,6 @@ let
       text = ''
         #!${runtimeShell}
 
-        ls
-
         ${command}
       '';
       destination = "/bin/${name}";
