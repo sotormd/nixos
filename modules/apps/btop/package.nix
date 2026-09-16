@@ -1,33 +1,17 @@
 {
+  lib,
   btop,
-  runtimeShell,
-  symlinkJoin,
-  writeTextFile,
+  callPackage,
   configuration,
-  ...
 }:
 
 let
-  btopWrapperScript = writeTextFile {
-    name = "btop-wrapper-script";
-    text = ''
-      #!${runtimeShell}
+  name = "btop";
+  base = btop;
+  command = ''
+    ${lib.getExe base} --config ${configuration} "$@"
+  '';
 
-      ${btop}/bin/btop --config ${configuration}/btop.conf "$@"
-    '';
-    destination = "/bin/btop";
-    executable = true;
-  };
-
-  btopWrapped = symlinkJoin {
-    name = "btop-wrapped";
-    paths = [ btop ];
-
-    # replace the btop binary with our wrapper
-    postBuild = ''
-      rm -f $out/bin/btop
-      ln -s ${btopWrapperScript}/bin/btop $out/bin/btop
-    '';
-  };
+  btopWrapped = callPackage lib.mkWrapperPackage { inherit name base command; };
 in
 btopWrapped
