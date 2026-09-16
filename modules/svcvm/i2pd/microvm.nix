@@ -34,7 +34,7 @@ let
         name = "i2pd";
         modules = [
           ./options.nix
-          ./settings.nix
+          ./service.nix
         ];
         shares = [
           {

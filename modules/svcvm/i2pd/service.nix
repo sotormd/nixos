@@ -54,7 +54,7 @@ in
       StateDirectory = "i2pd";
 
       ExecStart = lib.escapeShellArgs [
-        "${pkgs.i2pd}/bin/i2pd"
+        "${lib.getExe pkgs.i2pd}"
         "--datadir=/var/lib/i2pd"
         "--conf=${i2pdConf}"
         "--tunconf=${i2pdTunConf}"
