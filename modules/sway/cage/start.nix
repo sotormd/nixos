@@ -1,4 +1,9 @@
-{ config, pkgs, ... }:
+{
+  config,
+  pkgs,
+  lib,
+  ...
+}:
 
 {
   programs.bash = {
@@ -8,7 +13,7 @@
          && [ -n "$XDG_VTNR" ] \
          && [ "$XDG_VTNR" -eq 2 ] \
          && [ "$USER" = "${config.vars.user.name}" ]; then
-        exec ${pkgs.cage}/bin/cage -m last ${pkgs.foot0}/bin/foot
+        exec ${lib.getExe pkgs.cage} -m last ${lib.getExe pkgs.foot0}
       fi
     '';
   };
