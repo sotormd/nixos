@@ -10,7 +10,7 @@ let
   package = pkgs.callPackage ./package.nix { inherit configuration; };
   xkcd = pkgs.callPackage ./xkcd.nix {
     inherit inputs;
-    inherit (config) wallpapers vars;
+    inherit (config) vars;
   };
 in
 {

@@ -2,34 +2,28 @@
   inputs,
   lib,
   coreutils,
-  runtimeShell,
-  writeTextFile,
+  writeShellScriptBin,
   vars,
-  ...
 }:
 
 let
   inherit (lib) colors;
 
+  user = vars.user.name;
+  home = "/home/${user}";
+
   fallback = lib.wallpapers.nord.nixos;
-  target = "/home/${vars.user.name}/.local/share/xkcd.png";
-  backup = "/home/${vars.user.name}/.local/share/xkcd.last.png";
+  target = "${home}/.local/share/xkcd.png";
+  backup = "${home}/.local/share/xkcd.last.png";
 
-  xkcdWrapped = writeTextFile {
-    name = "xkcd-wrapped";
-    text = ''
-      #!${runtimeShell}
-
-      ${coreutils}/bin/cp -f "${target}" "${backup}" 2>/dev/null || ${coreutils}/bin/true
-      ${inputs.xkcd.packages.x86_64-linux.default}/bin/xkcd-wall \
-        -t random \
-        -d ${vars.displays.outputs.${vars.displays.primary}.resolution} \
-        -b ${colors.xkcd.bg} \
-        -f ${colors.xkcd.fg} \
-        "${target}" || cp "${fallback}" "${target}"; chmod 777 "${target}"
-    '';
-    destination = "/bin/xkcd-refresh";
-    executable = true;
-  };
+  xkcdWrapped = writeShellScriptBin "xkcd-refresh" ''
+    ${lib.getExe' coreutils "cp"} -f "${target}" "${backup}" 2>/dev/null || ${lib.getExe' coreutils "true"}
+    ${lib.getExe inputs.xkcd.packages.x86_64-linux.default} \
+      -t random \
+      -d ${vars.displays.outputs.${vars.displays.primary}.resolution} \
+      -b ${colors.xkcd.bg} \
+      -f ${colors.xkcd.fg} \
+      "${target}" || ${lib.getExe' coreutils "cp"} "${fallback}" "${target}"; ${lib.getExe' coreutils "chmod"} 777 "${target}"
+  '';
 in
 xkcdWrapped
