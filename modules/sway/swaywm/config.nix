@@ -5,8 +5,10 @@
   dconf,
   dunst0,
   foot0,
+  gawk,
   grim,
   imagemagick,
+  jq,
   mate-polkit,
   media0,
   rofi0,
@@ -121,7 +123,7 @@ let
     bindsym ${mod}+Page_Up workspace prev
     bindsym ${mod}+ctrl+Right workspace next
     bindsym ${mod}+ctrl+Left workspace prev
-    bindsym ${mod}+g exec swaymsg workspace $(swaymsg -t get_workspaces -r | jq -r '.[].name' | ${binaries.rofi} -dmenu -p "")
+    bindsym ${mod}+g exec swaymsg workspace $(swaymsg -t get_workspaces -r | ${binaries.jq} -r '.[].name' | ${binaries.rofi} -dmenu -p "")
     ${workspaceFocusLines}
   '';
 
@@ -129,7 +131,7 @@ let
   # MOVE TO WORKSPACE
   #
   lines-move-to-workspace = ''
-    bindsym ${mod}+shift+g exec swaymsg move workspace $(swaymsg -t get_workspaces -r | jq -r '.[].name' | ${binaries.rofi} -dmenu -p "")
+    bindsym ${mod}+shift+g exec swaymsg move workspace $(swaymsg -t get_workspaces -r | ${binaries.jq} -r '.[].name' | ${binaries.rofi} -dmenu -p "")
     ${workspaceMoveLines}
   '';
 
@@ -289,7 +291,7 @@ let
       bindsym Escape mode default
       bindsym Return mode default
       bindsym c mode screenshot-copy
-      bindsym p mode default; exec ${binaries.slurp} -p | ${binaries.grim} -g - - | ${binaries.imagemagick} - txt: | awk 'NR==2 { print tolower($3) }' | ${binaries.wl-copy}
+      bindsym p mode default; exec ${binaries.slurp} -p | ${binaries.grim} -g - - | ${binaries.imagemagick} - txt: | ${binaries.awk} 'NR==2 { print tolower($3) }' | ${binaries.wl-copy}
       bindsym s mode screenshot-save
     }
   '';
@@ -391,6 +393,7 @@ let
   # helpers
 
   binaries = {
+    awk = lib.getExe gawk;
     brightness = lib.getExe brightness0;
     cliphist = lib.getExe cliphist;
     dconf = lib.getExe dconf;
@@ -399,6 +402,7 @@ let
     grim = lib.getExe grim;
     grimshot = lib.getExe sway-contrib.grimshot;
     imagemagick = lib.getExe imagemagick;
+    jq = lib.getExe jq;
     mate-polkit = "${mate-polkit}/libexec/polkit-mate-authentication-agent-1";
     media = lib.getExe media0;
     rofi = lib.getExe rofi0;
@@ -462,13 +466,13 @@ let
 
   workspaceFocusLines = lib.concatStringsSep "\n" (
     map (d: ''
-      bindsym ${mod}+${lastChar d} exec swaymsg workspace $(swaymsg -t get_outputs | jq -r '.[] | select(.focused) | .name | ${jqCondition}')${d}
+      bindsym ${mod}+${lastChar d} exec swaymsg workspace $(swaymsg -t get_outputs | ${binaries.jq} -r '.[] | select(.focused) | .name | ${jqCondition}')${d}
     '') digits
   );
 
   workspaceMoveLines = lib.concatStringsSep "\n" (
     map (d: ''
-      bindsym ${mod}+shift+${lastChar d} exec swaymsg move workspace $(swaymsg -t get_outputs | jq -r '.[] | select(.focused) | .name | ${jqCondition}')${d}
+      bindsym ${mod}+shift+${lastChar d} exec swaymsg move workspace $(swaymsg -t get_outputs | ${binaries.jq} -r '.[] | select(.focused) | .name | ${jqCondition}')${d}
     '') digits
   );
 
