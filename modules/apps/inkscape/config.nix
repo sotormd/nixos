@@ -2,14 +2,13 @@
   lib,
   inkscape,
   writeTextFile,
-  ...
 }:
 
 let
   inherit (lib) colors;
 
-  preferences = writeTextFile {
-    name = "inkscape-preferences";
+  configuration = writeTextFile {
+    name = "inkscape-configuration";
     text = ''
       <?xml version="1.0" encoding="UTF-8" standalone="no"?>
       <inkscape
@@ -1134,4 +1133,4 @@ let
     destination = "/preferences.xml";
   };
 in
-preferences
+configuration
