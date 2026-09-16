@@ -15,9 +15,9 @@ NONFLAKE="$__NIXOS_NONFLAKE"
     git add .
 
     if [ "$NONFLAKE" = 1 ]; then
-        nixos-rebuild build --file "nonflake.nix" --attr "nixosConfigurations.machine-$ROLE-$ARCH" --fallback
+        nixos-rebuild build --file "nonflake.nix" --attr "nixosConfigurations.machine-$ROLE-$ARCH" --fallback "$@"
     else
-        nixos-rebuild build --flake ".#machine-$ROLE-$ARCH" --fallback
+        nixos-rebuild build --flake ".#machine-$ROLE-$ARCH" --fallback "$@"
     fi
 
 )

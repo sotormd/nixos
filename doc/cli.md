@@ -114,12 +114,20 @@ The `build` command does the following extra things:
 
 For a detailed description of `nixos-rebuild build`: see `nixos-rebuild(8)`
 
+Additional flags can also be passed to `nixos-rebuild`.
+
 Examples:
 
 1. Build new configuration
 
    ```bash
    nixos build
+   ```
+
+2. Pass additional flags to `nixos-rebuild`
+
+   ```bash
+   nixos build --show-trace
    ```
 
 # Updating the lockfile
