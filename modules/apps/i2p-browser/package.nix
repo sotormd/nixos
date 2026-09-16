@@ -2,7 +2,6 @@
   symlinkJoin,
   jail,
   desktop,
-  ...
 }:
 
 let

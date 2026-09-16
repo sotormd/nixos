@@ -1,4 +1,4 @@
-{ makeDesktopItem, ... }:
+{ makeDesktopItem }:
 
 let
   desktop = makeDesktopItem {

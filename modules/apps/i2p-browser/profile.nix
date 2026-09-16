@@ -3,7 +3,6 @@
   writeTextFile,
   symlinkJoin,
   vars,
-  ...
 }:
 
 let

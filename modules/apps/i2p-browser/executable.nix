@@ -2,7 +2,6 @@
   firefox-unwrapped,
   wrapFirefox,
   policies,
-  ...
 }:
 
 let

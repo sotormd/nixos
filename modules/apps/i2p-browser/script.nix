@@ -1,34 +1,26 @@
 {
+  lib,
   coreutils,
-  runtimeShell,
-  writeTextFile,
+  writeShellScriptBin,
   executable,
   profile,
-  ...
 }:
 
 let
-  script = writeTextFile {
-    name = "i2p-browser-script";
-    text = ''
-      #!${runtimeShell}
+  script = writeShellScriptBin "i2p-browser-script" ''
+    set -euo pipefail
 
-      set -euo pipefail
+    baseProfile="${profile}"
+    timestamp="$(${lib.getExe' coreutils "date"} +%s)"
+    tmpProfile="/tmp/i2p-browser-''${timestamp}"
 
-      baseProfile="${profile}"
-      timestamp="$(${coreutils}/bin/date +%s)"
-      tmpProfile="/tmp/i2p-browser-''${timestamp}"
+    ${lib.getExe' coreutils "mkdir"} -p "$tmpProfile"
+    ${lib.getExe' coreutils "cp"} -r --no-preserve=mode,ownership,timestamps "$baseProfile"/* "$tmpProfile"/
 
-      ${coreutils}/bin/mkdir -p "$tmpProfile"
-      ${coreutils}/bin/cp -r --no-preserve=mode,ownership,timestamps "$baseProfile"/* "$tmpProfile"/
-
-      exec ${executable}/bin/firefox \
-        --no-remote \
-        --profile "$tmpProfile" \
-        "$@"
-    '';
-    destination = "/bin/i2p-browser";
-    executable = true;
-  };
+    exec ${lib.getExe executable} \
+      --no-remote \
+      --profile "$tmpProfile" \
+      "$@"
+  '';
 in
 script
