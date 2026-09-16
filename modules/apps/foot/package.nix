@@ -1,44 +1,27 @@
 {
   lib,
   foot,
-  runtimeShell,
-  symlinkJoin,
-  writeTextFile,
+  callPackage,
   configuration,
-  ...
 }:
 
 let
   inherit (lib) colors;
 
-  footWrapperScript = writeTextFile {
-    name = "foot-wrapper-script";
-    text = ''
-      #!${runtimeShell}
+  name = "foot";
+  base = foot;
+  command = ''
+    FOCUSED_OUT="$(swaymsg -t get_outputs -r | jq -r '.[] | select(.focused == true).name')"
 
-      FOCUSED_OUT="$(swaymsg -t get_outputs -r | jq -r '.[] | select(.focused == true).name')"
+    if [ "$FOCUSED_OUT" = "eDP-1" ]; then
+      SIZE=7
+    else
+      SIZE=10
+    fi
 
-      if [ "$FOCUSED_OUT" = "eDP-1" ]; then
-        SIZE=7
-      else
-        SIZE=10
-      fi
+    ${lib.getExe base} --config=${configuration} --font "${colors.fonts.monospace}:size=$SIZE" "$@"
+  '';
 
-      ${foot}/bin/foot --config=${configuration}/foot.ini --font "${colors.fonts.monospace}:size=$SIZE" "$@"
-    '';
-    destination = "/bin/foot";
-    executable = true;
-  };
-
-  footWrapped = symlinkJoin {
-    name = "foot";
-    paths = [ foot ];
-
-    # replace the foot binary with our wrapper
-    postBuild = ''
-      rm -f $out/bin/foot
-      ln -s ${footWrapperScript}/bin/foot $out/bin/foot
-    '';
-  };
+  footWrapped = callPackage lib.mkWrapperPackage { inherit name base command; };
 in
 footWrapped
