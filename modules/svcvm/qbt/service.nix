@@ -1,4 +1,9 @@
-{ config, pkgs, ... }:
+{
+  config,
+  pkgs,
+  lib,
+  ...
+}:
 
 let
   inherit (config.svcfg) qbt;
@@ -53,7 +58,7 @@ in
 
         ExecStartPre =
           let
-            setupScript = pkgs.writeShellScriptBin "qbt-setup" ''
+            setupScript = pkgs.writeShellScript "qbt-setup" ''
                           set -euo pipefail
 
                           # create the data directory
@@ -147,8 +152,8 @@ in
 
             '';
           in
-          "!${setupScript}/bin/qbt-setup";
-        ExecStart = "${pkgs.qbittorrent-nox}/bin/qbittorrent-nox --confirm-legal-notice";
+          "!${setupScript}";
+        ExecStart = "${lib.getExe pkgs.qbittorrent-nox} --confirm-legal-notice";
       };
     };
 
