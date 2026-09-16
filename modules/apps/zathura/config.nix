@@ -1,10 +1,10 @@
-{ lib, writeTextFile, ... }:
+{ lib, writeTextFile }:
 
 let
   inherit (lib) colors;
 
-  zathurarc = writeTextFile {
-    name = "zathura-zathurarc";
+  configuration = writeTextFile {
+    name = "zathura-configuration";
     text = ''
       set notification-error-bg      "#${colors.zathura.notification.error.bg}"
       set notification-error-fg      "#${colors.zathura.notification.error.fg}"
@@ -45,4 +45,4 @@ let
     executable = false;
   };
 in
-zathurarc
+configuration

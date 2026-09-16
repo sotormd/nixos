@@ -1,33 +1,17 @@
 {
+  lib,
   zathura,
-  runtimeShell,
-  symlinkJoin,
-  writeTextFile,
-  zathurarc,
-  ...
+  callPackage,
+  configuration,
 }:
 
 let
-  zathuraWrapperScript = writeTextFile {
-    name = "zathura-wrapper-script";
-    text = ''
-      #!${runtimeShell}
+  name = "zathura";
+  base = zathura;
+  command = ''
+    ${lib.getExe base} --config-dir=${configuration} "$@"
+  '';
 
-      ${zathura}/bin/zathura --config-dir=${zathurarc} "$@"
-    '';
-    destination = "/bin/zathura";
-    executable = true;
-  };
-
-  zathuraWrapped = symlinkJoin {
-    name = "zathura-wrapped";
-    paths = [ zathura ];
-
-    # replace the zathura binary with our wrapper
-    postBuild = ''
-      rm -f $out/bin/zathura
-      ln -s ${zathuraWrapperScript}/bin/zathura $out/bin/zathura
-    '';
-  };
+  zathuraWrapped = callPackage lib.mkWrapperPackage { inherit name base command; };
 in
 zathuraWrapped
