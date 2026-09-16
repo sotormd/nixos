@@ -49,12 +49,12 @@ in
       {
         Type = "oneshot";
         RemainAfterExit = true;
-        ExecStartPre = "${pkgs.writeShellScriptBin "start-svcvms-pre" ''
-          until ${pkgs.iputils}/bin/ping -c1 1.1.1.1 >/dev/null 2>&1; do
+        ExecStartPre = pkgs.writeShellScript "start-svcvms-pre" ''
+          until ${lib.getExe' pkgs.iputils "ping"} -c1 1.1.1.1 >/dev/null 2>&1; do
             sleep 2
           done
-        ''}/bin/start-svcvms-pre";
-        ExecStart = "${pkgs.writeShellScriptBin "start-svcvms" ''
+        '';
+        ExecStart = pkgs.writeShellScript "start-svcvms" ''
           ${
             (lib.optionalString searxng.enable ''
               sleep ${step}
@@ -90,7 +90,7 @@ in
               systemctl start svcvm@nginx
             '')
           }
-        ''}/bin/start-svcvms";
+        '';
       };
   };
 
@@ -100,13 +100,13 @@ in
     description = "Stop svcvm Service Virtual Machines";
     serviceConfig = {
       Type = "oneshot";
-      ExecStart = "${pkgs.writeShellScriptBin "stop-svcvms" ''
+      ExecStart = pkgs.writeShellScript "stop-svcvms" ''
         systemctl stop svcvm@searxng || true
         systemctl stop svcvm@vaultwarden || true
         systemctl stop svcvm@i2pd || true
         systemctl stop svcvm@qbt || true
         systemctl stop svcvm@nginx || true
-      ''}/bin/stop-svcvms";
+      '';
     };
   };
 

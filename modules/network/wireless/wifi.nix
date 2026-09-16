@@ -27,6 +27,6 @@ lib.mkIf wireless.enable {
   # wait a bit before starting wpa_supplicant
   systemd.services."wpa_supplicant-${wireless.interface}" = {
     after = [ "systemd-networkd.service" ];
-    serviceConfig.ExecStartPre = "${pkgs.writeShellScriptBin "wpa_supplicant-delay" "sleep 8"}/bin/wpa_supplicant-delay";
+    serviceConfig.ExecStartPre = pkgs.writeShellScript "wpa_supplicant-delay" "sleep 8";
   };
 }

@@ -159,11 +159,11 @@
                     after = [ "network-online.target" ];
                     serviceConfig = {
                       Type = "oneshot";
-                      ExecStart = "${pkgs.writeShellScriptBin "svcready-interface" ''
-                        until ${pkgs.iproute2}/bin/ip -4 addr show scope global | grep -q ${network.address}; do
+                      ExecStart = pkgs.writeShellScript "svcready-interface" ''
+                        until ${lib.getExe' pkgs.iproute2 "ip"} -4 addr show scope global | grep -q ${network.address}; do
                             sleep 2
                         done
-                      ''}/bin/svcready-interface";
+                      '';
                     };
                   };
                   svcready-internet = lib.mkIf svcready.internet.enable {
@@ -179,11 +179,11 @@
                     ++ (o svcready.interface.enable "svcready-interface.service");
                     serviceConfig = {
                       Type = "oneshot";
-                      ExecStart = "${pkgs.writeShellScriptBin "svcready-internet" ''
-                        until ${pkgs.iputils}/bin/ping -c1 1.1.1.1 >/dev/null 2>&1; do
+                      ExecStart = pkgs.writeShellScript "svcready-internet" ''
+                        until ${lib.getExe' pkgs.iputils "ping"} -c1 1.1.1.1 >/dev/null 2>&1; do
                           sleep 2
                         done
-                      ''}/bin/svcready-internet";
+                      '';
                     };
                   };
                   svcready-resolve = lib.mkIf svcready.resolve.enable {
@@ -201,11 +201,11 @@
                     ++ (o svcready.internet.enable "svcready-internet.service");
                     serviceConfig = {
                       Type = "oneshot";
-                      ExecStart = "${pkgs.writeShellScriptBin "svcready-resolve" ''
-                        until ${pkgs.iputils}/bin/ping -c1 nixos.org >/dev/null 2>&1; do
+                      ExecStart = pkgs.writeShellScript "svcready-resolve" ''
+                        until ${lib.getExe' pkgs.iputils "ping"} -c1 nixos.org >/dev/null 2>&1; do
                           sleep 2
                         done
-                      ''}/bin/svcready-resolve";
+                      '';
                     };
                   };
                   svcready-i2p = lib.mkIf svcready.i2p.enable {
@@ -221,11 +221,11 @@
                     ++ (o svcready.interface.enable "svcready-interface.service");
                     serviceConfig = {
                       Type = "oneshot";
-                      ExecStart = "${pkgs.writeShellScriptBin "svcready-i2p" ''
-                        until ${pkgs.curl}/bin/curl --silent --fail --proxy http://${svcready.i2p.address}:${toString svcready.i2p.port} http://stats.i2p >/dev/null 2>&1; do
+                      ExecStart = pkgs.writeShellScript "svcready-i2p" ''
+                        until ${lib.getExe pkgs.curl} --silent --fail --proxy http://${svcready.i2p.address}:${toString svcready.i2p.port} http://stats.i2p >/dev/null 2>&1; do
                           sleep 2
                         done
-                      ''}/bin/svcready-i2p";
+                      '';
                     };
                   };
                 };
