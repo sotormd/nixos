@@ -1,8 +1,8 @@
-{ writeTextFile, ... }:
+{ writeTextFile }:
 
 let
   configuration = writeTextFile {
-    name = "mpv-config";
+    name = "mpv-configuration";
     text = ''
       hwdec=auto-safe
       vo=gpu
