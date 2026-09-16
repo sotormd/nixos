@@ -1,4 +1,9 @@
-{ config, pkgs, ... }:
+{
+  config,
+  pkgs,
+  lib,
+  ...
+}:
 
 let
   user = config.vars.user.name;
@@ -12,7 +17,7 @@ let
             <name>Open Terminal Here</name>
             <submenu></submenu>
             <unique-id>1733803391826120-1</unique-id>
-            <command>${pkgs.foot0}/bin/foot -D %f</command>
+            <command>${lib.getExe pkgs.foot0} -D %f</command>
             <description>Open selected directory in terminal emulator</description>
             <range></range>
             <patterns>*</patterns>
