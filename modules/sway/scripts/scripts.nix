@@ -26,7 +26,7 @@ let
       vol=$(${lib.getExe' wireplumber "wpctl"} get-volume @DEFAULT_AUDIO_SINK@ | ${lib.getExe gawk} '{printf "%d", $2 * 100}')
 
       # show dunst progress bar
-      ${lib.getExe dunst0} -a "volume" -r 9999 "Volume: $vol%" -h int:value:"$vol" -t 1500
+      ${lib.getExe' dunst0 "dunstify"} -a "volume" -r 9999 "Volume: $vol%" -h int:value:"$vol" -t 1500
     '';
     destination = "/bin/volume";
     executable = true;
@@ -48,7 +48,7 @@ let
       pct=$(( lvl * 100 / max ))
 
       # send dunst progress bar
-      ${lib.getExe dunst0} -a "brightness" -r 9998 "Brightness: $pct%" -h int:value:"$pct" -t 1500
+      ${lib.getExe' dunst0 "dunstify"} -a "brightness" -r 9998 "Brightness: $pct%" -h int:value:"$pct" -t 1500
     '';
     destination = "/bin/brightness";
     executable = true;
