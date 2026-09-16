@@ -1,4 +1,9 @@
-{ inputs, self, ... }:
+{
+  inputs,
+  self,
+  lib,
+  ...
+}:
 
 {
   imports = [
@@ -13,4 +18,8 @@
     ./common.nix
 
   ];
+
+  # lib overlay
+  # deskspecs dont inherit parent config
+  nixpkgs.overlays = [ (_: _: { inherit lib; }) ];
 }
