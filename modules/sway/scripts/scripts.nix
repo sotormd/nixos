@@ -1,4 +1,5 @@
 {
+  lib,
   brightnessctl,
   dunst0,
   gawk,
@@ -7,7 +8,6 @@
   wireplumber,
   runtimeShell,
   writeTextFile,
-  ...
 }:
 
 let
@@ -20,13 +20,13 @@ let
       change="$1"
 
       # apply volume change
-      ${wireplumber}/bin/wpctl set-volume @DEFAULT_AUDIO_SINK@ "$change"
+      ${lib.getExe' wireplumber "wpctl"} set-volume @DEFAULT_AUDIO_SINK@ "$change"
 
       # get current volume as 0–100 integer
-      vol=$(${wireplumber}/bin/wpctl get-volume @DEFAULT_AUDIO_SINK@ | ${gawk}/bin/awk '{printf "%d", $2 * 100}')
+      vol=$(${lib.getExe' wireplumber "wpctl"} get-volume @DEFAULT_AUDIO_SINK@ | ${lib.getExe gawk} '{printf "%d", $2 * 100}')
 
       # show dunst progress bar
-      ${dunst0}/bin/dunstify -a "volume" -r 9999 "Volume: $vol%" -h int:value:"$vol" -t 1500
+      ${lib.getExe dunst0} -a "volume" -r 9999 "Volume: $vol%" -h int:value:"$vol" -t 1500
     '';
     destination = "/bin/volume";
     executable = true;
@@ -39,16 +39,16 @@ let
 
       change="$1"
 
-      # Apply brightness change
-      ${brightnessctl}/bin/brightnessctl set "$change"
+      # apply brightness change
+      ${lib.getExe brightnessctl} set "$change"
 
-      # Compute % value
-      lvl=$(${brightnessctl}/bin/brightnessctl g)
-      max=$(${brightnessctl}/bin/brightnessctl m)
+      # compute % value
+      lvl=$(${lib.getExe brightnessctl} g)
+      max=$(${lib.getExe brightnessctl} m)
       pct=$(( lvl * 100 / max ))
 
-      # Send dunst progress bar
-      ${dunst0}/bin/dunstify -a "brightness" -r 9998 "Brightness: $pct%" -h int:value:"$pct" -t 1500
+      # send dunst progress bar
+      ${lib.getExe dunst0} -a "brightness" -r 9998 "Brightness: $pct%" -h int:value:"$pct" -t 1500
     '';
     destination = "/bin/brightness";
     executable = true;
@@ -57,13 +57,13 @@ let
   media = writeTextFile {
     name = "sway-scripts-media";
     text = ''
-      #!${python3}/bin/python3
+      #!${lib.getExe python3}
 
       import argparse
       import subprocess
       import sys
 
-      PLAYERCTL="${playerctl}/bin/playerctl"
+      PLAYERCTL="${lib.getExe playerctl}"
       TIMEOUT = 0.25
       RETRY_COUNT = 3
 
