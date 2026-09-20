@@ -210,5 +210,8 @@
     # tool for using nl80211
     pkgs.iw
 
+    # web browser
+    pkgs.w3m
+
   ];
 }
