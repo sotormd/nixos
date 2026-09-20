@@ -5,12 +5,16 @@
 }:
 
 let
-  i2pBrowser = symlinkJoin {
+  i2p-browser = symlinkJoin {
     name = "i2p-browser";
     paths = [
-      jail
+      jail.jail
       desktop
     ];
   };
+
+  i2p-browser-adhoc = jail.jail-adhoc;
 in
-i2pBrowser
+{
+  inherit i2p-browser i2p-browser-adhoc;
+}

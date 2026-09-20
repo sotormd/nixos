@@ -10,8 +10,9 @@ let
   executable = pkgs.callPackage ./executable.nix { inherit policies; };
   profile = pkgs.callPackage ./profile.nix { inherit (config) vars; };
   script = pkgs.callPackage ./script.nix { inherit executable profile; };
+  script-adhoc = pkgs.callPackage ./script-adhoc.nix { inherit executable profile; };
   jail = pkgs.callPackage ./bubblewrap.nix {
-    inherit script;
+    inherit script script-adhoc;
     inherit (config) vars;
   };
   desktop = pkgs.callPackage ./desktop.nix { };
@@ -19,6 +20,9 @@ let
 in
 lib.mkIf config.vars.selfhosted.i2pd.enable {
 
-  users.users.${config.vars.user.name}.packages = [ package ];
+  users.users.${config.vars.user.name}.packages = [
+    package.i2p-browser
+    package.i2p-browser-adhoc
+  ];
 
 }
