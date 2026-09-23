@@ -29,7 +29,12 @@ else
     }
     trap cleanup INT TERM EXIT
 
-    rsync -avz --exclude=".git" "$HOST:$mount$__NIXOS_GLOBALS_FLAKE/" "$sourcedir"
+    rsync -avz \
+      --exclude='.git' \
+      --exclude='.local' \
+      --exclude='result*' \
+      "$HOST:$mount$__NIXOS_GLOBALS_FLAKE/" \
+      "$sourcedir"
 
     (
 

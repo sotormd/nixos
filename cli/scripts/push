@@ -9,10 +9,11 @@ HOST="$1"
 mount=$(ssh "$HOST" 'printf "%s" "$NIXOS_MOUNT"')
 
 rsync -avz --delete \
---exclude='vars/vars.nix' \
---exclude='vars/secrets.yaml' \
---exclude='.sops.yaml' \
---exclude='.git' \
---exclude='.local' \
-"$__NIXOS_MOUNT$__NIXOS_GLOBALS_FLAKE/" \
-$HOST:$mount$__NIXOS_GLOBALS_FLAKE
+  --exclude='vars/vars.nix' \
+  --exclude='vars/secrets.yaml' \
+  --exclude='.sops.yaml' \
+  --exclude='.git' \
+  --exclude='.local' \
+  --exclude='result*' \
+  "$__NIXOS_MOUNT$__NIXOS_GLOBALS_FLAKE/" \
+  $HOST:$mount$__NIXOS_GLOBALS_FLAKE
