@@ -38,7 +38,6 @@ else
         if [ "$nonflake" = 1 ]; then
             nixos-rebuild build --file "$sourcedir/nonflake.nix" --attr "nixosConfigurations.machine-$role-$arch" --fallback
         else
-            target=""
             nixos-rebuild build --flake "$sourcedir#machine-$role-$arch" --fallback
         fi
 
