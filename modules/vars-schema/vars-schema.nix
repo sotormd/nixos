@@ -354,6 +354,9 @@ in
         enable = mkOption {
           type = types.bool;
         };
+        stamp = mkOption {
+          type = types.str;
+        };
       };
 
       ssh = {

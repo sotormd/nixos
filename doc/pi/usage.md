@@ -63,7 +63,7 @@ for more information.
 
 ## dnscrypt-proxy
 
-DNS server for DoH (with Cloudflare 1.0.0.2, malware blocking) and an additional
+DNS server for DoH and an additional
 [StevenBlack](https://github.com/stevenblack/hosts) blocklist.
 
 ### Enabling

@@ -537,8 +537,11 @@ elif [ "$VERB" == "vars" ]; then
 
     # dnscrypt-proxy DoH
     # loopback service
+    #
+    # stamp is a sDNS stamp from https://download.dnscrypt.info/dnscrypt-resolvers/json/public-resolvers.json
     dnscrypt = {
       enable = true;
+      stamp = "sdns://AgMAAAAAAAAABzEuMC4wLjIABzEuMC4wLjIKL2Rucy1xdWVyeQ";
     };
 
     # ssh server
@@ -752,8 +755,11 @@ the following values have been populated from the installation environment
 
     # dnscrypt-proxy DoH
     # loopback service
+    #
+    # stamp is a sDNS stamp from https://download.dnscrypt.info/dnscrypt-resolvers/json/public-resolvers.json
     dnscrypt = {
       enable = true;
+      stamp = "sdns://AgMAAAAAAAAABzEuMC4wLjIABzEuMC4wLjIKL2Rucy1xdWVyeQ";
     };
 
     # ssh server
@@ -1056,8 +1062,11 @@ the following values have been populated from the installation environment
 
     # dnscrypt-proxy DoH
     # loopback service
+    #
+    # stamp is a sDNS stamp from https://download.dnscrypt.info/dnscrypt-resolvers/json/public-resolvers.json
     dnscrypt = {
       enable = true;
+      stamp = "sdns://AgMAAAAAAAAABzEuMC4wLjIABzEuMC4wLjIKL2Rucy1xdWVyeQ";
     };
 
     # ssh server

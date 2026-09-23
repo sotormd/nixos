@@ -149,6 +149,7 @@
   services = {
     dnscrypt = {
       enable = true;
+      stamp = "sdns://AgMAAAAAAAAABzEuMC4wLjIABzEuMC4wLjIKL2Rucy1xdWVyeQ";
     };
     ssh = {
       enable = true;

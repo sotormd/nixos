@@ -314,8 +314,7 @@ using SOPS. WPA3-SAE can be used for these networks.
 
 # DNS
 
-`dnscrypt-proxy` is used for DNS-over-HTTPS with Cloudflare's `1.0.0.2` (malware
-blocking).
+`dnscrypt-proxy` is used for DNS-over-HTTPS.
 
 Additionally, [StevenBlack's host list](http://github.com/StevenBlack/hosts) is
 used to blacklist domains (like PiHole, AdGuard).

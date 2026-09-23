@@ -89,10 +89,10 @@ lib.mkIf dnscrypt.enable {
         )
       );
 
-      # cloudflare DoH
+      # DoH
       # get stamps from https://download.dnscrypt.info/dnscrypt-resolvers/json/public-resolvers.json
-      server_names = [ "cloudflare" ];
-      static.cloudflare.stamp = "sdns://AgMAAAAAAAAABzEuMC4wLjIABzEuMC4wLjIKL2Rucy1xdWVyeQ";
+      server_names = [ "default" ];
+      static.default.stamp = dnscrypt.stamp;
 
     };
   };
