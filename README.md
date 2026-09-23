@@ -103,7 +103,7 @@ NixOS configuration for multiple hosts.
 | ~ symlinks                    | `systemd-tmpfiles`                                                                                       |
 | auditing                      | `auditd`                                                                                                 |
 | secrets                       | `sops`, `sops-nix`                                                                                       |
-| keys                          | `age`, `signify`, `gpg`                                                                                  |
+| keys                          | `age`, `signify`, `minisign`, `gpg`                                                                      |
 | usb policy                    | `usbguard`                                                                                               |
 | sandboxing                    | `bubblewrap`, `xdg-dbus-proxy`                                                                           |
 | firewall                      | `nftables`                                                                                               |

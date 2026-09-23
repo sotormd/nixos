@@ -174,6 +174,9 @@
     # openbsd signing tool
     pkgs.signify
 
+    # modern signing tool
+    pkgs.minisign
+
     # gnupg
     pkgs.gnupg
 

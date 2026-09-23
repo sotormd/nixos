@@ -258,8 +258,8 @@ after rebuilds, even though secrets are encrypted.
 
 # Encryption and Signing
 
-Age is available for modern encryption. The OpenBSD signify is available for
-signing and verification.
+`age` is available for modern encryption. `signify` and `minisign` are available
+for signing and verification.
 
 # USBGuard
 
