@@ -226,6 +226,15 @@ let
   '';
 
   #
+  # KEYBOARD
+  #
+  lines-keyboard = ''
+    input "type:keyboard" {
+      xkb_options ctrl:nocaps
+    }
+  '';
+
+  #
   # WALLPAPER
   #
   lines-wallpaper = ''
@@ -506,6 +515,7 @@ let
       lines-colors-fonts
       lines-gtk-4
       lines-mouse-touchpad
+      lines-keyboard
       lines-wallpaper
       lines-outputs
       lines-leave-mode
