@@ -62,7 +62,7 @@ let
       ];
       nerdfonts = [ "im-writing" ];
       monospace = "JetBrains Mono";
-      normal = "IBM Plex Sans";
+      normal = "JetBrains Mono";
       sansserif = "IBM Plex Sans";
       serif = "IBM Plex Serif";
     };
