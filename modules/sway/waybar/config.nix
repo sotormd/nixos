@@ -66,16 +66,16 @@ let
           "tooltip": false
         },
         "clock": {
-          "format": "<span size='12000' rise='-1000'>󰥔</span> <span rise='-1000'>{:%I:%M %p}</span>",
-          "format-alt": "<span size='12000' rise='-1000'>󰥔</span> <span rise='-1000'>{:%a %d %b (%d/%m/%y)}</span>",
+          "format": "<span size='11000' rise='-1000'> </span><span rise='-1000'>{:%I:%M %p}</span>",
+          "format-alt": "<span size='11000' rise='-1000'> </span><span rise='-1000'>{:%a %d %b (%d/%m/%y)}</span>",
           "tooltip": false
         },
         "height": 32,
         "idle_inhibitor": {
-          "format": "<span size='12000'>{icon}</span>",
+          "format": "{icon}",
           "format-icons": {
-            "activated": "󱙱",
-            "deactivated": "󰌾"
+            "activated": "<span size='12000'>󰌾</span> inf",
+            "deactivated": "<span size='12000'>󰌾</span> 60s"
           },
           "tooltip": false
         },
@@ -109,7 +109,7 @@ let
             "car": "",
             "default": [
               "",
-              ""
+              " "
             ],
             "hands-free": "",
             "headphone": "󰋋",
