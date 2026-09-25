@@ -50,7 +50,7 @@
           }
 
           .separator {
-            width: calc(${toString n} * 144px + (${toString n} - 1) * 10px);
+            width: calc(${toString n} * 164px + (${toString n} - 1) * 10px);
             border: 2px solid #${colors.accent};
             margin: 10px 0;
           }
@@ -63,7 +63,7 @@
             border-radius: 5px;
             background-color: #${colors.btnbg};
             transition: background-color 0.3s ease;
-            min-width: 110px;
+            min-width: 130px;
           }
 
           .link:hover {
