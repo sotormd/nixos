@@ -8,7 +8,7 @@ let
     configuration {
       modes:                      [run];
       show-icons:                 false;
-      display-run:                "󱓞";
+      display-run:                "%";
     }
 
 
