@@ -123,7 +123,7 @@ let
     bindsym ${mod}+Page_Up workspace prev
     bindsym ${mod}+ctrl+Right workspace next
     bindsym ${mod}+ctrl+Left workspace prev
-    bindsym ${mod}+g exec swaymsg workspace $(swaymsg -t get_workspaces -r | ${binaries.jq} -r '.[].name' | ${binaries.rofi} -dmenu -p "")
+    bindsym ${mod}+g exec swaymsg workspace $(swaymsg -t get_workspaces -r | ${binaries.jq} -r '.[].name' | ${binaries.rofi} -dmenu -p "w")
     ${workspaceFocusLines}
   '';
 
@@ -131,7 +131,7 @@ let
   # MOVE TO WORKSPACE
   #
   lines-move-to-workspace = ''
-    bindsym ${mod}+shift+g exec swaymsg move workspace $(swaymsg -t get_workspaces -r | ${binaries.jq} -r '.[].name' | ${binaries.rofi} -dmenu -p "")
+    bindsym ${mod}+shift+g exec swaymsg move workspace $(swaymsg -t get_workspaces -r | ${binaries.jq} -r '.[].name' | ${binaries.rofi} -dmenu -p "m")
     ${workspaceMoveLines}
   '';
 
@@ -354,7 +354,7 @@ let
   #
   lines-cliphist = ''
     exec ${binaries.wl-paste} --watch ${binaries.cliphist} store
-    bindsym ${mod}+c exec exec ${binaries.cliphist} list | ${binaries.rofi} -dmenu -p '' | ${binaries.cliphist} decode | ${binaries.wl-copy}
+    bindsym ${mod}+c exec exec ${binaries.cliphist} list | ${binaries.rofi} -dmenu -p 'c' | ${binaries.cliphist} decode | ${binaries.wl-copy}
     bindsym ${mod}+shift+c exec ${binaries.cliphist} wipe
   '';
 
