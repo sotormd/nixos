@@ -8,7 +8,7 @@
     <a href="#related-flakes">Related Flakes</a>
 </p>
 
-![screenshot](./doc/screenshots/workstation.png)
+![screenshot](./doc/screenshots/nord.png)
 
 NixOS configuration for multiple hosts.
 
@@ -137,7 +137,6 @@ NixOS configuration for multiple hosts.
 | passwords                     | `vaultwarden`                                                                                            |
 | text editor                   | `vim`, `mousepad`                                                                                        |
 | version control               | `git`                                                                                                    |
-| development                   | `rust`, `python`, `go`, `haskell`                                                                        |
 | virtualization                | [`svcvm`](https://github.com/sotormd/svcvm), `lib.mksvcvm` `qemu`, `virt-manager`, `distrobox`, `podman` |
 | cpu optimizations             | `auto-cpufreq`                                                                                           |
 | resource monitor              | `htop`, `btop`                                                                                           |
@@ -273,6 +272,7 @@ Directly dependent:
 
 Others:
 
+- [emacs](https://github.com/sotormd/emacs), Emacs configuration
 - [neovim](https://github.com/sotormd/neovim), Neovim configuration flake (ft.
   nvf)
 - [pattern](https://github.com/sotormd/pattern), Atomic, image-based systems

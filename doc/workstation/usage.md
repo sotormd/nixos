@@ -829,14 +829,20 @@ Server using the `vars.selfhosted.*` variables.
 
 ## Editors
 
-Vim is installed by default and set to `$EDITOR`. It is recommended to use
-per-project editors using dev shells.
+Vim is installed by default.
 
 Alternatively, Neovim can be installed using
 [this configuration](https://github.com/sotormd/neovim) to the user Nix profile:
 
 ```bash
 nix profile install github:sotormd/neovim
+```
+
+Alternatively, Emacs can be installed using
+[this configuration](https://github.com/sotormd/emacs) to the user Nix profile:
+
+```bash
+nix profile install github:sotormd/emacs
 ```
 
 ## Git
@@ -863,9 +869,7 @@ example ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIIoZXCKsWoH1R2MCeLXRDxeDrRdRGuOHG92s
 
 ## Language Toolchains
 
-Although things like `cargo`, `rustc`, `go`, `ghc`, `ghci`, `stack`, `cabal`,
-`gcc`, `python3` are all installed, `nix` should be preferred for development
-via dev shells, etc.
+No language toolchains are installed by default. Dev shells should be used instead.
 
 # Further Reading
 
