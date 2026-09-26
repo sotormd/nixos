@@ -13,9 +13,6 @@
     # automatic cpu speed & power optimizer
     apps.cpufreq = _: { imports = [ ./apps/cpufreq ]; };
 
-    # development tools
-    apps.dev = _: { imports = [ ./apps/dev ]; };
-
     # foot terminal emulator
     apps.foot = _: { imports = [ ./apps/foot ]; };
 
