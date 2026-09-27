@@ -9,6 +9,7 @@
   programs.bash = {
     enable = true;
     loginShellInit = ''
+      export XKB_DEFAULT_OPTIONS=ctrl:nocaps
       if [ -z "$WAYLAND_DISPLAY" ] \
          && [ -n "$XDG_VTNR" ] \
          && [ "$XDG_VTNR" -eq 2 ] \
