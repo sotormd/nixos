@@ -456,7 +456,7 @@ ZFS ZVOLs can also be used for virtual machine disks.
 For example, to create a 1TB ZVOL:
 
 ```bash
-sudo zfs create -o compression=zstd rpool/vms 
+sudo zfs create -o compression=zstd rpool/vms
 sudo zfs create -o volblocksize=16K -V 1T rpool/vms/solaris
 ```
 
@@ -869,7 +869,19 @@ example ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIIoZXCKsWoH1R2MCeLXRDxeDrRdRGuOHG92s
 
 ## Language Toolchains
 
-No language toolchains are installed by default. Dev shells should be used instead.
+Various language toolchains are installed, including:
+
+- `gcc`
+- `clang`
+- `ghc`
+- `cabal`
+- `stack`
+- `go`
+- `rustc`
+- `cargo`
+- `python3`
+
+However, devshells should be preferred for using language toolchains.
 
 # Further Reading
 

@@ -6,6 +6,7 @@ in
 {
   imports = [
     apps.brave
+    apps.dev
     apps.foot
     apps.git
     apps.i2p-browser

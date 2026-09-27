@@ -14,6 +14,7 @@ in
   imports = [
     apps.bash
     apps.btop
+    apps.dev
     apps.git
     apps.sandbox
     boot.disks
