@@ -303,7 +303,7 @@ Pick from all available wallpapers.
 
 ## Wallpapers
 
-The `base` wallpaper from `lib.wallpapers` is used for the desktop. This can be changed
+The `mario` wallpaper from `lib.wallpapers` is used for the desktop. This can be changed
 in an ad-hoc manner using the [wallpaper picker](#wallpapers-picker).
 
 A random XKCD comic is used as the lockscreen wallpaper, with

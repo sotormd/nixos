@@ -427,7 +427,7 @@ let
   '';
 
   # wallpaper
-  backgrounds.wallpaper = lib.wallpapers.base;
+  backgrounds.wallpaper = lib.wallpapers.mario;
 
   # helpers
 
