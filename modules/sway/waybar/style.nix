@@ -6,61 +6,23 @@ let
   style = writeText "waybar-style" ''
     * {
       font-family: '${colors.fonts.normal}';
-      background: transparent;
+      font-size: 9pt;
     }
 
-    #window,
-    #mode {
-      margin-top: 5px;
-    }
-
-    #mode {
-      font-style: italic;
-      color: #${colors.waybar.mode.text};
-      margin-left: 5px;
+    window#waybar {
+      background: #${colors.waybar.bg};
     }
 
     #workspaces {
       all: unset;
-      border: solid 3px #${colors.waybar.workspaces.border};
-      color: #${colors.waybar.workspaces.text};
-      background: #${colors.bg0};
-    }
-
-    #workspaces,
-    #idle_inhibitor,
-    #network,
-    #pulseaudio,
-    #battery,
-    #clock {
-      margin: 5px 0px 0px 5px;
-      padding: 0px 9px;
-    }
-
-    #mode,
-    #window,
-    #idle_inhibitor,
-    #network,
-    #pulseaudio,
-    #battery,
-    #clock {
-      font-size: 9pt;
-      font-weight: 500;
-    }
-
-    #workspaces {
-      margin-left: 6px;
-    }
-
-    #mode,
-    #clock {
-      margin-right: 6px;
+      background-color: #${colors.waybar.workspaces.bg};
+      color: #${colors.waybar.workspaces.fg};
     }
 
     #workspaces button {
       all: unset;
-      padding: 0px 8px;
-      font-size: 7pt;
+      min-width: 25px;
+      font-weight: 900;
     }
 
     #workspaces button:hover {
@@ -68,36 +30,71 @@ let
     }
 
     #workspaces button.focused {
+      background-color: #${colors.waybar.workspaces.fg};
+      color: #${colors.waybar.workspaces.bg};
+    }
+
+    #mode {
+      all: unset;
+      font-style: italic;
+      background-color: #${colors.waybar.mode.bg};
+      color: #${colors.waybar.mode.fg};
       font-weight: 900;
     }
 
+    #idle_inhibitor {
+      all: unset;
+      background-color: #${colors.waybar.idle.bg};
+      color: #${colors.waybar.idle.fg};
+      font-weight: 900;
+    }
+
+    #network {
+      all: unset;
+      background-color: #${colors.waybar.network.bg};
+      color: #${colors.waybar.network.fg};
+      font-weight: 900;
+    }
+
+    #pulseaudio {
+      all: unset;
+      background-color: #${colors.waybar.pulseaudio.bg};
+      color: #${colors.waybar.pulseaudio.fg};
+      font-weight: 900;
+    }
+
+    #battery {
+      all: unset;
+      background-color: #${colors.waybar.battery.bg};
+      color: #${colors.waybar.battery.fg};
+      font-weight: 900;
+    }
+
+    #clock {
+      all: unset;
+      background-color: #${colors.waybar.clock.bg};
+      color: #${colors.waybar.clock.fg};
+      font-weight: 900;
+    }
+
+    #window {
+      all: unset;
+      font-weight: 500;
+    }
+
+    #mode,
+    #window,
     #idle_inhibitor,
     #network,
     #pulseaudio,
     #battery,
     #clock {
-      color: #${colors.waybar.modules.text};
-    }
-
-    #idle_inhibitor {
-      background-color: #${colors.waybar.util.bg};
-    }
-
-    #network {
-      background-color: #${colors.waybar.network.bg};
-    }
-
-    #pulseaudio {
-      background-color: #${colors.waybar.audio.bg};
-    }
-
-    #battery {
-      background-color: #${colors.waybar.battery.bg};
-      color: #${colors.waybar.modules.text};
+      margin-left: 6px;
+      padding: 0px 8px;
     }
 
     #clock {
-      background-color: #${colors.waybar.clock.bg};
+      margin-right: 6px;
     }
   '';
 in

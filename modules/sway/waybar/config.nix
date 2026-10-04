@@ -1,6 +1,9 @@
 {
   lib,
   volume0,
+  pavucontrol,
+  wireplumber,
+  wpa_supplicant,
   writeText,
   vars,
 }:
@@ -9,137 +12,161 @@ let
 
   # helpers
 
-  count = lib.length (lib.attrNames vars.displays.outputs);
+  # window
+  height = 20;
+  layer = "top";
+  position = "top";
+  exclusive = true;
 
-  indices = lib.genList (i: i) count;
+  # battery
+  battery = {
+    format = "{capacity}%-";
+    format-alt = "{time}";
+    format-charging = "{capacity}%+";
+    format-plugged = "{capacity}%+";
+    format-full = "{capacity}%";
+    format-critical = "{capacity}%!";
+    format-warning = "{capacity}%!";
+    states = {
+      critical = 15;
+      warning = 30;
+    };
+    tooltip = false;
+  };
 
-  digits = [
-    "1"
-    "2"
-    "3"
-    "4"
-    "5"
-    "6"
-    "7"
-    "8"
-    "9"
-    "10"
+  # clock
+  clock = {
+    format = "{:%I:%M %p}";
+    format-alt = "{:%a %d %b (%d/%m/%y)}";
+    tooltip = false;
+  };
+
+  # network
+  network = {
+    format = "{ifname}";
+    format-wifi = "{essid}";
+    format-alt = "{ifname}";
+    format-disconnected = "Disconnected";
+    format-linked = "{ifname} (No IP)";
+    on-click-middle = "${lib.getExe' wpa_supplicant "wpa_cli"} disconnect";
+    on-click-right = "${lib.getExe' wpa_supplicant "wpa_cli"} reassociate";
+    tooltip = false;
+  };
+
+  # idle_inhibitor
+  idle_inhibitor = {
+    format = "{icon}";
+    format-icons = {
+      activated = "Inf";
+      deactivated = "60s";
+    };
+    tooltip = false;
+  };
+
+  # pulseaudio
+  pulseaudio = {
+    format = "{volume}%";
+    format-muted = "Muted";
+    on-click = ''
+      ${lib.getExe' wireplumber "wpctl"} set-mute @DEFAULT_AUDIO_SINK@ toggle
+    '';
+    on-click-right = lib.getExe pavucontrol;
+    tooltip = false;
+  };
+
+  # workspaces
+  "sway/workspaces" =
+    let
+      count = lib.length (lib.attrNames vars.displays.outputs);
+
+      indices = lib.genList (i: i) count;
+
+      digits = [
+        "1"
+        "2"
+        "3"
+        "4"
+        "5"
+        "6"
+        "7"
+        "8"
+        "9"
+        "10"
+      ];
+
+      lastChar = str: lib.substring (lib.stringLength str - 1) 1 str;
+
+      mappingText = lib.removeSuffix "," (
+        lib.concatStringsSep "\n" (
+          lib.concatMap (i: map (d: ''"${toString i}${d}": "${lastChar d}",'') digits) indices
+        )
+      );
+
+      mapping = lib.listToAttrs (
+        lib.concatMap (
+          i:
+          map (d: {
+            name = "${toString i}${d}";
+            value = lastChar d;
+          }) digits
+        ) indices
+      );
+    in
+    {
+      all-outputs = false;
+      disable-scroll = true;
+      format = "{icon}";
+      format-icons = mapping;
+      window-rewrite = { };
+      tooltip = false;
+    };
+
+  # window
+  "sway/window" = {
+    max-length = 100;
+    tooltip = false;
+  };
+
+  # modules
+  modules-left = [
+    "sway/workspaces"
+    "sway/mode"
   ];
 
-  lastChar = str: lib.substring (lib.stringLength str - 1) 1 str;
+  modules-center = [
+    "sway/window"
+  ];
 
-  mappingText = lib.removeSuffix "," (
-    lib.concatStringsSep "\n" (
-      lib.concatMap (i: map (d: ''"${toString i}${d}": "${lastChar d}",'') digits) indices
-    )
-  );
+  modules-right = [
+    "idle_inhibitor"
+    "network"
+    "pulseaudio"
+    "battery"
+    "clock"
+  ];
 
   # final configuration
-  configuration = writeText "waybar-configuration" ''
-    [
+  configuration = writeText "waybar-configuration" (
+    builtins.toJSON [
       {
-        "battery": {
-          "format": "<span size='13000'>{icon}</span> <span rise='800'>{capacity}%</span>",
-          "format-alt": "<span size='13000'>{icon}</span> <span rise='800'>{time}</span>",
-          "format-charging": "<span size='13000'>󰂄</span> <span rise='800'>{capacity}%</span>",
-          "format-critical": "<span size='13000'>{icon}</span> <span rise='800'>{capacity}%</span>",
-          "format-full": "<span size='13000'>󱈑</span> <span rise='800'>{capacity}%</span>",
-          "format-icons": [
-            "󰂎",
-            "󰁺",
-            "󰁻",
-            "󰁼",
-            "󰁽",
-            "󰁾",
-            "󰁿",
-            "󰂀",
-            "󰂁",
-            "󰂂",
-            "󰁹"
-          ],
-          "format-plugged": "<span size='13000'>󰂄</span> <span rise='800'>{capacity}%</span>",
-          "format-warning": "<span size='13000'>{icon}</span> <span rise='800'>{capacity}%</span>",
-          "states": {
-            "critical": 15,
-            "warning": 30
-          },
-          "tooltip": false
-        },
-        "clock": {
-          "format": "<span size='11000' rise='-1000'> </span><span rise='-1000'>{:%I:%M %p}</span>",
-          "format-alt": "<span size='11000' rise='-1000'> </span><span rise='-1000'>{:%a %d %b (%d/%m/%y)}</span>",
-          "tooltip": false
-        },
-        "height": 32,
-        "idle_inhibitor": {
-          "format": "{icon}",
-          "format-icons": {
-            "activated": "<span size='12000'>󰌾</span> inf",
-            "deactivated": "<span size='12000'>󰌾</span> 60s"
-          },
-          "tooltip": false
-        },
-        "modules-center": [
+        inherit
+          height
+          layer
+          position
+          exclusive
+          modules-left
+          modules-center
+          modules-right
+          "sway/workspaces"
           "sway/window"
-        ],
-        "modules-left": [
-          "sway/workspaces",
-          "sway/mode"
-        ],
-        "modules-right": [
-          "idle_inhibitor",
-          "network",
-          "pulseaudio",
-          "battery",
-          "clock"
-        ],
-        "network": {
-          "format-alt": "<span size='13000'>󰤨</span>  <span rise='900'>{essid}</span>",
-          "format-disconnected": "<span size='13000'>󰤭</span>  <span rise='900'>Disconnected</span>",
-          "format-linked": "{ifname} (No IP) ",
-          "format-wifi": "<span size='13000'>󰤨</span>  <span rise='900'>{frequency}GHz</span>",
-          "on-click-middle": "wpa_cli disconnect",
-          "on-click-right": "wpa_cli reassociate",
-          "tooltip": false
-        },
-        "position": "top",
-        "pulseaudio": {
-          "format": "<span size='12000'>{icon}</span>  <span>{volume}%</span>",
-          "format-icons": {
-            "car": "",
-            "default": [
-              "",
-              " "
-            ],
-            "hands-free": "",
-            "headphone": "󰋋",
-            "headset": "󰋋",
-            "phone": "",
-            "portable": ""
-          },
-          "format-muted": "<span size='12000'></span>  <span>Muted</span>",
-          "on-click": "wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle",
-          "on-click-right": "pavucontrol",
-          "on-scroll-up": "${lib.getExe volume0} 1%+",
-          "on-scroll-down": "${lib.getExe volume0} 1%-",
-          "tooltip": false
-        },
-        "sway/window": {
-          "max-length": 53,
-          "tooltip": false
-        },
-        "sway/workspaces": {
-          "all-outputs": false,
-          "disable-scroll": true,
-          "format": "{icon}",
-          "format-icons": {
-            ${mappingText}
-          },
-          "tooltip": false,
-          "window-rewrite": {}
-        }
+          idle_inhibitor
+          network
+          pulseaudio
+          battery
+          clock
+          ;
       }
     ]
-  '';
+  );
 in
 configuration
