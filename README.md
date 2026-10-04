@@ -8,8 +8,6 @@
     <a href="#related-flakes">Related Flakes</a>
 </p>
 
-![screenshot](./doc/screenshots/nord.png)
-
 NixOS configuration for multiple hosts.
 
 # Features
