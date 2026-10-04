@@ -79,19 +79,19 @@ Note: `$mod` is `Mod4` (the `Super` / `Windows` key).
 | Focus right container                            | `$mod+Right` / `$mod+l`             |
 | Focus up container                               | `$mod+Up` / `$mod+k`                |
 | Focus down container                             | `$mod+Down` / `$mod+j`              |
-| Move container left                              | `$mod+Shift+Left` / `$mod+Shift+h`  |
-| Move container right                             | `$mod+Shift+Right` / `$mod+Shift+l` |
-| Move container up                                | `$mod+Shift+Up` / `$mod+Shift+k`    |
-| Move container down                              | `$mod+Shift+Down` / `$mod+Shift+j`  |
+| Move container left                              | `$mod+shift+Left` / `$mod+shift+h`  |
+| Move container right                             | `$mod+shift+Right` / `$mod+shift+l` |
+| Move container up                                | `$mod+shift+Up` / `$mod+shift+k`    |
+| Move container down                              | `$mod+shift+Down` / `$mod+shift+j`  |
 | Go to workspace `1..10`                          | `$mod+1..0`                         |
-| Move container to workspace `1..10`              | `$mod+Shift+1..0`                   |
+| Move container to workspace `1..10`              | `$mod+shift+1..0`                   |
 | Go to next workspace                             | `$mod+PgDown` / `$mod+ctrl+Right`   |
 | Go to previous workspace                         | `$mod+PgUp`/ `$mod+ctrl+Left`       |
 | Fetch containers from scratchpad                 | `$mod+Minus`                        |
-| Move container to scratchpad                     | `$mod+Shift+Minus`                  |
+| Move container to scratchpad                     | `$mod+shift+Minus`                  |
 | Toggle focus between floating / tiled containers | `$mod+Space`                        |
-| Toggle floating / tiled                          | `$mod+Shift+Space`                  |
-| Close current container                          | `$mod+Shift+q`                      |
+| Toggle floating / tiled                          | `$mod+shift+Space`                  |
+| Close current container                          | `$mod+shift+q`                      |
 | Split vertical                                   | `$mod+v`                            |
 | Split horizontal                                 | `$mod+b`                            |
 | Toggle split layout                              | `$mod+e`                            |
@@ -138,7 +138,7 @@ All brightness commands are dispatched via `brightnessctl`.
 The `volume` and `brightness` commands are wrappers which display a `dunst`
 notification with a bar indicator.
 
-Audio can also be controlled via the waybar[audio Module](#audio-module).
+Audio can also be controlled via the waybar [audio Module](#audio-module).
 
 ## Modes
 
@@ -193,7 +193,7 @@ Enter screenshot mode by using `$mod+PrintScreen`
 | save screen  | `ss`    |
 | color picker | `p`     |
 
-You can also use `$mod+Shift+s` in normal mode to copy area.
+You can also use `$mod+shift+s` in normal mode to copy area.
 
 All screenshot commands are dispatched via `grimshot`.
 
@@ -292,7 +292,7 @@ Launch using `$mod+d`.
 
 Launch using `$mod+g` for focusing a workspace.
 
-Launch using `$mod+Shift+g` for moving current container to a workspace.
+Launch using `$mod+shift+g` for moving current container to a workspace.
 
 ### clipboard history
 
@@ -302,7 +302,7 @@ Shows complete clipboard history using `cliphist`.
 
 Select an item to copy it to the clipboard.
 
-Clipboard history can be cleared using `$mod+Shift+c`
+Clipboard history can be cleared using `$mod+ctrl+c`
 
 Along with the traditional keybinds, you can use `wl-copy` or `wl-paste` to add
 things to / paste things from the clipboard.
