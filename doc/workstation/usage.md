@@ -205,8 +205,6 @@ This section covers the Waybar top panel.
 
 ### workspaces Module
 
-![waybar workspaces](../screenshots/waybar-workspaces.png)
-
 Shows workspaces.
 
 | Action          | Bind       |
@@ -227,15 +225,11 @@ Shows title of current container.
 
 ### idle_inhibitor Module
 
-![waybar idle](../screenshots/waybar-idle.png)
-
 | Action                                      | Bind       |
 | ------------------------------------------- | ---------- |
 | Toggle inhibiting automatic session locking | Left click |
 
 ### network Module
-
-![waybar network](../screenshots/waybar-network.png)
 
 Shows current connection status / band / ssid name.
 
@@ -246,8 +240,6 @@ Shows current connection status / band / ssid name.
 | Disconnect              | Middle click |
 
 ### audio Module
-
-![waybar audio](../screenshots/waybar-audio.png)
 
 Shows current volume.
 
@@ -260,8 +252,6 @@ Shows current volume.
 
 ### battery Module
 
-![waybar battery](../screenshots/waybar-battery.png)
-
 Shows current battery percentage / remaining time.
 
 | Action                        | Bind       |
@@ -269,8 +259,6 @@ Shows current battery percentage / remaining time.
 | Toggle percentage / time view | Left click |
 
 ### clock Module
-
-![waybar clock](../screenshots/waybar-clock.png)
 
 Shows current date and time.
 
@@ -286,7 +274,7 @@ This section covers the Rofi launcher.
 
 Launch using `$mod+d`.
 
-![rofi run](../screenshots/rofi-run.png)
+Rofi in `drun` mode.
 
 ### workspace switcher
 
