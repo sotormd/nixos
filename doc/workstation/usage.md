@@ -295,9 +295,16 @@ Clipboard history can be cleared using `$mod+ctrl+c`
 Along with the traditional keybinds, you can use `wl-copy` or `wl-paste` to add
 things to / paste things from the clipboard.
 
+### wallpapers picker
+
+Launch using `$mod+p`.
+
+Pick from all available wallpapers.
+
 ## Wallpapers
 
-The `nord.space` wallpaper from `lib.wallpapers` is used for the desktop.
+The `base` wallpaper from `lib.wallpapers` is used for the desktop. This can be changed
+in an ad-hoc manner using the [wallpaper picker](#wallpapers-picker).
 
 A random XKCD comic is used as the lockscreen wallpaper, with
 [xkcd-wall](https://github.com/sotormd/xkcd-wall). The comic is refreshed after
