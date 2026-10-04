@@ -829,20 +829,27 @@ Server using the `vars.selfhosted.*` variables.
 
 ## Editors
 
-Vim is installed by default.
-
-Alternatively, Neovim can be installed using
-[this configuration](https://github.com/sotormd/neovim) to the user Nix profile:
+Vim is installed by default and can be used using the following commands:
 
 ```bash
-nix profile install github:sotormd/neovim
+vim
 ```
 
-Alternatively, Emacs can be installed using
-[this configuration](https://github.com/sotormd/emacs) to the user Nix profile:
+Emacs is installed, using [this configuration](https://github.com/sotormd/emacs) and can be used
+using the following commands:
+
+For Emacs with a PGTK graphical frame:
 
 ```bash
-nix profile install github:sotormd/emacs
+emacs
+```
+
+For Emacs without a graphical frame:
+
+```bash
+ e
+ vi
+ emacs -nw
 ```
 
 ## Git

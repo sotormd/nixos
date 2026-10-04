@@ -52,6 +52,7 @@ NixOS configuration for multiple hosts.
      modules
    - [Rofi](https://github.com/davatorium/rofi) menu for launchers, clipboard
      history, workspace switchers, etc
+   - [Emacs](https://github.com/sotormd/emacs) text editor
    - [Brave](https://github.com/brave/brave-browser/) browser with tight
      policies
    - Sandboxing with [Bubblewrap](https://github.com/containers/bubblewrap) and
@@ -135,7 +136,7 @@ NixOS configuration for multiple hosts.
 | search engine                 | `searxng`                                                                                                |
 | bittorrent                    | `qbittorrent-nox`                                                                                        |
 | passwords                     | `vaultwarden`                                                                                            |
-| text editor                   | `vim`, `mousepad`                                                                                        |
+| text editor                   | `emacs`, `vim`, `mousepad`                                                                               |
 | version control               | `git`                                                                                                    |
 | virtualization                | [`svcvm`](https://github.com/sotormd/svcvm), `lib.mksvcvm` `qemu`, `virt-manager`, `distrobox`, `podman` |
 | cpu optimizations             | `auto-cpufreq`                                                                                           |
@@ -269,10 +270,10 @@ Directly dependent:
 
 - [svcvm](https://github.com/sotormd/svcvm), Service virtual machines for NixOS,
   derived from [microvm.nix](https://github.com/microvm-nix/microvm.nix)
+- [emacs](https://github.com/sotormd/emacs), Emacs configuration
 
 Others:
 
-- [emacs](https://github.com/sotormd/emacs), Emacs configuration
 - [neovim](https://github.com/sotormd/neovim), Neovim configuration flake (ft.
   nvf)
 - [pattern](https://github.com/sotormd/pattern), Atomic, image-based systems

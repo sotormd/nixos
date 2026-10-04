@@ -17,6 +17,7 @@ let
         "svcvm"
         "hosts"
         "xkcd"
+        "emacs"
       ]
   );
   pins = builtins.mapAttrs (_: node: node.locked) (builtins.intersectAttrs neededPins lock.nodes);
@@ -55,6 +56,9 @@ let
 
     # the xkcd-wall package
     xkcd.packages.${pkgs.stdenv.hostPlatform.system}.default = import sources.xkcd { inherit pkgs; };
+
+    # the emacs package
+    emacs.packages.${pkgs.stdenv.hostPlatform.system}.default = import sources.emacs { inherit pkgs; };
 
   };
 

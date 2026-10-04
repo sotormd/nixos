@@ -45,6 +45,12 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
+    # emacs text editor
+    emacs = {
+      url = "github:sotormd/emacs";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+
   };
 
   outputs =

@@ -15,6 +15,26 @@
         "type": "github"
       }
     },
+    "emacs": {
+      "inputs": {
+        "nixpkgs": [
+          "nixpkgs"
+        ]
+      },
+      "locked": {
+        "lastModified": 1791105421,
+        "narHash": "sha256-j1ewcsjRIED9wJ4QBOH2j2yK6hdbmihELQ7PUEiXfWc=",
+        "owner": "sotormd",
+        "repo": "emacs",
+        "rev": "fb397a0a45e93f3edd99274baa05540ab99739fd",
+        "type": "github"
+      },
+      "original": {
+        "owner": "sotormd",
+        "repo": "emacs",
+        "type": "github"
+      }
+    },
     "flake-compat": {
       "flake": false,
       "locked": {
@@ -114,6 +134,7 @@
     },
     "root": {
       "inputs": {
+        "emacs": "emacs",
         "hosts": "hosts",
         "lanzaboote": "lanzaboote",
         "nixpkgs": "nixpkgs",

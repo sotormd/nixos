@@ -16,6 +16,9 @@
     # development toolchains
     apps.dev = _: { imports = [ ./apps/dev ]; };
 
+    # editor macros
+    apps.emacs = _: { imports = [ ./apps/emacs ]; };
+
     # foot terminal emulator
     apps.foot = _: { imports = [ ./apps/foot ]; };
 
