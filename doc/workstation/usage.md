@@ -110,6 +110,8 @@ Workspaces can also be changed using the `rofi` launcher, see
 | Launch terminal `foot` | `$mod+Return` |
 | Launch launcher `rofi` | `$mod+d`      |
 
+Some apps can also be opened using [Open Mode](#open).
+
 The `rofi` launcher has several other uses, see:
 [Launcher, rofi](#launcher-rofi)
 
@@ -126,8 +128,6 @@ The `rofi` launcher has several other uses, see:
 | Decrease volume     | `XF86AudioLowerVolume`                 |
 | Increase brightness | `XF86MonBrightnessUp`                  |
 | Decrease brightness | `XF86MonBrightnessDown`                |
-| Translucent window  | `$mod+t`                               |
-| Opaque window       | `$mod+o`                               |
 
 All media commands are dispatched via `playerctl`.
 
@@ -138,14 +138,23 @@ All brightness commands are dispatched via `brightnessctl`.
 The `volume` and `brightness` commands are wrappers which display a `dunst`
 notification with a bar indicator.
 
-The media and audio can also be controlled via waybar:
-
-- Media: [playerctl Module](#playerctl-module)
-- Audio: [audio Module](#audio-module)
+Audio can also be controlled via the waybar[audio Module](#audio-module).
 
 ## Modes
 
 Return to normal mode from any other mode by using `Escape` / `Return`.
+
+### Open
+
+Enter open mode by using `$mod+o`
+
+| Action                     | Keybind |
+| -------------------------- | ------- |
+| open [foot](#foot)         | `f`     |
+| open [Brave](#brave)       | `b`     |
+| open [Thunar](#thunar)     | `t`     |
+| open [Mousepad](#mousepad) | `m`     |
+| open [Emacs](#editors)     | `e`     |
 
 ### Resize
 

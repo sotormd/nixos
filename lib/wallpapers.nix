@@ -36,5 +36,5 @@ let
   wallpapers = collect wallpapersDir;
 in
 {
-  inherit wallpapers;
+  inherit wallpapers wallpapersDir;
 }

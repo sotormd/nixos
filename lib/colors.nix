@@ -84,18 +84,40 @@ let
 
     # waybar
     waybar = {
-      mode.text = blue2;
+      bg = bg0;
       workspaces = {
-        border = blue2;
-        text = blue2;
+        bg = bg0;
+        fg = blue2;
         hover = bg3;
       };
-      modules.text = bg1;
-      util.bg = red;
-      network.bg = orange;
-      audio.bg = yellow;
-      battery.bg = green;
-      clock.bg = purple;
+      mode = {
+        bg = blue2;
+        fg = bg0;
+      };
+      window = {
+        bg = bg0;
+        fg = fg0;
+      };
+      idle = {
+        bg = bg0;
+        fg = red;
+      };
+      network = {
+        bg = bg0;
+        fg = orange;
+      };
+      pulseaudio = {
+        bg = bg0;
+        fg = yellow;
+      };
+      battery = {
+        bg = bg0;
+        fg = green;
+      };
+      clock = {
+        bg = bg0;
+        fg = purple;
+      };
     };
 
     # foot

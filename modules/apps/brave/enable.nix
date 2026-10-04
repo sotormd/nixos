@@ -27,4 +27,5 @@ let
 in
 {
   users.users.${config.vars.user.name}.packages = [ package ];
+  nixpkgs.overlays = [ (_: _: { brave0 = package; }) ];
 }

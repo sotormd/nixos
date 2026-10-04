@@ -1,9 +1,12 @@
 {
   lib,
+  brave0,
   brightness0,
   cliphist,
   dconf,
   dunst0,
+  emacs0,
+  findutils,
   foot0,
   gawk,
   grim,
@@ -11,15 +14,20 @@
   jq,
   mate-polkit,
   media0,
+  mousepad,
+  procps,
   rofi0,
   slurp,
   swayidle,
   swaylock0,
   sway-contrib,
+  thunar,
   volume0,
   waybar0,
+  wireplumber,
   wl-clipboard,
   xkcd0,
+  writeShellScript,
   writeText,
   vars,
 }:
@@ -123,7 +131,7 @@ let
     bindsym ${mod}+Page_Up workspace prev
     bindsym ${mod}+ctrl+Right workspace next
     bindsym ${mod}+ctrl+Left workspace prev
-    bindsym ${mod}+g exec swaymsg workspace $(swaymsg -t get_workspaces -r | ${binaries.jq} -r '.[].name' | ${binaries.rofi} -dmenu -p "w")
+    bindsym ${mod}+g exec ${workspaceFocus}
     ${workspaceFocusLines}
   '';
 
@@ -131,7 +139,7 @@ let
   # MOVE TO WORKSPACE
   #
   lines-move-to-workspace = ''
-    bindsym ${mod}+shift+g exec swaymsg move workspace $(swaymsg -t get_workspaces -r | ${binaries.jq} -r '.[].name' | ${binaries.rofi} -dmenu -p "m")
+    bindsym ${mod}+shift+g exec ${workspaceMove}
     ${workspaceMoveLines}
   '';
 
@@ -147,7 +155,7 @@ let
     bindsym ${mod}+shift+F23+bracketright exec ${binaries.media} play-pause
     bindsym ${mod}+shift+F23+backslash exec ${binaries.media} next
     bindsym ${mod}+shift+F23+alt+bracketright exec ${binaries.media} stop
-    bindsym XF86AudioMute exec wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle
+    bindsym XF86AudioMute exec ${binaries.wpctl} set-mute @DEFAULT_AUDIO_SINK@ toggle
     bindsym XF86AudioLowerVolume exec ${binaries.volume} 5%-
     bindsym XF86AudioRaiseVolume exec ${binaries.volume} 5%+
   '';
@@ -171,9 +179,9 @@ let
   '';
 
   #
-  # GAPS, BORDERS & OPACITY
+  # GAPS, BORDERS
   #
-  lines-gaps-borders-opacity = ''
+  lines-gaps-borders = ''
     gaps inner 4
     gaps outer 2
     default_border pixel 3
@@ -181,8 +189,6 @@ let
     hide_edge_borders none
     for_window [app_id=".*"] border pixel 3
     for_window [app_id=".*"] opacity 1
-    bindsym ${mod}+o exec swaymsg opacity 1
-    bindsym ${mod}+t exec swaymsg opacity 0.9
   '';
 
   #
@@ -226,9 +232,9 @@ let
   '';
 
   #
-  # KEYBOARD
+  # CAPS-LOCK-CTRL
   #
-  lines-keyboard = ''
+  lines-ctrl-nocaps = ''
     input "type:keyboard" {
       xkb_options ctrl:nocaps
     }
@@ -244,9 +250,33 @@ let
   '';
 
   #
+  # WALLPAPER PICKER
+  #
+  lines-wallpaper-picker = ''
+    bindsym ${mod}+p exec ${wallpaperPicker}
+  '';
+
+  #
   # OUTPUTS
   #
   lines-outputs = outputLines;
+
+  #
+  # OPEN MODE
+  #
+  lines-open-mode = ''
+    bindsym ${mod}+o mode open
+    mode "open" {
+      bindsym Escape mode default
+      bindsym Return mode default
+      bindsym f mode default; exec ${binaries.foot}
+      bindsym b mode default; exec ${binaries.brave}
+      bindsym t mode default; exec ${binaries.thunar}
+      bindsym m mode default; exec ${binaries.mousepad}
+      bindsym e mode default; exec ${binaries.emacs}
+      bindsym d mode default; exec ${binaries.rofi} -show run
+    }
+  '';
 
   #
   # LEAVE MODE
@@ -300,7 +330,7 @@ let
       bindsym Escape mode default
       bindsym Return mode default
       bindsym c mode screenshot-copy
-      bindsym p mode default; exec ${binaries.slurp} -p | ${binaries.grim} -g - - | ${binaries.imagemagick} - txt: | ${binaries.awk} 'NR==2 { print tolower($3) }' | ${binaries.wl-copy}
+      bindsym p mode default; exec ${colorPicker}
       bindsym s mode screenshot-save
     }
   '';
@@ -354,8 +384,8 @@ let
   #
   lines-cliphist = ''
     exec ${binaries.wl-paste} --watch ${binaries.cliphist} store
-    bindsym ${mod}+c exec exec ${binaries.cliphist} list | ${binaries.rofi} -dmenu -p 'c' | ${binaries.cliphist} decode | ${binaries.wl-copy}
-    bindsym ${mod}+shift+c exec ${binaries.cliphist} wipe
+    bindsym ${mod}+c exec ${cliphistPicker}
+    bindsym ${mod}+ctrl+c exec ${binaries.cliphist} wipe
   '';
 
   #
@@ -397,16 +427,19 @@ let
   '';
 
   # wallpaper
-  backgrounds.wallpaper = lib.wallpapers.nord.space;
+  backgrounds.wallpaper = lib.wallpapers.base;
 
   # helpers
 
   binaries = {
     awk = lib.getExe gawk;
+    brave = lib.getExe brave0;
     brightness = lib.getExe brightness0;
     cliphist = lib.getExe cliphist;
     dconf = lib.getExe dconf;
     dunst = lib.getExe dunst0;
+    emacs = lib.getExe emacs0;
+    find = lib.getExe findutils;
     foot = lib.getExe foot0;
     grim = lib.getExe grim;
     grimshot = lib.getExe sway-contrib.grimshot;
@@ -414,14 +447,17 @@ let
     jq = lib.getExe jq;
     mate-polkit = "${mate-polkit}/libexec/polkit-mate-authentication-agent-1";
     media = lib.getExe media0;
+    mousepad = lib.getExe mousepad;
     rofi = lib.getExe rofi0;
     slurp = lib.getExe slurp;
     swayidle = lib.getExe swayidle;
     swaylock = lib.getExe swaylock0;
+    thunar = lib.getExe' thunar "Thunar";
     volume = lib.getExe volume0;
     waybar = lib.getExe waybar0;
     wl-copy = lib.getExe' wl-clipboard "wl-copy";
     wl-paste = lib.getExe' wl-clipboard "wl-paste";
+    wpctl = lib.getExe' wireplumber "wpctl";
     xkcd-refresh = lib.getExe xkcd0;
   };
 
@@ -494,6 +530,26 @@ let
 
   outputLines = lib.concatStringsSep "\n\n" (map (item: renderOutput item.value) orderedOutputs);
 
+  workspaceFocus = writeShellScript "workspace-focus" ''
+    swaymsg workspace $(swaymsg -t get_workspaces -r | ${binaries.jq} -r '.[].name' | ${binaries.rofi} -dmenu -p "g")
+  '';
+
+  workspaceMove = writeShellScript "workspace-move" ''
+    swaymsg move workspace $(swaymsg -t get_workspaces -r | ${binaries.jq} -r '.[].name' | ${binaries.rofi} -dmenu -p "G")
+  '';
+
+  cliphistPicker = writeShellScript "cliphist-picker" ''
+    ${binaries.cliphist} list | ${binaries.rofi} -dmenu -p 'c' | ${binaries.cliphist} decode | ${binaries.wl-copy}
+  '';
+
+  wallpaperPicker = writeShellScript "wallpaper-picker" ''
+    file=$(${binaries.find} "${lib.wallpapersDir}" -type f -printf '%P\n' | ${binaries.rofi} -dmenu -i -p "p") && [ -n "$file" ] && swaymsg output "*" bg "${lib.wallpapersDir}/$file" fill
+  '';
+
+  colorPicker = writeShellScript "color-picker" ''
+    ${binaries.slurp} -p | ${binaries.grim} -g - - | ${binaries.imagemagick} - txt: | ${binaries.awk} 'NR==2 { print tolower($3) }' | ${binaries.wl-copy}
+  '';
+
   # final configuration
   configuration = writeText "sway-configuration" (
     lib.concatStringsSep "\n" [
@@ -511,13 +567,15 @@ let
       lines-audio
       lines-brightness
       lines-floating
-      lines-gaps-borders-opacity
+      lines-gaps-borders
       lines-colors-fonts
       lines-gtk-4
       lines-mouse-touchpad
-      lines-keyboard
+      lines-ctrl-nocaps
       lines-wallpaper
+      lines-wallpaper-picker
       lines-outputs
+      lines-open-mode
       lines-leave-mode
       lines-resize-mode
       lines-quick-screenshot

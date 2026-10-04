@@ -12,7 +12,7 @@ let
   user = vars.user.name;
   home = "/home/${user}";
 
-  fallback = lib.wallpapers.nord.nixos;
+  fallback = lib.wallpapers.nixos;
   target = "${home}/.local/share/xkcd.png";
   backup = "${home}/.local/share/xkcd.last.png";
 
