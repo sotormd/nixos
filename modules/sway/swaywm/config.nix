@@ -15,7 +15,6 @@
   mate-polkit,
   media0,
   mousepad,
-  procps,
   rofi0,
   slurp,
   swayidle,
