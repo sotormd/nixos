@@ -13,5 +13,8 @@
     # screen recorder
     pkgs.wf-recorder
 
+    # audio visualizer
+    pkgs.cava
+
   ];
 }
