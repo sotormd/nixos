@@ -35,7 +35,7 @@ let
       args ? "",
     }:
     let
-      defaultError = "${type} must be passed when mkWrapperPackage is called with type ${type}";
+      defaultError = thing: "${thing} must be passed when mkWrapperPackage is called with type ${type}";
     in
     if
       !(builtins.elem type [
@@ -45,9 +45,9 @@ let
     then
       throw "unexpected type ${type} passed to mkWrapperPackage"
     else if type == "command" && command == "" then
-      throw defaultError
+      throw (defaultError "command")
     else if type == "wrapper" && args == "" then
-      throw defaultError
+      throw (defaultError "args")
     else
       symlinkJoin {
 
