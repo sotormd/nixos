@@ -10,6 +10,7 @@ let
 
   name = "foot";
   base = foot;
+  type = "command";
   command = ''
     FOCUSED_OUT="$(swaymsg -t get_outputs -r | jq -r '.[] | select(.focused == true).name')"
 
@@ -22,6 +23,13 @@ let
     ${lib.getExe base} --config=${configuration} --font "${colors.fonts.monospace}:size=$SIZE" "$@"
   '';
 
-  footWrapped = callPackage lib.mkWrapperPackage { inherit name base command; };
+  footWrapped = callPackage lib.mkWrapperPackage {
+    inherit
+      name
+      base
+      type
+      command
+      ;
+  };
 in
 footWrapped

@@ -8,10 +8,18 @@
 let
   name = "btop";
   base = btop;
-  command = ''
-    ${lib.getExe base} --config ${configuration} "$@"
+  type = "wrapper";
+  args = ''
+    --append-flags "--config ${configuration}"
   '';
 
-  btopWrapped = callPackage lib.mkWrapperPackage { inherit name base command; };
+  btopWrapped = callPackage lib.mkWrapperPackage {
+    inherit
+      name
+      base
+      type
+      args
+      ;
+  };
 in
 btopWrapped

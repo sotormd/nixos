@@ -8,10 +8,18 @@
 let
   name = "rofi";
   base = rofi;
-  command = ''
-    ${lib.getExe base} -config ${configuration} "$@"
+  type = "wrapper";
+  args = ''
+    --append-flags "-config ${configuration}"
   '';
 
-  rofiWrapped = callPackage lib.mkWrapperPackage { inherit name base command; };
+  rofiWrapped = callPackage lib.mkWrapperPackage {
+    inherit
+      name
+      base
+      type
+      args
+      ;
+  };
 in
 rofiWrapped

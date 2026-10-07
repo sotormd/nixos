@@ -8,10 +8,18 @@
 let
   name = "dunst";
   base = dunst;
-  command = ''
-    ${lib.getExe base} -config ${configuration} "$@"
+  type = "wrapper";
+  args = ''
+    --append-flags "-config ${configuration}"
   '';
 
-  dunstWrapped = callPackage lib.mkWrapperPackage { inherit name base command; };
+  dunstWrapped = callPackage lib.mkWrapperPackage {
+    inherit
+      name
+      base
+      type
+      args
+      ;
+  };
 in
 dunstWrapped

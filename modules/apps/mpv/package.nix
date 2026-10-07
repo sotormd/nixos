@@ -11,10 +11,18 @@ let
 
   name = "mpv";
   base = mpvWithScripts;
-  command = ''
-    ${lib.getExe base} --config-dir=${configuration} "$@"
+  type = "wrapper";
+  args = ''
+    --append-flags "--config-dir=${configuration}"
   '';
 
-  mpvWrapped = callPackage lib.mkWrapperPackage { inherit name base command; };
+  mpvWrapped = callPackage lib.mkWrapperPackage {
+    inherit
+      name
+      base
+      type
+      args
+      ;
+  };
 in
 mpvWrapped

@@ -9,10 +9,18 @@
 let
   name = "waybar";
   base = waybar;
-  command = ''
-    ${lib.getExe base} --config ${configuration} --style ${style} "$@"
+  type = "wrapper";
+  args = ''
+    --append-flags "--config ${configuration} --style ${style}"
   '';
 
-  waybarWrapped = callPackage lib.mkWrapperPackage { inherit name base command; };
+  waybarWrapped = callPackage lib.mkWrapperPackage {
+    inherit
+      name
+      base
+      type
+      args
+      ;
+  };
 in
 waybarWrapped

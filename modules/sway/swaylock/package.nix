@@ -9,11 +9,19 @@
 let
   name = "swaylock";
   base = swaylock;
+  type = "command";
   command = ''
     ${lib.getExe swaylock} --config ${configuration} "$@"
     ${lib.getExe xkcd0}
   '';
 
-  swaylockWrapped = callPackage lib.mkWrapperPackage { inherit name base command; };
+  swaylockWrapped = callPackage lib.mkWrapperPackage {
+    inherit
+      name
+      base
+      type
+      command
+      ;
+  };
 in
 swaylockWrapped
