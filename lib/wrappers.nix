@@ -69,7 +69,7 @@ let
             in
             ''
               rm -f ${binaryPath}
-              ln -s ${lib.getExe script} $out/bin/${name}
+              ln -s ${lib.getExe script} ${binaryPath}
             ''
           ))
 
