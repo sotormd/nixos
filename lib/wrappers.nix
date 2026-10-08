@@ -82,7 +82,50 @@ let
         meta.mainProgram = name;
 
       };
+
+  mkTrivialBwrapWrapper =
+    {
+      lib,
+      callPackage,
+
+      bubblewrap,
+
+      name,
+      base,
+      binds,
+    }:
+    let
+      args = lib.escapeShellArgs (
+        lib.flatten (
+          map (x: [
+            "--ro-bind"
+            x.src
+            x.dst
+          ]) binds
+        )
+      );
+
+      type = "command";
+      command = ''
+        ${lib.getExe bubblewrap} \
+          --bind / / \
+          --dev-bind /dev /dev \
+          --proc /proc \
+          --die-with-parent \
+          --new-session \
+          ${args} \
+          ${lib.getExe base} "$@"
+      '';
+    in
+    callPackage mkWrapperPackage {
+      inherit
+        name
+        base
+        type
+        command
+        ;
+    };
 in
 {
-  inherit mkWrapperPackage;
+  inherit mkWrapperScript mkWrapperPackage mkTrivialBwrapWrapper;
 }
