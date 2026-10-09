@@ -1307,8 +1307,8 @@ in the browsers.
 
    - Disable telemetry, services that require sending data to Google, and other
      features to reduce attack surface:
-     - V8 JavaScript JIT
-     - V8 JavaScript Optimizations
+     - V8 JavaScript JIT (except on a small number of sites)
+     - V8 JavaScript Optimizations (except on a small number of sites)
      - Metrics
      - Feedback Surveys
      - User Feedback

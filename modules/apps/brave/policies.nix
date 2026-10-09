@@ -189,8 +189,8 @@ let
     # disable V8
     DefaultJavaScriptJitSetting = 2;
     DefaultJavaScriptOptimizerSetting = 2;
-    JavaScriptJitAllowedForSites = [ vars.selfhosted.vaultwarden.domain ];
-    JavaScriptOptimizerAllowedForSites = [ vars.selfhosted.vaultwarden.domain ];
+    JavaScriptJitAllowedForSites = v8Sites;
+    JavaScriptOptimizerAllowedForSites = v8Sites;
 
     # disable promotions
     PromotionsEnabled = false;
@@ -208,6 +208,33 @@ let
       "dbepggeogbaibhgnhhndojpepiihcmeb" # vimium
     ];
   };
+
+  # list of sites that are allowed to use
+  # v8 JIT and v8 optimizations
+  #
+  # only sites that actually seem to require it
+  #
+  v8Sites = [
+
+    # vaultwarden
+    vars.selfhosted.vaultwarden.domain
+
+    # things like mail, drive, docs
+    "google.com"
+
+    # protonmail
+    "proton.me"
+
+    # spotify
+    "spotify.com"
+
+    # lastfm
+    "last.fm"
+
+    # discord
+    "discord.com"
+
+  ];
 
   policies = writeText "brave-policies" (builtins.toJSON (basePolicies // extensionPolicies));
 in
