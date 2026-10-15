@@ -16,5 +16,8 @@
     # audio visualizer
     pkgs.cava
 
+    # mpris playerctl
+    pkgs.playerctl
+
   ];
 }
