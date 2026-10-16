@@ -15,6 +15,7 @@
   mate-polkit,
   media0,
   mousepad,
+  procps,
   rofi0,
   slurp,
   swayidle,
@@ -372,6 +373,13 @@ let
   '';
 
   #
+  # WAYBAR TOGGLE
+  #
+  lines-waybar-toggle = ''
+    bindsym ${mod}+Tab exec ${binaries.procps} -SIGUSR1 waybar
+  '';
+
+  #
   # DUNST
   #
   lines-dunst = ''
@@ -447,6 +455,7 @@ let
     mate-polkit = "${mate-polkit}/libexec/polkit-mate-authentication-agent-1";
     media = lib.getExe media0;
     mousepad = lib.getExe mousepad;
+    procps = lib.getExe' procps "pkill";
     rofi = lib.getExe rofi0;
     slurp = lib.getExe slurp;
     swayidle = lib.getExe swayidle;
@@ -582,6 +591,7 @@ let
       lines-screenshot-copy-mode
       lines-screenshot-save-mode
       lines-waybar
+      lines-waybar-toggle
       lines-dunst
       lines-cliphist
       lines-swayidle
