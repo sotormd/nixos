@@ -13,7 +13,6 @@
   boot.initrd.luks.devices = {
     root = {
       device = "/dev/disk/by-partuuid/${config.vars.partitions.root}";
-      preLVM = true;
     };
   };
 
