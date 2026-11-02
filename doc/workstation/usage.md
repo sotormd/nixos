@@ -569,6 +569,10 @@ Notable changes from the default configuration:
 GNOME Mode can be enabled using `vars.modes.gnome.enable` and used by booting
 into the `gnome` specialisation from the boot menu.
 
+## Pantheon Mode
+
+Identical to GNOME Mode, except using the Pantheon desktop.
+
 # Bind Mounts and External Disks
 
 The variables file can be used to create bind mounts, which can be used to put
