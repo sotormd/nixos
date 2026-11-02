@@ -124,6 +124,7 @@
   modes = {
     roaming.enable = true;
     gnome.enable = true;
+    pantheon.enable = true;
   };
 
   selfhosted = {

@@ -308,6 +308,10 @@ in
         type = types.bool;
       };
 
+      pantheon.enable = mkOption {
+        type = types.bool;
+      };
+
     };
 
     selfhosted = {
