@@ -115,6 +115,9 @@
     # gnome desktop
     desktop.gnome = _: { imports = [ ./desktop/gnome ]; };
 
+    # pantheon desktop
+    desktop.pantheon = _: { imports = [ ./desktop/pantheon ]; };
+
     # nftables firewall
     network.firewall = _: { imports = [ ./network/firewall ]; };
 
