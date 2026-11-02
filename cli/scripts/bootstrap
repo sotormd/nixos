@@ -491,6 +491,10 @@ elif [ "$VERB" == "vars" ]; then
     # gnome dekstop
     gnome.enable = false;
 
+    # pantheon mode
+    # pantheon dekstop
+    pantheon.enable = false;
+
   };
 
   # use selfhosted features
