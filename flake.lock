@@ -186,11 +186,11 @@
     },
     "svcvm": {
       "locked": {
-        "lastModified": 1793603279,
-        "narHash": "sha256-Lk+tLSDR8abM3++JUY7GDGPXqm0Wr/lOb7en4WG7W+k=",
+        "lastModified": 1793604335,
+        "narHash": "sha256-iY/yjE8yWDErQk0YtXxWeg4SGdZCTL/diA7WUALwIBI=",
         "owner": "sotormd",
         "repo": "svcvm",
-        "rev": "eb06ebfd5a372ed8cfe867726407fc28fcdc371a",
+        "rev": "cc3a3554344153db8155a60a6d2a0359bb8e8304",
         "type": "github"
       },
       "original": {
