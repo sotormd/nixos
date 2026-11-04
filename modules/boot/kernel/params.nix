@@ -44,7 +44,7 @@
     #
     # MODULE_SIG is disabled in the kernel on NixOS
     # to ensure reproducibility, this does nothing
-    "module.sig_enforce=1"
+    # "module.sig_enforce=1"
 
     # enable the kernel lockdown LSM
     # confidentiality is the strictest mode
@@ -54,7 +54,7 @@
     #
     # LOCKDOWN_LSM is disabled in the kernel on NixOS
     # to ensure reproducibility, this does nothing
-    "lockdown=confidentiality"
+    # "lockdown=confidentiality"
 
     # do not panic on uncorrectable memory errors
     # kernel will panic on uncorrectable memory errors, which can be exploited
