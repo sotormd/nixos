@@ -12,3 +12,21 @@ and gh actions update all these pacakges as per their `passthru.updateScript` at
 
 `passthru.updateScript` must be a script that can be invoked from this directory and takes
 the package directory name as an argument.
+
+## updating using the `nixos(1)` cli
+
+```bash
+nixos update
+```
+
+## updating using the `passthru.updateScript`
+
+```bash
+cd pkgs
+script=$(nix build -f . brave.passthru.updateScript --no-link --print-out-paths)
+"$script" brave
+```
+
+## updating with github actions
+
+actions with open a PR for package updates
