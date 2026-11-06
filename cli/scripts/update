@@ -10,15 +10,11 @@ echo "updating flake inputs"
     nix flake update
 )
 
-echo "updating packages"
 (
     cd "$DIR/pkgs"
     while read -r pkg; do
 	echo "updating package $pkg"
 	script="$(nix build -f default.nix $pkg.passthru.updateScript --no-link --print-out-paths)"
-	(
-	    cd "$pkg"
-            "$script"
-	)
+        "$script" "$pkg"
     done < to-update
 )

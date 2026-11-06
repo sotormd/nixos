@@ -30,8 +30,7 @@ jobs:
         run: |
           cd pkgs
           script=$(nix build -f default.nix brave.passthru.updateScript --no-link --print-out-paths)
-          cd brave
-          "$script"
+          "$script" brave
 
       - name: Create pull request
         uses: peter-evans/create-pull-request@v7

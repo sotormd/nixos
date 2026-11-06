@@ -2,6 +2,7 @@
 
 import base64
 import os
+import sys
 import urllib.request
 
 download_urls = {
@@ -71,6 +72,7 @@ def write_package(flavor, version):
 
 
 def main():
+    os.chdir(sys.argv[1])
 
     brave_version = get_version(f"https://versions.brave.com/latest/")
     origin_version = get_version(f"https://versions.brave.com/latest/origin-")

@@ -30,8 +30,7 @@ jobs:
         run: |
           cd pkgs
           script=$(nix build -f default.nix xkcd-wall.passthru.updateScript --no-link --print-out-paths)
-          cd xkcd-wall
-          "$script"
+          "$script" xkcd-wall
 
       - name: Create pull request
         uses: peter-evans/create-pull-request@v7

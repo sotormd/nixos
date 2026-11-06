@@ -2,8 +2,7 @@
   lib,
   buildGoModule,
   fetchFromGitHub,
-  writeShellScript,
-  nix-update,
+  updater,
 }:
 
 buildGoModule (finalAttrs: {
@@ -18,10 +17,7 @@ buildGoModule (finalAttrs: {
   subPackages = [ "./cmd/xkcd-wall" ];
   vendorHash = null;
 
-  passthru.updateScript = writeShellScript "update-xkcd-wall" ''
-    cd ..
-    ${lib.getExe nix-update} xkcd-wall
-  '';
+  passthru.updateScript = updater;
 
   meta = {
     description = "Create wallpapers from xkcd comics";
