@@ -29,4 +29,4 @@ script=$(nix build -f . brave.passthru.updateScript --no-link --print-out-paths)
 
 ## updating with github actions
 
-actions with open a PR for package updates
+actions will open a PR for package updates
