@@ -23,12 +23,15 @@ jobs:
           extra_nix_config: |
             experimental-features = nix-command flakes
 
+      - name: Configure NIX_PATH
+        run: echo "NIX_PATH=nixpkgs=https://github.com/NixOS/nixpkgs/archive/nixos-unstable.tar.gz" >> "$GITHUB_ENV"
+
       - name: Update pkgs/xkcd-wall
         run: |
-	  cd pkgs
-	  script=$(nix build -f default.nix xkcd-wall.passthru.updateScript --no-link --print-out-paths)
-	  cd xkcd-wall
-	  "$script"
+          cd pkgs
+          script=$(nix build -f default.nix xkcd-wall.passthru.updateScript --no-link --print-out-paths)
+          cd xkcd-wall
+          "$script"
 
       - name: Create pull request
         uses: peter-evans/create-pull-request@v7
