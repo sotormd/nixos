@@ -1,0 +1,40 @@
+name: Update pkgs/xkcd-wall
+
+on:
+  schedule:
+    - cron: "35 2 * * *"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  pull-requests: write
+
+jobs:
+  update-xkcd-wall:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Install Nix
+        uses: cachix/install-nix-action@v31
+        with:
+          extra_nix_config: |
+            experimental-features = nix-command flakes
+
+      - name: Update pkgs/xkcd-wall
+        working-directory: pkgs
+        run: nix run nixpkgs#nix-update -- xkcd-wall
+
+      - name: Create pull request
+        uses: peter-evans/create-pull-request@v7
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          branch: update/xkcd-wall
+          delete-branch: true
+          commit-message: "chore: update pkgs/xkcd-wall"
+          title: "update pkgs/xkcd-wall"
+          body: |
+            automated pkgs/xkcd-wall update.
+          labels: automated, package-update
