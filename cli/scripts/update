@@ -4,7 +4,21 @@ set -euo pipefail
 
 DIR="$__NIXOS_MOUNT$__NIXOS_GLOBALS_FLAKE"
 
+echo "updating flake inputs"
 (
     cd  "$DIR"
-    nix flake update "$@"
+    nix flake update
+)
+
+echo "updating packages"
+(
+    cd "$DIR/pkgs"
+    while read -r pkg; do
+	echo "updating package $pkg"
+	script="$(nix build -f default.nix $pkg.passthru.updateScript --no-link --print-out-paths)"
+	(
+	    cd "$pkg"
+            "$script"
+	)
+    done < to-update
 )
