@@ -73,6 +73,7 @@
   libxcb,
   vulkan-loader,
   zlib,
+  updater-brave,
   # Darwin dependencies
   undmg,
   makeWrapper,
@@ -319,7 +320,7 @@ stdenv.mkDerivation {
     $out/opt/brave.com/${optName}/brave --version
   '';
 
-  passthru.updateScript = ./update.py;
+  passthru.updateScript = updater-brave;
 
   meta = {
     homepage = homepage;

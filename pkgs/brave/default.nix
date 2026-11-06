@@ -1,4 +1,4 @@
-{ callPackage }:
+{ callPackage, updater-brave }:
 
 let
   flavorData = {
@@ -19,7 +19,7 @@ let
       pkg = import release;
       fd = flavorData.${pkg.flavor or "browser"};
     in
-    callPackage ((import ./make-brave.nix) (pkg // fd)) { };
+    callPackage ((import ./make-brave.nix) (pkg // fd)) { inherit updater-brave; };
 
 in
 {
