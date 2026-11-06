@@ -62,6 +62,16 @@ else
 	cmd=("$@")
 fi
 
+echo "[nixos] NIXOS_ROLE                   $ROLE" >&2
+echo "[nixos] NIXOS_MOUNT                  $MOUNT" >&2
+echo "[nixos] NIXOS_SCRIPTS                $SCRIPTS" >&2
+echo "[nixos] NIXOS_NONFLAKE               $NONFLAKE" >&2
+echo >&2
+echo "[nixos] __NIXOS_GLOBALS_FLAKE        $FLAKE" >&2
+echo "[nixos] __NIXOS_GLOBALS_SOPS         $SOPS" >&2
+echo "[nixos] __NIXOS_GLOBALS_IMPERMANENCE $IMPERMANENCE" >&2
+echo >&2
+
 (
     # subshell into $FLAKE
     # unless bootstrap
@@ -83,3 +93,5 @@ fi
     # run required command
     "${cmd[@]}"
 )
+
+echo "[nixos] done" >&2

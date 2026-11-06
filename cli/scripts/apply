@@ -41,6 +41,7 @@ NONFLAKE="$__NIXOS_NONFLAKE"
 
     if [[ $confirm =~ ^[Yy]$ ]]; then
 
+	echo "[nixos] building configuration" >&2
         if [ "$NONFLAKE" = 1 ]; then
             run0 nixos-rebuild $VERB --file "nonflake.nix" --attr "nixosConfigurations.machine-$ROLE-$ARCH" --fallback
         else
@@ -48,6 +49,6 @@ NONFLAKE="$__NIXOS_NONFLAKE"
         fi
 
     else
-        echo "cancelled"
+        echo "cancelled" >&2
     fi
 )

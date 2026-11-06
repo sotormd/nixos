@@ -8,6 +8,7 @@ HOST="$1"
 
 mount=$(ssh "$HOST" 'printf "%s" "$NIXOS_MOUNT"')
 
+echo "[nixos] pushing expressions" >&2
 rsync -avz --delete \
   --exclude='vars/vars.nix' \
   --exclude='vars/secrets.yaml' \
