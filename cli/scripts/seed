@@ -29,7 +29,6 @@ else
     }
     trap cleanup INT TERM EXIT
 
-    echo "[nixos] fetching expressions" >&2
     rsync -avz \
       --exclude='.git' \
       --exclude='.local' \
@@ -41,14 +40,12 @@ else
 
         cd "$workdir"
 
-	echo "[nixos] building configuration" >&2
         if [ "$nonflake" = 1 ]; then
             nixos-rebuild build --file "$sourcedir/nonflake.nix" --attr "nixosConfigurations.machine-$role-$arch" --fallback
         else
             nixos-rebuild build --flake "$sourcedir#machine-$role-$arch" --fallback
         fi
 
-	echo "[nixos] copying configuration" >&2
         run0 nix store sign ./result -k "$KEY" --recursive
         nix copy --to "ssh://$HOST" ./result
 
