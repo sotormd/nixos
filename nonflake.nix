@@ -16,7 +16,6 @@ let
         "lanzaboote"
         "svcvm"
         "hosts"
-        "xkcd"
         "emacs"
       ]
   );
@@ -53,9 +52,6 @@ let
 
     # the hosts outPath
     hosts.outPath = sources.hosts;
-
-    # the xkcd-wall package
-    xkcd.packages.${pkgs.stdenv.hostPlatform.system}.default = import sources.xkcd { inherit pkgs; };
 
     # the emacs package
     emacs.packages.${pkgs.stdenv.hostPlatform.system}.default = import sources.emacs { inherit pkgs; };

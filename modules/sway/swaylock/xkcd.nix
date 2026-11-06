@@ -1,7 +1,7 @@
 {
-  inputs,
   lib,
   coreutils,
+  xkcd-wall,
   writeShellScriptBin,
   vars,
 }:
@@ -18,7 +18,7 @@ let
 
   xkcdWrapped = writeShellScriptBin "xkcd-refresh" ''
     ${lib.getExe' coreutils "cp"} -f "${target}" "${backup}" 2>/dev/null || ${lib.getExe' coreutils "true"}
-    ${lib.getExe inputs.xkcd.packages.x86_64-linux.default} \
+    ${lib.getExe xkcd-wall} \
       -t random \
       -d ${vars.displays.outputs.${vars.displays.primary}.resolution} \
       -b ${colors.xkcd.bg} \

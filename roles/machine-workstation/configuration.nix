@@ -1,5 +1,6 @@
 {
   config,
+  pkgs,
   lib,
   vars,
   ...
@@ -7,8 +8,11 @@
 
 let
   inherit (config.vars) network;
+  pkgs-extra = pkgs.callPackage ../../pkgs { };
 in
 {
+  nixpkgs.overlays = [ (_: _: { inherit (pkgs-extra) brave xkcd-wall; }) ];
+
   # environment variables
   environment.sessionVariables = {
     NIXOS_ROLE = "workstation";

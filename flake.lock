@@ -139,8 +139,7 @@
         "lanzaboote": "lanzaboote",
         "nixpkgs": "nixpkgs",
         "sops-nix": "sops-nix",
-        "svcvm": "svcvm",
-        "xkcd": "xkcd"
+        "svcvm": "svcvm"
       }
     },
     "rust-overlay": {
@@ -196,26 +195,6 @@
       "original": {
         "owner": "sotormd",
         "repo": "svcvm",
-        "type": "github"
-      }
-    },
-    "xkcd": {
-      "inputs": {
-        "nixpkgs": [
-          "nixpkgs"
-        ]
-      },
-      "locked": {
-        "lastModified": 1785437331,
-        "narHash": "sha256-tXI/zK/qEAAOTutB9K+yTKBDphGqaHcrNMaYrGY8PKQ=",
-        "owner": "sotormd",
-        "repo": "xkcd-wall",
-        "rev": "8ff03f5f78355bb762f835f2ce80cd539915dee3",
-        "type": "github"
-      },
-      "original": {
-        "owner": "sotormd",
-        "repo": "xkcd-wall",
         "type": "github"
       }
     }

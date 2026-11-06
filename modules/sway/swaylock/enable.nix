@@ -1,17 +1,9 @@
-{
-  config,
-  inputs,
-  pkgs,
-  ...
-}:
+{ config, pkgs, ... }:
 
 let
   configuration = pkgs.callPackage ./config.nix { inherit (config) vars; };
   package = pkgs.callPackage ./package.nix { inherit configuration; };
-  xkcd = pkgs.callPackage ./xkcd.nix {
-    inherit inputs;
-    inherit (config) vars;
-  };
+  xkcd = pkgs.callPackage ./xkcd.nix { inherit (config) vars; };
 in
 {
   users.users.${config.vars.user.name}.packages = [

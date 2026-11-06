@@ -39,12 +39,6 @@
       url = "github:sotormd/svcvm";
     };
 
-    # XKCD comics on my lockscreen
-    xkcd = {
-      url = "github:sotormd/xkcd-wall";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
-
     # emacs text editor
     emacs = {
       url = "github:sotormd/emacs";
