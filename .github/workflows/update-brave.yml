@@ -24,8 +24,11 @@ jobs:
             experimental-features = nix-command flakes
 
       - name: Update pkgs/brave
-        working-directory: pkgs/brave
-        run: ./update.py
+        run: |
+	  cd pkgs
+	  script=$(nix build -f default.nix brave.passthru.updateScript --no-link --print-out-paths)
+	  cd brave
+	  "$script"
 
       - name: Create pull request
         uses: peter-evans/create-pull-request@v7

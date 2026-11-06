@@ -24,8 +24,11 @@ jobs:
             experimental-features = nix-command flakes
 
       - name: Update pkgs/xkcd-wall
-        working-directory: pkgs
-        run: nix run nixpkgs#nix-update -- xkcd-wall
+        run: |
+	  cd pkgs
+	  script=$(nix build -f default.nix xkcd-wall.passthru.updateScript --no-link --print-out-paths)
+	  cd xkcd-wall
+	  "$script"
 
       - name: Create pull request
         uses: peter-evans/create-pull-request@v7
