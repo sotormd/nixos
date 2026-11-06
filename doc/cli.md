@@ -132,37 +132,11 @@ Examples:
 
 # Updating the lockfile
 
-Update lockfile inputs in `flake.lock`.
+Update lockfile inputs in `flake.lock` and packages in `pkgs`.
 
 ```bash
-nixos update [inputs...]
+nixos update
 ```
-
-This is equivalent to:
-
-```bash
-nixos nix flake update [inputs...]
-```
-
-Examples:
-
-1. To update all inputs:
-
-   ```bash
-   nixos update
-   ```
-
-2. To update a specific input:
-
-   ```bash
-   nixos update nixpkgs
-   ```
-
-3. To update multiple specific inputs:
-
-   ```bash
-   nixos update nixpkgs sops-nix lanzaboote
-   ```
 
 # Garbage collect
 
