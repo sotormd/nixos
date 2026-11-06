@@ -1,25 +1,28 @@
-# pkgs
+# Vendored Packages
 
-vendored packages, usually because they aren't in Nixpkgs
+Usually because they aren't in Nixpkgs
 
-1. brave browser
-2. xkcd-wall
+# Updating
 
-# updating
-
-packages that need to be updated are listed in [`to-update`](./to-update), `nixos update`
-and gh actions update all these pacakges as per their `passthru.updateScript` attributes.
+Packages that can be updated are listed in [`can-update`](./can-update), `nixos update`
+and GitHub actions update all these pacakges as per their `passthru.updateScript` attributes.
 
 `passthru.updateScript` must be a script that can be invoked from this directory and takes
 the package directory name as an argument.
 
-## updating using the `nixos(1)` cli
+## Updating using the `nixos(1)` CLI
 
 ```bash
-nixos update
+# for all pkgs
+nixos update pkgs
+
+# for specific pkgs only
+nixos update pkgs brave xkcd-wall
 ```
 
-## updating using the `passthru.updateScript`
+See [CLI Documentation](../doc/cli.md#updating-the-lockfile-and-packages) for more information.
+
+## Updating using the `passthru.updateScript`
 
 ```bash
 cd pkgs
@@ -27,6 +30,6 @@ script=$(nix build -f . brave.passthru.updateScript --no-link --print-out-paths)
 "$script" brave
 ```
 
-## updating with github actions
+## Updating with github actions
 
-actions will open a PR for package updates
+Actions will open a PR for package updates.

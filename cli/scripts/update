@@ -1,20 +1,99 @@
-#!/usr/bin/env bash
+#!/usr/bin/env python3
 
-set -euo pipefail
+import argparse
+import os
+import subprocess
+import sys
+from pathlib import Path
 
-DIR="$__NIXOS_MOUNT$__NIXOS_GLOBALS_FLAKE"
+try:
+    __NIXOS_MOUNT = os.environ["__NIXOS_MOUNT"]
+    __NIXOS_GLOBALS_FLAKE = os.environ["__NIXOS_GLOBALS_FLAKE"]
+except KeyError:
+    print("missing environment variables", file=sys.stderr)
+    sys.exit(1)
 
-echo "updating flake inputs"
-(
-    cd  "$DIR"
-    nix flake update
-)
+DIR = Path(__NIXOS_MOUNT, __NIXOS_GLOBALS_FLAKE)
+PKGS = DIR / "pkgs"
+CAN_UPDATE = PKGS / "can-update"
 
-(
-    cd "$DIR/pkgs"
-    while read -r pkg; do
-	echo "updating package $pkg"
-	script="$(nix build -f default.nix $pkg.passthru.updateScript --no-link --print-out-paths)"
-        "$script" "$pkg"
-    done < to-update
-)
+
+def run(cmd: tuple, cwd: Path) -> None:
+    subprocess.run(cmd, cwd=cwd, check=True)
+
+
+def output(cmd: tuple, cwd: Path) -> str:
+    return subprocess.check_output(cmd, cwd=cwd, text=True).strip()
+
+
+def update_inputs(inputs: tuple) -> None:
+    cmd = ("nix", "flake", "update") + inputs
+    print(f"[1/1] updating flake inputs with {' '.join(cmd)}")
+    run(cmd, DIR)
+
+
+def update_pkgs(pkgs: tuple) -> None:
+    can_update = set(
+        map(
+            lambda x: x.strip(),
+            filter(
+                lambda x: x.strip() and not x.lstrip().startswith("#"),
+                CAN_UPDATE.read_text().splitlines(),
+            ),
+        )
+    )
+
+    selected = set(pkgs) if pkgs else can_update
+
+    invalid = selected - can_update
+    if invalid:
+        print("updates are not allowed for the following packages:", ", ".join(invalid))
+        sys.exit(1)
+
+    for i, pkg in enumerate(selected):
+        cmd = (
+            "nix",
+            "build",
+            "-f",
+            ".",
+            f"{pkg}.passthru.updateScript",
+            "--no-link",
+            "--print-out-paths",
+        )
+        script = (output(cmd, PKGS), pkg)
+
+        print(f"[{i+1}/{len(selected)}] updating package {pkg} with {' '.join(script)}")
+
+        run(script, PKGS)
+
+
+if __name__ == "__main__":
+    parser = argparse.ArgumentParser()
+
+    # [inputs|pkgs]
+    subparsers = parser.add_subparsers(dest="command")
+
+    # [names..]
+    inputs_parser = subparsers.add_parser("inputs")
+    inputs_parser.add_argument("names", nargs="*")
+
+    # [names..]
+    pkgs_parser = subparsers.add_parser("pkgs")
+    pkgs_parser.add_argument("names", nargs="*")
+
+    args = parser.parse_args()
+
+    match args.command:
+        case None:
+            update_inputs(())
+            update_pkgs(())
+        case "inputs":
+            update_inputs(tuple(args.names))
+        case "pkgs":
+            update_pkgs(tuple(args.names))
+        case _:
+            print(
+                f"unexpected command ${args.command}, expected inputs or pkgs",
+                file=sys.stderr,
+            )
+            sys.exit(1)

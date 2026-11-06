@@ -17,7 +17,7 @@ role-specific setup documentation.
 1. [Overview](#overview)
 2. [Applying a new configuration](#applying-a-new-configuration)
 3. [Building a new configuration](#building-a-new-configuration)
-4. [Updating the lockfile](#updating-the-lockfile)
+4. [Updating the lockfile and packages](#updating-the-lockfile-and-packages)
 5. [Garbage collect](#garbage-collect)
 6. [Edit variables and secrets](#edit-variables-and-secrets)
 7. [Push local changes](#push-local-changes)
@@ -130,13 +130,42 @@ Examples:
    nixos build --show-trace
    ```
 
-# Updating the lockfile
+# Updating the lockfile and packages
 
 Update lockfile inputs in `flake.lock` and packages in `pkgs`.
 
 ```bash
-nixos update
+nixos update [inputs|pkgs] [names...]
 ```
+
+If no args are passed, it updates everything. Only the packages listed
+in [`pkgs/can-update`](../pkgs/can-update) can be updated.
+
+Example usage:
+
+1. Update all lockfile inputs and packages
+
+   ```bash
+   nixos update
+   ```
+
+2. Update all inputs only
+
+   ```bash
+   nixos update inputs
+   ```
+
+3. Update the nixpkgs and sops-nix inputs only
+
+   ```bash
+   nixos update inputs nixpkgs sops-nix
+   ```
+
+4. Update the brave and xkcd-wall packages only
+
+   ```bash
+   nixos update pkgs brave xkcd-wall
+   ```
 
 # Garbage collect
 
