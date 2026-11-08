@@ -30,7 +30,7 @@ jobs:
         uses: peter-evans/create-pull-request@v7
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
-          branch: update/brave
+          branch: update/flake
           delete-branch: true
           commit-message: "chore: update lockfile"
           title: "update lockfile"
