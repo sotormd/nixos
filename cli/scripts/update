@@ -7,7 +7,7 @@ import sys
 from pathlib import Path
 
 try:
-    NIXOS_MOUNT = os.environ["NIXOS_MOUNT"]
+    NIXOS_MOUNT = os.environ["__NIXOS_MOUNT"]
     __NIXOS_GLOBALS_FLAKE = os.environ["__NIXOS_GLOBALS_FLAKE"]
 except KeyError:
     print("missing environment variables", file=sys.stderr)
