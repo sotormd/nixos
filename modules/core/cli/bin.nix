@@ -2,7 +2,6 @@
   runtimeShell,
   symlinkJoin,
   writeTextFile,
-  ...
 }:
 
 let
@@ -14,6 +13,7 @@ let
     "edit"
     "push"
     "seed"
+    "environ"
 
     "bootstrap"
   ];
@@ -63,7 +63,7 @@ let
     paths = [ nixosWithScripts ];
     postBuild = ''
       mkdir -p $out/share/man/man1
-      install -m644 ${./nixos.1} $out/share/man/man1/nixos.1
+      install -m644 ${../../../cli/nixos.1} $out/share/man/man1/nixos.1
     '';
   };
 in

@@ -1,0 +1,9 @@
+#!/usr/bin/env bash
+
+echo "__NIXOS_ROLE                  (NIXOS_ROLE)      -  $__NIXOS_ROLE"
+echo "__NIXOS_MOUNT                 (NIXOS_MOUNT)     -  $__NIXOS_MOUNT"
+echo "__NIXOS_SCRIPTS               (NIXOS_SCRIPTS)   -  $__NIXOS_SCRIPTS"
+echo "__NIXOS_NONFLAKE              (NIXOS_NONFLAKE)  -  $__NIXOS_NONFLAKE"
+echo "__NIXOS_GLOBALS_FLAKE                           -  $__NIXOS_GLOBALS_FLAKE"
+echo "__NIXOS_GLOBALS_SOPS                            -  $__NIXOS_GLOBALS_SOPS"
+echo "__NIXOS_GLOBALS_IMPERMANENCE                    -  $__NIXOS_GLOBALS_IMPERMANENCE"

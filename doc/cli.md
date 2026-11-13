@@ -22,8 +22,9 @@ role-specific setup documentation.
 6. [Edit variables and secrets](#edit-variables-and-secrets)
 7. [Push local changes](#push-local-changes)
 8. [Build remote closures](#build-remote-closures)
-9. [Miscellaneous](#miscellaneous)
-10. [Implementation details](#implementation-details)
+9. [List environment](#list-environment)
+10. [Miscellaneous](#miscellaneous)
+11. [Implementation details](#implementation-details)
 
 # Overview
 
@@ -268,6 +269,14 @@ Examples:
    [foobar]$ exit
    $
    ```
+
+# List environment
+
+```bash
+nixos environ
+```
+
+List environment provided by the `nixos(1)` wrapper to scripts.
 
 # Miscellaneous
 

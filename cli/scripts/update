@@ -10,7 +10,7 @@ try:
     __NIXOS_MOUNT = os.environ["__NIXOS_MOUNT"]
     __NIXOS_GLOBALS_FLAKE = os.environ["__NIXOS_GLOBALS_FLAKE"]
 except KeyError:
-    print("missing environment variables", file=sys.stderr)
+    print("Error: missing environment variables", file=sys.stderr)
     sys.exit(1)
 
 DIR = Path(__NIXOS_MOUNT, __NIXOS_GLOBALS_FLAKE)
@@ -19,11 +19,23 @@ CAN_UPDATE = PKGS / "can-update"
 
 
 def run(cmd: tuple, cwd: Path) -> None:
-    subprocess.run(cmd, cwd=cwd, check=True)
+    try:
+        subprocess.run(cmd, cwd=cwd, check=True)
+    except subprocess.CalledProcessError:
+        print(
+            f"Error: called process failed, {' '.join(cmd)} in {cwd}", file=sys.stderr
+        )
+        sys.exit(1)
 
 
 def output(cmd: tuple, cwd: Path) -> str:
-    return subprocess.check_output(cmd, cwd=cwd, text=True).strip()
+    try:
+        return subprocess.check_output(cmd, cwd=cwd, text=True).strip()
+    except subprocess.CalledProcessError:
+        print(
+            f"Error: called process failed, {' '.join(cmd)} in {cwd}", file=sys.stderr
+        )
+        sys.exit(1)
 
 
 def update_inputs(inputs: tuple) -> None:
@@ -47,7 +59,10 @@ def update_pkgs(pkgs: tuple) -> None:
 
     invalid = selected - can_update
     if invalid:
-        print("updates are not allowed for the following packages:", ", ".join(invalid))
+        print(
+            "Error: updates are not allowed for the following packages:",
+            ", ".join(invalid),
+        )
         sys.exit(1)
 
     for i, pkg in enumerate(selected):
@@ -93,7 +108,7 @@ if __name__ == "__main__":
             update_pkgs(tuple(args.names))
         case _:
             print(
-                f"unexpected command ${args.command}, expected inputs or pkgs",
+                f"Error: unexpected command ${args.command}, expected inputs or pkgs",
                 file=sys.stderr,
             )
             sys.exit(1)
