@@ -8,7 +8,8 @@ in
   security.acme = {
     acceptTerms = true;
     defaults.email = nginx.email;
-    defaults.dnsPropagationCheck = false;
+    defaults.dnsAuthoritativePropagationCheck = false;
+    defaults.dnsRecursivePropagationCheck = false;
     certs."${nginx.domain}" = {
       inherit (nginx) domain;
       group = "nginx";
