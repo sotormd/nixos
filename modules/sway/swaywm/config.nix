@@ -151,10 +151,10 @@ let
     bindsym XF86AudioPlay exec ${binaries.media} play-pause
     bindsym XF86AudioNext exec ${binaries.media} next
     bindsym ${mod}+XF86AudioPlay exec ${binaries.media} stop
-    bindsym ${mod}+shift+F23+bracketleft exec ${binaries.media} previous
-    bindsym ${mod}+shift+F23+bracketright exec ${binaries.media} play-pause
-    bindsym ${mod}+shift+F23+backslash exec ${binaries.media} next
-    bindsym ${mod}+shift+F23+alt+bracketright exec ${binaries.media} stop
+    bindsym ${mod}+bracketleft exec ${binaries.media} previous
+    bindsym ${mod}+bracketright exec ${binaries.media} play-pause
+    bindsym ${mod}+backslash exec ${binaries.media} next
+    bindsym ${mod}+alt+bracketright exec ${binaries.media} stop
     bindsym XF86AudioMute exec ${binaries.wpctl} set-mute @DEFAULT_AUDIO_SINK@ toggle
     bindsym XF86AudioLowerVolume exec ${binaries.volume} 5%-
     bindsym XF86AudioRaiseVolume exec ${binaries.volume} 5%+
