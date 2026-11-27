@@ -6,6 +6,7 @@
   libnotify,
   util-linux,
   xdg-dbus-proxy,
+  writeShellScript,
   executable,
   policies,
   state,
@@ -16,10 +17,12 @@ let
   user = vars.user.name;
   home = "/home/${user}";
 
-  jail = ''
+  jail = writeShellScript "brave-jail" ''
     set -euo pipefail
 
-    LOCKFILE="$XDG_RUNTIME_DIR/bubblewrap-brave/bubblewrap-brave.lock"
+    BASE="$XDG_RUNTIME_DIR/bubblewrap-brave"
+
+    LOCKFILE="$BASE/bubblewrap-brave.lock"
 
     if [ -e "$LOCKFILE" ]; then
         ${lib.getExe libnotify} "Brave is already running" "Try opening a new tab/window instead"
@@ -28,14 +31,14 @@ let
         exit 1
     fi
 
-    ${lib.getExe' coreutils "mkdir"} -p "$XDG_RUNTIME_DIR/bubblewrap-brave"
+    ${lib.getExe' coreutils "mkdir"} -p "$BASE"
     ${lib.getExe' coreutils "touch"} "$LOCKFILE"
 
-    users=$(${lib.getExe' coreutils "mktemp"} -d -p "$XDG_RUNTIME_DIR/bubblewrap-brave" users.XXXXXX)
+    users=$(${lib.getExe' coreutils "mktemp"} -d -p "$BASE" users.XXXXXX)
     echo "brave:x:1000:1000:brave:/home/brave:${lib.getExe' coreutils "false"}" > "$users/passwd"
     echo "brave:x:1000:" > "$users/group"
 
-    proxy_dir=$(${lib.getExe' coreutils "mktemp"} -d -p "$XDG_RUNTIME_DIR/bubblewrap-brave" proxy.XXXXXX)
+    proxy_dir=$(${lib.getExe' coreutils "mktemp"} -d -p "$BASE" proxy.XXXXXX)
     proxy_socket="$proxy_dir/bus"
 
     ${lib.getExe xdg-dbus-proxy} "$DBUS_SESSION_BUS_ADDRESS" "$proxy_socket" \
@@ -45,7 +48,7 @@ let
 
     cleanup() {
         ${lib.getExe' util-linux "kill"} "$proxy_pid" 2>/dev/null || true
-        ${lib.getExe' coreutils "rm"} -rf "$XDG_RUNTIME_DIR/bubblewrap-brave"
+        ${lib.getExe' coreutils "rm"} -rf "$BASE"
     }
     trap cleanup INT TERM EXIT
 

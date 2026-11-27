@@ -2,14 +2,14 @@
   lib,
   callPackage,
   executable,
-  jail,
+  logger,
 }:
 
 let
   name = "brave";
   base = executable;
   type = "command";
-  command = jail;
+  command = logger;
 
   braveWrapped = callPackage lib.mkWrapperPackage {
     inherit

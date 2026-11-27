@@ -23,7 +23,8 @@ let
       ;
     inherit (config) vars;
   };
-  package = pkgs.callPackage ./package.nix { inherit executable jail; };
+  logger = pkgs.callPackage ./logger.nix { inherit jail; };
+  package = pkgs.callPackage ./package.nix { inherit executable logger; };
 in
 {
   users.users.${config.vars.user.name}.packages = [ package ];
