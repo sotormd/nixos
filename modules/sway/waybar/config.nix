@@ -115,6 +115,7 @@ let
     {
       all-outputs = false;
       disable-scroll = true;
+      disable-click = true;
       format = "{icon}";
       format-icons = mapping;
       window-rewrite = { };

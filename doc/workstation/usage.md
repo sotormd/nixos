@@ -208,11 +208,7 @@ This section covers the Waybar top panel.
 
 Shows workspaces.
 
-| Action          | Bind       |
-| --------------- | ---------- |
-| Go to workspace | Left click |
-
-Current workspace is highlighted in bold.
+Current workspace is highlighted.
 
 ### mode Module
 
